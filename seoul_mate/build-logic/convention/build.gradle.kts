@@ -22,10 +22,13 @@ kotlin {
 dependencies {
     compileOnly(libs.android.gradlePlugin)
     compileOnly(libs.android.tools.common)
-//    compileOnly(libs.firebase.crashlytics.gradlePlugin)
-//    compileOnly(libs.firebase.performance.gradlePlugin)
+    compileOnly(libs.compose.gradlePlugin)
+    compileOnly(libs.firebase.crashlytics.gradlePlugin)
+    compileOnly(libs.firebase.performance.gradlePlugin)
     compileOnly(libs.kotlin.gradlePlugin)
     compileOnly(libs.ksp.gradlePlugin)
+    compileOnly(libs.room.gradlePlugin)
+    implementation(libs.truth)
 }
 
 tasks {
@@ -40,6 +43,26 @@ gradlePlugin {
         register("androidApplication") {
             id = libs.plugins.seoulmate.android.application.get().pluginId
             implementationClass = "AndroidApplicationConventionPlugin"
+        }
+        register("androidApplicationCompose") {
+            id = libs.plugins.seoulmate.android.compose.application.get().pluginId
+            implementationClass = "AndroidApplicationComposeConventionPlugin"
+        }
+        register("androidLibrary") {
+            id = libs.plugins.seoulmate.android.library.get().pluginId
+            implementationClass = "AndroidLibraryConventionPlugin"
+        }
+        register("androidLibraryCompose") {
+            id = libs.plugins.seoulmate.android.compose.library.get().pluginId
+            implementationClass = "AndroidLibraryComposeConventionPlugin"
+        }
+        register("androidApplicationFirebase") {
+            id = libs.plugins.seoulmate.android.firebase.get().pluginId
+            implementationClass = "AndroidApplicationFirebaseConventionPlugin"
+        }
+        register("hilt") {
+            id = libs.plugins.seoulmate.hilt.get().pluginId
+            implementationClass = "HiltConventionPlugin"
         }
     }
 }

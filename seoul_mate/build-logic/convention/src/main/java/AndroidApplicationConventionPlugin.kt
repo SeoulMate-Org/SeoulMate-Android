@@ -12,10 +12,11 @@ class AndroidApplicationConventionPlugin: Plugin<Project> {
         with(target) {
             apply(plugin = "com.android.application")
             apply(plugin = "org.jetbrains.kotlin.android")
+            apply(plugin = "seoulmate.hilt")
 
             extensions.configure<ApplicationExtension> {
                 configureKotlinAndroid(this)
-                defaultConfig.targetSdk = 33
+                defaultConfig.targetSdk = 35
                 @Suppress("UnstableApiUsage")
                 testOptions.animationsDisabled = true
                 configureGradleManagedDevices(this)

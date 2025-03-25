@@ -1,16 +1,14 @@
 plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.seoulmate.android.application)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.seoulmate.android.compose.application)
 }
 
 android {
     namespace = "com.seoulmate"
-    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.seoulmate"
-        minSdk = 26
-        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -26,23 +24,48 @@ android {
             )
         }
     }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-    kotlinOptions {
-        jvmTarget = "11"
+
+    // Specifies one flavor dimension.
+    flavorDimensions += "version"
+    productFlavors {
+        create("dev") {
+            dimension = "version"
+            applicationIdSuffix = ".dev"
+            versionNameSuffix = "-dev"
+        }
+        create("live") {
+            dimension = "version"
+            applicationIdSuffix = ".live"
+            versionNameSuffix = "-live"
+        }
     }
 }
 
 dependencies {
+    implementation(projects.core.ui)
+    implementation(projects.core.data)
+    implementation(projects.core.domain)
+    implementation(projects.navigator)
 
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
     implementation(libs.androidx.activity)
-    implementation(libs.androidx.constraintlayout)
+
+    implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.compose.material3.adaptive)
+    implementation(libs.androidx.compose.material3.adaptive.layout)
+    implementation(libs.androidx.compose.material3.adaptive.navigation)
+    implementation(libs.androidx.compose.material3.windowSizeClass)
+    implementation(libs.androidx.compose.runtime.tracing)
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.core.splashscreen)
+    implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.coil.kt)
+
+    ksp(libs.hilt.compiler)
+    kspTest(libs.hilt.compiler)
+
     testImplementation(libs.junit)
+
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 }

@@ -1,43 +1,46 @@
+import java.util.Properties
+
 plugins {
-    alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.seoulmate.android.library)
+    alias(libs.plugins.seoulmate.hilt)
+//    alias(libs.plugins.seoulmate.kotlin.realm)
 }
+
+val properties = Properties()
+properties.load(project.rootProject.file("local.properties").inputStream())
 
 android {
     namespace = "com.seoulmate.data"
-    compileSdk = 35
 
     defaultConfig {
-        minSdk = 26
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
 
+    buildFeatures {
+        buildConfig = true
+    }
+
     buildTypes {
-        release {
+        getByName("release") {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+
+            // 개발여부설정 : false
+            buildConfigField ("boolean", "DEV", "false")
+            buildConfigField("String", "BASE_URL", properties.getProperty("BASE_URL"))
         }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-    kotlinOptions {
-        jvmTarget = "11"
+        getByName("debug") {
+            // 개발여부설정 : true
+            buildConfigField("boolean", "DEV", "true")
+            buildConfigField("String", "BASE_URL", properties.getProperty("DEV_BASE_URL"))
+        }
     }
 }
 
 dependencies {
 
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
 }
