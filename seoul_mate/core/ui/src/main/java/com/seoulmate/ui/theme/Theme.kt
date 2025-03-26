@@ -53,7 +53,6 @@ fun SeoulMateTheme(
         darkTheme -> DarkColorScheme
         else -> LightColorScheme
     }
-    val view = LocalView.current
 
     MaterialTheme(
         colorScheme = colorScheme,

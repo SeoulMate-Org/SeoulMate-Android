@@ -56,6 +56,10 @@ gradlePlugin {
             id = libs.plugins.seoulmate.android.compose.library.get().pluginId
             implementationClass = "AndroidLibraryComposeConventionPlugin"
         }
+        register("androidFeature") {
+            id = libs.plugins.seoulmate.android.feaure.get().pluginId
+            implementationClass = "AndroidFeatureConventionPlugin"
+        }
         register("androidApplicationFirebase") {
             id = libs.plugins.seoulmate.android.firebase.get().pluginId
             implementationClass = "AndroidApplicationFirebaseConventionPlugin"
