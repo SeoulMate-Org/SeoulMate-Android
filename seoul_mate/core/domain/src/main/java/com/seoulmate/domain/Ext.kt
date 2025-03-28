@@ -1,0 +1,2 @@
+package com.seoulmate.domain
+

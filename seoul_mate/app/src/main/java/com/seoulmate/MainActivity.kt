@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -39,6 +40,8 @@ fun SeoulMateNavHost(
         startDestination = Splash,
         modifier = modifier) {
         composable<Splash> {
+//            val viewModel = hiltViewModel<MainViewModel>()
+//            viewModel.onEvents(MainEvents.GetAddresses("태평로1가 31"))
             SplashScreen()
         }
         composable<Home> {
