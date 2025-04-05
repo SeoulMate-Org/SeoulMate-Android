@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.seoulmate.maps"
+    namespace = "com.codesubmission.home"
 
     defaultConfig {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -24,6 +24,7 @@ android {
 }
 
 dependencies {
+    implementation(projects.core.ui)
 
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -34,6 +35,11 @@ dependencies {
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.hilt.navigation.compose)
+    // 네이버 지도 SDK
+    implementation("io.github.fornewid:naver-map-compose:1.8.0")
+    implementation("io.github.fornewid:naver-map-location:18.0.0")
+    implementation("com.naver.maps:map-sdk:3.21.0")
+
     androidTestImplementation(platform(libs.compose.bom))
     androidTestImplementation(libs.androidx.compose.ui.test)
     debugImplementation(libs.androidx.compose.ui.tooling)

@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.seoulmate.maps"
+    namespace = "com.codesubmission.interest"
 
     defaultConfig {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -24,7 +24,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.compose.bom))
@@ -38,4 +37,5 @@ dependencies {
     androidTestImplementation(libs.androidx.compose.ui.test)
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.testManifest)
+
 }

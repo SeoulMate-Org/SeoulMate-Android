@@ -46,6 +46,14 @@ dependencies {
     implementation(projects.core.data)
     implementation(projects.core.domain)
     implementation(projects.navigator)
+    implementation(projects.feature.maps)
+    implementation(projects.feature.interest)
+    implementation(projects.feature.home)
+
+    // 네이버 지도 SDK
+    implementation("io.github.fornewid:naver-map-compose:1.8.0")
+    implementation("io.github.fornewid:naver-map-location:18.0.0")
+    implementation("com.naver.maps:map-sdk:3.21.0")
 
     implementation(libs.androidx.activity)
 

@@ -3,6 +3,7 @@ package com.seoulmate
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,36 +21,21 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navigation
+import com.naver.maps.geometry.LatLng
+import com.naver.maps.map.CameraPosition
+import com.naver.maps.map.CameraUpdate
+import com.naver.maps.map.compose.CameraPositionState
+import com.naver.maps.map.compose.ExperimentalNaverMapApi
+import com.naver.maps.map.compose.Marker
+import com.naver.maps.map.compose.MarkerState
+import com.naver.maps.map.compose.NaverMap
+import com.naver.maps.map.compose.rememberCameraPositionState
+import com.seoulmate.navigation.MainNavHost
+import com.seoulmate.ui.rememberAppState
 import com.seoulmate.ui.theme.SeoulMateTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.serialization.Serializable
-
-@Serializable
-object Splash
-@Serializable
-object Home
-
-@Composable
-fun SeoulMateNavHost(
-    modifier: Modifier,
-    navController: NavHostController,
-) {
-
-    NavHost(
-        navController = navController,
-        startDestination = Splash,
-        modifier = modifier) {
-        composable<Splash> {
-//            val viewModel = hiltViewModel<MainViewModel>()
-//            viewModel.onEvents(MainEvents.GetAddresses("태평로1가 31"))
-            SplashScreen()
-        }
-        composable<Home> {
-            HomeScreen()
-        }
-    }
-
-}
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -64,64 +50,35 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.error
                 ) {
-                    Mainbody()
+                    MainNavHost(
+                        appState = rememberAppState(),
+                        modifier = Modifier.fillMaxSize(),
+                    )
                 }
             }
         }
     }
 }
 
-@Preview(showBackground = true)
 @Composable
-fun MainPreview() {
-    SeoulMateTheme {
-        Mainbody()
-    }
-}
-
-@Composable
-fun Mainbody() {
-    val navController = rememberNavController()
-    Column {
-        SeoulMateNavHost(
-            modifier = Modifier.weight(1f),
-            navController = navController,
-        )
-        Row(modifier = Modifier.fillMaxWidth()) {
-            Button(
-                onClick = {
-                    navController.navigate(route = Home)
-                }
-            ) {
-                Text(text = "HOME")
-            }
-            Button(
-                onClick = {
-                    navController.navigate(route = Splash)
-                }
-            ) {
-                Text(text = "SPLASH")
-            }
-        }
-    }
-}
-
-@Composable
-fun SplashScreen() {
+fun SplashScreen(
+    onNext: () -> Unit,
+) {
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.primary
     ) {
-        Text(text = "Splash Screen")
+        Button(
+            onClick = onNext
+        ) {
+            Text(text = "Splash Screen")
+        }
     }
 }
 
+
+@OptIn(ExperimentalNaverMapApi::class)
 @Composable
-fun HomeScreen() {
-    Surface(
-        modifier = Modifier.fillMaxSize(),
-        color = MaterialTheme.colorScheme.background
-    ) {
-        Text(text = "Home Screen")
-    }
+fun Map() {
+
 }

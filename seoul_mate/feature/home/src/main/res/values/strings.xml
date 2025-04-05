@@ -1,0 +1,5 @@
+<resources>
+    <string name="nav_suggest_lable">테마 추천</string>
+    <string name="nav_map_lable">지도</string>
+    <string name="nav_favorite_lable">좋아요</string>
+</resources>
