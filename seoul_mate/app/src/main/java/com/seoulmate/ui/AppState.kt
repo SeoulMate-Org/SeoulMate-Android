@@ -1,5 +1,6 @@
 package com.seoulmate.ui
 
+import android.Manifest
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.collectAsState
@@ -46,6 +47,11 @@ class AppState(
                 }
             } ?: previousDestination.value
         }
+
+    val locationPermissionList = listOf(
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.ACCESS_COARSE_LOCATION,
+    )
 
     fun navigate(screen: Screen) {
         navController.navigate(screen.route)

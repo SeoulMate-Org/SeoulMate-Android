@@ -1,8 +1,13 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.seoulmate.android.application)
     alias(libs.plugins.seoulmate.android.compose.application)
     alias(libs.plugins.kotlin.serialization)
 }
+
+val properties = Properties()
+properties.load(project.rootProject.file("local.properties").inputStream())
 
 android {
     namespace = "com.seoulmate"
@@ -15,13 +20,37 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    buildFeatures {
+        buildConfig = true
+    }
+
     buildTypes {
-        release {
+        getByName("release") {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+
+            buildConfigField("String", "NAVER_MAP_KEY", properties.getProperty("NAVER_MAP_KEY"))
+            buildConfigField("String", "FACEBOOK_CLIENT_TOKEN", properties.getProperty("FACEBOOK_CLIENT_TOKEN"))
+            buildConfigField("String", "FACEBOOK_APP_ID", properties.getProperty("FACEBOOK_APP_ID"))
+            buildConfigField("String", "FACEBOOK_FB_SCHEME", properties.getProperty("FACEBOOK_FB_SCHEME"))
+            manifestPlaceholders["NAVER_MAP_KEY"] = properties["NAVER_MAP_KEY"] as String
+
+            resValue("string", "FACEBOOK_APP_ID", properties.getProperty("FACEBOOK_APP_ID"))
+            resValue("string", "FACEBOOK_CLIENT_TOKEN", properties.getProperty("FACEBOOK_CLIENT_TOKEN"))
+        }
+
+        getByName("debug") {
+            buildConfigField("String", "NAVER_MAP_KEY", properties.getProperty("NAVER_MAP_KEY"))
+            buildConfigField("String", "FACEBOOK_CLIENT_TOKEN", properties.getProperty("FACEBOOK_CLIENT_TOKEN"))
+            buildConfigField("String", "FACEBOOK_APP_ID", properties.getProperty("FACEBOOK_APP_ID"))
+            buildConfigField("String", "FACEBOOK_FB_SCHEME", properties.getProperty("FACEBOOK_FB_SCHEME"))
+            manifestPlaceholders["NAVER_MAP_KEY"] = properties["NAVER_MAP_KEY"] as String
+
+            resValue("string", "FACEBOOK_APP_ID", properties.getProperty("FACEBOOK_APP_ID"))
+            resValue("string", "FACEBOOK_CLIENT_TOKEN", properties.getProperty("FACEBOOK_CLIENT_TOKEN"))
         }
     }
 
@@ -46,17 +75,19 @@ dependencies {
     implementation(projects.core.data)
     implementation(projects.core.domain)
     implementation(projects.navigator)
-    implementation(projects.feature.maps)
     implementation(projects.feature.interest)
     implementation(projects.feature.home)
+    implementation(projects.feature.places)
+    implementation(projects.feature.login)
 
     // 네이버 지도 SDK
-    implementation("io.github.fornewid:naver-map-compose:1.8.0")
-    implementation("io.github.fornewid:naver-map-location:18.0.0")
-    implementation("com.naver.maps:map-sdk:3.21.0")
+    implementation(libs.naver.map.compose)
+    implementation(libs.naver.map.location)
+    implementation(libs.naver.map.sdk)
+
+    implementation(libs.facebook.login)
 
     implementation(libs.androidx.activity)
-
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.compose.material3)

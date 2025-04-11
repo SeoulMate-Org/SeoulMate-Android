@@ -22,5 +22,5 @@ android {
 }
 
 dependencies {
-
+    implementation(libs.androidx.activity.compose)
 }

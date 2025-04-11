@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
     <application
         android:name=".App"
@@ -22,12 +24,23 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+
+<!--                <data android:scheme="${FACEBOOK_FB_SCHEME}"/>-->
             </intent-filter>
         </activity>
 
         <meta-data
             android:name="com.naver.maps.map.NCP_KEY_ID"
-            android:value="" />
+            android:value="${NAVER_MAP_KEY}" />
+
+        <meta-data
+            tools:replace="android:value"
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/FACEBOOK_APP_ID"/>
+        <meta-data
+            tools:replace="android:value"
+            android:name="com.facebook.sdk.ClientToken"
+            android:value="@string/FACEBOOK_CLIENT_TOKEN"/>
     </application>
 
 </manifest>

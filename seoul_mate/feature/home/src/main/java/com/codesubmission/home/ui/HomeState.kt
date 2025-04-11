@@ -2,6 +2,7 @@ package com.codesubmission.home.ui
 
 import androidx.compose.material3.BottomSheetScaffoldState
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
@@ -12,6 +13,12 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.codesubmission.home.ui.map.MapBottomSheetContent
+import com.codesubmission.home.ui.map.MapBottomSheetType
+import com.codesubmission.home.ui.map.MapItemListBottomSheet
+import com.codesubmission.home.ui.map.MapTopTagData
+import com.seoulmate.data.model.MapListCardItemData
+import com.seoulmate.ui.component.SnackBarType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -22,6 +29,7 @@ fun rememberHomeState(
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
     navController: NavHostController = rememberNavController(),
     bottomSheetState: BottomSheetScaffoldState = rememberBottomSheetScaffoldState(),
+    snackState: SnackbarHostState = remember { SnackbarHostState() },
 ): HomeState = remember(
     navController,
     coroutineScope,
@@ -29,6 +37,7 @@ fun rememberHomeState(
     HomeState(
         navController = navController,
         coroutineScope = coroutineScope,
+        snackBarkHostState = snackState,
         bottomSheetScaffoldState = bottomSheetState,
     )
 }
@@ -39,6 +48,7 @@ class HomeState(
     val navController: NavHostController,
     val coroutineScope: CoroutineScope,
     val bottomSheetScaffoldState: BottomSheetScaffoldState,
+    val snackBarkHostState: SnackbarHostState = SnackbarHostState(),
 ) {
     private val previousDestination = mutableStateOf<NavDestination?>(null)
 
@@ -56,6 +66,8 @@ class HomeState(
             } ?: previousDestination.value
         }
 
+    val mapDetailState = mutableStateOf<MapTopTagData?>(null)
+
     fun navigate(route: String) {
         navController.navigate(route)
     }
@@ -65,4 +77,19 @@ class HomeState(
             bottomSheetScaffoldState.bottomSheetState.expand()
         }
     }
+
+    fun showSnackBar(
+        type: SnackBarType = SnackBarType.OnlyText,
+        message: String,
+    ) {
+        val snackBarMessage = "${type.name}:::$message"
+        coroutineScope.launch {
+            snackBarkHostState.showSnackbar(snackBarMessage)
+        }
+    }
+
+    fun onChangeMapDetailState(tagItem: MapTopTagData?) {
+        mapDetailState.value = tagItem
+    }
+
 }

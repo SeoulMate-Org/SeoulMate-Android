@@ -1,6 +1,9 @@
 package com.seoulmate.ui.component
 
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.material3.BottomSheetScaffold
+import androidx.compose.material3.BottomSheetScaffoldState
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.NavigationDrawerItemDefaults
@@ -79,7 +82,7 @@ fun HomeNavigationSuiteScaffold(
     modifier: Modifier = Modifier,
     navigationSuiteItems: HomeNavigationSuiteScope.() -> Unit,
     windowAdaptiveInfo: WindowAdaptiveInfo = currentWindowAdaptiveInfo(),
-    content: @Composable () -> Unit,
+    mainContent: @Composable () -> Unit,
 ) {
     val layoutType = NavigationSuiteScaffoldDefaults
         .calculateFromAdaptiveInfo(windowAdaptiveInfo)
@@ -116,6 +119,7 @@ fun HomeNavigationSuiteScaffold(
                 ).run(navigationSuiteItems)
         }
     ) {
-        content()
+        mainContent()
     }
 }
+

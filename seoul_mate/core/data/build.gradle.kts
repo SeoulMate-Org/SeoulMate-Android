@@ -33,12 +33,14 @@ android {
             buildConfigField ("boolean", "DEV", "false")
             buildConfigField("String", "BASE_URL", properties.getProperty("BASE_URL"))
             buildConfigField("String", "NAVER_MAP_BASE_URL", properties.getProperty("NAVER_MAP_URL"))
+            buildConfigField("String", "GOOGLE_CLOUD_CLIENT_ID", properties.getProperty("GOOGLE_CLOUD_CLIENT_ID"))
         }
         getByName("debug") {
             // 개발여부설정 : true
             buildConfigField("boolean", "DEV", "true")
             buildConfigField("String", "BASE_URL", properties.getProperty("DEV_BASE_URL"))
             buildConfigField("String", "NAVER_MAP_BASE_URL", properties.getProperty("NAVER_MAP_URL"))
+            buildConfigField("String", "GOOGLE_CLOUD_CLIENT_ID", properties.getProperty("GOOGLE_CLOUD_CLIENT_ID"))
         }
     }
 }
@@ -51,5 +53,8 @@ dependencies {
     implementation(libs.moshi.kotlin)
     implementation(libs.okhttp.logging)
     implementation(libs.okhttp.profiler)
-    implementation(libs.okhttp.logging.interceptor)
+
+    implementation(libs.android.google.id)
+    implementation(libs.androidx.credentials)
+    implementation(libs.androidx.credentials.play.services.auth)
 }

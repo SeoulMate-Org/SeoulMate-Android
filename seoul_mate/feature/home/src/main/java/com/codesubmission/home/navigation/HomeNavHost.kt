@@ -21,14 +21,21 @@ fun HomeNavHost(
         modifier = modifier
     ) {
         composable(route = Screen.HomeSuggestTheme.route) {
-            HomeSuggestThemeScreen()
+            HomeSuggestThemeScreen(
+                showSnackBar = { snackType, snackText ->
+                    appState.showSnackBar(snackType, snackText)
+                }
+            )
         }
         composable(route = Screen.HomeFavorite.route) {
             HomeFavoriteScreen()
         }
         composable(route = Screen.HomeTravelMap.route) {
             HomeTravelMapScreen(
-                expandBottomSheet = { appState.expandBottomSheet() }
+                expandBottomSheet = { appState.expandBottomSheet() },
+                onTagClick = { tagItem ->
+                    appState.onChangeMapDetailState(tagItem)
+                }
             )
         }
     }

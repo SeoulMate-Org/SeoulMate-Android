@@ -28,6 +28,7 @@ material = "1.12.0"
 activity = "1.10.1"
 lifecycleRuntimeKtx = "2.8.7"
 constraintlayout = "2.2.1"
+constraintlayoutCompose = "1.1.1"
 firebaseBom = "33.7.0"
 firebaseCrashlyticsPlugin = "3.0.2"
 firebasePerfPlugin = "1.4.2"
@@ -35,7 +36,6 @@ hilt = "2.56"
 hiltExt = "1.2.0"
 okhttp = "4.12.0"
 okhttpProfiler = "1.1.1"
-okhttpLoggingInterceptor = "4.12.0"
 retrofit = "2.11.0"
 room = "2.6.1"
 coil = "2.7.0"
@@ -43,6 +43,14 @@ truth = "1.4.4"
 turbine = "1.2.0"
 composeBom = "2024.04.01"
 moshi = "1.12.0"
+naverMapCompose = "1.8.0"
+naverMapLocation = "21.0.1"
+naverMapSdk = "3.21.0"
+googleGmsLocation = "21.0.1"
+animationGraphicsAndroid = "1.7.8"
+googleCredentials = "1.1.1"
+androidxCredentials = "1.5.0"
+facebookLogin = "18.0.2"
 
 [bundles]
 androidx-compose-ui-test = ["androidx-compose-ui-test", "androidx-compose-ui-testManifest"]
@@ -59,6 +67,7 @@ material = { group = "com.google.android.material", name = "material", version.r
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+androidx-constraintlayout-compose = { group = "androidx.constraintlayout", name = "constraintlayout-compose", version.ref = "constraintlayoutCompose" }
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom-alpha", version.ref = "androidxComposeBom" }
 androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "androidxComposeFoundation" }
 androidx-compose-foundation-layout = { group = "androidx.compose.foundation", name = "foundation-layout" }
@@ -86,6 +95,9 @@ androidx-lint-gradle = { group = "androidx.lint", name = "lint-gradle", version.
 androidx-metrics = { group = "androidx.metrics", name = "metrics-performance", version.ref = "androidxMetrics" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "androidxNavigation" }
 androidx-navigation-testing = { group = "androidx.navigation", name = "navigation-testing", version.ref = "androidxNavigation" }
+androidx-credentials = { group = "androidx.credentials", name = "credentials", version.ref = "androidxCredentials" }
+androidx-credentials-play-services-auth = { group = "androidx.credentials", name = "credentials-play-services-auth", version.ref = "androidxCredentials" }
+android-google-id = { group = "com.google.android.libraries.identity.googleid", name = "googleid", version.ref = "googleCredentials" }
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 hilt-android-testing = { group = "com.google.dagger", name = "hilt-android-testing", version.ref = "hilt" }
 hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
@@ -104,7 +116,6 @@ kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-cor
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 okhttp-logging = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }
 okhttp-profiler = { group = "io.nerdythings", name = "okhttp-profiler", version.ref = "okhttpProfiler" }
-okhttp-logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttpLoggingInterceptor" }
 retrofit-core = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 retrofit-kotlin-serialization = { group = "com.squareup.retrofit2", name = "converter-kotlinx-serialization", version.ref = "retrofit" }
 retrofit-converter-moshi = { group = "com.squareup.retrofit2", name = "converter-moshi", version.ref = "retrofit" }
@@ -118,6 +129,13 @@ room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "
 truth = { group = "com.google.truth", name = "truth", version.ref = "truth" }
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
 javax-inject = { module = "javax.inject:javax.inject", version = "1" }
+naver-map-compose = { group = "io.github.fornewid", name = "naver-map-compose", version.ref = "naverMapCompose" }
+naver-map-location = { group = "io.github.fornewid", name = "naver-map-location", version.ref = "naverMapLocation" }
+naver-map-sdk = { group = "com.naver.maps", name = "map-sdk", version.ref = "naverMapSdk" }
+facebook-login = { group = "com.facebook.android", name = "facebook-login", version.ref = "facebookLogin" }
+
+android-gms-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "googleGmsLocation" }
+
 
 # Dependencies of the included build-logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
@@ -131,6 +149,7 @@ compose-gradlePlugin = { module = "org.jetbrains.kotlin:compose-compiler-gradle-
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
 androidx-ui = { group = "androidx.compose.ui", name = "ui" }
 androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+androidx-animation-graphics-android = { group = "androidx.compose.animation", name = "animation-graphics-android", version.ref = "animationGraphicsAndroid" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

@@ -22,6 +22,8 @@ android {
 }
 
 dependencies {
+    implementation(projects.core.data)
+
     api(libs.androidx.compose.foundation)
     api(libs.androidx.compose.foundation.layout)
     api(libs.androidx.compose.material.iconsExtended)
@@ -34,7 +36,13 @@ dependencies {
     api(libs.androidx.compose.runtime.tracing)
     api(libs.androidx.compose.runtime)
     api(libs.androidx.compose.ui.util)
+    api(libs.androidx.constraintlayout.compose)
+    api(libs.androidx.lifecycle.viewModelCompose)
+    api(libs.androidx.lifecycle.runtimeCompose)
+    api(libs.accompanist.permissions)
+    api("androidx.compose.animation:animation:1.7.8")
 
     implementation(libs.coil.kt.compose)
+    implementation(libs.androidx.animation.graphics.android)
 
 }

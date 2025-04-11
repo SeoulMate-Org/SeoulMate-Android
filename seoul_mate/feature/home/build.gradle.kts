@@ -25,6 +25,8 @@ android {
 
 dependencies {
     implementation(projects.core.ui)
+    implementation(projects.core.data)
+    implementation(projects.core.domain)
 
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -36,9 +38,10 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.hilt.navigation.compose)
     // 네이버 지도 SDK
-    implementation("io.github.fornewid:naver-map-compose:1.8.0")
-    implementation("io.github.fornewid:naver-map-location:18.0.0")
-    implementation("com.naver.maps:map-sdk:3.21.0")
+    implementation(libs.naver.map.compose)
+    implementation(libs.naver.map.location)
+    implementation(libs.naver.map.sdk)
+    implementation(libs.android.gms.location)
 
     androidTestImplementation(platform(libs.compose.bom))
     androidTestImplementation(libs.androidx.compose.ui.test)

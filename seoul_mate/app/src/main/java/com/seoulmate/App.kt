@@ -11,6 +11,6 @@ class App: Application() {
         super.onCreate()
 
         NaverMapSdk.getInstance(this).client =
-            NaverMapSdk.NcpKeyClient("")
+            NaverMapSdk.NcpKeyClient(BuildConfig.NAVER_MAP_KEY)
     }
 }
