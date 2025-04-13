@@ -1,5 +1,6 @@
 package com.seoulmate.data.di
 
+import com.seoulmate.data.api.ApiService
 import com.seoulmate.data.api.NaverMapApiService
 import dagger.Module
 import dagger.Provides
@@ -16,4 +17,9 @@ object ApiModule {
     @Singleton
     fun naverMapApiService(@NetworkModule.NaverMapNetwork naverMapRetrofit: Retrofit): NaverMapApiService =
         naverMapRetrofit.create(NaverMapApiService::class.java)
+
+    @Provides
+    @Singleton
+    fun baseApiService(@NetworkModule.BaseNetwork baseRetrofit: Retrofit): ApiService =
+        baseRetrofit.create(ApiService::class.java)
 }

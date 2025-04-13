@@ -26,8 +26,11 @@ fun LoginNavHost(
         composable(route = Screen.Login.route) {
             RequestLoginScreen (
                 activityContext,
+                onGoogleLoginClick = { token ->
+                    viewModel.getLoginInfo(token, "GOOGLE")
+                },
                 onFacebookLoginClick = { token ->
-
+                    viewModel.getLoginInfo(token, "FACEBOOK")
                 }
             )
         }

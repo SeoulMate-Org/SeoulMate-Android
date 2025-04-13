@@ -14,6 +14,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.codesubmission.home.navigation.HomeBottomNav
@@ -34,10 +35,10 @@ import com.seoulmate.ui.component.snackBarType
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-    permissionList: List<String>,
     onPlaceInfoClick: () -> Unit,
 ) {
     val homeState = rememberHomeState()
+    val context = LocalContext.current
 
     val permissionVisibleState = remember { mutableStateOf(true) }
     val bottomNavHeight = remember { mutableIntStateOf(55) }
@@ -70,6 +71,8 @@ fun HomeScreen(
 
     LaunchedEffect(Unit) {
         bottomSheetType.value = MapBottomSheetType.TestType
+
+        homeState.createNotificationChannel(context)
     }
 
     LaunchedEffect(homeState.mapDetailState.value) {
@@ -147,6 +150,16 @@ fun HomeScreen(
                 ConstraintLayout {
                     val (permission, content) = createRefs()
 
+                    PermissionBox(
+                        permissions = homeState.getAllPermissionList()
+                    ) {
+                        homeState.getBackgroundLocationPermission()?.let {
+                            PermissionBox(
+                                permissions = listOf(it)
+                            ) { }
+                        }
+
+                    }
                     HomeNavHost(
                         modifier = Modifier
                             .fillMaxSize()
@@ -157,28 +170,29 @@ fun HomeScreen(
                                 end.linkTo(parent.end)
                             },
                         appState = homeState,
+                        context = context,
                     )
 
-                    if (permissionVisibleState.value) {
-                        RequestPermission(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .constrainAs(permission) {
-                                    top.linkTo(parent.top)
-                                    bottom.linkTo(parent.bottom)
-                                    start.linkTo(parent.start)
-                                    end.linkTo(parent.end)
-                                },
-                            permissionList = permissionList,
-                            permissionSettingConfirmText = "권한 설정",
-                            granted = {
-                                permissionVisibleState.value = false
-                            },
-                            dismiss = {
-                                permissionVisibleState.value = false
-                            }
-                        )
-                    }
+//                    if (permissionVisibleState.value) {
+//                        RequestPermission(
+//                            modifier = Modifier
+//                                .fillMaxSize()
+//                                .constrainAs(permission) {
+//                                    top.linkTo(parent.top)
+//                                    bottom.linkTo(parent.bottom)
+//                                    start.linkTo(parent.start)
+//                                    end.linkTo(parent.end)
+//                                },
+//                            permissionList = homeState.getAllPermissionList(),
+//                            permissionSettingConfirmText = "권한 설정",
+//                            granted = {
+//                                permissionVisibleState.value = false
+//                            },
+//                            dismiss = {
+//                                permissionVisibleState.value = false
+//                            }
+//                        )
+//                    }
 
                 }
             }

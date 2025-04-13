@@ -6,4 +6,9 @@ object NetworkConfig {
         // Naver Geocoding
         const val GEOCODE = "map-geocode/v2/geocode"
     }
+
+    object Service {
+
+        const val LOGIN = "auth/login"
+    }
 }

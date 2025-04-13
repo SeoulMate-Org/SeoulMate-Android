@@ -54,7 +54,6 @@ fun MainNavHost(
         )
         composable(route = Screen.Home.route) {
             HomeScreen(
-                permissionList = appState.locationPermissionList,
                 onPlaceInfoClick = {
                     appState.navigate(Screen.PlaceInfoDetail)
                 }

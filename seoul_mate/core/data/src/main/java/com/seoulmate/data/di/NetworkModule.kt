@@ -39,8 +39,55 @@ object NetworkModule {
 
     @Provides
     @Singleton
+    @BaseNetwork
+    fun provideBaseOkHttpClient(): OkHttpClient =
+        if (PRINT_LOG) {
+            OkHttpClient.Builder()
+//                .cookieJar(JavaNetCookieJar(CookieManager()))       // 쿠키 매니저 연결
+                .connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS)  // 쓰기 타임아웃 시간 설정
+                .writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS)      // 읽기 타임아웃 시간 설정
+                .readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)        // 연결 타임아웃 시간 설정
+                .cache(null)                                 // 캐시사용 안함
+                .addInterceptor { chain ->
+                    chain.proceed(
+                        chain.request()
+                            .newBuilder()
+                            .header("x-ncp-apigw-api-key-id", "")
+                            .header("x-ncp-apigw-api-key", "")
+                            .header("Accept", "application/json")
+                            .build()
+                    )
+                }
+//                .addInterceptor(getLoggingInterceptor())
+                .addInterceptor(OkHttpProfilerInterceptor())
+                .build()
+        } else {
+            OkHttpClient.Builder()
+                .connectionSpecs(listOf(ConnectionSpec.COMPATIBLE_TLS)) // https 관련 보안 옵션
+//                .cookieJar(JavaNetCookieJar(CookieManager()))       // 쿠키 매니저 연결
+                .connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS)  // 쓰기 타임아웃 시간 설정
+                .writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS)      // 읽기 타임아웃 시간 설정
+                .readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)        // 연결 타임아웃 시간 설정
+                .cache(null)                                 // 캐시사용 안함
+                .addInterceptor { chain ->
+                    chain.proceed(
+                        chain.request()
+                            .newBuilder()
+                            .header("x-ncp-apigw-api-key-id", "")
+                            .header("x-ncp-apigw-api-key", "")
+                            .header("Accept", "application/json")
+                            .build()
+                    )
+                }
+//                .addInterceptor(getLoggingInterceptor())
+                .addInterceptor(OkHttpProfilerInterceptor())
+                .build()
+        }
+
+    @Provides
+    @Singleton
     @NaverMapNetwork
-    fun provideRefreshTokenOkHttpClient(): OkHttpClient =
+    fun provideNaverMapOkHttpClient(): OkHttpClient =
         if (PRINT_LOG) {
             OkHttpClient.Builder()
 //                .cookieJar(JavaNetCookieJar(CookieManager()))       // 쿠키 매니저 연결
@@ -101,6 +148,19 @@ object NetworkModule {
     ): Retrofit =
         Retrofit.Builder()
             .baseUrl(NAVER_MAP_BASE_URL)
+            .client(okHttpClient)
+            .addConverterFactory(moshiConverterFactory)                 // MoshiConverter 적용
+            .build()
+
+    @Provides
+    @Singleton
+    @BaseNetwork
+    fun providerBaseRetrofit(
+        @NaverMapNetwork okHttpClient: OkHttpClient,
+        moshiConverterFactory: MoshiConverterFactory,
+    ): Retrofit =
+        Retrofit.Builder()
+            .baseUrl(BASE_URL)
             .client(okHttpClient)
             .addConverterFactory(moshiConverterFactory)                 // MoshiConverter 적용
             .build()

@@ -1,6 +1,5 @@
 package com.seoulmate.login.ui
 
-import android.app.Activity
 import android.content.Context
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -15,27 +14,24 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.credentials.CredentialManager
 import androidx.credentials.CustomCredential
 import androidx.credentials.GetCredentialRequest
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException
-import com.facebook.Profile
-import com.facebook.ProfileTracker
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.seoulmate.login.BuildConfig
-import dagger.hilt.android.qualifiers.ActivityContext
 import kotlinx.coroutines.launch
 
 @Composable
 fun RequestLoginScreen(
     activityContext: Context,
+    onGoogleLoginClick: (String) -> Unit,
     onFacebookLoginClick: (String) -> Unit,
 ) {
     val rememberCoroutineScope = rememberCoroutineScope()
@@ -103,6 +99,8 @@ fun RequestLoginScreen(
                                 is CustomCredential -> {
                                     if(credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
                                         val googleIdTokenCredential = GoogleIdTokenCredential.createFrom(credential.data)
+                                        onGoogleLoginClick(googleIdTokenCredential.idToken)
+
                                         Log.d("@@@@@@@", "onSuccess idToken : ${googleIdTokenCredential.idToken}")
                                         Log.d("@@@@@@@", "onSuccess displayName : ${googleIdTokenCredential.displayName}")
                                         Log.d("@@@@@@@", "onSuccess id : ${googleIdTokenCredential.id}")

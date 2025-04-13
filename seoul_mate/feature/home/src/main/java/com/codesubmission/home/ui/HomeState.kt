@@ -1,5 +1,10 @@
 package com.codesubmission.home.ui
 
+import android.Manifest
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
+import android.os.Build
 import androidx.compose.material3.BottomSheetScaffoldState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SnackbarHostState
@@ -10,14 +15,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.codesubmission.home.ui.map.MapBottomSheetContent
-import com.codesubmission.home.ui.map.MapBottomSheetType
-import com.codesubmission.home.ui.map.MapItemListBottomSheet
 import com.codesubmission.home.ui.map.MapTopTagData
-import com.seoulmate.data.model.MapListCardItemData
 import com.seoulmate.ui.component.SnackBarType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -90,6 +92,61 @@ class HomeState(
 
     fun onChangeMapDetailState(tagItem: MapTopTagData?) {
         mapDetailState.value = tagItem
+    }
+
+    fun getLocationPermissionList(): List<String> {
+        val locationPermissionList = mutableListOf(
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+        )
+        // For Android 10 onwards, we need background permission
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+//            val permissionRecognition = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+//                Manifest.permission.ACTIVITY_RECOGNITION
+//            } else {
+//                "com.google.android.gms.permission.ACTIVITY_RECOGNITION"
+//            }
+//            locationPermissionList.add(permissionRecognition)
+//        }
+
+        return locationPermissionList.toList()
+    }
+
+    fun getBackgroundLocationPermission(): String? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        Manifest.permission.ACCESS_BACKGROUND_LOCATION
+    } else {
+        null
+    }
+
+    fun getAllPermissionList(): List<String> {
+        val permissionList = mutableListOf<String>()
+
+//        getBackgroundLocationPermission()?.let {
+//            permissionList.add(it)
+//        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            permissionList.add(Manifest.permission.POST_NOTIFICATIONS)
+        }
+
+        permissionList.addAll(getLocationPermissionList().toMutableList())
+
+
+
+        return permissionList.toList()
+    }
+
+    fun createNotificationChannel(context: Context) {
+        val name = "NAME"
+        val descriptionText = "DESCRIPTION"
+        val importance = NotificationManager.IMPORTANCE_DEFAULT
+        val channel = NotificationChannel("CHANNEL_ID", name, importance).apply {
+            description = descriptionText
+        }
+        // Register the channel with the system.
+        val notificationManager: NotificationManager =
+            context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.createNotificationChannel(channel)
     }
 
 }
