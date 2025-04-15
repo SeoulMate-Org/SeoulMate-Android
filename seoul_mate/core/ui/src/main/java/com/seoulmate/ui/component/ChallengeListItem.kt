@@ -1,6 +1,7 @@
 package com.seoulmate.ui.component
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -27,6 +28,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.seoulmate.data.model.ChallengeItemData
 import com.seoulmate.ui.R
+import com.seoulmate.ui.theme.TrueWhite
 
 @Composable
 fun ChallengeListItem(
@@ -37,7 +39,7 @@ fun ChallengeListItem(
     item: ChallengeItemData,
 ) {
     Surface(
-        modifier = modifier,
+        modifier = modifier.background(color = TrueWhite),
     ) {
         Row(
             horizontalArrangement = Arrangement.Start,

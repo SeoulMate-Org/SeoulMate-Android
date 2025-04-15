@@ -10,6 +10,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -25,6 +26,7 @@ import com.seoulmate.ui.component.SeoulMateTopAppBar
 import com.seoulmate.ui.component.SeoulMateTopAppBarOnlyActionIcon
 import com.seoulmate.ui.theme.Black
 import com.seoulmate.ui.theme.CoolGray900
+import com.seoulmate.ui.theme.TrueWhite
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -45,7 +47,15 @@ fun HomeTopBar(
                         ),
                         textAlign = TextAlign.Center,
                     )
-                }
+                },
+                colors = TopAppBarColors(
+                    containerColor = TrueWhite,
+                    scrolledContainerColor = TrueWhite,
+                    navigationIconContentColor = CoolGray900,
+                    titleContentColor = CoolGray900,
+                    actionIconContentColor = CoolGray900,
+                    subtitleContentColor = CoolGray900,
+                )
             )
         }
         Screen.HomeMain.route -> {
@@ -72,7 +82,15 @@ fun HomeTopBar(
                             tint = Black,
                         )
                     }
-                }
+                },
+                colors = TopAppBarColors(
+                    containerColor = TrueWhite,
+                    scrolledContainerColor = TrueWhite,
+                    navigationIconContentColor = CoolGray900,
+                    titleContentColor = CoolGray900,
+                    actionIconContentColor = CoolGray900,
+                    subtitleContentColor = CoolGray900,
+                )
             )
         }
         Screen.HomeChallenge.route -> {
@@ -88,6 +106,14 @@ fun HomeTopBar(
                         textAlign = TextAlign.Center,
                     )
                 },
+                colors = TopAppBarColors(
+                    containerColor = TrueWhite,
+                    scrolledContainerColor = TrueWhite,
+                    navigationIconContentColor = CoolGray900,
+                    titleContentColor = CoolGray900,
+                    actionIconContentColor = CoolGray900,
+                    subtitleContentColor = CoolGray900,
+                )
             )
         }
     }

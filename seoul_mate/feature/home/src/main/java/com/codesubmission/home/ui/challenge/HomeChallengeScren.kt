@@ -36,11 +36,9 @@ fun HomeChallengeScreen(
     )
 
     Surface(
-        color = MaterialTheme.colorScheme.primary
+        color = TrueWhite
     ) {
-        Column(
-            modifier = Modifier.background(color = TrueWhite)
-        ) {
+        Column {
             // Top Challenge Tab Layout
             ChallengeTabRow(
                 coroutineScope = homeState.coroutineScope,

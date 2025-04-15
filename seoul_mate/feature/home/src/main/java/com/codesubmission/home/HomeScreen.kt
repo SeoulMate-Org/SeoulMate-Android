@@ -1,6 +1,7 @@
 package com.codesubmission.home
 
 import android.util.Log
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -57,7 +58,8 @@ fun HomeScreen(
     val context = LocalContext.current
 
     val bottomNavHeight = remember { mutableIntStateOf(55) }
-    val bottomSheetType = remember { mutableStateOf<MapBottomSheetType>(MapBottomSheetType.TestType) }
+    val bottomSheetType =
+        remember { mutableStateOf<MapBottomSheetType>(MapBottomSheetType.TestType) }
 
     val currentDestination = homeState.currentDestination
     val mapDetailState = homeState.mapDetailState
@@ -121,56 +123,94 @@ fun HomeScreen(
             }
         }
     ) { padding ->
-        ConstraintLayout(
-            modifier = Modifier.padding(padding)
+        Surface(
+            modifier = Modifier.padding(paddingValues = padding)
         ) {
-            val (navHost, bottomBar) = createRefs()
-
             PermissionBox(
                 permissions = homeState.getAllPermissionList()
             ) {
                 homeState.getBackgroundLocationPermission()?.let {
                     PermissionBox(
                         permissions = listOf(it)
-                    ) { }
+                    ) {
+                        Column {
+                            HomeNavHost(
+                                modifier = Modifier.weight(1f),
+                                appState = homeState,
+                                context = context,
+                            )
+                            HomeBottomNav(
+                                modifier = Modifier
+                                    .height(55.dp)
+                                    .fillMaxWidth(),
+                                onHomeClick = {
+                                    homeState.navigate(Screen.HomeMain.route)
+                                },
+                                onMyPageClick = {
+                                    homeState.navigate(Screen.HomeMyPage.route)
+                                },
+                                onChallengeClick = {
+                                    homeState.navigate(Screen.HomeChallenge.route)
+                                },
+                                selectedRoute = currentDestination?.route ?: ""
+                            )
+                        }
+                    }
                 }
-
             }
-            HomeNavHost(
-                modifier = Modifier
-                    .constrainAs(navHost) {
-                        top.linkTo(parent.top)
-                        bottom.linkTo(bottomBar.top)
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                    },
-                appState = homeState,
-                context = context,
-            )
 
-            // Bottom Navigation Bar
-            if(homeState.mapDetailState.value == null) {
-                HomeBottomNav(
-                    modifier = Modifier
-                        .height(55.dp)
-                        .fillMaxWidth()
-                        .constrainAs(bottomBar) {
-                            bottom.linkTo(parent.bottom)
-                            start.linkTo(parent.start)
-                            end.linkTo(parent.end)
-                        },
-                    onHomeClick = {
-                        homeState.navigate(Screen.HomeMain.route)
-                    },
-                    onMyPageClick = {
-                        homeState.navigate(Screen.HomeMyPage.route)
-                    },
-                    onChallengeClick = {
-                        homeState.navigate(Screen.HomeChallenge.route)
-                    },
-                    selectedRoute = currentDestination?.route ?: ""
-                )
-            }
+
+//            ConstraintLayout(
+//
+//            ) {
+//                val (navHost, bottomBar) = createRefs()
+//
+//                PermissionBox(
+//                    permissions = homeState.getAllPermissionList()
+//                ) {
+//                    homeState.getBackgroundLocationPermission()?.let {
+//                        PermissionBox(
+//                            permissions = listOf(it)
+//                        ) { }
+//                    }
+//
+//                }
+//                HomeNavHost(
+//                    modifier = Modifier
+//                        .constrainAs(navHost) {
+//                            top.linkTo(parent.top)
+//                            bottom.linkTo(bottomBar.top)
+//                            start.linkTo(parent.start)
+//                            end.linkTo(parent.end)
+//                        },
+//                    appState = homeState,
+//                    context = context,
+//                )
+//
+//                // Bottom Navigation Bar
+//                if(homeState.mapDetailState.value == null) {
+//                    HomeBottomNav(
+//                        modifier = Modifier
+//                            .height(55.dp)
+//                            .fillMaxWidth()
+//                            .constrainAs(bottomBar) {
+//                                bottom.linkTo(parent.bottom)
+//                                start.linkTo(parent.start)
+//                                end.linkTo(parent.end)
+//                            },
+//                        onHomeClick = {
+//                            homeState.navigate(Screen.HomeMain.route)
+//                        },
+//                        onMyPageClick = {
+//                            homeState.navigate(Screen.HomeMyPage.route)
+//                        },
+//                        onChallengeClick = {
+//                            homeState.navigate(Screen.HomeChallenge.route)
+//                        },
+//                        selectedRoute = currentDestination?.route ?: ""
+//                    )
+//                }
+//            }
         }
     }
 
