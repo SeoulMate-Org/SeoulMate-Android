@@ -105,7 +105,47 @@ fun SeoulMateTopAppBar(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SeoulMateTopAppBar(
+fun SeoulMateTopAppBarOnlyActionIcon(
+    modifier: Modifier = Modifier,
+    colors: TopAppBarColors = topAppBarColors(),
+    @StringRes titleRes: Int,
+    @DrawableRes actionIconRes: Int,
+    actionIconContentDescription: String,
+    onActionClick: () -> Unit = {},
+) {
+    CenterAlignedTopAppBar(
+        modifier = modifier,
+        colors = colors,
+        title = {
+            Text(
+                text = stringResource(titleRes),
+                fontSize = 18.sp,
+                style = TextStyle(
+                    color = CoolGray900,
+                    fontWeight = FontWeight.SemiBold,
+                )
+            )
+        },
+        actions = {
+            IconButton(
+                onClick = onActionClick
+            ) {
+                Icon(
+                    modifier = Modifier.size(25.dp),
+                    painter = painterResource(id = actionIconRes),
+                    contentDescription = actionIconContentDescription,
+                    tint = Black,
+                )
+            }
+        },
+        scrollBehavior = exitUntilCollapsedScrollBehavior(),
+    )
+}
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun SeoulMateTopAppBarOnlyNavigationIcon(
     modifier: Modifier = Modifier,
     colors: TopAppBarColors = topAppBarColors(),
     @StringRes titleRes: Int,
@@ -184,7 +224,7 @@ private fun SeoulMateTopAppBarPreview() {
                 actionIconContentColor = Color.Black,
                 subtitleContentColor = Color.LightGray,
             ),
-            navigationIconRes = R.drawable.ic_home_default,
+            navigationIconRes = R.drawable.ic_bottom_nav_fill_home,
             navigationIconContentDescription = "Navigation Icon",
             scrollBehavior = exitUntilCollapsedScrollBehavior(),
         )

@@ -40,7 +40,7 @@ fun PlaceInfoDetailScreen(
                     .background(Color.Transparent)
                     .statusBarsPadding(),
                 strTitle = placeData.title,
-                navigationIconRes = com.seoulmate.ui.R.drawable.ic_home_default,
+                navigationIconRes = com.seoulmate.ui.R.drawable.ic_bottom_nav_fill_home,
                 navigationIconContentDescription = "topBar back",
                 onNavigationClick = onBackClick,
                 scrollBehavior = scrollBehavior,

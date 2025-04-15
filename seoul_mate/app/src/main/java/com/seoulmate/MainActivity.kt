@@ -20,16 +20,10 @@ class MainActivity : ComponentActivity() {
         setContent {
             SeoulMateTheme {
                 // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = TrueWhite
-                ) {
-                    MainNavHost(
-                        appState = rememberAppState(),
-                        modifier = Modifier.fillMaxSize(),
-                        activityContext = this,
-                    )
-                }
+                MainNavHost(
+                    appState = rememberAppState(),
+                    activityContext = this,
+                )
             }
         }
     }

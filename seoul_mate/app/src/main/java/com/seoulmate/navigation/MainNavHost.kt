@@ -18,13 +18,11 @@ import com.seoulmate.ui.component.ScreenGraph
 @Composable
 fun MainNavHost(
     appState: AppState,
-    modifier: Modifier,
     activityContext: Context,
 ) {
     NavHost(
         navController = appState.navController,
         startDestination = Screen.Splash.route,
-        modifier = modifier
     ) {
         composable(route = Screen.Splash.route) {
             SplashScreen(

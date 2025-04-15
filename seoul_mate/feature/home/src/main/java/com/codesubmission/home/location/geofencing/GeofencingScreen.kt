@@ -79,13 +79,13 @@ private fun GeofencingControls() {
         mutableStateOf("")
     }
 
-    DisposableEffect(LocalLifecycleOwner.current) {
-        onDispose {
-            scope.launch(Dispatchers.IO) {
-                geofenceManager.deregisterGeofence()
-            }
-        }
-    }
+//    DisposableEffect(LocalLifecycleOwner.current) {
+//        onDispose {
+//            scope.launch(Dispatchers.IO) {
+//                geofenceManager.deregisterGeofence()
+//            }
+//        }
+//    }
 
     // Register a local broadcast to receive activity transition updates
     GeofenceBroadcastReceiver(systemAction = CUSTOM_INTENT_GEOFENCE) { event ->

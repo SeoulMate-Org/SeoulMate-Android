@@ -19,6 +19,7 @@ import androidx.core.content.ContextCompat.getSystemService
 import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.codesubmission.home.navigation.BottomNavItem
 import com.codesubmission.home.ui.map.MapTopTagData
 import com.seoulmate.ui.component.SnackBarType
 import kotlinx.coroutines.CoroutineScope
@@ -67,6 +68,12 @@ class HomeState(
                 }
             } ?: previousDestination.value
         }
+
+    val navigationSuiteItems = listOf(
+        BottomNavItem.Home,
+        BottomNavItem.Challenge,
+        BottomNavItem.MyPage,
+    )
 
     val mapDetailState = mutableStateOf<MapTopTagData?>(null)
 

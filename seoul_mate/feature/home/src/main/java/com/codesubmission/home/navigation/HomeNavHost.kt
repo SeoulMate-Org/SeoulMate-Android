@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.codesubmission.home.location.bglocationaccess.BgLocationAccessScreen
 import com.codesubmission.home.location.geofencing.GeofencingScreen
 import com.codesubmission.home.ui.HomeState
 import com.codesubmission.home.ui.challenge.HomeChallengeScreen
@@ -32,14 +33,17 @@ fun HomeNavHost(
             )
         }
         composable(route = Screen.HomeChallenge.route) {
-            HomeChallengeScreen()
+            HomeChallengeScreen(
+                homeState = appState
+            )
         }
         composable(route = Screen.HomeMyPage.route) {
-            HomeMyPageScreen(
-                showSnackBar = { snackType, snackText ->
-                    appState.showSnackBar(snackType, snackText)
-                }
-            )
+//            HomeMyPageScreen(
+//                showSnackBar = { snackType, snackText ->
+//                    appState.showSnackBar(snackType, snackText)
+//                }
+//            )
+            BgLocationAccessScreen()
         }
     }
 }

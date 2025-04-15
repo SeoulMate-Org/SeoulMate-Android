@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "222259160589",
+    "project_id": "seoulmate-519c9",
+    "storage_bucket": "seoulmate-519c9.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:222259160589:android:4260b66b7d013710725744",
+        "android_client_info": {
+          "package_name": "com.seoulmate"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "222259160589-9s3a5o54ur0ebk8pnvpoch2aj52p8t2m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCXASegWNYY-2TB4wKwiXhTn8tP27mEFKM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "222259160589-9s3a5o54ur0ebk8pnvpoch2aj52p8t2m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:222259160589:android:3c0a7671ab7021b6725744",
+        "android_client_info": {
+          "package_name": "com.seoulmate.dev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "222259160589-9s3a5o54ur0ebk8pnvpoch2aj52p8t2m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCXASegWNYY-2TB4wKwiXhTn8tP27mEFKM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "222259160589-9s3a5o54ur0ebk8pnvpoch2aj52p8t2m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

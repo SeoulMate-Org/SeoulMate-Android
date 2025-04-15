@@ -73,7 +73,7 @@ fun GeofenceBroadcastReceiver(
         }
         context.registerReceiver(broadcast, intentFilter, Context.RECEIVER_EXPORTED)
         onDispose {
-            context.unregisterReceiver(broadcast)
+
         }
     }
 }

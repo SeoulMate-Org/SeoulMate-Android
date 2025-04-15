@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.seoulmate.android.application)
     alias(libs.plugins.seoulmate.android.compose.application)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.seoulmate.android.firebase)
 }
 
 val properties = Properties()
@@ -15,7 +16,7 @@ android {
     defaultConfig {
         applicationId = "com.seoulmate"
         versionCode = 1
-        versionName = "1.0"
+        versionName = "1.0.0.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

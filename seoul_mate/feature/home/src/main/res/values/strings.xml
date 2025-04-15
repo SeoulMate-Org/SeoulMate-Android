@@ -6,4 +6,8 @@
     <string name="nav_home_label">홈</string>
     <string name="nav_challenge_label">나의 챌린지</string>
     <string name="nav_my_page_label">MY</string>
+
+    <string name="tab_complete_challenge">완료</string>
+    <string name="tab_in_progress_challenge">진행중</string>
+    <string name="tab_interest_challenge">관심</string>
 </resources>
