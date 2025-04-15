@@ -25,7 +25,6 @@ import com.codesubmission.home.ui.map.MapBottomSheetType
 import com.codesubmission.home.ui.map.MapItemListBottomSheet
 import com.codesubmission.home.ui.rememberHomeState
 import com.seoulmate.data.model.MapListCardItemData
-import com.seoulmate.ui.component.RequestPermission
 import com.seoulmate.ui.component.Screen
 import com.seoulmate.ui.component.SnackBar
 import com.seoulmate.ui.component.snackBarMessage
@@ -40,7 +39,6 @@ fun HomeScreen(
     val homeState = rememberHomeState()
     val context = LocalContext.current
 
-    val permissionVisibleState = remember { mutableStateOf(true) }
     val bottomNavHeight = remember { mutableIntStateOf(55) }
     val bottomSheetType = remember { mutableStateOf<MapBottomSheetType>(MapBottomSheetType.TestType) }
 
@@ -105,7 +103,7 @@ fun HomeScreen(
                     },
                 topBar = {
                     HomeTopBar(
-                        currentRoute = currentDestination?.route ?: Screen.HomeTravelMap.route,
+                        currentRoute = currentDestination?.route ?: Screen.HomeMyPage.route,
                         titleRes = if(mapDetailState.value == null) { null } else { mapDetailState.value!!.titleRes },
                         isMapDetail = mapDetailState.value != null,
                         onMapBackClick = {
@@ -116,7 +114,7 @@ fun HomeScreen(
                 containerColor = Color.Transparent,
                 scaffoldState = homeState.bottomSheetScaffoldState,
                 sheetContent = {
-                    if ((currentDestination?.route ?: "") == Screen.HomeTravelMap.route) {
+                    if ((currentDestination?.route ?: "") == Screen.HomeMyPage.route) {
                         if(mapDetailState.value == null) {
                             MapBottomSheetContent(
                                 onDetailClick = {
@@ -131,7 +129,7 @@ fun HomeScreen(
                     }
                 },
                 sheetPeekHeight =
-                if ((currentDestination?.route ?: "") == Screen.HomeTravelMap.route) {
+                if ((currentDestination?.route ?: "") == Screen.HomeMyPage.route) {
                     (bottomNavHeight.intValue + 50).dp
                 } else {
                     0.dp
@@ -148,7 +146,7 @@ fun HomeScreen(
                 }
             ) {
                 ConstraintLayout {
-                    val (permission, content) = createRefs()
+                    val (navHost) = createRefs()
 
                     PermissionBox(
                         permissions = homeState.getAllPermissionList()
@@ -163,7 +161,7 @@ fun HomeScreen(
                     HomeNavHost(
                         modifier = Modifier
                             .fillMaxSize()
-                            .constrainAs(content) {
+                            .constrainAs(navHost) {
                                 top.linkTo(parent.top)
                                 bottom.linkTo(parent.bottom)
                                 start.linkTo(parent.start)
@@ -172,27 +170,6 @@ fun HomeScreen(
                         appState = homeState,
                         context = context,
                     )
-
-//                    if (permissionVisibleState.value) {
-//                        RequestPermission(
-//                            modifier = Modifier
-//                                .fillMaxSize()
-//                                .constrainAs(permission) {
-//                                    top.linkTo(parent.top)
-//                                    bottom.linkTo(parent.bottom)
-//                                    start.linkTo(parent.start)
-//                                    end.linkTo(parent.end)
-//                                },
-//                            permissionList = homeState.getAllPermissionList(),
-//                            permissionSettingConfirmText = "권한 설정",
-//                            granted = {
-//                                permissionVisibleState.value = false
-//                            },
-//                            dismiss = {
-//                                permissionVisibleState.value = false
-//                            }
-//                        )
-//                    }
 
                 }
             }
@@ -207,14 +184,14 @@ fun HomeScreen(
                             start.linkTo(parent.start)
                             end.linkTo(parent.end)
                         },
-                    onFavoriteClick = {
-                        homeState.navigate(Screen.HomeFavorite.route)
+                    onHomeClick = {
+                        homeState.navigate(Screen.HomeMain.route)
                     },
-                    onMapClick = {
-                        homeState.navigate(Screen.HomeTravelMap.route)
+                    onMyPageClick = {
+                        homeState.navigate(Screen.HomeMyPage.route)
                     },
-                    onSuggestClick = {
-                        homeState.navigate(Screen.HomeSuggestTheme.route)
+                    onChallengeClick = {
+                        homeState.navigate(Screen.HomeChallenge.route)
                     },
                     selectedRoute = currentDestination?.route ?: ""
                 )

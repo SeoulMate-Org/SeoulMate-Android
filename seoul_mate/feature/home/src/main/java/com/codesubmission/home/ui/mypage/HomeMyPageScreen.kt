@@ -1,4 +1,4 @@
-package com.codesubmission.home.ui.suggest
+package com.codesubmission.home.ui.mypage
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Button
@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import com.seoulmate.ui.component.SnackBarType
 
 @Composable
-fun HomeSuggestThemeScreen(
+fun HomeMyPageScreen(
     showSnackBar: (SnackBarType, String) -> Unit
 ) {
     Surface(

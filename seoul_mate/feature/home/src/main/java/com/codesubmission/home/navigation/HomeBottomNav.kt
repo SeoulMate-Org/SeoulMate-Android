@@ -31,17 +31,17 @@ import com.seoulmate.ui.theme.White
 @Composable
 fun HomeBottomNav(
     modifier: Modifier,
-    onFavoriteClick: () -> Unit = {},
-    onMapClick: () -> Unit = {},
-    onSuggestClick: () -> Unit = {},
+    onHomeClick: () -> Unit = {},
+    onMyPageClick: () -> Unit = {},
+    onChallengeClick: () -> Unit = {},
     selectedRoute: String,
     @ColorRes defaultColor: Color = CoolGray300,
     @ColorRes selectedColor: Color = Blue500,
 ) {
     val bottomNavItem = listOf(
-        BottomNavItem.Suggest,
-        BottomNavItem.Map,
-        BottomNavItem.Favorite
+        BottomNavItem.Home,
+        BottomNavItem.Challenge,
+        BottomNavItem.MyPage,
     )
     Surface (
         modifier = modifier,
@@ -60,9 +60,9 @@ fun HomeBottomNav(
                         .width(62.dp)
                         .height(42.dp),
                     onClick = when(item.route) {
-                        BottomNavItem.Favorite.route -> onFavoriteClick
-                        BottomNavItem.Map.route -> onMapClick
-                        BottomNavItem.Suggest.route -> onSuggestClick
+                        BottomNavItem.Home.route -> onHomeClick
+                        BottomNavItem.MyPage.route -> onMyPageClick
+                        BottomNavItem.Challenge.route -> onChallengeClick
                         else -> { {} }
                     }
                 ) {
@@ -99,6 +99,6 @@ private fun PreviewHomeBottomNav() {
         modifier = Modifier
             .height(55.dp)
             .fillMaxWidth(),
-        selectedRoute = BottomNavItem.Favorite.route,
+        selectedRoute = BottomNavItem.Home.route,
     )
 }

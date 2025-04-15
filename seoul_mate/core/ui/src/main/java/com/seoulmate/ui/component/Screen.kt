@@ -14,9 +14,10 @@ sealed class Screen(val route: String) {
     data object SuccessUserInterests: Screen("successUserInterests")
 
     data object Home: Screen("home")
-    data object HomeSuggestTheme: Screen("homeSuggestTheme")
-    data object HomeTravelMap: Screen("homeTravelMap")
-    data object HomeFavorite: Screen("homeFavorite")
+    data object HomeMain: Screen("homeMain")
+    data object HomeChallenge: Screen("homeChallenge")
+    data object HomeMyPage: Screen("homeMyPage")
+
 
     data object PlaceInfoDetail: Screen("placeInfoDetail")
 

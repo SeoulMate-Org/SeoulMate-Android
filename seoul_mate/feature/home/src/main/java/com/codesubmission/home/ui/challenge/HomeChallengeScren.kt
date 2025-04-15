@@ -1,4 +1,4 @@
-package com.codesubmission.home.ui.favorite
+package com.codesubmission.home.ui.challenge
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
@@ -8,11 +8,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 @Composable
-fun HomeFavoriteScreen() {
+fun HomeChallengeScreen() {
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.primary
     ) {
-        Text(text = "HomeFavoriteScreen")
+        Text(text = "HomeMainScreen")
     }
 }

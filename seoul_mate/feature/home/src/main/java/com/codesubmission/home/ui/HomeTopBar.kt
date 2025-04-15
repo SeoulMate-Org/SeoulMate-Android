@@ -19,7 +19,7 @@ fun HomeTopBar(
     onMapBackClick: () -> Unit = {},
 ) {
     when(currentRoute) {
-        Screen.HomeTravelMap.route -> {
+        Screen.HomeMyPage.route -> {
             if(isMapDetail) {
                 SeoulMateTopAppBar(
                     modifier = Modifier
@@ -39,7 +39,7 @@ fun HomeTopBar(
                 )
             }
         }
-        Screen.HomeFavorite.route -> {
+        Screen.HomeMain.route -> {
             SeoulMateTopAppBar(
                 modifier = Modifier
                     .height(55.dp)

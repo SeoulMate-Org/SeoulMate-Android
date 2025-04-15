@@ -7,9 +7,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.codesubmission.home.location.geofencing.GeofencingScreen
 import com.codesubmission.home.ui.HomeState
-import com.codesubmission.home.ui.favorite.HomeFavoriteScreen
+import com.codesubmission.home.ui.challenge.HomeChallengeScreen
 import com.codesubmission.home.ui.map.HomeTravelMapScreen
-import com.codesubmission.home.ui.suggest.HomeSuggestThemeScreen
+import com.codesubmission.home.ui.mypage.HomeMyPageScreen
 import com.seoulmate.ui.component.Screen
 
 @Composable
@@ -20,17 +20,10 @@ fun HomeNavHost(
 ) {
     NavHost(
         navController = appState.navController,
-        startDestination = Screen.HomeSuggestTheme.route,
+        startDestination = Screen.HomeMain.route,
         modifier = modifier
     ) {
-        composable(route = Screen.HomeSuggestTheme.route) {
-            HomeSuggestThemeScreen(
-                showSnackBar = { snackType, snackText ->
-                    appState.showSnackBar(snackType, snackText)
-                }
-            )
-        }
-        composable(route = Screen.HomeFavorite.route) {
+        composable(route = Screen.HomeMain.route) {
 //            HomeFavoriteScreen()
             GeofencingScreen(
                 context,
@@ -38,11 +31,13 @@ fun HomeNavHost(
                 appState.getBackgroundLocationPermission()
             )
         }
-        composable(route = Screen.HomeTravelMap.route) {
-            HomeTravelMapScreen(
-                expandBottomSheet = { appState.expandBottomSheet() },
-                onTagClick = { tagItem ->
-                    appState.onChangeMapDetailState(tagItem)
+        composable(route = Screen.HomeChallenge.route) {
+            HomeChallengeScreen()
+        }
+        composable(route = Screen.HomeMyPage.route) {
+            HomeMyPageScreen(
+                showSnackBar = { snackType, snackText ->
+                    appState.showSnackBar(snackType, snackText)
                 }
             )
         }
