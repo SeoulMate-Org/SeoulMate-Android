@@ -1,6 +1,10 @@
 package com.codesubmission.home
 
+import android.Manifest
+import android.os.Build
 import android.util.Log
+import android.widget.Toast
+import androidx.annotation.RequiresPermission
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -38,6 +42,8 @@ import com.codesubmission.home.ui.map.MapBottomSheetContent
 import com.codesubmission.home.ui.map.MapBottomSheetType
 import com.codesubmission.home.ui.map.MapItemListBottomSheet
 import com.codesubmission.home.ui.rememberHomeState
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.seoulmate.data.model.MapListCardItemData
 import com.seoulmate.ui.component.HomeNavigationSuiteScaffold
 import com.seoulmate.ui.component.Screen
@@ -48,14 +54,36 @@ import com.seoulmate.ui.theme.CoolGray900
 import com.seoulmate.ui.theme.TrueWhite
 
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class)
+@RequiresPermission(
+    anyOf = [
+        Manifest.permission.ACCESS_COARSE_LOCATION,
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.POST_NOTIFICATIONS,
+        Manifest.permission.ACCESS_BACKGROUND_LOCATION,
+    ]
+)
 @Composable
 fun HomeScreen(
     onPlaceInfoClick: () -> Unit,
     windowAdaptiveInfo: WindowAdaptiveInfo = currentWindowAdaptiveInfo(),
+    onChangeScreen: (screen: Screen) -> Unit = {_ -> },
 ) {
     val homeState = rememberHomeState()
     val context = LocalContext.current
+
+    var rejectedPermissions: Set<String>? = null
+
+    val permissionState = rememberMultiplePermissionsState(permissions = homeState.getAllPermissionList()) { map ->
+        rejectedPermissions = map.filterValues { !it }.keys
+    }
+
+    val revokedBackgroundLocationPermission =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            permissionState.revokedPermissions.all { Manifest.permission.ACCESS_BACKGROUND_LOCATION in it.permission }
+        } else {
+            false
+        }
 
     val bottomNavHeight = remember { mutableIntStateOf(55) }
     val bottomSheetType =
@@ -90,6 +118,13 @@ fun HomeScreen(
         bottomSheetType.value = MapBottomSheetType.TestType
 
         homeState.createNotificationChannel(context)
+
+        permissionState.launchMultiplePermissionRequest()
+
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q &&
+            revokedBackgroundLocationPermission) {
+            Toast.makeText(context, "Background location permission is revoked", Toast.LENGTH_SHORT).show()
+        }
     }
 
     LaunchedEffect(homeState.mapDetailState.value) {
@@ -126,38 +161,63 @@ fun HomeScreen(
         Surface(
             modifier = Modifier.padding(paddingValues = padding)
         ) {
-            PermissionBox(
-                permissions = homeState.getAllPermissionList()
-            ) {
-                homeState.getBackgroundLocationPermission()?.let {
-                    PermissionBox(
-                        permissions = listOf(it)
-                    ) {
-                        Column {
-                            HomeNavHost(
-                                modifier = Modifier.weight(1f),
-                                appState = homeState,
-                                context = context,
-                            )
-                            HomeBottomNav(
-                                modifier = Modifier
-                                    .height(55.dp)
-                                    .fillMaxWidth(),
-                                onHomeClick = {
-                                    homeState.navigate(Screen.HomeMain.route)
-                                },
-                                onMyPageClick = {
-                                    homeState.navigate(Screen.HomeMyPage.route)
-                                },
-                                onChallengeClick = {
-                                    homeState.navigate(Screen.HomeChallenge.route)
-                                },
-                                selectedRoute = currentDestination?.route ?: ""
-                            )
-                        }
-                    }
-                }
+            Column {
+                HomeNavHost(
+                    modifier = Modifier.weight(1f),
+                    appState = homeState,
+                    context = context,
+                    onScreenChange = onChangeScreen
+                )
+                HomeBottomNav(
+                    modifier = Modifier
+                        .height(55.dp)
+                        .fillMaxWidth(),
+                    onHomeClick = {
+                        homeState.navigate(Screen.HomeMain.route)
+                    },
+                    onMyPageClick = {
+                        homeState.navigate(Screen.HomeMyPage.route)
+                    },
+                    onChallengeClick = {
+                        homeState.navigate(Screen.HomeChallenge.route)
+                    },
+                    selectedRoute = currentDestination?.route ?: ""
+                )
             }
+
+//            PermissionBox(
+//                permissions = homeState.getAllPermissionList()
+//            ) {
+//                homeState.getBackgroundLocationPermission()?.let {
+//                    PermissionBox(
+//                        permissions = listOf(it)
+//                    ) {
+//                        Column {
+//                            HomeNavHost(
+//                                modifier = Modifier.weight(1f),
+//                                appState = homeState,
+//                                context = context,
+//                                onScreenChange = onChangeScreen
+//                            )
+//                            HomeBottomNav(
+//                                modifier = Modifier
+//                                    .height(55.dp)
+//                                    .fillMaxWidth(),
+//                                onHomeClick = {
+//                                    homeState.navigate(Screen.HomeMain.route)
+//                                },
+//                                onMyPageClick = {
+//                                    homeState.navigate(Screen.HomeMyPage.route)
+//                                },
+//                                onChallengeClick = {
+//                                    homeState.navigate(Screen.HomeChallenge.route)
+//                                },
+//                                selectedRoute = currentDestination?.route ?: ""
+//                            )
+//                        }
+//                    }
+//                }
+//            }
 
 
 //            ConstraintLayout(

@@ -18,6 +18,7 @@ fun HomeNavHost(
     appState: HomeState,
     modifier: Modifier,
     context: Context,
+    onScreenChange: (screen: Screen) -> Unit = {_ -> },
 ) {
     NavHost(
         navController = appState.navController,
@@ -34,7 +35,10 @@ fun HomeNavHost(
         }
         composable(route = Screen.HomeChallenge.route) {
             HomeChallengeScreen(
-                homeState = appState
+                homeState = appState,
+                onReplyClick = {
+                    onScreenChange(Screen.ChallengeReplyList)
+                }
             )
         }
         composable(route = Screen.HomeMyPage.route) {

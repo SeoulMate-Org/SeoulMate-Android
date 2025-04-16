@@ -1,17 +1,11 @@
 package com.codesubmission.home.ui.challenge
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import com.codesubmission.home.R
 import com.codesubmission.home.ui.HomeState
 import com.codesubmission.home.ui.challenge.tabpage.CompleteChallengeTabScreen
 import com.codesubmission.home.ui.challenge.tabpage.InProgressChallengeTabScreen
@@ -22,6 +16,7 @@ import com.seoulmate.ui.theme.TrueWhite
 @Composable
 fun HomeChallengeScreen(
     homeState: HomeState,
+    onReplyClick: () -> Unit = {},
 ) {
     val tabList = listOf(
         ChallengeTabItem.Interest,
@@ -126,7 +121,10 @@ fun HomeChallengeScreen(
                                 themeList = listOf("Tag1", "Tag2", "Tag3", "Tag4", "Tag5", "Tag6", "Tag7", "Tag8", "Tag9")
                             ),
 
-                        )
+                        ),
+                        onItemClick = { item ->
+                            onReplyClick()
+                        }
                     )
                     ChallengeTabItem.InProgress -> InProgressChallengeTabScreen(
                         itemList = listOf()

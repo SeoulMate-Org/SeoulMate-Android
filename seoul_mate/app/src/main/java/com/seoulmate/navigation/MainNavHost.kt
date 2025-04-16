@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.codesubmission.home.HomeScreen
 import com.codesubmission.interest.navigation.interestScreen
+import com.seoulmate.challenge.reply.ChallengeReplyListScreen
 import com.seoulmate.data.model.PlaceInfoData
 import com.seoulmate.login.LoginScreen
 import com.seoulmate.places.ui.PlaceInfoDetailScreen
@@ -54,6 +55,9 @@ fun MainNavHost(
             HomeScreen(
                 onPlaceInfoClick = {
                     appState.navigate(Screen.PlaceInfoDetail)
+                },
+                onChangeScreen = { screen ->
+                    appState.navigate(screen)
                 }
             )
         }
@@ -69,6 +73,11 @@ fun MainNavHost(
                     placeTel = "010-0000-0000",
                     placeAddress = "장소 주소"
                 ),
+                onBackClick = { appState.navController.popBackStack() },
+            )
+        }
+        composable(route = Screen.ChallengeReplyList.route) {
+            ChallengeReplyListScreen(
                 onBackClick = { appState.navController.popBackStack() },
             )
         }

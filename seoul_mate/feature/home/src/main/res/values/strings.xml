@@ -10,4 +10,8 @@
     <string name="tab_complete_challenge">완료</string>
     <string name="tab_in_progress_challenge">진행중</string>
     <string name="tab_interest_challenge">관심</string>
+
+    <string name="empty_interest_challenge">아직 관심있는 챌린지가 없어요!</string>
+    <string name="empty_challenge_info">여러 챌린지를 찾아보고 추가하세요.</string>
+    <string name="find_challenge">챌린지 찾아보기</string>
 </resources>

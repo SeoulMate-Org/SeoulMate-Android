@@ -21,6 +21,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.codesubmission.home.navigation.BottomNavItem
 import com.codesubmission.home.ui.map.MapTopTagData
+import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.seoulmate.ui.component.SnackBarType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -119,7 +120,7 @@ class HomeState(
         return locationPermissionList.toList()
     }
 
-    fun getBackgroundLocationPermission(): String? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+    fun getBackgroundLocationPermission(): String? = if (Build.VERSION.SDK_INT == Build.VERSION_CODES.Q) {
         Manifest.permission.ACCESS_BACKGROUND_LOCATION
     } else {
         null
@@ -128,17 +129,15 @@ class HomeState(
     fun getAllPermissionList(): List<String> {
         val permissionList = mutableListOf<String>()
 
-//        getBackgroundLocationPermission()?.let {
-//            permissionList.add(it)
-//        }
+        getBackgroundLocationPermission()?.let {
+            permissionList.add(it)
+        }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             permissionList.add(Manifest.permission.POST_NOTIFICATIONS)
         }
 
         permissionList.addAll(getLocationPermissionList().toMutableList())
-
-
 
         return permissionList.toList()
     }

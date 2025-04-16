@@ -2,6 +2,7 @@ package com.seoulmate.ui.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -35,11 +36,17 @@ fun ChallengeListItem(
     modifier: Modifier = Modifier
         .fillMaxWidth()
         .height(92.dp)
-        .padding(horizontal = 15.dp),
+        .padding(horizontal = 15.dp)
+        .padding(top = 10.dp),
     item: ChallengeItemData,
+    onItemClick: (item: ChallengeItemData) -> Unit = {},
 ) {
     Surface(
-        modifier = modifier.background(color = TrueWhite),
+        modifier = modifier
+            .background(color = TrueWhite)
+            .clickable {
+                onItemClick(item)
+            },
     ) {
         Row(
             horizontalArrangement = Arrangement.Start,
@@ -92,7 +99,7 @@ fun ChallengeListItem(
                 onClick = {}
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.ic_bottom_nav_fill_favorite),
+                    painter = painterResource(id = R.drawable.ic_interest_challenge),
                     contentDescription = "Interest Button"
                 )
             }

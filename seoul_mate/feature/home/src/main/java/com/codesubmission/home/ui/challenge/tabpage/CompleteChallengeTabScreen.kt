@@ -25,22 +25,12 @@ fun CompleteChallengeTabScreen(
     ) {
         if (itemList.isEmpty()) {
             // Empty Challenge List Item
-            Box(
-                modifier = Modifier.fillMaxSize().background(color = Color.DarkGray)
-            )
+            EmptyChallenge()
         } else {
             // Challenge List
-            LazyColumn() {
-                itemsIndexed(
-                    items = itemList,
-                    key = { _, item -> item.id }
-                ) { index, item ->
-                    ChallengeListItem(
-                        item = item
-                    )
-                    HorizontalDivider()
-                }
-            }
+            ChallengeItemList(
+                itemList = itemList,
+            )
         }
     }
 }
