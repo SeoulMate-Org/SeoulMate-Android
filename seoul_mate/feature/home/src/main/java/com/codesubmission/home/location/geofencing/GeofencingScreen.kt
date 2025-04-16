@@ -65,19 +65,20 @@ fun GeofencingScreen(
     }
 
     if (canPass) {
-        GeofencingControls()
+        GeofencingControls(context)
     }
 
 }
 
 @Composable
-private fun GeofencingControls() {
-    val context = LocalContext.current
+private fun GeofencingControls(
+    context: Context,
+) {
     val scope = rememberCoroutineScope()
     val geofenceManager = remember { GeofenceManager(context) }
-    var geofenceTransitionEventInfo by remember {
-        mutableStateOf("")
-    }
+//    var geofenceTransitionEventInfo by remember {
+//        mutableStateOf("")
+//    }
 
 //    DisposableEffect(LocalLifecycleOwner.current) {
 //        onDispose {
@@ -88,9 +89,9 @@ private fun GeofencingControls() {
 //    }
 
     // Register a local broadcast to receive activity transition updates
-    GeofenceBroadcastReceiver(systemAction = CUSTOM_INTENT_GEOFENCE) { event ->
-        geofenceTransitionEventInfo = event
-    }
+//    GeofenceBroadcastReceiver(systemAction = CUSTOM_INTENT_GEOFENCE) { event ->
+//        geofenceTransitionEventInfo = event
+//    }
 
     Column(
         modifier = Modifier
@@ -126,7 +127,7 @@ private fun GeofencingControls() {
             Text(text = "Deregister Geofences")
         }
         Spacer(modifier = Modifier.height(16.dp))
-        Text(text = geofenceTransitionEventInfo)
+//        Text(text = geofenceTransitionEventInfo)
     }
 
 }

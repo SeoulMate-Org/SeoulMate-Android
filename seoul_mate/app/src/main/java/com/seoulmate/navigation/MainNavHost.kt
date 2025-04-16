@@ -53,6 +53,7 @@ fun MainNavHost(
         )
         composable(route = Screen.Home.route) {
             HomeScreen(
+                context = activityContext,
                 onPlaceInfoClick = {
                     appState.navigate(Screen.PlaceInfoDetail)
                 },

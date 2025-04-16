@@ -7,25 +7,46 @@ import android.content.Intent
 import android.location.Location
 import android.os.Build
 import android.util.Log
+import com.codesubmission.home.GeofenceBroadcastReceiver
 import com.codesubmission.home.location.utils.CUSTOM_INTENT_GEOFENCE
 import com.codesubmission.home.location.utils.CUSTOM_REQUEST_CODE_GEOFENCE
 import com.google.android.gms.location.Geofence
 import com.google.android.gms.location.Geofence.GEOFENCE_TRANSITION_ENTER
 import com.google.android.gms.location.Geofence.GEOFENCE_TRANSITION_EXIT
 import com.google.android.gms.location.GeofencingRequest
+import com.google.android.gms.location.GeofencingRequest.INITIAL_TRIGGER_DWELL
+import com.google.android.gms.location.GeofencingRequest.INITIAL_TRIGGER_ENTER
 import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.tasks.await
 
 class GeofenceManager(context: Context) {
-    private val TAG = "GeofenceManager"
+    private val TAG = "@@@@GeofenceManager"
     private val client = LocationServices.getGeofencingClient(context)
     val geofenceList = mutableMapOf<String, Geofence>()
 
-    private val geofencingPendingIntent by lazy {
+//    private val geofencingPendingIntent by lazy {
+//        PendingIntent.getBroadcast(
+//            context,
+//            CUSTOM_REQUEST_CODE_GEOFENCE,
+//            Intent(CUSTOM_INTENT_GEOFENCE),
+//            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
+//                PendingIntent.FLAG_CANCEL_CURRENT
+//            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+//                PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_ALLOW_UNSAFE_IMPLICIT_INTENT
+//            } else {
+//                PendingIntent.FLAG_MUTABLE
+//            }
+//        )
+//    }
+
+    private val geofencingPendingIntent: PendingIntent by lazy {
+        val intent = Intent(context, GeofenceBroadcastReceiver::class.java)
+        // We use FLAG_UPDATE_CURRENT so that we get the same pending intent back when calling
+        // addGeofences() and removeGeofences().
         PendingIntent.getBroadcast(
             context,
             CUSTOM_REQUEST_CODE_GEOFENCE,
-            Intent(CUSTOM_INTENT_GEOFENCE),
+            intent,
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
                 PendingIntent.FLAG_CANCEL_CURRENT
             } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
@@ -40,9 +61,10 @@ class GeofenceManager(context: Context) {
         key: String,
         location: Location,
         radiusInMeters: Float = 100.0f,
-        expirationTimeInMillis: Long = 30 * 60 * 1000,
+        expirationTimeInMillis: Long = 5 * 60 * 1000,
     ) {
-        geofenceList[key] = createGeofence(key, location, radiusInMeters, expirationTimeInMillis)
+        Log.d(TAG, "addGeofence key: $key")
+        geofenceList[key] = createGeofence(key, location, radiusInMeters)
     }
 
     fun removeGeofence(key: String) {
@@ -66,7 +88,7 @@ class GeofenceManager(context: Context) {
 
     private fun createGeofencingRequest(): GeofencingRequest {
         return GeofencingRequest.Builder().apply {
-            setInitialTrigger(GEOFENCE_TRANSITION_ENTER)
+            setInitialTrigger(INITIAL_TRIGGER_DWELL)
             addGeofences(geofenceList.values.toList())
         }.build()
     }
@@ -75,13 +97,13 @@ class GeofenceManager(context: Context) {
         key: String,
         location: Location,
         radiusInMeters: Float,
-        expirationTimeInMillis: Long,
     ): Geofence {
         return Geofence.Builder()
             .setRequestId(key)
             .setCircularRegion(location.latitude, location.longitude, radiusInMeters)
-            .setExpirationDuration(expirationTimeInMillis)
-            .setTransitionTypes(GEOFENCE_TRANSITION_ENTER or GEOFENCE_TRANSITION_EXIT)
+            .setExpirationDuration(Geofence.NEVER_EXPIRE)
+            .setTransitionTypes(INITIAL_TRIGGER_DWELL)
+            .setLoiteringDelay(1000 * 30)
             .build()
     }
 }

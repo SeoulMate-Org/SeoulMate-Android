@@ -1,6 +1,7 @@
 package com.codesubmission.home
 
 import android.Manifest
+import android.content.Context
 import android.os.Build
 import android.util.Log
 import android.widget.Toast
@@ -65,12 +66,12 @@ import com.seoulmate.ui.theme.TrueWhite
 )
 @Composable
 fun HomeScreen(
+    context: Context,
     onPlaceInfoClick: () -> Unit,
     windowAdaptiveInfo: WindowAdaptiveInfo = currentWindowAdaptiveInfo(),
     onChangeScreen: (screen: Screen) -> Unit = {_ -> },
 ) {
     val homeState = rememberHomeState()
-    val context = LocalContext.current
 
     var rejectedPermissions: Set<String>? = null
 
@@ -120,7 +121,9 @@ fun HomeScreen(
         homeState.createNotificationChannel(context)
 
         permissionState.launchMultiplePermissionRequest()
+    }
 
+    LaunchedEffect(permissionState) {
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q &&
             revokedBackgroundLocationPermission) {
             Toast.makeText(context, "Background location permission is revoked", Toast.LENGTH_SHORT).show()

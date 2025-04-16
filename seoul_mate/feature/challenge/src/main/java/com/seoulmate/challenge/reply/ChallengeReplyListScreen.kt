@@ -1,6 +1,9 @@
 package com.seoulmate.challenge.reply
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,7 +20,6 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -25,8 +27,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.composed
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -36,7 +39,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import com.seoulmate.challenge.R
 import com.seoulmate.ui.theme.Black
 import com.seoulmate.ui.theme.CoolGray25
@@ -49,13 +51,15 @@ import com.seoulmate.ui.theme.TrueWhite
 fun ChallengeReplyListScreen(
     onBackClick: () -> Unit = {},
 ) {
-    val keyboardController = LocalSoftwareKeyboardController.current
     val focusManager = LocalFocusManager.current
     var textFieldState by remember { mutableStateOf("") }
 
     Scaffold (
         topBar = {
             CenterAlignedTopAppBar(
+                modifier = Modifier.noRippleClickable {
+                    focusManager.clearFocus()
+                },
                 title = {
                     Text(
                         text = stringResource(R.string.title_reply),
@@ -93,8 +97,10 @@ fun ChallengeReplyListScreen(
         Surface(
             modifier = Modifier
                 .background(color = TrueWhite)
-                .padding(padding),
-
+                .padding(padding)
+                .noRippleClickable {
+                    focusManager.clearFocus()
+                },
         ) {
             Column(
                 modifier = Modifier
@@ -105,11 +111,6 @@ fun ChallengeReplyListScreen(
                 Box(modifier = Modifier.weight(1f))
                 // Reply Input
                 Row {
-                    val painterRes = if (textFieldState.trim().isNotBlank()) {
-                        com.seoulmate.ui.R.drawable.ic_input_box
-                    } else {
-                        com.seoulmate.ui.R.drawable.ic_input_box_default
-                    }
                     OutlinedTextField(
                         modifier = Modifier.weight(1f),
                         value = textFieldState,
@@ -121,10 +122,16 @@ fun ChallengeReplyListScreen(
 
                                 }
                             ) {
-                                Icon(
+                                val imgRes = if(textFieldState.trim().isNotBlank()) {
+                                    com.seoulmate.ui.R.drawable.ic_input_box
+                                } else {
+                                    com.seoulmate.ui.R.drawable.ic_input_box_default
+                                }
+                                Image(
                                     modifier = Modifier.size(32.dp),
-                                    painter = painterResource(id = painterRes),
+                                    painter = painterResource(id = imgRes),
                                     contentDescription = "Send TextField Item icon",
+                                    contentScale = ContentScale.Fit,
                                 )
                             }
                         },
@@ -146,3 +153,14 @@ private fun PreviewChallenReplyListScreen() {
         ChallengeReplyListScreen()
     }
 }
+
+inline fun Modifier.noRippleClickable(
+    crossinline onClick: () -> Unit
+): Modifier = composed {
+    clickable(
+        indication = null,
+        interactionSource = remember { MutableInteractionSource() }) {
+        onClick()
+    }
+}
+
