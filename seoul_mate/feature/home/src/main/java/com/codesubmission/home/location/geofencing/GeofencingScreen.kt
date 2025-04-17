@@ -65,15 +65,14 @@ fun GeofencingScreen(
     }
 
     if (canPass) {
-        GeofencingControls(context)
+        GeofencingControls()
     }
 
 }
 
 @Composable
-private fun GeofencingControls(
-    context: Context,
-) {
+private fun GeofencingControls() {
+    val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val geofenceManager = remember { GeofenceManager(context) }
 //    var geofenceTransitionEventInfo by remember {
@@ -89,9 +88,9 @@ private fun GeofencingControls(
 //    }
 
     // Register a local broadcast to receive activity transition updates
-//    GeofenceBroadcastReceiver(systemAction = CUSTOM_INTENT_GEOFENCE) { event ->
+    GeofenceBroadcastReceiver(systemAction = CUSTOM_INTENT_GEOFENCE) { event ->
 //        geofenceTransitionEventInfo = event
-//    }
+    }
 
     Column(
         modifier = Modifier
@@ -216,19 +215,19 @@ fun GeofenceList(geofenceManager: GeofenceManager) {
             onCheckedChange = { checked ->
                 if (checked) {
                     geofenceManager.addGeofence(
-                        "liteawon",
+                        "하이커",
                         location = Location("").apply {
-                            latitude = 37.534542
-                            longitude = 126.9947462
+                            latitude = 37.5686076
+                            longitude = 126.9816627
                         },
                     )
                 } else {
-                    geofenceManager.removeGeofence("liteawon")
+                    geofenceManager.removeGeofence("하이커")
                 }
                 checkedGeoFence4.value = checked
             },
         )
-        Text(text = "LITEAWON")
+        Text(text = "하이커")
     }
     Row(
         Modifier.padding(8.dp), verticalAlignment = Alignment.CenterVertically,

@@ -28,13 +28,13 @@ fun GeofenceBroadcastReceiver(
         val intentFilter = IntentFilter(systemAction)
         val broadcast = object : BroadcastReceiver() {
             override fun onReceive(context: Context?, intent: Intent?) {
-                Log.e(TAG, "GeofenceBroadcastReceiver onReceive")
+                Log.d(TAG, "GeofenceBroadcastReceiver onReceive")
                 val geofencingEvent = intent?.let { GeofencingEvent.fromIntent(it) } ?: return
 
                 if (geofencingEvent.hasError()) {
                     val errorMessage =
                         GeofenceStatusCodes.getStatusCodeString(geofencingEvent.errorCode)
-                    Log.e(TAG, "onReceive: $errorMessage")
+                    Log.d(TAG, "onReceive: $errorMessage")
                     return
                 }
 
@@ -44,7 +44,7 @@ fun GeofenceBroadcastReceiver(
                         geofenceList += geofence.requestId
                     }
                     val strContent = "!! ${geofencingEvent.triggeringLocation?.latitude} , ${geofencingEvent.triggeringLocation?.longitude}, [ $geofenceList ] "
-                    Log.e(TAG, "GeofenceBroadcastReceiver strContent : $strContent")
+                    Log.d(TAG, "GeofenceBroadcastReceiver strContent : $strContent")
 
                     val builder = NotificationCompat.Builder(it, "CHANNEL_ID")
                         .setSmallIcon(com.seoulmate.ui.R.drawable.ic_bottom_nav_fill_favorite)

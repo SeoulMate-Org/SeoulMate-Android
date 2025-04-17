@@ -44,7 +44,10 @@ import com.codesubmission.home.ui.map.MapBottomSheetType
 import com.codesubmission.home.ui.map.MapItemListBottomSheet
 import com.codesubmission.home.ui.rememberHomeState
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.PermissionState
+import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
+import com.google.accompanist.permissions.rememberPermissionState
 import com.seoulmate.data.model.MapListCardItemData
 import com.seoulmate.ui.component.HomeNavigationSuiteScaffold
 import com.seoulmate.ui.component.Screen
@@ -53,17 +56,10 @@ import com.seoulmate.ui.component.snackBarMessage
 import com.seoulmate.ui.component.snackBarType
 import com.seoulmate.ui.theme.CoolGray900
 import com.seoulmate.ui.theme.TrueWhite
+import kotlinx.coroutines.coroutineScope
 
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class)
-@RequiresPermission(
-    anyOf = [
-        Manifest.permission.ACCESS_COARSE_LOCATION,
-        Manifest.permission.ACCESS_FINE_LOCATION,
-        Manifest.permission.POST_NOTIFICATIONS,
-        Manifest.permission.ACCESS_BACKGROUND_LOCATION,
-    ]
-)
 @Composable
 fun HomeScreen(
     context: Context,
@@ -73,17 +69,13 @@ fun HomeScreen(
 ) {
     val homeState = rememberHomeState()
 
-    var rejectedPermissions: Set<String>? = null
+    val permissionState = rememberMultiplePermissionsState(permissions = homeState.getAllPermissionList())
 
-    val permissionState = rememberMultiplePermissionsState(permissions = homeState.getAllPermissionList()) { map ->
-        rejectedPermissions = map.filterValues { !it }.keys
-    }
-
-    val revokedBackgroundLocationPermission =
+    val backgroundLocationPermissionState: PermissionState? =
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            permissionState.revokedPermissions.all { Manifest.permission.ACCESS_BACKGROUND_LOCATION in it.permission }
+            rememberPermissionState(permission = Manifest.permission.ACCESS_BACKGROUND_LOCATION)
         } else {
-            false
+            null
         }
 
     val bottomNavHeight = remember { mutableIntStateOf(55) }
@@ -120,14 +112,20 @@ fun HomeScreen(
 
         homeState.createNotificationChannel(context)
 
-        permissionState.launchMultiplePermissionRequest()
+        coroutineScope {
+            permissionState.permissions
+            permissionState.launchMultiplePermissionRequest()
+
+//            backgroundLocationPermissionState?.let { permissionState ->
+//                if (!permissionState.status.isGranted) {
+//                    permissionState.launchPermissionRequest()
+//                }
+//            }
+        }
     }
 
     LaunchedEffect(permissionState) {
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q &&
-            revokedBackgroundLocationPermission) {
-            Toast.makeText(context, "Background location permission is revoked", Toast.LENGTH_SHORT).show()
-        }
+
     }
 
     LaunchedEffect(homeState.mapDetailState.value) {

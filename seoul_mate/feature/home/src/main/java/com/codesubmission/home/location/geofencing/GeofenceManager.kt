@@ -7,6 +7,7 @@ import android.content.Intent
 import android.location.Location
 import android.os.Build
 import android.util.Log
+import androidx.compose.animation.EnterTransition
 import com.codesubmission.home.GeofenceBroadcastReceiver
 import com.codesubmission.home.location.utils.CUSTOM_INTENT_GEOFENCE
 import com.codesubmission.home.location.utils.CUSTOM_REQUEST_CODE_GEOFENCE
@@ -76,6 +77,9 @@ class GeofenceManager(context: Context) {
         client.addGeofences(createGeofencingRequest(), geofencingPendingIntent)
             .addOnSuccessListener {
                 Log.d(TAG, "registerGeofence: SUCCESS")
+                createGeofencingRequest().geofences.forEach {
+                    Log.d(TAG, "registerGeofence: ${it.requestId}, ${it.latitude} , ${it.longitude}")
+                }
             }.addOnFailureListener { exception ->
                 Log.d(TAG, "registerGeofence: Failure\n$exception")
             }
@@ -102,8 +106,9 @@ class GeofenceManager(context: Context) {
             .setRequestId(key)
             .setCircularRegion(location.latitude, location.longitude, radiusInMeters)
             .setExpirationDuration(Geofence.NEVER_EXPIRE)
-            .setTransitionTypes(INITIAL_TRIGGER_DWELL)
-            .setLoiteringDelay(1000 * 30)
+            .setTransitionTypes(GEOFENCE_TRANSITION_ENTER or INITIAL_TRIGGER_DWELL)
+            .setLoiteringDelay(1000 * 60)
+//            .setNotificationResponsiveness(1000 * 60 * 3)
             .build()
     }
 }

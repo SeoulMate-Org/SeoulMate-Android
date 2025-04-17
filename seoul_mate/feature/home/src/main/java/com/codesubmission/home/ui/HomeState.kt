@@ -129,9 +129,9 @@ class HomeState(
     fun getAllPermissionList(): List<String> {
         val permissionList = mutableListOf<String>()
 
-        getBackgroundLocationPermission()?.let {
-            permissionList.add(it)
-        }
+//        getBackgroundLocationPermission()?.let {
+//            permissionList.add(it)
+//        }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             permissionList.add(Manifest.permission.POST_NOTIFICATIONS)

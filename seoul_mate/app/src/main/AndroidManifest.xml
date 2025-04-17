@@ -32,15 +32,7 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name="com.codesubmission.home.GeofenceBroadcastReceiver"
-            android:enabled="true"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="android.location.MODE_CHANGED" />
-                <action android:name="android.location.PROVIDERS_CHANGED" />
-            </intent-filter>
-        </receiver>
+        <receiver android:name="com.codesubmission.home.GeofenceBroadcastReceiver" />
 
         <meta-data
             android:name="com.naver.maps.map.NCP_KEY_ID"
