@@ -68,5 +68,9 @@ gradlePlugin {
             id = libs.plugins.seoulmate.hilt.get().pluginId
             implementationClass = "HiltConventionPlugin"
         }
+        register("androidRoom") {
+            id = libs.plugins.seoulmate.android.room.get().pluginId
+            implementationClass = "AndroidRoomConventionPlugin"
+        }
     }
 }

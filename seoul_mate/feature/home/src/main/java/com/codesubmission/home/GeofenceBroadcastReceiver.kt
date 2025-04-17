@@ -12,9 +12,15 @@ import androidx.core.app.NotificationManagerCompat
 import com.google.android.gms.location.Geofence
 import com.google.android.gms.location.GeofenceStatusCodes
 import com.google.android.gms.location.GeofencingEvent
+import com.seoulmate.datastore.repository.DataStoreRepository
+import jakarta.inject.Inject
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.flow.collectLatest
 
 class GeofenceBroadcastReceiver: BroadcastReceiver() {
     val TAG = "GeofenceReceiver@@@@@@"
+    @Inject
+    lateinit var dataStoreRepository: DataStoreRepository
 
     override fun onReceive(context: Context?, intent: Intent?) {
         Log.e(TAG, "GeofenceBroadcastReceiver onReceive")

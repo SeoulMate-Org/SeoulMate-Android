@@ -3,7 +3,6 @@ import java.util.Properties
 plugins {
     alias(libs.plugins.seoulmate.android.library)
     alias(libs.plugins.seoulmate.hilt)
-//    alias(libs.plugins.seoulmate.kotlin.realm)
 }
 
 val properties = Properties()

@@ -25,21 +25,6 @@ class GeofenceManager(context: Context) {
     private val client = LocationServices.getGeofencingClient(context)
     val geofenceList = mutableMapOf<String, Geofence>()
 
-//    private val geofencingPendingIntent by lazy {
-//        PendingIntent.getBroadcast(
-//            context,
-//            CUSTOM_REQUEST_CODE_GEOFENCE,
-//            Intent(CUSTOM_INTENT_GEOFENCE),
-//            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
-//                PendingIntent.FLAG_CANCEL_CURRENT
-//            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-//                PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_ALLOW_UNSAFE_IMPLICIT_INTENT
-//            } else {
-//                PendingIntent.FLAG_MUTABLE
-//            }
-//        )
-//    }
-
     private val geofencingPendingIntent: PendingIntent by lazy {
         val intent = Intent(context, GeofenceBroadcastReceiver::class.java)
         // We use FLAG_UPDATE_CURRENT so that we get the same pending intent back when calling
@@ -62,7 +47,6 @@ class GeofenceManager(context: Context) {
         key: String,
         location: Location,
         radiusInMeters: Float = 100.0f,
-        expirationTimeInMillis: Long = 5 * 60 * 1000,
     ) {
         Log.d(TAG, "addGeofence key: $key")
         geofenceList[key] = createGeofence(key, location, radiusInMeters)
@@ -92,7 +76,7 @@ class GeofenceManager(context: Context) {
 
     private fun createGeofencingRequest(): GeofencingRequest {
         return GeofencingRequest.Builder().apply {
-            setInitialTrigger(INITIAL_TRIGGER_DWELL)
+            setInitialTrigger(GEOFENCE_TRANSITION_ENTER)
             addGeofences(geofenceList.values.toList())
         }.build()
     }
@@ -106,7 +90,7 @@ class GeofenceManager(context: Context) {
             .setRequestId(key)
             .setCircularRegion(location.latitude, location.longitude, radiusInMeters)
             .setExpirationDuration(Geofence.NEVER_EXPIRE)
-            .setTransitionTypes(GEOFENCE_TRANSITION_ENTER or INITIAL_TRIGGER_DWELL)
+            .setTransitionTypes(GEOFENCE_TRANSITION_ENTER)
             .setLoiteringDelay(1000 * 60)
 //            .setNotificationResponsiveness(1000 * 60 * 3)
             .build()

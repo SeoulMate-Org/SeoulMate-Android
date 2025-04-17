@@ -28,7 +28,7 @@ fun MainNavHost(
         composable(route = Screen.Splash.route) {
             SplashScreen(
                 onNext = {
-                    appState.navigate(Screen.UserInterestsTheme)
+                    appState.navigate(Screen.Home)
                 },
                 onClickLogin = {
                     appState.navigate(Screen.Login)
@@ -40,6 +40,7 @@ fun MainNavHost(
                 activityContext
             )
         }
+        // TODO chan need remove
         interestScreen(
             startDestination = Screen.UserInterestsTheme.route,
             route = ScreenGraph.UserInterestsGraph.route,

@@ -75,22 +75,6 @@ private fun GeofencingControls() {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val geofenceManager = remember { GeofenceManager(context) }
-//    var geofenceTransitionEventInfo by remember {
-//        mutableStateOf("")
-//    }
-
-//    DisposableEffect(LocalLifecycleOwner.current) {
-//        onDispose {
-//            scope.launch(Dispatchers.IO) {
-//                geofenceManager.deregisterGeofence()
-//            }
-//        }
-//    }
-
-    // Register a local broadcast to receive activity transition updates
-    GeofenceBroadcastReceiver(systemAction = CUSTOM_INTENT_GEOFENCE) { event ->
-//        geofenceTransitionEventInfo = event
-    }
 
     Column(
         modifier = Modifier
