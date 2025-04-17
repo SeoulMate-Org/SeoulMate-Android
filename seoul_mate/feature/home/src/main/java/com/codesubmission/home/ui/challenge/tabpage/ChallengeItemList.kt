@@ -14,7 +14,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.seoulmate.data.model.ChallengeItemData
-import com.seoulmate.ui.component.ChallengeListItem
+import com.seoulmate.ui.component.ChallengeTileTypeLayout
 import com.seoulmate.ui.theme.CoolGray25
 import com.seoulmate.ui.theme.CoolGray300
 import com.seoulmate.ui.theme.TrueWhite
@@ -47,7 +47,7 @@ fun ChallengeItemList(
             items = itemList,
             key = { _, item -> item.id }
         ) { index, item ->
-            ChallengeListItem(
+            ChallengeTileTypeLayout(
                 item = item,
                 onItemClick = onItemClick
             )

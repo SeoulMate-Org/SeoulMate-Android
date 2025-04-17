@@ -5,4 +5,5 @@ data class ChallengeItemData(
     val title: String,
     val imgUrl: String,
     val themeList: List<String>,
+    val isInterest: Boolean = false,
 )

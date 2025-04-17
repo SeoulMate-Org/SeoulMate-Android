@@ -42,7 +42,7 @@ dependencies {
     api(libs.accompanist.permissions)
     api("androidx.compose.animation:animation:1.7.8")
 
-    implementation(libs.coil.kt.compose)
-    implementation(libs.androidx.animation.graphics.android)
+    api(libs.coil.kt.compose)
+    api(libs.androidx.animation.graphics.android)
 
 }

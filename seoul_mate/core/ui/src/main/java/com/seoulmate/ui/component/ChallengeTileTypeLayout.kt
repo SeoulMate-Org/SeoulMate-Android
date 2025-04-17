@@ -1,6 +1,5 @@
 package com.seoulmate.ui.component
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -13,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,17 +20,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.seoulmate.data.model.ChallengeItemData
-import com.seoulmate.ui.R
 import com.seoulmate.ui.theme.TrueWhite
 
+// TODO chan make layout height params
 @Composable
-fun ChallengeListItem(
+fun ChallengeTileTypeLayout(
     modifier: Modifier = Modifier
         .fillMaxWidth()
         .height(92.dp)
@@ -94,14 +91,11 @@ fun ChallengeListItem(
 
             }
             // Interest Button
-            IconButton(
-                modifier = Modifier.height(32.dp).width(32.dp),
-                onClick = {}
+            ChallengeInterestButton(
+                isInterest = item.isInterest,
+                size = 32.dp
             ) {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_interest_challenge),
-                    contentDescription = "Interest Button"
-                )
+
             }
         }
     }

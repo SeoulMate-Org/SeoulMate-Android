@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import com.codesubmission.home.location.geofencing.GeofencingScreen
 import com.codesubmission.home.ui.HomeState
 import com.codesubmission.home.ui.challenge.HomeChallengeScreen
+import com.codesubmission.home.ui.main.HomeMainScreen
 import com.codesubmission.home.ui.mypage.HomeMyPageScreen
 import com.seoulmate.ui.component.Screen
 
@@ -24,12 +25,12 @@ fun HomeNavHost(
         modifier = modifier
     ) {
         composable(route = Screen.HomeMain.route) {
-//            HomeFavoriteScreen()
-            GeofencingScreen(
-                context,
-                appState.getLocationPermissionList(),
-                appState.getBackgroundLocationPermission()
-            )
+            HomeMainScreen()
+//            GeofencingScreen(
+//                context,
+//                appState.getLocationPermissionList(),
+//                appState.getBackgroundLocationPermission()
+//            )
         }
         composable(route = Screen.HomeChallenge.route) {
             HomeChallengeScreen(
