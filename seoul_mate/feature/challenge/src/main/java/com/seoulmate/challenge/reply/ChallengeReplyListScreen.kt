@@ -40,6 +40,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.seoulmate.challenge.R
+import com.seoulmate.ui.noRippleClickable
 import com.seoulmate.ui.theme.Black
 import com.seoulmate.ui.theme.CoolGray25
 import com.seoulmate.ui.theme.CoolGray900
@@ -151,16 +152,6 @@ fun ChallengeReplyListScreen(
 private fun PreviewChallenReplyListScreen() {
     SeoulMateTheme {
         ChallengeReplyListScreen()
-    }
-}
-
-inline fun Modifier.noRippleClickable(
-    crossinline onClick: () -> Unit
-): Modifier = composed {
-    clickable(
-        indication = null,
-        interactionSource = remember { MutableInteractionSource() }) {
-        onClick()
     }
 }
 

@@ -14,4 +14,15 @@
     <string name="empty_interest_challenge">아직 관심있는 챌린지가 없어요!</string>
     <string name="empty_challenge_info">여러 챌린지를 찾아보고 추가하세요.</string>
     <string name="find_challenge">챌린지 찾아보기</string>
+
+    <string name="home_my_location_sign_up_title">📍 내 근처 챌린지</string>
+    <string name="home_my_location_sign_up_content_title">회원가입하고\n챌린지에 참여해보세요</string>
+    <string name="home_my_location_sign_up_content_sub_title">서울을 여행하며 스탬프와 뱃지를 모아보세요.</string>
+
+    <string name="home_my_location_possible_stamp_title">🏅 현재 위치에서 스탬프 찍을 수 있어요!</string>
+
+    <string name="home_challenge_category_title">🎡 참여 가능 챌린지</string>
+
+    <string name="home_challenge_ranking_title">🏅 챌린지 랭킹</string>
+    <string name="home_challenge_ranking_sub_title">챌린지의 랭킹을 뭐 보여줍니다</string>
 </resources>

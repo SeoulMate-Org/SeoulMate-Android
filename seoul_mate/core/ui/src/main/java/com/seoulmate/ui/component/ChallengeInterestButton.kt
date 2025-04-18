@@ -15,12 +15,13 @@ import com.seoulmate.ui.R
 
 @Composable
 fun ChallengeInterestButton(
+    modifier: Modifier = Modifier,
     isInterest: Boolean = false,
     size: Dp = 32.dp,
     onClick: () -> Unit = {},
 ) {
     IconButton(
-        modifier = Modifier
+        modifier = modifier
             .size(size),
         onClick = onClick,
     ) {

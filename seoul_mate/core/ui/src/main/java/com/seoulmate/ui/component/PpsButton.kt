@@ -12,14 +12,20 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.seoulmate.ui.R
 import com.seoulmate.ui.theme.Blue500
+import com.seoulmate.ui.theme.SeoulMateTheme
 import com.seoulmate.ui.theme.TrueWhite
 
+/**
+ * Common Button
+ */
 @Composable
-fun CommonButton(
+fun PpsButton(
     modifier: Modifier,
     color: Color = Blue500,
     @StringRes stringRes: Int,
@@ -49,6 +55,17 @@ fun CommonButton(
             ),
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun PreviewPpsButton() {
+    SeoulMateTheme {
+        PpsButton(
+            modifier = Modifier,
+            stringRes = R.string.str_more,
         )
     }
 }

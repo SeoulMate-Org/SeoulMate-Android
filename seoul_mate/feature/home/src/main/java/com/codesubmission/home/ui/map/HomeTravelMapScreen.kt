@@ -21,14 +21,13 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import com.codesubmission.home.R
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraPosition
-import com.naver.maps.map.CameraUpdate
 import com.naver.maps.map.compose.CameraPositionState
 import com.naver.maps.map.compose.ExperimentalNaverMapApi
 import com.naver.maps.map.compose.Marker
 import com.naver.maps.map.compose.MarkerState
 import com.naver.maps.map.compose.NaverMap
 import com.naver.maps.map.compose.rememberCameraPositionState
-import com.seoulmate.ui.component.RoundedTag
+import com.seoulmate.ui.component.RoundedIconTag
 
 // 맵 상단 태그 아이템 정의
 sealed class MapTopTagData(
@@ -124,7 +123,7 @@ fun HomeTravelMapScreen(
                             item.titleRes
                         }
                     ) { index, item ->
-                        RoundedTag(
+                        RoundedIconTag(
                             titleRes = item.titleRes,
                             drawableIconRes = item.drawableIconRes,
                             colorRes = item.colorRes,
