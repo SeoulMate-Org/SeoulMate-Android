@@ -10,6 +10,7 @@ import com.codesubmission.home.ui.HomeState
 import com.codesubmission.home.ui.challenge.HomeChallengeScreen
 import com.codesubmission.home.ui.main.HomeMainScreen
 import com.codesubmission.home.ui.mypage.HomeMyPageScreen
+import com.seoulmate.data.model.ChallengeItemData
 import com.seoulmate.ui.component.Screen
 
 @Composable
@@ -18,6 +19,7 @@ fun HomeNavHost(
     modifier: Modifier,
     context: Context,
     onScreenChange: (screen: Screen) -> Unit = {_ -> },
+    onChallengeItemClick: (item: ChallengeItemData) -> Unit = {},
 ) {
     NavHost(
         navController = appState.navController,
@@ -25,7 +27,9 @@ fun HomeNavHost(
         modifier = modifier
     ) {
         composable(route = Screen.HomeMain.route) {
-            HomeMainScreen()
+            HomeMainScreen(
+                onChallengeItemClick = onChallengeItemClick
+            )
 //            GeofencingScreen(
 //                context,
 //                appState.getLocationPermissionList(),
@@ -37,11 +41,21 @@ fun HomeNavHost(
                 homeState = appState,
                 onReplyClick = {
                     onScreenChange(Screen.ChallengeReplyList)
-                }
+                },
+                onChallengeItemClick = onChallengeItemClick
             )
         }
         composable(route = Screen.HomeMyPage.route) {
             HomeMyPageScreen(
+                onLoginClick = {
+                    onScreenChange(Screen.Login)
+                },
+                onSettingLanguageClick = {
+                    onScreenChange(Screen.SettingLanguage)
+                },
+                onSettingNotificationClick = {
+                    onScreenChange(Screen.SettingNotification)
+                },
                 showSnackBar = { snackType, snackText ->
                     appState.showSnackBar(snackType, snackText)
                 }

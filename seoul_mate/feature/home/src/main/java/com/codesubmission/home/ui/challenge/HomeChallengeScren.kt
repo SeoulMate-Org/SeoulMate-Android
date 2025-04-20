@@ -17,6 +17,7 @@ import com.seoulmate.ui.theme.TrueWhite
 fun HomeChallengeScreen(
     homeState: HomeState,
     onReplyClick: () -> Unit = {},
+    onChallengeItemClick: (item: ChallengeItemData) -> Unit = {},
 ) {
     val tabList = listOf(
         ChallengeTabItem.Interest,
@@ -122,9 +123,7 @@ fun HomeChallengeScreen(
                             ),
 
                         ),
-                        onItemClick = { item ->
-                            onReplyClick()
-                        }
+                        onItemClick = onChallengeItemClick
                     )
                     ChallengeTabItem.InProgress -> InProgressChallengeTabScreen(
                         itemList = listOf()

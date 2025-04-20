@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.seoulmate.data.model.ChallengeItemData
 import com.seoulmate.ui.component.ChallengeTileTypeLayout
+import com.seoulmate.ui.component.PpsText
 import com.seoulmate.ui.theme.CoolGray25
 import com.seoulmate.ui.theme.CoolGray300
 import com.seoulmate.ui.theme.TrueWhite
@@ -30,14 +31,14 @@ fun ChallengeItemList(
         modifier = modifier,
     ) {
         item {
-            Text(
+            PpsText(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 15.dp),
                 text = "전체 (${itemList.size})개",
-                fontSize = 13.sp,
                 style = TextStyle(
-                    color = CoolGray300
+                    fontSize = 13.sp,
+                    color = CoolGray300,
                 ),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,

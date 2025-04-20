@@ -1,5 +1,7 @@
 package com.seoulmate.ui
 
+import android.content.Context
+import android.content.Intent
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.collectAsState
@@ -9,6 +11,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.seoulmate.data.model.ChallengeItemData
 import com.seoulmate.ui.component.Screen
 import kotlinx.coroutines.CoroutineScope
 
@@ -32,6 +35,7 @@ class AppState(
     coroutineScope: CoroutineScope,
 ) {
     private val previousDestination = mutableStateOf<NavDestination?>(null)
+    val selectedChallengeItem = mutableStateOf<ChallengeItemData?>(null)
 
     val currentDestination: NavDestination?
         @Composable get() {

@@ -46,6 +46,8 @@ fun ChallengeTileTypeLayout(
             },
     ) {
         Row(
+            modifier = Modifier
+                .background(color = TrueWhite),
             horizontalArrangement = Arrangement.Start,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -77,14 +79,14 @@ fun ChallengeTileTypeLayout(
                 item.themeList.forEach { theme ->
                     strTheme += " $theme"
                 }
-                Text(
+                PpsText(
                     modifier = Modifier.wrapContentWidth(),
                     text = strTheme,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
                 // Title
-                Text(
+                PpsText(
                     modifier = Modifier.padding(top = 10.dp),
                     text = item.title,
                 )

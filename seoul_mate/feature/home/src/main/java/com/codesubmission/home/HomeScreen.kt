@@ -42,6 +42,10 @@ import com.seoulmate.ui.component.snackBarType
 import com.seoulmate.ui.theme.TrueWhite
 import kotlinx.coroutines.coroutineScope
 import androidx.core.net.toUri
+import com.seoulmate.data.model.ChallengeItemData
+import com.seoulmate.ui.R
+import com.seoulmate.ui.component.PpsAlertDialog
+import com.seoulmate.ui.theme.SeoulMateTheme
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class)
 @Composable
@@ -50,6 +54,7 @@ fun HomeScreen(
     onPlaceInfoClick: () -> Unit,
     windowAdaptiveInfo: WindowAdaptiveInfo = currentWindowAdaptiveInfo(),
     onChangeScreen: (screen: Screen) -> Unit = {_ -> },
+    onChallengeItemClick: (item: ChallengeItemData) -> Unit = {},
 ) {
 
     val homeState = rememberHomeState()
@@ -71,6 +76,8 @@ fun HomeScreen(
     var showRationale by remember(fineLocationPermissionState) {
         mutableStateOf(false)
     }
+
+    var showLoginAlertDialog by remember { mutableStateOf(false) }
 
     val bottomSheetType =
         remember { mutableStateOf<MapBottomSheetType>(MapBottomSheetType.TestType) }
@@ -158,7 +165,8 @@ fun HomeScreen(
                     modifier = Modifier.weight(1f),
                     appState = homeState,
                     context = context,
-                    onScreenChange = onChangeScreen
+                    onScreenChange = onChangeScreen,
+                    onChallengeItemClick = onChallengeItemClick,
                 )
                 HomeBottomNav(
                     modifier = Modifier
@@ -171,10 +179,28 @@ fun HomeScreen(
                         homeState.navigate(Screen.HomeMyPage.route)
                     },
                     onChallengeClick = {
-                        homeState.navigate(Screen.HomeChallenge.route)
+//                        homeState.navigate(Screen.HomeChallenge.route)
+                        showLoginAlertDialog = true
                     },
                     selectedRoute = currentDestination?.route ?: ""
                 )
+            }
+
+            if(showLoginAlertDialog) {
+                SeoulMateTheme {
+                    PpsAlertDialog(
+                        titleRes = R.string.str_need_login,
+                        descriptionRes = R.string.str_need_login_description,
+                        confirmRes = R.string.str_login,
+                        cancelRes = R.string.str_cancel,
+                        onClickCancel = {
+                            showLoginAlertDialog = false
+                        },
+                        onClickConfirm = {
+                            showLoginAlertDialog = false
+                        },
+                    )
+                }
             }
         }
     }

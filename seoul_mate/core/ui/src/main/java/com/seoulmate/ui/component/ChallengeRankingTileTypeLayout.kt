@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
@@ -63,11 +64,12 @@ fun ChallengeRankingTileTypeLayout(
             horizontalArrangement = Arrangement.Start,
         ) {
             // Show Ranking Index
-            Text(
+            PpsText(
+                modifier = Modifier.wrapContentSize(),
                 text = (index + 1).toString(),
-                fontSize = 18.sp,
                 style = TextStyle(
-                    color = CoolGray600
+                    fontSize = 18.sp,
+                    color = CoolGray600,
                 )
             )
             Spacer(modifier = Modifier.width(15.dp))
@@ -88,13 +90,13 @@ fun ChallengeRankingTileTypeLayout(
             )
             Spacer(modifier = Modifier.width(15.dp))
             // Title
-            Text(
+            PpsText(
                 modifier = Modifier
                     .padding(start = 10.dp)
                     .weight(1f),
                 text = item.title,
-                fontSize = 16.sp,
                 style = TextStyle(
+                    fontSize = 16.sp,
                     color = fontColor,
                 ),
             )

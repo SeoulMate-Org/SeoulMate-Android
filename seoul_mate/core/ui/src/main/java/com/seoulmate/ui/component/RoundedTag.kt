@@ -49,12 +49,12 @@ fun RoundedTag(
             },
         contentAlignment = Alignment.Center,
     ) {
-        Text(
+        PpsText(
             modifier = Modifier
                 .padding(horizontal = 7.dp, vertical = 2.dp),
             text = title,
-            fontSize = 12.sp,
             style = TextStyle(
+                fontSize = 12.sp,
                 color = if(isSelected) selectedColor else defaultColor,
             )
         )

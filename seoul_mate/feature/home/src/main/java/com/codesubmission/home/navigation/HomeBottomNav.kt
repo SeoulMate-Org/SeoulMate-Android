@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Surface
@@ -24,6 +25,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.seoulmate.ui.component.PpsText
 import com.seoulmate.ui.theme.Blue500
 import com.seoulmate.ui.theme.CoolGray300
 import com.seoulmate.ui.theme.White
@@ -76,11 +78,12 @@ fun HomeBottomNav(
                             tint = if(selected) selectedColor else defaultColor,
                             contentDescription = "Bottom Navigation SuggestTheme"
                         )
-                        Text(
+                        PpsText(
+                            modifier = Modifier.wrapContentSize(),
                             text = stringResource(item.label),
-                            fontSize = 12.sp,
                             style = TextStyle(
-                                color = if(selected) selectedColor else defaultColor
+                                color = if(selected) selectedColor else defaultColor,
+                                fontSize = 12.sp,
                             ),
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,

@@ -21,7 +21,9 @@ import com.seoulmate.ui.theme.CoolGray25
 import com.seoulmate.ui.theme.TrueWhite
 
 @Composable
-fun HomeMainScreen() {
+fun HomeMainScreen(
+    onChallengeItemClick: (item: ChallengeItemData) -> Unit = {},
+) {
 
     val testRankingList = listOf(
         ChallengeItemData(
@@ -282,9 +284,7 @@ fun HomeMainScreen() {
                                 themeList = listOf("Tag1", "Tag2", "Tag3", "Tag4", "Tag5", "Tag6", "Tag7", "Tag8", "Tag9")
                             ),
                         ),
-                        onItemCLick = { selectedItem ->
-
-                        },
+                        onItemCLick = onChallengeItemClick,
                         onMoreClick = {
 
                         }

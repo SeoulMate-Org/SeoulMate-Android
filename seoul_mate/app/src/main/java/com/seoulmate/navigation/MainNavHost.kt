@@ -2,11 +2,13 @@ package com.seoulmate.navigation
 
 import android.content.Context
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.codesubmission.home.HomeScreen
+import com.codesubmission.settings.language.SettingLanguageScreen
 import com.codesubmission.interest.navigation.interestScreen
+import com.codesubmission.settings.notification.SettingNotificationScreen
+import com.seoulmate.challenge.detail.ChallengeDetailScreen
 import com.seoulmate.challenge.reply.ChallengeReplyListScreen
 import com.seoulmate.data.model.PlaceInfoData
 import com.seoulmate.login.LoginScreen
@@ -60,6 +62,10 @@ fun MainNavHost(
                 },
                 onChangeScreen = { screen ->
                     appState.navigate(screen)
+                },
+                onChallengeItemClick = { item ->
+                    appState.selectedChallengeItem.value = item
+                    appState.navigate(Screen.ChallengeDetail)
                 }
             )
         }
@@ -80,6 +86,23 @@ fun MainNavHost(
         }
         composable(route = Screen.ChallengeReplyList.route) {
             ChallengeReplyListScreen(
+                onBackClick = { appState.navController.popBackStack() },
+            )
+        }
+        composable(route = Screen.ChallengeDetail.route) {
+            ChallengeDetailScreen(
+                item = appState.selectedChallengeItem.value,
+                onBackClick = { appState.navController.popBackStack() }
+            )
+        }
+        composable(route = Screen.SettingLanguage.route) {
+            SettingLanguageScreen(
+                onBackClick = { appState.navController.popBackStack() },
+                onCompleteClick = { appState.navController.popBackStack() },
+            )
+        }
+        composable(route = Screen.SettingNotification.route) {
+            SettingNotificationScreen(
                 onBackClick = { appState.navController.popBackStack() },
             )
         }

@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -40,6 +41,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.seoulmate.challenge.R
+import com.seoulmate.ui.component.PpsText
 import com.seoulmate.ui.noRippleClickable
 import com.seoulmate.ui.theme.Black
 import com.seoulmate.ui.theme.CoolGray25
@@ -62,14 +64,14 @@ fun ChallengeReplyListScreen(
                     focusManager.clearFocus()
                 },
                 title = {
-                    Text(
+                    PpsText(
+                        modifier = Modifier.wrapContentSize(),
                         text = stringResource(R.string.title_reply),
-                        fontSize = 18.sp,
                         style = TextStyle(
+                            fontSize = 18.sp,
                             color = CoolGray900,
-                            fontWeight = FontWeight.SemiBold,
                         ),
-                        textAlign = TextAlign.Center,
+                        fontWeight = FontWeight.SemiBold,
                     )
                 },
                 navigationIcon = {

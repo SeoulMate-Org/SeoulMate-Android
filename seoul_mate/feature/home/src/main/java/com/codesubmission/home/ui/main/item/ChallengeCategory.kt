@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -29,6 +30,7 @@ import androidx.compose.ui.unit.sp
 import com.codesubmission.home.R
 import com.seoulmate.data.model.ChallengeItemData
 import com.seoulmate.ui.component.ChallengeSquareImageTypeLayout
+import com.seoulmate.ui.component.PpsText
 import com.seoulmate.ui.component.RoundedTag
 import com.seoulmate.ui.theme.CoolGray400
 import com.seoulmate.ui.theme.CoolGray900
@@ -54,12 +56,12 @@ fun ChallengeCategory(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             // Title
-            Text(
+            PpsText(
                 modifier = Modifier.weight(1f),
                 text = stringResource(R.string.home_challenge_category_title),
-                fontSize = 20.sp,
                 style = TextStyle(
-                    color = CoolGray900
+                    fontSize = 20.sp,
+                    color = CoolGray900,
                 ),
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1,
@@ -74,12 +76,13 @@ fun ChallengeCategory(
                     disabledContentColor = Color.Transparent,
                 )
             ) {
-                Text(
+                PpsText(
+                    modifier = Modifier.wrapContentWidth(),
                     text = stringResource(com.seoulmate.ui.R.string.str_more),
-                    fontSize = 13.sp,
                     style = TextStyle(
-                        color = CoolGray400
-                    ),
+                        fontSize = 13.sp,
+                        color = CoolGray400,
+                    )
                 )
             }
         }

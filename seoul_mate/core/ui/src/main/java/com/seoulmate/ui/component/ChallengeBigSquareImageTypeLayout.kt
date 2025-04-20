@@ -71,12 +71,12 @@ fun ChallengeBigSquareImageTypeLayout(
             verticalAlignment = Alignment.CenterVertically
         ) {
             // Title Challenge Item
-            Text(
+            PpsText(
                 modifier = Modifier.weight(1f),
                 text = item.title,
-                fontSize = fontSize,
                 style = TextStyle(
-                    color = textColor
+                    fontSize = fontSize,
+                    color = textColor,
                 ),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,

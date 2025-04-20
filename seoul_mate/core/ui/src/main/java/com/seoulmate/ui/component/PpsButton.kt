@@ -1,7 +1,9 @@
 package com.seoulmate.ui.component
 
 import androidx.annotation.StringRes
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
@@ -11,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
@@ -28,6 +31,7 @@ import com.seoulmate.ui.theme.TrueWhite
 fun PpsButton(
     modifier: Modifier,
     color: Color = Blue500,
+    borderColor: Color = Blue500,
     @StringRes stringRes: Int,
     fontSize: TextUnit = 16.sp,
     fontColor: Color = TrueWhite,
@@ -45,14 +49,20 @@ fun PpsButton(
             disabledContainerColor = color.copy(alpha = 0.5f),
             disabledContentColor = color.copy(alpha = 0.5f),
         ),
-        onClick = onClick
+        onClick = onClick,
+        border = BorderStroke(
+            width = 1.dp,
+            color = borderColor,
+        )
     ) {
-        Text(
+        PpsText(
+            modifier = Modifier.wrapContentSize(),
             text = stringResource(stringRes),
-            fontSize = fontSize,
             style = TextStyle(
+                fontSize = fontSize,
                 color = fontColor,
             ),
+            fontWeight = FontWeight.SemiBold,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
         )

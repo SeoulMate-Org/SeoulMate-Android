@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -32,6 +33,7 @@ import androidx.compose.ui.unit.sp
 import com.codesubmission.home.R
 import com.seoulmate.data.model.ChallengeItemData
 import com.seoulmate.ui.component.ChallengeSquareImageTypeLayout
+import com.seoulmate.ui.component.PpsText
 import com.seoulmate.ui.theme.Blue500
 import com.seoulmate.ui.theme.CoolGray900
 import com.seoulmate.ui.theme.SeoulMateTheme
@@ -53,12 +55,12 @@ fun MyLocationChallenge(
     ) {
         if (isLoginUser) {
             Column {
-                Text(
+                PpsText(
                     modifier = Modifier.fillMaxWidth(),
                     text = stringResource(R.string.home_my_location_possible_stamp_title),
-                    fontSize = 20.sp,
                     style = TextStyle(
-                        color = CoolGray900
+                        fontSize = 20.sp,
+                        color = CoolGray900,
                     ),
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 1,
@@ -69,12 +71,12 @@ fun MyLocationChallenge(
             }
         } else {
             Column {
-                Text(
+                PpsText(
                     modifier = Modifier.fillMaxWidth(),
                     text = stringResource(R.string.home_my_location_sign_up_title),
-                    fontSize = 20.sp,
                     style = TextStyle(
-                        color = CoolGray900
+                        fontSize = 20.sp,
+                        color = CoolGray900,
                     ),
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 1,
@@ -112,21 +114,24 @@ fun SignUpTile(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                Text(
+                PpsText(
+                    modifier = Modifier.wrapContentSize(),
                     text = stringResource(R.string.home_my_location_sign_up_content_title),
-                    fontSize = 16.sp,
-                    lineHeight = 27.sp,
                     style = TextStyle(
-                        color = TrueWhite
+                        fontSize = 16.sp,
+                        lineHeight = 27.sp,
+                        color = TrueWhite,
                     ),
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
                 )
-                Text(
+                PpsText(
+                    modifier = Modifier.wrapContentSize(),
                     text = stringResource(R.string.home_my_location_sign_up_content_sub_title),
-                    fontSize = 12.sp,
                     style = TextStyle(
-                        color = TrueWhite
+                        fontSize = 12.sp,
+                        lineHeight = 27.sp,
+                        color = TrueWhite,
                     ),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,

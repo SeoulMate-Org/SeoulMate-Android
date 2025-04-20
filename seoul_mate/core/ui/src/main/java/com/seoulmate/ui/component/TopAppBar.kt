@@ -5,6 +5,7 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -45,13 +46,14 @@ fun SeoulMateTopAppBar(
         modifier = modifier,
         colors = colors,
         title = {
-            Text(
+            PpsText(
+                modifier = Modifier.wrapContentSize(),
                 text = strTitle,
-                fontSize = 18.sp,
                 style = TextStyle(
+                    fontSize = 18.sp,
                     color = CoolGray900,
-                    fontWeight = FontWeight.SemiBold,
-                )
+                ),
+                fontWeight = FontWeight.SemiBold,
             )
         },
         navigationIcon = {
@@ -88,13 +90,14 @@ fun SeoulMateTopAppBar(
         modifier = modifier,
         colors = colors,
         title = {
-            Text(
+            PpsText(
+                modifier = Modifier.wrapContentSize(),
                 text = stringResource(titleRes),
-                fontSize = 18.sp,
                 style = TextStyle(
+                    fontSize = 18.sp,
                     color = CoolGray900,
-                    fontWeight = FontWeight.SemiBold,
-                )
+                ),
+                fontWeight = FontWeight.SemiBold,
             )
         },
         navigationIcon = {},
@@ -117,13 +120,14 @@ fun SeoulMateTopAppBarOnlyActionIcon(
         modifier = modifier,
         colors = colors,
         title = {
-            Text(
+            PpsText(
+                modifier = Modifier.wrapContentSize(),
                 text = stringResource(titleRes),
-                fontSize = 18.sp,
                 style = TextStyle(
+                    fontSize = 18.sp,
                     color = CoolGray900,
-                    fontWeight = FontWeight.SemiBold,
-                )
+                ),
+                fontWeight = FontWeight.SemiBold,
             )
         },
         actions = {
@@ -157,13 +161,14 @@ fun SeoulMateTopAppBarOnlyNavigationIcon(
         modifier = modifier,
         colors = colors,
         title = {
-            Text(
+            PpsText(
+                modifier = Modifier.wrapContentSize(),
                 text = stringResource(titleRes),
-                fontSize = 18.sp,
                 style = TextStyle(
+                    fontSize = 18.sp,
                     color = CoolGray900,
-                    fontWeight = FontWeight.SemiBold,
-                )
+                ),
+                fontWeight = FontWeight.SemiBold,
             )
         },
         navigationIcon = {
@@ -193,13 +198,14 @@ fun SeoulMateTopAppBar(
         modifier = modifier,
         colors = colors,
         title = {
-            Text(
+            PpsText(
+                modifier = Modifier.wrapContentSize(),
                 text = stringResource(titleRes),
-                fontSize = 18.sp,
                 style = TextStyle(
+                    fontSize = 18.sp,
                     color = CoolGray900,
-                    fontWeight = FontWeight.SemiBold,
-                )
+                ),
+                fontWeight = FontWeight.SemiBold,
             )
         },
         scrollBehavior = exitUntilCollapsedScrollBehavior(),

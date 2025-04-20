@@ -81,6 +81,7 @@ dependencies {
     implementation(projects.feature.places)
     implementation(projects.feature.login)
     implementation(projects.feature.challenge)
+    implementation(projects.feature.settings)
 
     // 네이버 지도 SDK
     implementation(libs.naver.map.compose)

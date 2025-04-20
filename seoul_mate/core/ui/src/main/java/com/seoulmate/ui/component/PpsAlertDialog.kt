@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
@@ -58,8 +59,7 @@ fun PpsAlertDialog(
     ) {
         Card(
             modifier = Modifier
-                .padding(10.dp)
-                .width(containerWidth)
+                .fillMaxWidth()
                 .wrapContentHeight(),
             shape = RoundedCornerShape(20.dp),
             colors = CardColors(
@@ -70,26 +70,32 @@ fun PpsAlertDialog(
             ),
         ) {
             Column(
+                modifier = Modifier
+                    .padding(
+                        horizontal = 20.dp,
+                        vertical = 15.dp,
+                    ),
                 verticalArrangement = Arrangement.Center,
             ) {
                 // Title
-                Text(
+                PpsText(
                     modifier = Modifier.fillMaxWidth(),
                     text = stringResource(titleRes),
-                    fontSize = 20.sp,
                     style = TextStyle(
-                        color = CoolGray900
+                        fontSize = 20.sp,
+                        color = CoolGray900,
                     ),
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
                 )
                 Spacer(modifier = Modifier.height(10.dp))
                 // Description
-                Text(
+                PpsText(
+                    modifier = Modifier.wrapContentSize(),
                     text = stringResource(descriptionRes),
-                    fontSize = 16.sp,
                     style = TextStyle(
-                        color = CoolGray600
+                        fontSize = 16.sp,
+                        color = CoolGray600,
                     )
                 )
                 Spacer(modifier = Modifier.height(10.dp))
@@ -102,9 +108,12 @@ fun PpsAlertDialog(
                             modifier = Modifier.weight(1f),
                             stringRes = cancelRes,
                             color = CoolGray50,
+                            borderColor = CoolGray50,
                             fontColor = Black,
                             onClick = onClickCancel,
                         )
+
+                        Spacer(modifier = Modifier.width(10.dp))
                     }
 
                     PpsButton(

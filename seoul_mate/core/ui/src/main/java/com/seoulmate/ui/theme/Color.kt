@@ -48,3 +48,7 @@ val Blue300 = Color(0xFF619AFF)
 val Blue200 = Color(0xFF90B9FF)
 val Blue100 = Color(0xFFB4D0FF)
 val Blue50 = Color(0xFFE0ECFF)
+
+val IntroBlue = Color(0xFF005EFE)
+
+val ColorEDF4FF = Color(0xFFEDF4FF)

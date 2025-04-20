@@ -25,4 +25,19 @@
 
     <string name="home_challenge_ranking_title">🏅 챌린지 랭킹</string>
     <string name="home_challenge_ranking_sub_title">챌린지의 랭킹을 뭐 보여줍니다</string>
+
+    <string name="my_page_need_login">로그인이 필요해요</string>
+    <string name="my_page_need_login_info">챌린지도 찜하고, 배지도 모을 수 있어요</string>
+    <string name="my_page_badge">배지</string>
+    <string name="my_page_favorite">찜한 장소</string>
+    <string name="my_page_reply">내 댓글</string>
+
+    <string name="my_page_language">언어</string>
+    <string name="my_page_notification">알림</string>
+    <string name="my_page_location">위치 권한 설정</string>
+    <string name="my_page_select">(선택)</string>
+    <string name="my_page_service_info">서비스 소개</string>
+    <string name="my_page_faq">자주 묻는 질문</string>
+    
+
 </resources>

@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Button
@@ -24,6 +26,7 @@ import androidx.compose.ui.unit.sp
 import com.codesubmission.home.R
 import com.seoulmate.data.model.ChallengeItemData
 import com.seoulmate.ui.component.ChallengeRankingTileTypeLayout
+import com.seoulmate.ui.component.PpsText
 import com.seoulmate.ui.theme.CoolGray400
 import com.seoulmate.ui.theme.CoolGray600
 import com.seoulmate.ui.theme.CoolGray900
@@ -37,12 +40,12 @@ fun ChallengeRanking(
         modifier = modifier
     ) {
         // Title
-        Text(
+        PpsText(
             modifier = Modifier.fillMaxWidth(),
             text = stringResource(R.string.home_challenge_ranking_title),
-            fontSize = 20.sp,
             style = TextStyle(
-                color = CoolGray900
+                fontSize = 20.sp,
+                color = CoolGray900,
             ),
             overflow = TextOverflow.Ellipsis,
             maxLines = 1,
@@ -52,12 +55,12 @@ fun ChallengeRanking(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start,
         ) {
-            Text(
+            PpsText(
                 modifier = Modifier.weight(1f),
                 text = stringResource(R.string.home_challenge_ranking_sub_title),
-                fontSize = 16.sp,
                 style = TextStyle(
-                    color = CoolGray600
+                    fontSize = 16.sp,
+                    color = CoolGray600,
                 ),
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1,
@@ -72,11 +75,12 @@ fun ChallengeRanking(
                     disabledContentColor = Color.Transparent,
                 )
             ) {
-                Text(
+                PpsText(
+                    modifier = Modifier.wrapContentSize(),
                     text = stringResource(com.seoulmate.ui.R.string.str_more),
-                    fontSize = 13.sp,
                     style = TextStyle(
-                        color = CoolGray400
+                        fontSize = 13.sp,
+                        color = CoolGray400,
                     ),
                 )
             }

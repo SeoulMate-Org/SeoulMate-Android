@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -26,6 +27,7 @@ import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.seoulmate.login.BuildConfig
+import com.seoulmate.ui.theme.IntroBlue
 import kotlinx.coroutines.launch
 
 @Composable
@@ -75,10 +77,11 @@ fun RequestLoginScreen(
         }
     }
 
-    Scaffold { padding ->
+    Surface(
+        color = IntroBlue,
+    ) {
         Column(
             modifier = Modifier
-                .padding(padding)
                 .fillMaxSize()
         ) {
             Button(

@@ -20,6 +20,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.seoulmate.ui.component.PpsText
 import com.seoulmate.ui.theme.Blue500
 import com.seoulmate.ui.theme.CoolGray500
 import com.seoulmate.ui.theme.TrueWhite
@@ -63,12 +64,12 @@ fun ChallengeTabRow(
                     }
                 }
             ) {
-                Text(
+                PpsText(
                     modifier = Modifier.height(39.dp),
                     text = pageItem,
-                    fontSize = 14.sp,
                     style = TextStyle(
-                        color = if(isSelected) Blue500 else CoolGray500
+                        fontSize = 14.sp,
+                        color = if(isSelected) Blue500 else CoolGray500,
                     ),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,

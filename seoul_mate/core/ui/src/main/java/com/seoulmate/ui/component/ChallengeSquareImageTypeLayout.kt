@@ -113,12 +113,12 @@ fun ChallengeSquareImageTypeLayout(
                         },
                     contentAlignment = Alignment.Center,
                 ) {
-                    Text(
+                    PpsText(
                         modifier = Modifier.padding(5.dp),
                         text = stringResource(R.string.str_now_pop),
-                        fontSize = 12.sp,
                         style = TextStyle(
-                            color = TrueWhite
+                            fontSize = 12.sp,
+                            color = TrueWhite,
                         ),
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
@@ -128,12 +128,12 @@ fun ChallengeSquareImageTypeLayout(
         }
         Spacer(modifier = Modifier.height(10.dp))
         // Challenge Title
-        Text(
+        PpsText(
             modifier = Modifier.fillMaxWidth(),
             text = item.title,
-            fontSize = fontSize,
             style = TextStyle(
-                color = textColor
+                fontSize = fontSize,
+                color = textColor,
             ),
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,

@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.codesubmission.home.R
 import com.seoulmate.ui.component.PpsButton
+import com.seoulmate.ui.component.PpsText
 import com.seoulmate.ui.theme.CoolGray400
 import com.seoulmate.ui.theme.CoolGray900
 import com.seoulmate.ui.theme.SeoulMateTheme
@@ -50,21 +51,23 @@ fun EmptyChallenge(
             contentScale = ContentScale.Fit,
         )
         Spacer(modifier = Modifier.height(30.dp))
-        Text(
+        PpsText(
+            modifier = Modifier.wrapContentWidth(),
             text = stringResource(titleRes),
-            fontSize = 18.sp,
             style = TextStyle(
-                color = CoolGray900
+                fontSize = 18.sp,
+                color = CoolGray900,
             ),
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
         )
         Spacer(modifier = Modifier.height(5.dp))
-        Text(
+        PpsText(
+            modifier = Modifier.wrapContentWidth(),
             text = stringResource(infoRes),
-            fontSize = 14.sp,
             style = TextStyle(
-                color = CoolGray400
+                fontSize = 14.sp,
+                color = CoolGray400,
             ),
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,

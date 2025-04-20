@@ -72,14 +72,14 @@ fun RoundedIconTag(
                   .background(Color.Transparent)
                   .padding(horizontal = 5.dp)
             ) {
-                Text(
+                PpsText(
                     modifier = Modifier
                         .background(Color.Transparent)
                         .align(Alignment.Center),
                     text = stringResource(titleRes),
-                    fontSize = 13.sp,
                     style = TextStyle(
-                        color = CoolGray900
+                        fontSize = 13.sp,
+                        color = CoolGray900,
                     ),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,

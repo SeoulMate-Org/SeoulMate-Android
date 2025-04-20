@@ -2,9 +2,9 @@
     <string name="top_app_bar_untitled">TopAppBar</string>
     <string name="str_test">TEST</string>
 
-    <string name="bottom_nav_suggest_title">추천 테마</string>
+    <string name="bottom_nav_challenge_title">나의 챌린지</string>
     <string name="bottom_nav_favorite_title">좋아요</string>
-    <string name="bottom_nav_travel_map_title">지도</string>
+    <string name="bottom_nav_my_title">MY</string>
 
     <string name="top_map_tag_trashcan">쓰레기통</string>
     <string name="top_map_tag_wifi">와이파이</string>
@@ -16,6 +16,7 @@
 
     <string name="str_confirm">확인</string>
     <string name="str_cancel">취소</string>
+    <string name="str_complete">완료</string>
 
     <string name="str_login">로그인</string>
     <string name="str_need_login">로그인이 필요합니다</string>
