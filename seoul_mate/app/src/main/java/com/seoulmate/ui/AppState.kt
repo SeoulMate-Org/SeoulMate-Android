@@ -2,6 +2,7 @@ package com.seoulmate.ui
 
 import android.content.Context
 import android.content.Intent
+import androidx.activity.result.ActivityResultLauncher
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.collectAsState
@@ -12,13 +13,18 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.seoulmate.data.model.ChallengeItemData
+import com.seoulmate.login.LoginActivity
 import com.seoulmate.ui.component.Screen
+import com.seoulmate.ui.main.MainViewModel
 import kotlinx.coroutines.CoroutineScope
+import java.util.Locale
 
 @Composable
 fun rememberAppState(
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
     navController: NavHostController = rememberNavController(),
+    context: Context,
+    viewModel: MainViewModel,
 ): AppState = remember(
     navController,
     coroutineScope,
@@ -26,6 +32,8 @@ fun rememberAppState(
     AppState(
         navController = navController,
         coroutineScope = coroutineScope,
+        context = context,
+        viewModel = viewModel,
     )
 }
 
@@ -33,6 +41,8 @@ fun rememberAppState(
 class AppState(
     val navController: NavHostController,
     coroutineScope: CoroutineScope,
+    private val context: Context,
+    private val viewModel: MainViewModel,
 ) {
     private val previousDestination = mutableStateOf<NavDestination?>(null)
     val selectedChallengeItem = mutableStateOf<ChallengeItemData?>(null)
@@ -51,8 +61,14 @@ class AppState(
             } ?: previousDestination.value
         }
 
+    val getContext: Context get() = this.context
+
     fun navigate(screen: Screen) {
         navController.navigate(screen.route)
+    }
+
+    fun selectedLanguage(languageCode: String) {
+        viewModel.updateLanguage(languageCode)
     }
 
 }

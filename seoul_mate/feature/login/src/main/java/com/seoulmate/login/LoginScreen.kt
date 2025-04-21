@@ -22,6 +22,7 @@ import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption
 import com.seoulmate.login.navigation.LoginNavHost
 import com.seoulmate.login.ui.rememberLoginState
+import com.seoulmate.ui.theme.Blue500
 import com.seoulmate.ui.theme.IntroBlue
 import com.seoulmate.ui.theme.TrueWhite
 import kotlinx.coroutines.launch
@@ -38,7 +39,7 @@ fun LoginScreen(
 
     Surface(
         modifier = Modifier.fillMaxSize(),
-        color = IntroBlue,
+        color = Blue500,
     ) {
         LoginNavHost(
             loginState = rememberLoginState(),

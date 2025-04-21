@@ -12,11 +12,16 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import jakarta.inject.Singleton
 
-@Module
-@InstallIn(SingletonComponent::class)
-object DataStoreModule {
-    @Singleton
-    @Provides
-    fun provideDataStoreRepository(@ApplicationContext context: Context) = DataStoreRepository(context)
-    val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "pref_data")
-}
+//@Module
+//@InstallIn(SingletonComponent::class)
+//object DataStoreModule {
+//
+//    @Singleton
+//    @Provides
+//    fun provideDataStoreRepository(
+//        @ApplicationContext context: Context
+//    ): DataStoreRepository = DataStoreRepository(
+//        context
+//    )
+//
+//}

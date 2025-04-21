@@ -1,6 +1,5 @@
 package com.seoulmate.navigation
 
-import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -21,7 +20,6 @@ import com.seoulmate.ui.component.ScreenGraph
 @Composable
 fun MainNavHost(
     appState: AppState,
-    activityContext: Context,
 ) {
     NavHost(
         navController = appState.navController,
@@ -39,7 +37,7 @@ fun MainNavHost(
         }
         composable(route = Screen.Login.route) {
             LoginScreen(
-                activityContext
+                appState.getContext
             )
         }
         // TODO chan need remove
@@ -56,7 +54,7 @@ fun MainNavHost(
         )
         composable(route = Screen.Home.route) {
             HomeScreen(
-                context = activityContext,
+                context = appState.getContext,
                 onPlaceInfoClick = {
                     appState.navigate(Screen.PlaceInfoDetail)
                 },
@@ -98,7 +96,10 @@ fun MainNavHost(
         composable(route = Screen.SettingLanguage.route) {
             SettingLanguageScreen(
                 onBackClick = { appState.navController.popBackStack() },
-                onCompleteClick = { appState.navController.popBackStack() },
+                onCompleteClick = { languageCode ->
+                    appState.selectedLanguage(languageCode)
+                    appState.navController.popBackStack()
+                }
             )
         }
         composable(route = Screen.SettingNotification.route) {

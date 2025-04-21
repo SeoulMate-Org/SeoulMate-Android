@@ -1,27 +1,41 @@
 package com.seoulmate.datastore.repository
 
 import android.content.Context
+import androidx.datastore.core.DataStore
 import androidx.datastore.core.IOException
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
-import com.seoulmate.datastore.di.DataStoreModule.dataStore
+import androidx.datastore.preferences.preferencesDataStore
+import dagger.hilt.android.qualifiers.ApplicationContext
 import jakarta.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.map
 
+enum class Language(val code: String) {
+    ENGLISH("en"),
+    KOREAN("ko")
+}
+
+val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "pref_data")
+
+
 class DataStoreRepository @Inject constructor(
-    private val context: Context
+    @ApplicationContext val context: Context
 ) {
     object DataStoreResult {
-        const val SET_NOTIFY_ID = "Set NotifyId Success"
+        const val SET_SUCCESS = "Success"
     }
 
     // Key 설정
     private val notifyIdKey = intPreferencesKey("notifyId")
+    private val languageKey = stringPreferencesKey("language")
+    private val isFirstEnterKey = booleanPreferencesKey("isFirstEnter")
 
     // 쓰기
     suspend fun setNotifyId(): String {
@@ -30,7 +44,21 @@ class DataStoreRepository @Inject constructor(
                 it[notifyIdKey] = id + 1
             }
         }
-        return DataStoreResult.SET_NOTIFY_ID
+        return DataStoreResult.SET_SUCCESS
+    }
+
+    suspend fun setLanguage(language: String): String {
+        context.dataStore.edit {
+            it[languageKey] = language
+        }
+        return DataStoreResult.SET_SUCCESS
+    }
+
+    suspend fun setIsFirstEnter(isFirstEnter: Boolean): String {
+        context.dataStore.edit {
+            it[isFirstEnterKey] = isFirstEnter
+        }
+        return DataStoreResult.SET_SUCCESS
     }
 
     // 읽기
@@ -43,6 +71,30 @@ class DataStoreRepository @Inject constructor(
             }
         }.map {
             it[notifyIdKey] ?: 0
+        }
+    }
+
+    fun getLanguage(): Flow<String> {
+        return context.dataStore.data.catch { e ->
+            if (e is IOException) {
+                emit(emptyPreferences())
+            } else {
+                throw e
+            }
+        }.map {
+            it[languageKey] ?: ""
+        }
+    }
+
+    fun getIsFirstEnter(): Flow<Boolean> {
+        return context.dataStore.data.catch { e ->
+            if (e is IOException) {
+                emit(emptyPreferences())
+            } else {
+                throw e
+            }
+        }.map {
+            it[isFirstEnterKey] ?: true
         }
     }
 }

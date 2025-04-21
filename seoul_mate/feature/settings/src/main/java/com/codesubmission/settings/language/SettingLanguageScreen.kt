@@ -24,6 +24,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.codesubmission.settings.R
+import com.seoulmate.datastore.repository.Language
 import com.seoulmate.ui.component.PpsButton
 import com.seoulmate.ui.component.PpsText
 import com.seoulmate.ui.theme.Blue500
@@ -35,15 +36,15 @@ import com.seoulmate.ui.theme.TrueWhite
 @Composable
 fun SettingLanguageScreen(
     onBackClick: () -> Unit = {},
-    onCompleteClick: () -> Unit = {},
+    onCompleteClick: (languageCode: String) -> Unit = {},
 ) {
-    val languageList = listOf(
-        R.string.language_ko,
-        R.string.language_en,
+    val languageList = mutableListOf(
+        Language.KOREAN.code,
+        Language.ENGLISH.code
     )
-    val (selectedOption, onOptionSelected)
+    val selectedOption
     = remember { mutableStateOf(languageList[0]) }
-
+    
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -101,14 +102,16 @@ fun SettingLanguageScreen(
                 )
                 Column {
                     languageList.forEach {
-                        val selected = it == selectedOption
+                        val selected = it == selectedOption.value
+                        val languageStr = if (it == Language.KOREAN.code) R.string.language_ko else R.string.language_en
+
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             verticalAlignment = Alignment.CenterVertically,
                         ) {
                             IconButton(
                                 modifier = Modifier.size(40.dp),
-                                onClick = { onOptionSelected(it) },
+                                onClick = { selectedOption.value = it },
                             ) {
                                 Icon(
                                     modifier = Modifier.size(24.dp),
@@ -123,7 +126,7 @@ fun SettingLanguageScreen(
                             PpsText(
                                 modifier = Modifier
                                     .padding(horizontal = 15.dp),
-                                text = stringResource(it),
+                                text = stringResource(languageStr),
                                 style = TextStyle(
                                     fontSize = 16.sp,
                                     color = CoolGray900,
@@ -140,7 +143,7 @@ fun SettingLanguageScreen(
                     .padding(15.dp),
                 stringRes = com.seoulmate.ui.R.string.str_complete,
             ) {
-                onCompleteClick()
+                onCompleteClick(selectedOption.value)
             }
         }
     }

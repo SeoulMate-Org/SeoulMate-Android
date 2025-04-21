@@ -121,17 +121,17 @@ fun HomeScreen(
                 fineLocationPermissionState.launchMultiplePermissionRequest()
             }
 
-            backgroundLocationPermissionState?.let {
-                if (it.status.shouldShowRationale) {
-                    val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
-                        flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                        data = "package:${context.packageName}".toUri()
-                    }
-                    context.startActivity(intent)
-                } else {
-                    it.launchPermissionRequest()
-                }
-            }
+//            backgroundLocationPermissionState?.let {
+//                if (it.status.shouldShowRationale) {
+//                    val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+//                        flags = Intent.FLAG_ACTIVITY_NEW_TASK
+//                        data = "package:${context.packageName}".toUri()
+//                    }
+//                    context.startActivity(intent)
+//                } else {
+//                    it.launchPermissionRequest()
+//                }
+//            }
 
         }
     }
