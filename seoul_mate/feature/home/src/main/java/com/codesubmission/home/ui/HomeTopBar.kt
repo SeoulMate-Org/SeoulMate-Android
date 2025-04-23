@@ -55,7 +55,7 @@ fun HomeTopBar(
                 title = {
                     PpsText(
                         modifier = Modifier.wrapContentSize(),
-                        text = stringResource(com.seoulmate.ui.R.string.bottom_nav_favorite_title),
+                        text = "Logo",
                         style = MaterialTheme.typography.titleSmall.copy(
                             color = CoolGray900,
                         ),
@@ -67,7 +67,7 @@ fun HomeTopBar(
                     ) {
                         Icon(
                             modifier = Modifier.size(25.dp),
-                            painter = painterResource(id = com.seoulmate.ui.R.drawable.ic_bottom_nav_map),
+                            painter = painterResource(id = com.seoulmate.ui.R.drawable.ic_search),
                             contentDescription = "Search Icon",
                             tint = Black,
                         )

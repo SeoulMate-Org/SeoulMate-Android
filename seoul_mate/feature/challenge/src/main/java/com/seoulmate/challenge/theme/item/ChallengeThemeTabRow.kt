@@ -1,21 +1,16 @@
-package com.codesubmission.home.ui.challenge
+package com.seoulmate.challenge.theme.item
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.PagerState
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SecondaryTabRow
-import androidx.compose.material3.Surface
+import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRowDefaults
-import androidx.compose.material3.Text
+import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -28,9 +23,8 @@ import com.seoulmate.ui.theme.TrueWhite
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ChallengeTabRow(
+fun ChallengeThemeTabRow(
     modifier: Modifier = Modifier
         .fillMaxWidth()
         .height(41.dp)
@@ -40,13 +34,13 @@ fun ChallengeTabRow(
     pagerState: PagerState,
 ) {
     val currentSelectedTabIndex = pagerState.currentPage
-    SecondaryTabRow(
+    ScrollableTabRow(
         modifier = modifier,
         selectedTabIndex = currentSelectedTabIndex,
-        indicator = {
+        indicator = { tabPositions ->
             TabRowDefaults.SecondaryIndicator(
                 modifier = Modifier.tabIndicatorOffset(
-                    currentSelectedTabIndex,
+                    tabPositions[currentSelectedTabIndex]
                 ),
                 height = 2.dp,
                 color = Blue500,

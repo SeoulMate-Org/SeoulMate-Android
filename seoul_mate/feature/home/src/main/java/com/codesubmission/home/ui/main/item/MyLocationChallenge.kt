@@ -11,11 +11,13 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,14 +32,18 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.constraintlayout.compose.ConstraintLayout
 import com.codesubmission.home.R
 import com.seoulmate.data.model.ChallengeItemData
 import com.seoulmate.ui.component.ChallengeSquareImageTypeLayout
 import com.seoulmate.ui.component.PpsText
 import com.seoulmate.ui.theme.Blue500
+import com.seoulmate.ui.theme.Color1D8EFE
+import com.seoulmate.ui.theme.CoolGray600
 import com.seoulmate.ui.theme.CoolGray900
 import com.seoulmate.ui.theme.SeoulMateTheme
 import com.seoulmate.ui.theme.TrueWhite
+import kotlin.math.max
 
 /**
  * 내 근처 챌린지 / 현재 위치에서 스탬프
@@ -46,21 +52,33 @@ import com.seoulmate.ui.theme.TrueWhite
 fun MyLocationChallenge(
     modifier: Modifier,
     isLoginUser: Boolean,
+    isLocationPermission: Boolean = false,
     possibleStampList: List<ChallengeItemData> = listOf(),
     onSignUpClick: () -> Unit = {},
+    onLocationPermissionClick: () -> Unit = {},
 ) {
 
     Surface(
         modifier = modifier,
     ) {
-        if (isLoginUser) {
-            Column {
+        if (isLoginUser && isLocationPermission) {
+            Column (
+                modifier = Modifier.padding(horizontal = 20.dp)
+            ){
                 PpsText(
                     modifier = Modifier.fillMaxWidth(),
                     text = stringResource(R.string.home_my_location_possible_stamp_title),
-                    style = TextStyle(
-                        fontSize = 20.sp,
+                    style = MaterialTheme.typography.titleMedium.copy(
                         color = CoolGray900,
+                    ),
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 1,
+                )
+                PpsText(
+                    modifier = Modifier.fillMaxWidth().padding(top = 4.dp),
+                    text = stringResource(R.string.home_my_location_possible_stamp_sub),
+                    style = MaterialTheme.typography.labelLarge.copy(
+                        color = CoolGray600,
                     ),
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 1,
@@ -69,26 +87,81 @@ fun MyLocationChallenge(
                     possibleStampList = possibleStampList,
                 )
             }
-        } else {
-            Column {
-                PpsText(
-                    modifier = Modifier.fillMaxWidth(),
-                    text = stringResource(R.string.home_my_location_sign_up_title),
-                    style = TextStyle(
-                        fontSize = 20.sp,
-                        color = CoolGray900,
-                    ),
-                    overflow = TextOverflow.Ellipsis,
-                    maxLines = 1,
+        } else if (!isLoginUser)  {
+            Surface(modifier = Modifier.padding(horizontal = 20.dp)) {
+                SignUpTile(
+                    onSignUpClick = onSignUpClick
                 )
-                SignUpTile {
-
-                }
             }
-
+        } else if (!isLocationPermission) {
+            Surface(modifier = Modifier.padding(horizontal = 20.dp)) {
+                LocationPermissionTile(
+                    onLocationPermissionClick = onLocationPermissionClick
+                )
+            }
         }
     }
 
+}
+
+@Composable
+fun LocationPermissionTile(
+    onLocationPermissionClick: () -> Unit,
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+            .clip(RoundedCornerShape(16.dp))
+            .background(color = Color1D8EFE)
+            .clickable {
+                onLocationPermissionClick()
+            },
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center,
+        ) {
+            Column(
+                modifier = Modifier.padding(start = 15.dp).weight(1f),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.Start,
+            ) {
+                PpsText(
+                    modifier = Modifier,
+                    text = stringResource(R.string.home_my_location_permission_content_title),
+                    style = MaterialTheme.typography.bodyLarge.copy(
+                        color = TrueWhite,
+                    ),
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            }
+            ConstraintLayout {
+                val (img, button) = createRefs()
+
+                Image(
+                    modifier = Modifier.size(66.dp),
+                    painter = painterResource(com.seoulmate.ui.R.drawable.img_location_point),
+                    contentDescription = "SignUp Image",
+                )
+
+                Box(
+                    modifier = Modifier
+                ) {
+                    PpsText(
+                        modifier = Modifier,
+                        text = stringResource(R.string.home_my_location_permission_content_sub_title),
+                        style = MaterialTheme.typography.labelLarge.copy(
+                            color = Blue500,
+                        ),
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                }
+            }
+        }
+    }
 }
 
 @Composable
@@ -100,7 +173,7 @@ fun SignUpTile(
             .fillMaxWidth()
             .wrapContentHeight()
             .clip(RoundedCornerShape(16.dp))
-            .background(color = Blue500)
+            .background(color = Color1D8EFE)
             .clickable {
                 onSignUpClick()
             },
@@ -110,27 +183,23 @@ fun SignUpTile(
             horizontalArrangement = Arrangement.Center,
         ) {
             Column(
-                modifier = Modifier.padding(horizontal = 15.dp),
+                modifier = Modifier.padding(start = 15.dp).weight(1f),
                 verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally,
+                horizontalAlignment = Alignment.Start,
             ) {
                 PpsText(
-                    modifier = Modifier.wrapContentSize(),
+                    modifier = Modifier,
                     text = stringResource(R.string.home_my_location_sign_up_content_title),
-                    style = TextStyle(
-                        fontSize = 16.sp,
-                        lineHeight = 27.sp,
+                    style = MaterialTheme.typography.bodyLarge.copy(
                         color = TrueWhite,
                     ),
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
                 )
                 PpsText(
-                    modifier = Modifier.wrapContentSize(),
+                    modifier = Modifier.padding(top = 4.dp),
                     text = stringResource(R.string.home_my_location_sign_up_content_sub_title),
-                    style = TextStyle(
-                        fontSize = 12.sp,
-                        lineHeight = 27.sp,
+                    style = MaterialTheme.typography.labelSmall.copy(
                         color = TrueWhite,
                     ),
                     maxLines = 1,
@@ -138,7 +207,7 @@ fun SignUpTile(
                 )
             }
             Image(
-                painter = painterResource(com.seoulmate.ui.R.drawable.ic_empty_challenge),
+                painter = painterResource(com.seoulmate.ui.R.drawable.img_location_point),
                 contentDescription = "SignUp Image",
             )
         }
@@ -158,7 +227,7 @@ fun PossibleStampList(
             key = { _, item -> item.id }
         ) { index, item ->
             Box(
-                modifier = Modifier.padding(horizontal = 15.dp)
+                modifier = Modifier.padding(top = 16.dp)
             ) {
                 ChallengeSquareImageTypeLayout(
                     item = item,

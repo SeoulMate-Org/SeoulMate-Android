@@ -4,9 +4,12 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -19,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.seoulmate.ui.theme.Blue50
 import com.seoulmate.ui.theme.Blue500
+import com.seoulmate.ui.theme.CoolGray200
 import com.seoulmate.ui.theme.CoolGray500
 import com.seoulmate.ui.theme.CoolGray900
 import com.seoulmate.ui.theme.SeoulMateTheme
@@ -28,7 +32,8 @@ import com.seoulmate.ui.theme.TrueWhite
 fun RoundedTag(
     title: String = "",
     isSelected: Boolean = false,
-    defaultColor: Color = CoolGray900,
+    defaultColor: Color = CoolGray200,
+    defaultFontColor: Color = CoolGray900,
     defaultBackgroundColor: Color = TrueWhite,
     selectedColor: Color = Blue500,
     selectedBackgroundColor: Color = Blue50,
@@ -36,7 +41,8 @@ fun RoundedTag(
 ) {
     Box(
         modifier = Modifier
-            .wrapContentSize()
+            .height(30.dp)
+            .wrapContentWidth()
             .clip(RoundedCornerShape(12.dp))
             .border(
                 width = 1.dp,
@@ -51,11 +57,10 @@ fun RoundedTag(
     ) {
         PpsText(
             modifier = Modifier
-                .padding(horizontal = 7.dp, vertical = 2.dp),
+                .padding(horizontal = 12.dp, vertical = 8.dp),
             text = title,
-            style = TextStyle(
-                fontSize = 12.sp,
-                color = if(isSelected) selectedColor else defaultColor,
+            style = MaterialTheme.typography.labelSmall.copy(
+                color = if(isSelected) selectedColor else defaultFontColor,
             )
         )
 

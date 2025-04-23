@@ -65,6 +65,7 @@ fun HomeScreen(
     windowAdaptiveInfo: WindowAdaptiveInfo = currentWindowAdaptiveInfo(),
     onChangeScreen: (screen: Screen) -> Unit = {_ -> },
     onChallengeItemClick: (item: ChallengeItemData) -> Unit = {},
+    onThemeMorClick: () -> Unit = {},
     firstShowLogin: () -> Unit = {},
 ) {
 
@@ -208,6 +209,7 @@ fun HomeScreen(
                     context = context,
                     onScreenChange = onChangeScreen,
                     onChallengeItemClick = onChallengeItemClick,
+                    onThemeMoreClick = onThemeMorClick,
                 )
                 HomeBottomNav(
                     modifier = Modifier

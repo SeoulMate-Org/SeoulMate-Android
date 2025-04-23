@@ -20,5 +20,7 @@
 
     <string name="str_login">로그인</string>
     <string name="str_need_login">로그인이 필요합니다</string>
-    <string name="str_need_login_description">해당 기능은 로그인 후 이용하실 수 있습니다.</string>"
+    <string name="str_need_login_description">해당 기능은 로그인 후 이용하실 수 있습니다.</string>
+
+    <string name="str_major_location">주요 동네</string>
 </resources>

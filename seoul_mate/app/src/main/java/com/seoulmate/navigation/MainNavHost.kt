@@ -12,6 +12,7 @@ import com.codesubmission.settings.badge.SettingMyBadgeScreen
 import com.codesubmission.settings.notification.SettingNotificationScreen
 import com.seoulmate.challenge.detail.ChallengeDetailScreen
 import com.seoulmate.challenge.reply.ChallengeReplyListScreen
+import com.seoulmate.challenge.theme.ChallengeThemeListScreen
 import com.seoulmate.data.model.PlaceInfoData
 import com.seoulmate.login.LoginScreen
 import com.seoulmate.places.ui.PlaceInfoDetailScreen
@@ -67,6 +68,9 @@ fun MainNavHost(
                 },
                 firstShowLogin = {
                     appState.firstShowLogin()
+                },
+                onThemeMorClick = {
+                    appState.navigate(Screen.ChallengeThemeList)
                 }
             )
         }
@@ -94,6 +98,12 @@ fun MainNavHost(
             ChallengeDetailScreen(
                 item = appState.selectedChallengeItem.value,
                 onBackClick = { appState.navController.popBackStack() }
+            )
+        }
+        composable(route = Screen.ChallengeThemeList.route) {
+            ChallengeThemeListScreen(
+                coroutineScope = appState.coroutineScope,
+                onBackClick = { appState.navController.popBackStack() },
             )
         }
         composable(route = Screen.SettingLanguage.route) {

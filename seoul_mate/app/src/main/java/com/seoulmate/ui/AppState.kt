@@ -41,7 +41,7 @@ fun rememberAppState(
 @Stable
 class AppState(
     val navController: NavHostController,
-    coroutineScope: CoroutineScope,
+    val coroutineScope: CoroutineScope,
     private val context: Context,
     private val viewModel: MainViewModel,
     startLogin: Boolean = false,

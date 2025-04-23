@@ -20,6 +20,7 @@ fun HomeNavHost(
     context: Context,
     onScreenChange: (screen: Screen) -> Unit = {_ -> },
     onChallengeItemClick: (item: ChallengeItemData) -> Unit = {},
+    onThemeMoreClick: () -> Unit = {},
 ) {
     NavHost(
         navController = appState.navController,
@@ -28,7 +29,8 @@ fun HomeNavHost(
     ) {
         composable(route = Screen.HomeMain.route) {
             HomeMainScreen(
-                onChallengeItemClick = onChallengeItemClick
+                onChallengeItemClick = onChallengeItemClick,
+                onThemeMoreClick = onThemeMoreClick,
             )
 //            GeofencingScreen(
 //                context,

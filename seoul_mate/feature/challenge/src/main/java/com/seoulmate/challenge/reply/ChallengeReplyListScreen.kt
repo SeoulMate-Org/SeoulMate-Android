@@ -52,6 +52,7 @@ import com.seoulmate.ui.theme.TrueWhite
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChallengeReplyListScreen(
+
     onBackClick: () -> Unit = {},
 ) {
     val focusManager = LocalFocusManager.current

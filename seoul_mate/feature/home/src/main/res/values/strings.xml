@@ -15,13 +15,18 @@
     <string name="empty_challenge_info">여러 챌린지를 찾아보고 추가하세요.</string>
     <string name="find_challenge">챌린지 찾아보기</string>
 
-    <string name="home_my_location_sign_up_title">📍 내 근처 챌린지</string>
-    <string name="home_my_location_sign_up_content_title">회원가입하고\n챌린지에 참여해보세요</string>
-    <string name="home_my_location_sign_up_content_sub_title">서울을 여행하며 스탬프와 뱃지를 모아보세요.</string>
+    <string name="home_top_title">⛳️ 지금 바로\n도전 가능한 챌린지!</string>
 
-    <string name="home_my_location_possible_stamp_title">🏅 현재 위치에서 스탬프 찍을 수 있어요!</string>
+    <string name="home_my_location_sign_up_content_title">지금 가입하고\n가까운 챌린지를 참여해봐요!</string>
+    <string name="home_my_location_sign_up_content_sub_title">근처 장소부터 쉽게 참여할 수 있어요</string>
 
-    <string name="home_challenge_category_title">🎡 참여 가능 챌린지</string>
+    <string name="home_my_location_permission_content_title">근처 챌린지를 찾으려면\n위치 권한이 필요해요</string>
+    <string name="home_my_location_permission_content_sub_title">위치정보\n허용하기</string>
+
+    <string name="home_my_location_possible_stamp_title">🏅근처 챌린, 놓치지 마세요!</string>
+    <string name="home_my_location_possible_stamp_sub">바로 근처에서 스탬프를 찍을 수 있어요</string>
+
+    <string name="home_challenge_category_title">🎡 테마별로 골라보는 챌린지</string>
 
     <string name="home_challenge_ranking_title">🏅 챌린지 랭킹</string>
     <string name="home_challenge_ranking_sub_title">챌린지의 랭킹을 뭐 보여줍니다</string>

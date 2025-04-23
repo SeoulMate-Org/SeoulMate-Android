@@ -13,4 +13,6 @@
     <string name="stamp_mission_location_info">아래 장소를 방문하면 스탬프가 찍혀요</string>
 
     <string name="stamp_floating">남은 장소 방문하고 뱃지 받기!</string>
+
+    <string name="title_theme">테마별 챌린지</string>
 </resources>

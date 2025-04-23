@@ -1,5 +1,6 @@
 package com.codesubmission.home.ui.main.item
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -9,17 +10,24 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.seoulmate.data.model.ChallengeItemData
 import com.seoulmate.ui.component.ChallengeBigSquareImageTypeLayout
+import com.seoulmate.ui.theme.Blue500
+import com.seoulmate.ui.theme.Color1D8EFE
 import com.seoulmate.ui.theme.SeoulMateTheme
+import com.seoulmate.ui.theme.TrueWhite
 
 @Composable
 fun HorizontalCarousel(
     modifier: Modifier = Modifier
         .fillMaxWidth()
-        .height(400.dp),
+        .background(color = Color.Transparent)
+        .height(280.dp),
     itemList: List<ChallengeItemData>,
 ) {
     val contentPadding = 40.dp
