@@ -7,4 +7,16 @@
 
     <string name="notification_title">Notification</string>
     <string name="app_push_notification_title">aaabbbccccc</string>
+
+    <string name="badge_title">My Badge</string>
+
+    <string name="badge_item_01">aaaaaaaaa</string>
+    <string name="badge_item_02">bbbbbbbbb</string>
+    <string name="badge_item_03">ccccc &amp; ccc</string>
+    <string name="badge_item_04">ddddddd</string>
+    <string name="badge_item_05">vvvv &amp; vvvv</string>
+    <string name="badge_item_06">eeeee &amp; eeeeee</string>
+    <string name="badge_item_07">qqqqq &amp; qqqq</string>
+    <string name="badge_item_08">wwwww &amp; wwww</string>
+    <string name="badge_item_09">ttttttttt</string>
 </resources>

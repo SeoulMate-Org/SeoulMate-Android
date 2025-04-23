@@ -17,6 +17,8 @@ fun LoginNavHost(
     modifier: Modifier,
     activityContext: Context,
     viewModel: LoginViewModel,
+    onSkipClick: () -> Unit,
+    onSuccessLogin: () -> Unit,
 ) {
     NavHost(
         navController = loginState.navController,
@@ -26,12 +28,15 @@ fun LoginNavHost(
         composable(route = Screen.Login.route) {
             RequestLoginScreen (
                 activityContext,
+                viewModel,
                 onGoogleLoginClick = { token ->
                     viewModel.getLoginInfo(token, "GOOGLE")
                 },
                 onFacebookLoginClick = { token ->
                     viewModel.getLoginInfo(token, "FACEBOOK")
-                }
+                },
+                onSkipClick = onSkipClick,
+                succeedLogin = onSuccessLogin,
             )
         }
     }

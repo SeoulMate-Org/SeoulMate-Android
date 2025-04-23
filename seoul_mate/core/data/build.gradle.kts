@@ -54,6 +54,8 @@ dependencies {
     implementation(libs.okhttp.logging)
     implementation(libs.okhttp.profiler)
 
+    implementation(libs.android.gms.location)
+
     implementation(libs.android.google.id)
     implementation(libs.androidx.credentials)
     implementation(libs.androidx.credentials.play.services.auth)

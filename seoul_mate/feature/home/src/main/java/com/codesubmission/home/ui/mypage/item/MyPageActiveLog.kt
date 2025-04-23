@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.codesubmission.home.R
 import com.seoulmate.ui.component.PpsText
+import com.seoulmate.ui.noRippleClickable
 import com.seoulmate.ui.theme.Black
 import com.seoulmate.ui.theme.CoolGray400
 import com.seoulmate.ui.theme.CoolGray75
@@ -33,6 +34,7 @@ fun MyPageActiveLog(
     cntBadge: Int = 0,
     cntFavorite: Int = 0,
     cntReply: Int = 0,
+    onBadgeClick: () -> Unit = {},
 ) {
     Row(
         modifier = Modifier
@@ -48,7 +50,10 @@ fun MyPageActiveLog(
         Column(
             modifier = Modifier
                 .weight(1f)
-                .padding(8.dp),
+                .padding(8.dp)
+                .noRippleClickable {
+                    onBadgeClick()
+                },
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {

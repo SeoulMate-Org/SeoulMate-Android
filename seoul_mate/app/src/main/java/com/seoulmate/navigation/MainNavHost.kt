@@ -1,11 +1,14 @@
 package com.seoulmate.navigation
 
+import android.app.Activity
+import android.content.Intent
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.codesubmission.home.HomeScreen
 import com.codesubmission.settings.language.SettingLanguageScreen
 import com.codesubmission.interest.navigation.interestScreen
+import com.codesubmission.settings.badge.SettingMyBadgeScreen
 import com.codesubmission.settings.notification.SettingNotificationScreen
 import com.seoulmate.challenge.detail.ChallengeDetailScreen
 import com.seoulmate.challenge.reply.ChallengeReplyListScreen
@@ -13,31 +16,28 @@ import com.seoulmate.data.model.PlaceInfoData
 import com.seoulmate.login.LoginScreen
 import com.seoulmate.places.ui.PlaceInfoDetailScreen
 import com.seoulmate.ui.AppState
-import com.seoulmate.ui.SplashScreen
 import com.seoulmate.ui.component.Screen
 import com.seoulmate.ui.component.ScreenGraph
+import com.seoulmate.ui.splash.SplashActivity
 
 @Composable
 fun MainNavHost(
     appState: AppState,
+    startDestination: String = Screen.Home.route,
 ) {
     NavHost(
         navController = appState.navController,
-        startDestination = Screen.Splash.route,
+        startDestination = startDestination,
     ) {
-        composable(route = Screen.Splash.route) {
-            SplashScreen(
-                onNext = {
-                    appState.navigate(Screen.Home)
-                },
-                onClickLogin = {
-                    appState.navigate(Screen.Login)
-                }
-            )
-        }
         composable(route = Screen.Login.route) {
             LoginScreen(
-                appState.getContext
+                appState.getContext,
+                onSkipClick = {
+                    appState.navController.popBackStack()
+                },
+                onSuccessLogin = {
+                    appState.navController.popBackStack()
+                }
             )
         }
         // TODO chan need remove
@@ -64,6 +64,9 @@ fun MainNavHost(
                 onChallengeItemClick = { item ->
                     appState.selectedChallengeItem.value = item
                     appState.navigate(Screen.ChallengeDetail)
+                },
+                firstShowLogin = {
+                    appState.firstShowLogin()
                 }
             )
         }
@@ -98,7 +101,10 @@ fun MainNavHost(
                 onBackClick = { appState.navController.popBackStack() },
                 onCompleteClick = { languageCode ->
                     appState.selectedLanguage(languageCode)
-                    appState.navController.popBackStack()
+                    appState.getContext.startActivity(
+                        Intent(appState.getContext, SplashActivity::class.java)
+                    )
+                    (appState.getContext as Activity).finish()
                 }
             )
         }
@@ -107,7 +113,13 @@ fun MainNavHost(
                 onBackClick = { appState.navController.popBackStack() },
             )
         }
+        composable(route = Screen.SettingMyBadge.route) {
+            SettingMyBadgeScreen(
+                onBackClick = { appState.navController.popBackStack() },
+            )
+        }
     }
 }
+
 
 

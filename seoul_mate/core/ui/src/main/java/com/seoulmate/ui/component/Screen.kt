@@ -30,4 +30,5 @@ sealed class Screen(val route: String) {
 
     data object SettingLanguage: Screen("settingLanguage")
     data object SettingNotification: Screen("settingNotification")
+    data object SettingMyBadge: Screen("settingMyBadge")
 }

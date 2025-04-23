@@ -1,5 +1,6 @@
 package com.seoulmate.ui.splash
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -7,11 +8,15 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.compose.material3.Surface
+import androidx.compose.runtime.mutableStateOf
 import androidx.core.os.LocaleListCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
+import com.seoulmate.data.UserInfo
 import com.seoulmate.datastore.repository.Language
 import com.seoulmate.datastore.repository.dataStore
+import com.seoulmate.ui.main.MainActivity
 import com.seoulmate.ui.theme.SeoulMateTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -22,10 +27,18 @@ class SplashActivity : ComponentActivity()  {
 
     private val viewModel: SplashViewModel by viewModels()
 
+    companion object {
+        const val SCREEN_KEY = "SCREEN_KEY"
+        const val LOGIN_SCREEN = "LOGIN_SCREEN"
+    }
+
+    var isFirst = mutableStateOf(true)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         viewModel.reqSplashInit()
+
 
         Log.d("@@@@", "Splash Locale Language : ${Locale.getDefault().language}")
         val localeLanguageIsKorean = Locale.getDefault().language == Language.KOREAN.code
@@ -41,17 +54,35 @@ class SplashActivity : ComponentActivity()  {
                 SplashScreen(
                     context = this,
                     viewModel = viewModel,
+                    isFirst = isFirst.value,
+                    moveLogin = { enterLogin() },
+                    moveMain = { enterMain() },
                 )
             }
         }
 
         lifecycleScope.launch {
-            viewModel.languageFlow.collect { language ->
-                Log.e("@@@@@", "Splash languageFlow collect : $language")
-                if (language.isNotEmpty()) {
-                    Log.e("@@@@@", "Splash languageFlow collect isNotEmpty : $language")
+            //
+            viewModel.splashInitDataFlow.collect { splashInitData ->
+                Log.e("@@@@@", "Splash splashInitDataFlow collect : $splashInitData")
+                with(splashInitData) {
+                    isFirst.value = isFirstEnter
+                    if (isFirst.value) {
+//                        viewModel.updateIsFirstEnter(false)
+                    }
 
-                    changeLanguage(language)
+                    if (language.isNotEmpty()) {
+                        Log.e("@@@@@", "Splash languageFlow collect isNotEmpty : ${language}")
+
+                        changeLanguage(language)
+                    }
+
+                    userData?.let {
+                        if (it.nickName.isNotEmpty()) {
+                            Log.e("@@@@@", "Splash userInfoFlow collect isNotEmpty : $userData")
+                        }
+                    }
+
                 }
 
             }
@@ -81,5 +112,28 @@ class SplashActivity : ComponentActivity()  {
             // Call this on the main thread as it may require Activity.restart()
             AppCompatDelegate.setApplicationLocales(appLocale)
         }
+    }
+
+    /**
+     * Move MainActivity - HomeScreen
+     */
+    private fun enterMain() {
+        startActivity(
+            Intent(this, MainActivity::class.java)
+        )
+        finish()
+    }
+
+    /**
+     * Move MainActivity - LoginScreen
+     */
+    private fun enterLogin() {
+        startActivity(
+            Intent(this, MainActivity::class.java)
+                .apply {
+                    putExtra(SCREEN_KEY, LOGIN_SCREEN)
+                }
+        )
+        finish()
     }
 }

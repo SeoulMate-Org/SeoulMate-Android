@@ -9,6 +9,10 @@ class GetLoginInfoUseCase @Inject constructor(
     private val loginRepository: LoginRepository,
 ) {
 
-    suspend fun getLoginInfo(token: String, loginType: String): Flow<LoginDto?> =
-        loginRepository.getLoginInfo(token = token, loginType = loginType)
+    suspend fun getLoginInfo(
+        token: String,
+        loginType: String,
+        languageCode: String,
+    ): Flow<LoginDto?> =
+        loginRepository.getLoginInfo(token = token, loginType = loginType, languageCode = languageCode)
 }

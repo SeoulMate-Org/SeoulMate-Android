@@ -50,11 +50,8 @@ fun HomeNavHost(
                 onLoginClick = {
                     onScreenChange(Screen.Login)
                 },
-                onSettingLanguageClick = {
-                    onScreenChange(Screen.SettingLanguage)
-                },
-                onSettingNotificationClick = {
-                    onScreenChange(Screen.SettingNotification)
+                onChangeScreen = { screen ->
+                    onScreenChange(screen)
                 },
                 showSnackBar = { snackType, snackText ->
                     appState.showSnackBar(snackType, snackText)

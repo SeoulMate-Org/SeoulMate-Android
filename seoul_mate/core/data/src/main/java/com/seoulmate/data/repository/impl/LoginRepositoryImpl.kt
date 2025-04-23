@@ -12,8 +12,18 @@ class LoginRepositoryImpl @Inject constructor(
     private val apiService: ApiService,
 ): LoginRepository {
 
-    override suspend fun getLoginInfo(token: String, loginType: String): Flow<LoginDto?> = flow {
-        val response = apiService.reqLogin(LoginReqData(token = token, loginType = loginType))
+    override suspend fun getLoginInfo(
+        token: String,
+        loginType: String,
+        languageCode: String
+    ): Flow<LoginDto?> = flow {
+        val response = apiService.reqLogin(
+            LoginReqData(
+                token = token,
+                loginType = loginType,
+                languageCode = languageCode,
+            )
+        )
         emit(response.body())
     }
 

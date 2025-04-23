@@ -7,5 +7,6 @@ interface LoginRepository {
     suspend fun getLoginInfo(
         token: String,
         loginType: String,
+        languageCode: String,
     ): Flow<LoginDto?>
 }

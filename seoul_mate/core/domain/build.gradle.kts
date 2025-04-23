@@ -25,7 +25,8 @@ android {
 dependencies {
 
     implementation(projects.core.data)
-    
+    implementation(projects.core.database)
+
     implementation(libs.moshi.kotlin)
 
 }

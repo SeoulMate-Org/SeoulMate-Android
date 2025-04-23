@@ -38,21 +38,27 @@ internal val SeoulMateTypography = Typography(
         lineHeight = 44.sp,
         letterSpacing = 0.sp,
     ),
+    // ButtonL
     headlineLarge = TextStyle(
-        fontWeight = FontWeight.Normal,
-        fontSize = 32.sp,
+        fontFamily = PretendardFont,
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 18.sp,
         lineHeight = 40.sp,
         letterSpacing = 0.sp,
     ),
+    // ButtonM
     headlineMedium = TextStyle(
-        fontWeight = FontWeight.Normal,
-        fontSize = 28.sp,
+        fontFamily = PretendardFont,
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 16.sp,
         lineHeight = 36.sp,
         letterSpacing = 0.sp,
     ),
+    // ButtonS
     headlineSmall = TextStyle(
-        fontWeight = FontWeight.Normal,
-        fontSize = 24.sp,
+        fontFamily = PretendardFont,
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 12.sp,
         lineHeight = 32.sp,
         letterSpacing = 0.sp,
         lineHeightStyle = LineHeightStyle(
@@ -60,8 +66,10 @@ internal val SeoulMateTypography = Typography(
             trim = Trim.None,
         ),
     ),
+    // Title1
     titleLarge = TextStyle(
-        fontWeight = FontWeight.Bold,
+        fontFamily = PretendardFont,
+        fontWeight = FontWeight.SemiBold,
         fontSize = 22.sp,
         lineHeight = 28.sp,
         letterSpacing = 0.sp,
@@ -70,21 +78,26 @@ internal val SeoulMateTypography = Typography(
             trim = Trim.LastLineBottom,
         ),
     ),
+    // Title2
     titleMedium = TextStyle(
-        fontWeight = FontWeight.Bold,
-        fontSize = 18.sp,
+        fontFamily = PretendardFont,
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 20.sp,
         lineHeight = 24.sp,
         letterSpacing = 0.1.sp,
     ),
+    // Title3
     titleSmall = TextStyle(
-        fontWeight = FontWeight.Medium,
-        fontSize = 14.sp,
+        fontFamily = PretendardFont,
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 18.sp,
         lineHeight = 20.sp,
         letterSpacing = 0.1.sp,
     ),
-    // Default text style
+    // BodyM
     bodyLarge = TextStyle(
-        fontWeight = FontWeight.Normal,
+        fontFamily = PretendardFont,
+        fontWeight = FontWeight.SemiBold,
         fontSize = 16.sp,
         lineHeight = 24.sp,
         letterSpacing = 0.5.sp,
@@ -93,30 +106,35 @@ internal val SeoulMateTypography = Typography(
             trim = Trim.None,
         ),
     ),
+    // BodyM
     bodyMedium = TextStyle(
-        fontWeight = FontWeight.Normal,
-        fontSize = 14.sp,
-        lineHeight = 20.sp,
+        fontFamily = PretendardFont,
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 16.sp,
+        lineHeight = 24.sp,
         letterSpacing = 0.25.sp,
     ),
+    // BodyS
     bodySmall = TextStyle(
-        fontWeight = FontWeight.Normal,
-        fontSize = 12.sp,
-        lineHeight = 16.sp,
+        fontFamily = PretendardFont,
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 14.sp,
+        lineHeight = 21.sp,
         letterSpacing = 0.4.sp,
     ),
-    // Used for Button
+    // CaptionL
     labelLarge = TextStyle(
-        fontWeight = FontWeight.Medium,
-        fontSize = 14.sp,
-        lineHeight = 20.sp,
+        fontFamily = PretendardFont,
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 13.sp,
+        lineHeight = 18.sp,
         letterSpacing = 0.1.sp,
         lineHeightStyle = LineHeightStyle(
             alignment = Alignment.Center,
             trim = Trim.LastLineBottom,
         ),
     ),
-    // Used for Navigation items
+
     labelMedium = TextStyle(
         fontWeight = FontWeight.Medium,
         fontSize = 12.sp,
@@ -127,10 +145,11 @@ internal val SeoulMateTypography = Typography(
             trim = Trim.LastLineBottom,
         ),
     ),
-    // Used for Tag
+    // CaptionSB
     labelSmall = TextStyle(
+        fontFamily = PretendardFont,
         fontWeight = FontWeight.Medium,
-        fontSize = 10.sp,
+        fontSize = 13.sp,
         lineHeight = 14.sp,
         letterSpacing = 0.sp,
         lineHeightStyle = LineHeightStyle(

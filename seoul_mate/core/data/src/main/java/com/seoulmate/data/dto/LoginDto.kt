@@ -6,6 +6,7 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class LoginDto(
     @Json(name = "email") val email: String,
+    @Json(name = "nickname") val nickName: String,
     @Json(name = "accessToken") val accessToken: String,
     @Json(name = "refreshToken") val refreshToken: String,
 )

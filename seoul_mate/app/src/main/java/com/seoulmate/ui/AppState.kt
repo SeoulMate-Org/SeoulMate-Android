@@ -13,7 +13,6 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.seoulmate.data.model.ChallengeItemData
-import com.seoulmate.login.LoginActivity
 import com.seoulmate.ui.component.Screen
 import com.seoulmate.ui.main.MainViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -24,6 +23,7 @@ fun rememberAppState(
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
     navController: NavHostController = rememberNavController(),
     context: Context,
+    startLogin: Boolean = false,
     viewModel: MainViewModel,
 ): AppState = remember(
     navController,
@@ -34,6 +34,7 @@ fun rememberAppState(
         coroutineScope = coroutineScope,
         context = context,
         viewModel = viewModel,
+        startLogin = startLogin,
     )
 }
 
@@ -43,9 +44,15 @@ class AppState(
     coroutineScope: CoroutineScope,
     private val context: Context,
     private val viewModel: MainViewModel,
+    startLogin: Boolean = false,
 ) {
     private val previousDestination = mutableStateOf<NavDestination?>(null)
     val selectedChallengeItem = mutableStateOf<ChallengeItemData?>(null)
+    private var isShowLoading = mutableStateOf(false)
+    private var isShowServiceLoading = viewModel.isShowLoading.value
+    private var userData = mutableStateOf(viewModel.userData.value)
+
+    private var firstShowLogin = mutableStateOf(startLogin)
 
     val currentDestination: NavDestination?
         @Composable get() {
@@ -61,14 +68,27 @@ class AppState(
             } ?: previousDestination.value
         }
 
+    val getShowLoadingFlag: Boolean = isShowLoading.value || isShowServiceLoading
+
     val getContext: Context get() = this.context
 
     fun navigate(screen: Screen) {
         navController.navigate(screen.route)
     }
 
+    fun firstShowLogin() {
+        if (firstShowLogin.value) {
+            firstShowLogin.value = false
+            navController.navigate(Screen.Login.route)
+        }
+    }
+
     fun selectedLanguage(languageCode: String) {
         viewModel.updateLanguage(languageCode)
+    }
+
+    fun refreshUserToken() {
+        viewModel.refreshUserToken()
     }
 
 }

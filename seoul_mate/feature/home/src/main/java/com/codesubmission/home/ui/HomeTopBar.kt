@@ -6,6 +6,7 @@ import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TopAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -34,11 +35,9 @@ fun HomeTopBar(
                     PpsText(
                         modifier = Modifier.wrapContentSize(),
                         text = stringResource(com.seoulmate.ui.R.string.bottom_nav_my_title),
-                        style = TextStyle(
-                            fontSize = 18.sp,
+                        style = MaterialTheme.typography.titleSmall.copy(
                             color = CoolGray900,
                         ),
-                        fontWeight = FontWeight.SemiBold,
                     )
                 },
                 colors = TopAppBarColors(
@@ -57,10 +56,8 @@ fun HomeTopBar(
                     PpsText(
                         modifier = Modifier.wrapContentSize(),
                         text = stringResource(com.seoulmate.ui.R.string.bottom_nav_favorite_title),
-                        style = TextStyle(
-                            fontSize = 18.sp,
+                        style = MaterialTheme.typography.titleSmall.copy(
                             color = CoolGray900,
-                            fontWeight = FontWeight.SemiBold,
                         ),
                     )
                 },
@@ -92,11 +89,9 @@ fun HomeTopBar(
                     PpsText(
                         modifier = Modifier.wrapContentSize(),
                         text = stringResource(com.seoulmate.ui.R.string.bottom_nav_challenge_title),
-                        style = TextStyle(
-                            fontSize = 18.sp,
+                        style = MaterialTheme.typography.titleSmall.copy(
                             color = CoolGray900,
                         ),
-                        fontWeight = FontWeight.SemiBold,
                     )
                 },
                 colors = TopAppBarColors(

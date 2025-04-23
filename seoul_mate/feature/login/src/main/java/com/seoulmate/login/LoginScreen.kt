@@ -30,11 +30,14 @@ import kotlinx.coroutines.launch
 @Composable
 fun LoginScreen(
     activityContext: Context,
+    onSkipClick: () -> Unit,
+    onSuccessLogin: () -> Unit,
 ) {
     
     val viewModel = hiltViewModel<LoginViewModel>()
 
     LaunchedEffect(Unit) {
+        viewModel.updateIsFirstEnter(false)
     }
 
     Surface(
@@ -46,6 +49,8 @@ fun LoginScreen(
             modifier = Modifier.fillMaxSize(),
             activityContext = activityContext,
             viewModel = viewModel,
+            onSkipClick = onSkipClick,
+            onSuccessLogin = onSuccessLogin,
         )
     }
 

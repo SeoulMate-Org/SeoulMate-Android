@@ -34,10 +34,10 @@ import com.seoulmate.ui.theme.White
 @Composable
 fun MyPageLoginInfo(
     isLogin: Boolean = false,
+    nickname: String = "",
     onLoginClick: () -> Unit = {},
     onNickNameClick: () -> Unit = {},
 ) {
-    val id = "Eusseuk Gomusin"
     val email = "ABC@gmail.com"
 
     Column(
@@ -57,7 +57,7 @@ fun MyPageLoginInfo(
         ) {
             PpsText(
                 modifier = Modifier.weight(1f),
-                text = if (isLogin) id
+                text = if (isLogin) nickname
                 else stringResource(R.string.my_page_need_login),
                 style = TextStyle(
                     fontSize = 22.sp,

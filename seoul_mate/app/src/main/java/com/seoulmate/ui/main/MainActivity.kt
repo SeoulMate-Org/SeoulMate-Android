@@ -1,6 +1,5 @@
 package com.seoulmate.ui.main
 
-import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -10,8 +9,10 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewModelScope
+import com.seoulmate.data.UserInfo
 import com.seoulmate.navigation.MainNavHost
+import com.seoulmate.ui.AppState
+import com.seoulmate.ui.component.Screen
 import com.seoulmate.ui.rememberAppState
 import com.seoulmate.ui.theme.SeoulMateTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,6 +27,10 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        lifecycleScope.launch {
+            viewModel.reqMainInit()
+        }
+
         setContent {
             SeoulMateTheme {
                 // A surface container using the 'background' color from the theme
@@ -33,11 +38,13 @@ class MainActivity : ComponentActivity() {
                     appState = rememberAppState(
                         context = this,
                         viewModel = viewModel,
+                        startLogin = !intent.getStringExtra("SCREEN_KEY").isNullOrEmpty()
                     ),
                 )
             }
         }
 
+        // Update User Language
         lifecycleScope.launch {
             viewModel.languageFlow.collect { language ->
                 Log.e("@@@@@", "Main languageFlow collect : $language")
@@ -67,10 +74,6 @@ class MainActivity : ComponentActivity() {
 
             }
         }
-    }
-
-    override fun attachBaseContext(newBase: Context?) {
-        super.attachBaseContext(newBase)
     }
 
 }

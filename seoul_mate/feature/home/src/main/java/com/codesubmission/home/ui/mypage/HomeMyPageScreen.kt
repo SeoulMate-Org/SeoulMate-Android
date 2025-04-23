@@ -11,12 +11,17 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.codesubmission.home.ui.mypage.item.MyPageActiveLog
 import com.codesubmission.home.ui.mypage.item.MyPageLoginInfo
 import com.codesubmission.home.ui.mypage.item.MyPagePermission
 import com.codesubmission.home.ui.mypage.item.MyPageServiceInfo
+import com.seoulmate.data.UserInfo
+import com.seoulmate.ui.component.Screen
 import com.seoulmate.ui.component.SnackBarType
 import com.seoulmate.ui.theme.CoolGray25
 
@@ -24,10 +29,15 @@ import com.seoulmate.ui.theme.CoolGray25
 fun HomeMyPageScreen(
     showSnackBar: (SnackBarType, String) -> Unit,
     onLoginClick: () -> Unit = {},
-    onSettingLanguageClick: () -> Unit = {},
-    onSettingNotificationClick: () -> Unit = {},
+    onChangeScreen: (Screen) -> Unit = {},
     onNickNameClick: () -> Unit = {},
 ) {
+    val rememberNickName = remember { mutableStateOf(UserInfo.nickName) }
+
+    LaunchedEffect(UserInfo.nickName) {
+        rememberNickName.value = UserInfo.nickName
+    }
+
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = CoolGray25
@@ -39,6 +49,8 @@ fun HomeMyPageScreen(
             // Login Info
             item {
                 MyPageLoginInfo(
+                    isLogin = rememberNickName.value.isNotEmpty(),
+                    nickname = rememberNickName.value,
                     onLoginClick = onLoginClick
                 )
             }
@@ -47,7 +59,11 @@ fun HomeMyPageScreen(
                 Box(modifier = Modifier
                     .padding(top = 40.dp),
                 ) {
-                    MyPageActiveLog()
+                    MyPageActiveLog(
+                        onBadgeClick = {
+                            onChangeScreen(Screen.SettingMyBadge)
+                        }
+                    )
                 }
             }
             // Permission
@@ -56,8 +72,12 @@ fun HomeMyPageScreen(
                     .padding(top = 30.dp),
                 ) {
                     MyPagePermission(
-                        onLanguageClick = onSettingLanguageClick,
-                        onNotificationClick = onSettingNotificationClick,
+                        onLanguageClick = {
+                            onChangeScreen(Screen.SettingLanguage)
+                        },
+                        onNotificationClick = {
+                            onChangeScreen(Screen.SettingNotification)
+                        },
                     )
                 }
             }

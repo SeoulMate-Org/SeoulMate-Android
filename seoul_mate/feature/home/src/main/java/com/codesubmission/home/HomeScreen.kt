@@ -1,11 +1,16 @@
 package com.codesubmission.home
 
 import android.Manifest
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.Location
 import android.os.Build
 import android.provider.Settings
 import android.util.Log
+import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -23,7 +28,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import com.codesubmission.home.navigation.HomeBottomNav
 import com.codesubmission.home.navigation.HomeNavHost
 import com.codesubmission.home.ui.HomeTopBar
@@ -42,6 +49,9 @@ import com.seoulmate.ui.component.snackBarType
 import com.seoulmate.ui.theme.TrueWhite
 import kotlinx.coroutines.coroutineScope
 import androidx.core.net.toUri
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.seoulmate.data.UserInfo
 import com.seoulmate.data.model.ChallengeItemData
 import com.seoulmate.ui.R
 import com.seoulmate.ui.component.PpsAlertDialog
@@ -55,9 +65,11 @@ fun HomeScreen(
     windowAdaptiveInfo: WindowAdaptiveInfo = currentWindowAdaptiveInfo(),
     onChangeScreen: (screen: Screen) -> Unit = {_ -> },
     onChallengeItemClick: (item: ChallengeItemData) -> Unit = {},
+    firstShowLogin: () -> Unit = {},
 ) {
 
     val homeState = rememberHomeState()
+    val viewModel = hiltViewModel<HomeViewModel>()
 
     val permissionState = rememberMultiplePermissionsState(permissions = homeState.getAllPermissionList())
 
@@ -133,9 +145,38 @@ fun HomeScreen(
 //                }
 //            }
 
+            firstShowLogin()
+
+            val locationPermission = listOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+            if (locationPermission.all {
+                    ContextCompat.checkSelfPermission(
+                        context,
+                        it
+                    ) == PackageManager.PERMISSION_GRANTED
+                }) {
+                viewModel.getLastLocation()
+            }
+
         }
     }
 
+    LaunchedEffect(viewModel.lastLocation.value) {
+        viewModel.lastLocation.value?.let {
+            Log.d("@@@@@@", "lastLocation : ${it.latitude} , ${it.longitude}")
+            val testLocation = Location("test").apply {
+                latitude = 37.5686076
+                longitude = 126.9816627
+            }
+            val d = viewModel.getLocationDistance(it, testLocation)
+            Log.d("@@@@@@", "getLocationDistance : $d")
+        }
+    }
+
+    LaunchedEffect(UserInfo.nickName) {
+        Log.d("@@@@@@", "HomeScreen : ${UserInfo.nickName}")
+    }
+
+    BackOnPressed()
     Scaffold(
         topBar = {
             HomeTopBar(
@@ -179,8 +220,11 @@ fun HomeScreen(
                         homeState.navigate(Screen.HomeMyPage.route)
                     },
                     onChallengeClick = {
-//                        homeState.navigate(Screen.HomeChallenge.route)
-                        showLoginAlertDialog = true
+                        if (UserInfo.isUserLogin()) {
+                            homeState.navigate(Screen.HomeChallenge.route)
+                        } else {
+                            showLoginAlertDialog = true
+                        }
                     },
                     selectedRoute = currentDestination?.route ?: ""
                 )
@@ -197,6 +241,7 @@ fun HomeScreen(
                             showLoginAlertDialog = false
                         },
                         onClickConfirm = {
+                            onChangeScreen(Screen.Login)
                             showLoginAlertDialog = false
                         },
                     )
@@ -306,4 +351,23 @@ fun HomeScreen(
 //    }
 }
 
+
+// 뒤로 가기 두 번 눌렀을 때 앱 종료
+@Composable
+fun BackOnPressed() {
+    val context = LocalContext.current
+    var backPressedState by remember { mutableStateOf(true) }
+    var backPressedTime = 0L
+
+    BackHandler(enabled = backPressedState) {
+        if(System.currentTimeMillis() - backPressedTime <= 400L) {
+            // 앱 종료
+            (context as Activity).finish()
+        } else {
+            backPressedState = true
+            Toast.makeText(context, "한 번 더 누르시면 앱이 종료됩니다.", Toast.LENGTH_SHORT).show()
+        }
+        backPressedTime = System.currentTimeMillis()
+    }
+}
 
