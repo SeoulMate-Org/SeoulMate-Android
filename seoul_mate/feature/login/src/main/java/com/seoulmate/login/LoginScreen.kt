@@ -46,7 +46,6 @@ fun LoginScreen(
         LoginNavHost(
             loginState = rememberLoginState(),
             modifier = Modifier.fillMaxSize(),
-            isFirst = viewModel.isFirstEnter.value,
             activityContext = activityContext,
             viewModel = viewModel,
             onSkipClick = onSkipClick,

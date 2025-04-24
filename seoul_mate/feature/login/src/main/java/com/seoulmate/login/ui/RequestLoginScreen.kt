@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -25,13 +26,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.credentials.CredentialManager
 import androidx.credentials.CustomCredential
 import androidx.credentials.GetCredentialRequest
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException
@@ -40,6 +44,7 @@ import com.facebook.login.LoginResult
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
+import com.seoulmate.data.UserInfo
 import com.seoulmate.login.BuildConfig
 import com.seoulmate.login.LoginViewModel
 import com.seoulmate.login.R
@@ -56,7 +61,6 @@ import java.util.Locale
 fun RequestLoginScreen(
     activityContext: Context,
     viewModel: LoginViewModel,
-    isFirst: Boolean = false,
     onGoogleLoginClick: (String) -> Unit,
     onFacebookLoginClick: (String) -> Unit,
     onSkipClick: () -> Unit,
@@ -146,25 +150,31 @@ fun RequestLoginScreen(
             contentDescription = "Splash Image",
         )
 
-        if (isFirst) {
+        if (viewModel.isFirstEnter.value != null && viewModel.isFirstEnter.value == true) {
             // Skip
             Button(
                 modifier = Modifier
                     .constrainAs(skip) {
                         top.linkTo(parent.top, margin = 55.dp)
-                        end.linkTo(parent.end, margin = 35.dp)
+                        end.linkTo(parent.end, margin = 15.dp)
                     },
+                colors = ButtonColors(
+                    containerColor = Color.Transparent,
+                    contentColor = Color.Transparent,
+                    disabledContainerColor = Color.Transparent,
+                    disabledContentColor = Color.Transparent,
+                ),
                 onClick = onSkipClick,
             ) {
                 PpsText(
                     modifier = Modifier,
-                    text = "SKIP",
-                    style = MaterialTheme.typography.labelLarge.copy(
+                    text = stringResource(R.string.str_skip),
+                    style = MaterialTheme.typography.bodySmall.copy(
                         color = TrueWhite
                     )
                 )
             }
-        } else {
+        } else if(viewModel.isFirstEnter.value != null && viewModel.isFirstEnter.value == false) {
             // Back
             IconButton (
                 modifier = Modifier
@@ -195,7 +205,13 @@ fun RequestLoginScreen(
                 modifier = Modifier.noRippleClickable {
                     launcher.launch(listOf("email", "public_profile"))
                 },
-                painter = painterResource(R.drawable.img_facebook_login),
+                painter = painterResource(
+                    if (UserInfo.localeLanguage == "ko") {
+                        R.drawable.img_facebook_login
+                    } else {
+                        R.drawable.img_facebook_login_eng
+                    }
+                ),
                 contentDescription = "Facebook Login"
             )
             Image(
@@ -232,7 +248,13 @@ fun RequestLoginScreen(
                         }
                     }
                 },
-                painter = painterResource(R.drawable.img_google_login),
+                painter = painterResource(
+                    if (UserInfo.localeLanguage == "ko") {
+                        R.drawable.img_google_login
+                    } else {
+                        R.drawable.img_google_login_eng
+                    }
+                ),
                 contentDescription = "Google Login"
             )
         }

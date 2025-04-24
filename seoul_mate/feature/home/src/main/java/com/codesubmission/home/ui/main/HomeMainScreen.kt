@@ -39,8 +39,6 @@ import com.codesubmission.home.ui.main.item.ChallengeCategory
 import com.codesubmission.home.ui.main.item.ChallengeRanking
 import com.codesubmission.home.ui.main.item.HorizontalCarousel
 import com.codesubmission.home.ui.main.item.MyLocationChallenge
-import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.seoulmate.data.UserInfo
 import com.seoulmate.data.model.ChallengeItemData
 import com.seoulmate.ui.component.ChallengeRankingTileTypeLayout
@@ -48,6 +46,7 @@ import com.seoulmate.ui.component.PpsText
 import com.seoulmate.ui.component.Screen
 import com.seoulmate.ui.theme.Color1D8EFE
 import com.seoulmate.ui.theme.CoolGray25
+import com.seoulmate.ui.theme.MainTopGradientStart
 import com.seoulmate.ui.theme.TrueWhite
 
 @Composable
@@ -152,7 +151,7 @@ fun HomeMainScreen(
                 Column(
                     modifier = Modifier
                         .background(
-                            brush = Brush.verticalGradient(listOf(Color1D8EFE, TrueWhite)),
+                            brush = Brush.verticalGradient(listOf(MainTopGradientStart, TrueWhite)),
                             shape = RectangleShape,
                             alpha = 1f,
                         )
@@ -323,6 +322,10 @@ fun HomeMainScreen(
                         onMoreClick = onThemeMoreClick,
                     )
                 }
+            }
+            // Missing Challenge
+            item {
+
             }
             // Challenge Ranking
             item {

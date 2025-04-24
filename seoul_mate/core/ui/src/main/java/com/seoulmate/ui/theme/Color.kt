@@ -57,3 +57,6 @@ val Color2B2B2B = Color(0xFF2B2B2B)
 
 val SplashGradientStart = Color(0xFF0058EE)
 val SplashGradientEnd = Color(0xFF649DFF)
+
+val MainTopGradientStart = Color(0xFF0B80FF)
+val MainMissingChallengeGradientStart = Color(0xFF47ABF1)

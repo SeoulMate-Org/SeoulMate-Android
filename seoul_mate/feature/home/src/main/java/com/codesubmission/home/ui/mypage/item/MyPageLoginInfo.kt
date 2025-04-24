@@ -1,5 +1,6 @@
 package com.codesubmission.home.ui.mypage.item
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -78,27 +79,18 @@ fun MyPageLoginInfo(
         }
         // User Email
         if (isLogin) {
-            // TODO chan
             when (loginType) {
                 "GOOGLE" -> {
-                    Box(
-                        modifier = Modifier
-                            .background(
-                                color = Blue400,
-                                shape = RoundedCornerShape(10.dp),
-                            )
-                    ) {
-                        PpsText(
-                            modifier = Modifier
-                                .wrapContentSize()
-                                .padding(horizontal = 10.dp, vertical = 5.dp,),
-                            text = loginType,
-                            style = TextStyle(
-                                fontSize = 12.sp,
-                                color = White ,
-                            ),
-                        )
-                    }
+                    Image(
+                        painterResource(com.seoulmate.ui.R.drawable.ic_label_google),
+                        contentDescription = "Google"
+                    )
+                }
+                "FACKBOOK" -> {
+                    Image(
+                        painterResource(com.seoulmate.ui.R.drawable.ic_label_facebook),
+                        contentDescription = "Google"
+                    )
                 }
             }
         } else {

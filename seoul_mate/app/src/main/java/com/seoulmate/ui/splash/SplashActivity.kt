@@ -6,16 +6,14 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.mutableStateOf
 import androidx.core.os.LocaleListCompat
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewModelScope
 import com.seoulmate.data.UserInfo
 import com.seoulmate.datastore.repository.Language
-import com.seoulmate.datastore.repository.dataStore
 import com.seoulmate.ui.main.MainActivity
 import com.seoulmate.ui.theme.SeoulMateTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -39,13 +37,17 @@ class SplashActivity : ComponentActivity()  {
 
         viewModel.reqSplashInit()
 
+        enableEdgeToEdge()
 
         Log.d("@@@@", "Splash Locale Language : ${Locale.getDefault().language}")
         val localeLanguageIsKorean = Locale.getDefault().language == Language.KOREAN.code
-        val languageCode = if (localeLanguageIsKorean) {
-            "ko"
+        var languageCode = ""
+        if (localeLanguageIsKorean) {
+            languageCode = "ko"
+            UserInfo.localeLanguage = "ko"
         } else {
-            "en"
+            languageCode = "en"
+            UserInfo.localeLanguage = "en"
         }
         changeLanguage(languageCode)
 
@@ -68,9 +70,6 @@ class SplashActivity : ComponentActivity()  {
                 Log.e("@@@@@", "Splash splashInitDataFlow collect : $splashInitData")
                 with(splashInitData) {
                     isFirst.value = isFirstEnter
-                    if (isFirst.value) {
-//                        viewModel.updateIsFirstEnter(false)
-                    }
 
                     if (language.isNotEmpty()) {
                         Log.e("@@@@@", "Splash languageFlow collect isNotEmpty : ${language}")

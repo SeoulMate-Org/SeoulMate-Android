@@ -71,8 +71,10 @@ class LoginViewModel @Inject constructor(
 
     fun loadIsFirstEnter() {
         viewModelScope.launch {
-            preferDataStoreRepository.loadIsFirstEnter().collectLatest {
-                isFirstEnter.value = it
+            preferDataStoreRepository.loadIsFirstEnter().collect {
+                if (isFirstEnter.value == null) {
+                    isFirstEnter.value = it
+                }
                 if (it) {
                     updateIsFirstEnter()
                 }

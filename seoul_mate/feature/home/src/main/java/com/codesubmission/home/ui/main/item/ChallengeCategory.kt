@@ -7,8 +7,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
@@ -17,6 +19,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.MaterialTheme
@@ -44,6 +47,8 @@ import com.seoulmate.ui.component.ChallengeSquareImageTypeLayout
 import com.seoulmate.ui.component.PpsText
 import com.seoulmate.ui.component.RoundedTag
 import com.seoulmate.ui.theme.CoolGray400
+import com.seoulmate.ui.theme.CoolGray700
+import com.seoulmate.ui.theme.CoolGray75
 import com.seoulmate.ui.theme.CoolGray900
 import com.seoulmate.ui.theme.SeoulMateTheme
 
@@ -174,14 +179,27 @@ fun PagerIndicator(pageCount: Int, currentPageIndex: Int, modifier: Modifier = M
             horizontalArrangement = Arrangement.Center
         ) {
             repeat(pageCount) { iteration ->
-                val color = if (currentPageIndex == iteration) Color.DarkGray else Color.LightGray
-                Box(
-                    modifier = modifier
-                        .padding(2.dp)
-                        .clip(CircleShape)
-                        .background(color)
-                        .size(16.dp)
-                )
+                val color = if (currentPageIndex == iteration) CoolGray700 else CoolGray75
+
+                if (currentPageIndex == iteration) {
+                    Box(
+                        modifier = modifier
+                            .padding(2.dp)
+                            .clip(RoundedCornerShape(4.dp))
+                            .background(color)
+                            .height(8.dp)
+                            .width(16.dp)
+                    )
+                } else {
+                    Box(
+                        modifier = modifier
+                            .padding(2.dp)
+                            .clip(CircleShape)
+                            .background(color)
+                            .size(8.dp)
+                    )
+                }
+
             }
         }
     }

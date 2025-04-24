@@ -1,6 +1,5 @@
 package com.seoulmate.ui.splash
 
-import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -63,6 +62,8 @@ class SplashViewModel @Inject constructor(
             }.collectLatest { splashInitData ->
                 _splashInitDataFlow.emit(splashInitData)
 
+                UserInfo.localeLanguage = splashInitData.language
+
                 splashInitData.userData?.let {
                     with(UserInfo) {
                         nickName = it.nickName
@@ -95,7 +96,7 @@ class SplashViewModel @Inject constructor(
                     ChallengeInfo.themeList = data.themeList
                     ChallengeInfo.allItemList = data.itemList
                     ChallengeInfo.myChallengeList = data.myChallengeList
-                    isShowLoading.value = false
+//                    isShowLoading.value = false
                 }
             } else {
                 combine(themeFlow, allItemFlow) { themeList, allItemList ->
@@ -103,7 +104,7 @@ class SplashViewModel @Inject constructor(
                 }.collectLatest { data ->
                     ChallengeInfo.themeList = data.themeList
                     ChallengeInfo.allItemList = data.itemList
-                    isShowLoading.value = false
+//                    isShowLoading.value = false
                 }
             }
 

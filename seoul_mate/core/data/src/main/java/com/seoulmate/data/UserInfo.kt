@@ -5,6 +5,7 @@ object UserInfo {
     var accessToken: String = ""
     var refreshToken: String = ""
     var loginType: String = ""
+    var localeLanguage: String = ""
 
     fun isUserLogin(): Boolean = accessToken.isNotEmpty()
 }

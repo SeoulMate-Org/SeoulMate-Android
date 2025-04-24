@@ -16,6 +16,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.codesubmission.home.R
 import com.seoulmate.ui.component.PpsText
 import com.seoulmate.ui.component.Screen
 import com.seoulmate.ui.theme.Black
@@ -53,25 +54,11 @@ fun HomeTopBar(
         Screen.HomeMain.route -> {
             CenterAlignedTopAppBar(
                 title = {
-                    PpsText(
-                        modifier = Modifier.wrapContentSize(),
-                        text = "Logo",
-                        style = MaterialTheme.typography.titleSmall.copy(
-                            color = CoolGray900,
-                        ),
+                    Icon(
+                        painter = painterResource(com.seoulmate.ui.R.drawable.ic_logo),
+                        contentDescription = "Logo Icon",
+                        tint = CoolGray900,
                     )
-                },
-                actions = {
-                    IconButton(
-                        onClick = onSearchClick
-                    ) {
-                        Icon(
-                            modifier = Modifier.size(25.dp),
-                            painter = painterResource(id = com.seoulmate.ui.R.drawable.ic_search),
-                            contentDescription = "Search Icon",
-                            tint = Black,
-                        )
-                    }
                 },
                 colors = TopAppBarColors(
                     containerColor = TrueWhite,
