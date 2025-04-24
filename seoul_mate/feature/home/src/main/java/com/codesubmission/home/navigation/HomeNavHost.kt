@@ -1,8 +1,11 @@
 package com.codesubmission.home.navigation
 
 import android.content.Context
+import android.content.Intent
+import android.provider.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.core.net.toUri
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.codesubmission.home.location.geofencing.GeofencingScreen
@@ -18,7 +21,7 @@ fun HomeNavHost(
     appState: HomeState,
     modifier: Modifier,
     context: Context,
-    onScreenChange: (screen: Screen) -> Unit = {_ -> },
+    onScreenChange: (screen: Screen) -> Unit = { _ -> },
     onChallengeItemClick: (item: ChallengeItemData) -> Unit = {},
     onThemeMoreClick: () -> Unit = {},
 ) {
@@ -29,8 +32,12 @@ fun HomeNavHost(
     ) {
         composable(route = Screen.HomeMain.route) {
             HomeMainScreen(
+                context = context,
                 onChallengeItemClick = onChallengeItemClick,
                 onThemeMoreClick = onThemeMoreClick,
+                onChangeScreen = { screen ->
+                    onScreenChange(screen)
+                },
             )
 //            GeofencingScreen(
 //                context,

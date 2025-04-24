@@ -12,10 +12,7 @@ import kotlinx.coroutines.flow.Flow
 interface UserDao {
 
     @Query(
-        value = """
-        SELECT * FROM userInfo
-        WHERE id = 0
-    """,
+        "SELECT * FROM userInfo"
     )
     fun getUser(): Flow<UserEntity?>
 

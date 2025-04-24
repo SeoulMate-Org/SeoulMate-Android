@@ -1,6 +1,6 @@
 package com.seoulmate.domain.usecase
 
-import com.seoulmate.data.dto.LoginDto
+import com.seoulmate.data.dto.auth.LoginDto
 import com.seoulmate.data.repository.LoginRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject

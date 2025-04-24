@@ -1,10 +1,13 @@
 package com.seoulmate.data.di
 
 import com.seoulmate.data.api.ApiService
+import com.seoulmate.data.api.ApiServiceExceptToke
 import com.seoulmate.data.api.NaverMapApiService
+import com.seoulmate.data.repository.ChallengeRepository
 import com.seoulmate.data.repository.GeocodeRepository
 import com.seoulmate.data.repository.PreferDataStoreRepository
 import com.seoulmate.data.repository.LoginRepository
+import com.seoulmate.data.repository.impl.ChallengeRepositoryImpl
 import com.seoulmate.data.repository.impl.GeocodeRepositoryImpl
 import com.seoulmate.data.repository.impl.PreferDataStoreRepositoryImpl
 import com.seoulmate.data.repository.impl.LoginRepositoryImpl
@@ -30,7 +33,7 @@ object RepositoryModule {
     @Provides
     @Singleton
     fun providerLoginRepository(
-        service: ApiService,
+        service: ApiServiceExceptToke,
     ): LoginRepository = LoginRepositoryImpl(
         service
     )
@@ -41,6 +44,14 @@ object RepositoryModule {
         dataStore: DataStoreRepository
     ): PreferDataStoreRepository = PreferDataStoreRepositoryImpl(
         dataStore,
+    )
+
+    @Provides
+    @Singleton
+    fun providerChallengeRepository(
+        service: ApiService,
+    ): ChallengeRepository = ChallengeRepositoryImpl(
+        service
     )
 
 }

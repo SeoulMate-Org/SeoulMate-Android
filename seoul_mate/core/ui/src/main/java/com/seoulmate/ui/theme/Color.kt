@@ -54,3 +54,6 @@ val IntroBlue = Color(0xFF005EFE)
 val ColorEDF4FF = Color(0xFFEDF4FF)
 val Color1D8EFE = Color(0xFF1D8EFE)
 val Color2B2B2B = Color(0xFF2B2B2B)
+
+val SplashGradientStart = Color(0xFF0058EE)
+val SplashGradientEnd = Color(0xFF649DFF)

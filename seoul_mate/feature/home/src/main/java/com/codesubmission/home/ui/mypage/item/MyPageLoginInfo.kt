@@ -35,11 +35,10 @@ import com.seoulmate.ui.theme.White
 fun MyPageLoginInfo(
     isLogin: Boolean = false,
     nickname: String = "",
+    loginType: String = "",
     onLoginClick: () -> Unit = {},
     onNickNameClick: () -> Unit = {},
 ) {
-    val email = "ABC@gmail.com"
-
     Column(
         modifier = Modifier
             .fillMaxWidth(),
@@ -78,25 +77,51 @@ fun MyPageLoginInfo(
             }
         }
         // User Email
-        Box(
-            modifier = Modifier
-                .background(
-                    color = if (isLogin) CoolGray50 else Blue400,
-                    shape = RoundedCornerShape(10.dp),
-                )
-        ) {
-            PpsText(
+        if (isLogin) {
+            // TODO chan
+            when (loginType) {
+                "GOOGLE" -> {
+                    Box(
+                        modifier = Modifier
+                            .background(
+                                color = Blue400,
+                                shape = RoundedCornerShape(10.dp),
+                            )
+                    ) {
+                        PpsText(
+                            modifier = Modifier
+                                .wrapContentSize()
+                                .padding(horizontal = 10.dp, vertical = 5.dp,),
+                            text = loginType,
+                            style = TextStyle(
+                                fontSize = 12.sp,
+                                color = White ,
+                            ),
+                        )
+                    }
+                }
+            }
+        } else {
+            Box(
                 modifier = Modifier
-                    .wrapContentSize()
-                    .padding(horizontal = 10.dp, vertical = 5.dp,),
-                text = if (isLogin) email
-                else stringResource(R.string.my_page_need_login_info),
-                style = TextStyle(
-                    fontSize = 12.sp,
-                    color = if (isLogin) CoolGray600 else White,
-                ),
-            )
+                    .background(
+                        color = Blue400,
+                        shape = RoundedCornerShape(10.dp),
+                    )
+            ) {
+                PpsText(
+                    modifier = Modifier
+                        .wrapContentSize()
+                        .padding(horizontal = 10.dp, vertical = 5.dp,),
+                    text = stringResource(R.string.my_page_need_login_info),
+                    style = TextStyle(
+                        fontSize = 12.sp,
+                        color = White ,
+                    ),
+                )
+            }
         }
+
     }
 }
 

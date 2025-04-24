@@ -11,6 +11,8 @@ import android.provider.Settings
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -51,6 +53,7 @@ import kotlinx.coroutines.coroutineScope
 import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.seoulmate.data.ChallengeInfo
 import com.seoulmate.data.UserInfo
 import com.seoulmate.data.model.ChallengeItemData
 import com.seoulmate.ui.R
@@ -157,6 +160,8 @@ fun HomeScreen(
                 }) {
                 viewModel.getLastLocation()
             }
+
+            Log.d("@@@@@@@", "HomeScreen ChallengeInfo : ${ChallengeInfo.themeList} , ${ChallengeInfo.allItemList} , ${ChallengeInfo.myChallengeList}" )
 
         }
     }

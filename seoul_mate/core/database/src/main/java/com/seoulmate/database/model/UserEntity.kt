@@ -14,6 +14,8 @@ data class UserEntity(
     @ColumnInfo(defaultValue = "")
     val nickName: String,
     @ColumnInfo(defaultValue = "")
+    val loginType: String,
+    @ColumnInfo(defaultValue = "")
     val accessToken: String,
     @ColumnInfo(defaultValue = "")
     val refreshToken: String,
@@ -23,4 +25,5 @@ fun UserEntity.asExternalModel() = UserData(
     nickName = nickName,
     accessToken = accessToken,
     refreshToken = refreshToken,
+    loginType = loginType,
 )

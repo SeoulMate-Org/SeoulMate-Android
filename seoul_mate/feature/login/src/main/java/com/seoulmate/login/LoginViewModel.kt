@@ -23,6 +23,7 @@ class LoginViewModel @Inject constructor(
 ) : ViewModel() {
 
     var isSuccessLogin = mutableStateOf(false)
+    var isFirstEnter = mutableStateOf<Boolean?>(null)
 
     // TODO chan  devices / saved
     fun getLoginInfo(token: String, loginType: String, localeCode: String = "KOR") {
@@ -50,11 +51,13 @@ class LoginViewModel @Inject constructor(
                                 nickName = it.nickName,
                                 accessToken = it.accessToken,
                                 refreshToken = it.refreshToken,
+                                loginType = it.loginType,
                             )
                             with(UserInfo) {
-                                nickName = it.nickName
-                                accessToken = it.accessToken
-                                refreshToken = it.refreshToken
+                                this.nickName = it.nickName
+                                this.accessToken = it.accessToken
+                                this.refreshToken = it.refreshToken
+                                this.loginType = it.loginType
                             }
                             isSuccessLogin.value = true
                         }
@@ -66,9 +69,20 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    fun updateIsFirstEnter(isFirst: Boolean) {
+    fun loadIsFirstEnter() {
         viewModelScope.launch {
-            preferDataStoreRepository.updateIsFirstEnter(isFirst)
+            preferDataStoreRepository.loadIsFirstEnter().collectLatest {
+                isFirstEnter.value = it
+                if (it) {
+                    updateIsFirstEnter()
+                }
+            }
+        }
+    }
+
+    private fun updateIsFirstEnter() {
+        viewModelScope.launch {
+            preferDataStoreRepository.updateIsFirstEnter(false)
         }
     }
 

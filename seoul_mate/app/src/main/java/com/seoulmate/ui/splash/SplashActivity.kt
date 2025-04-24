@@ -64,6 +64,7 @@ class SplashActivity : ComponentActivity()  {
         lifecycleScope.launch {
             //
             viewModel.splashInitDataFlow.collect { splashInitData ->
+                viewModel.reqInit()
                 Log.e("@@@@@", "Splash splashInitDataFlow collect : $splashInitData")
                 with(splashInitData) {
                     isFirst.value = isFirstEnter

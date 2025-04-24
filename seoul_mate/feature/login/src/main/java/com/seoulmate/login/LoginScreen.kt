@@ -33,11 +33,10 @@ fun LoginScreen(
     onSkipClick: () -> Unit,
     onSuccessLogin: () -> Unit,
 ) {
-    
     val viewModel = hiltViewModel<LoginViewModel>()
 
     LaunchedEffect(Unit) {
-        viewModel.updateIsFirstEnter(false)
+        viewModel.loadIsFirstEnter()
     }
 
     Surface(
@@ -47,6 +46,7 @@ fun LoginScreen(
         LoginNavHost(
             loginState = rememberLoginState(),
             modifier = Modifier.fillMaxSize(),
+            isFirst = viewModel.isFirstEnter.value,
             activityContext = activityContext,
             viewModel = viewModel,
             onSkipClick = onSkipClick,

@@ -29,6 +29,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -47,6 +48,7 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ChainStyle
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.seoulmate.challenge.R
 import com.seoulmate.challenge.detail.item.BottomChallengeDetail
 import com.seoulmate.challenge.detail.item.ChallengeStamp
@@ -79,13 +81,13 @@ fun ChallengeDetailScreen(
     startedChallenge: Boolean = false,
     onBackClick: () -> Unit = {},
 ) {
+    val viewModel = hiltViewModel<ChallengeDetailViewModel>()
 
     val challengeMissionLocationList = listOf(
         ChallengeItemData(
             id = 0,
             title = "First Challenge Title",
             imgUrl = "https://cdn.britannica.com/70/234870-050-D4D024BB/Orange-colored-cat-yawns-displaying-teeth.jpg",
-            themeList = listOf("Tag1", "Tag2", "Tag3", "Tag4", "Tag5", "Tag6", "Tag7", "Tag8", "Tag9")
         ),
     )
 
@@ -105,6 +107,10 @@ fun ChallengeDetailScreen(
     )
 
     val isShowBottomFloating = true
+
+    LaunchedEffect(Unit) {
+        viewModel.getChallengeItem(id = 1)
+    }
 
     Scaffold(
         topBar = {
@@ -157,7 +163,7 @@ fun ChallengeDetailScreen(
                     // Top Challenge Info
                     item {
                         item?.let {
-                            TopChallengeDetailInfo(item = item)
+                            TopChallengeDetailInfo(item = viewModel.challengeItem.value)
                         }
                     }
                     // Divider
@@ -313,7 +319,6 @@ private fun PreviewLogin() {
                 id = 0,
                 title = "First Challenge Title",
                 imgUrl = "https://cdn.britannica.com/70/234870-050-D4D024BB/Orange-colored-cat-yawns-displaying-teeth.jpg",
-                themeList = listOf("Tag1", "Tag2", "Tag3", "Tag4", "Tag5", "Tag6", "Tag7", "Tag8", "Tag9")
             )
         )
     }
@@ -328,7 +333,6 @@ private fun PreviewStartChallenge() {
                 id = 0,
                 title = "First Challenge Title",
                 imgUrl = "https://cdn.britannica.com/70/234870-050-D4D024BB/Orange-colored-cat-yawns-displaying-teeth.jpg",
-                themeList = listOf("Tag1", "Tag2", "Tag3", "Tag4", "Tag5", "Tag6", "Tag7", "Tag8", "Tag9")
             ),
             isLogin = true,
             startedChallenge = true,
@@ -345,7 +349,6 @@ private fun PreviewChallenge() {
                 id = 0,
                 title = "First Challenge Title",
                 imgUrl = "https://cdn.britannica.com/70/234870-050-D4D024BB/Orange-colored-cat-yawns-displaying-teeth.jpg",
-                themeList = listOf("Tag1", "Tag2", "Tag3", "Tag4", "Tag5", "Tag6", "Tag7", "Tag8", "Tag9")
             ),
             isLogin = true,
             startedChallenge = false,

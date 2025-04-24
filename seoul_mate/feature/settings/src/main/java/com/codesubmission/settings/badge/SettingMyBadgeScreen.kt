@@ -26,6 +26,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -34,6 +35,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.codesubmission.settings.R
 import com.seoulmate.ui.component.PpsText
 import com.seoulmate.ui.theme.Blue500
@@ -47,6 +49,8 @@ import com.seoulmate.ui.theme.TrueWhite
 fun SettingMyBadgeScreen(
     onBackClick: () -> Unit = {},
 ) {
+    val viewModel = hiltViewModel<SettingMyBadgeViewModel>()
+
     // TODO Need Item Data
     val selectedIconList = listOf(
         com.seoulmate.ui.R.drawable.ic_theme_01,
@@ -93,6 +97,10 @@ fun SettingMyBadgeScreen(
                 defaultIcon = defaultIconList[index],
                 title = titleList[index],)
         )
+    }
+
+    LaunchedEffect(Unit) {
+//        viewModel.refresh()
     }
 
     Scaffold(

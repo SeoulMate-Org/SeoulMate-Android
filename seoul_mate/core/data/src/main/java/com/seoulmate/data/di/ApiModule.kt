@@ -1,6 +1,7 @@
 package com.seoulmate.data.di
 
 import com.seoulmate.data.api.ApiService
+import com.seoulmate.data.api.ApiServiceExceptToke
 import com.seoulmate.data.api.NaverMapApiService
 import dagger.Module
 import dagger.Provides
@@ -22,4 +23,9 @@ object ApiModule {
     @Singleton
     fun baseApiService(@NetworkModule.BaseNetwork baseRetrofit: Retrofit): ApiService =
         baseRetrofit.create(ApiService::class.java)
+
+    @Provides
+    @Singleton
+    fun exceptTokenApiService(@NetworkModule.BaseNetworkExceptToken baseRetrofit: Retrofit): ApiServiceExceptToke =
+        baseRetrofit.create(ApiServiceExceptToke::class.java)
 }

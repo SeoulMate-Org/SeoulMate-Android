@@ -51,6 +51,7 @@ fun HomeMyPageScreen(
                 MyPageLoginInfo(
                     isLogin = rememberNickName.value.isNotEmpty(),
                     nickname = rememberNickName.value,
+                    loginType = UserInfo.loginType,
                     onLoginClick = onLoginClick
                 )
             }

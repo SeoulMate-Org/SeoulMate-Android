@@ -8,7 +8,12 @@ object NetworkConfig {
     }
 
     object Service {
-
+        // Auth
         const val LOGIN = "auth/login"
+        const val REFRESH = "auth/refresh"
+        // Challenge
+        const val CHALLENGE = "challenge"
+        const val CHALLENGE_MY = "challenge/my"
+        const val CHALLENGE_THEME = "challenge/theme"
     }
 }

@@ -15,6 +15,7 @@ import com.seoulmate.ui.component.Screen
 fun LoginNavHost(
     loginState: LoginState,
     modifier: Modifier,
+    isFirst: Boolean?,
     activityContext: Context,
     viewModel: LoginViewModel,
     onSkipClick: () -> Unit,
@@ -29,6 +30,7 @@ fun LoginNavHost(
             RequestLoginScreen (
                 activityContext,
                 viewModel,
+                isFirst = isFirst ?: false,
                 onGoogleLoginClick = { token ->
                     viewModel.getLoginInfo(token, "GOOGLE")
                 },

@@ -28,7 +28,6 @@ import com.seoulmate.ui.theme.TrueWhite
 fun SettingNotificationScreen(
     onBackClick: () -> Unit = {},
 ) {
-
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
