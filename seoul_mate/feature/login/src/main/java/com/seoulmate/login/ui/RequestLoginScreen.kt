@@ -144,7 +144,7 @@ fun RequestLoginScreen(
                 .constrainAs(titleImg) {
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
-                    top.linkTo(parent.top, margin = 75.dp)
+                    top.linkTo(parent.top, margin = 25.dp)
                 },
             painter = painterResource(R.drawable.img_title),
             contentDescription = "Splash Image",
@@ -155,7 +155,7 @@ fun RequestLoginScreen(
             Button(
                 modifier = Modifier
                     .constrainAs(skip) {
-                        top.linkTo(parent.top, margin = 55.dp)
+                        top.linkTo(parent.top, margin = 35.dp)
                         end.linkTo(parent.end, margin = 15.dp)
                     },
                 colors = ButtonColors(
@@ -179,7 +179,7 @@ fun RequestLoginScreen(
             IconButton (
                 modifier = Modifier
                     .constrainAs(back) {
-                        top.linkTo(parent.top, margin = 55.dp)
+                        top.linkTo(parent.top, margin = 35.dp)
                         start.linkTo(parent.start, margin = 8.dp)
                     },
                 onClick = onSkipClick,

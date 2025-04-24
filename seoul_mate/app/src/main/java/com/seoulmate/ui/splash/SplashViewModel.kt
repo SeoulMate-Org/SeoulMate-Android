@@ -96,7 +96,7 @@ class SplashViewModel @Inject constructor(
                     ChallengeInfo.themeList = data.themeList
                     ChallengeInfo.allItemList = data.itemList
                     ChallengeInfo.myChallengeList = data.myChallengeList
-//                    isShowLoading.value = false
+                    isShowLoading.value = false
                 }
             } else {
                 combine(themeFlow, allItemFlow) { themeList, allItemList ->
@@ -104,7 +104,7 @@ class SplashViewModel @Inject constructor(
                 }.collectLatest { data ->
                     ChallengeInfo.themeList = data.themeList
                     ChallengeInfo.allItemList = data.itemList
-//                    isShowLoading.value = false
+                    isShowLoading.value = false
                 }
             }
 
