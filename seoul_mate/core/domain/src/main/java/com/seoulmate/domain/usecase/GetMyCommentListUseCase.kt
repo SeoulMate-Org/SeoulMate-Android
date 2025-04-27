@@ -10,28 +10,27 @@ import javax.inject.Inject
 class GetMyCommentListUseCase @Inject constructor(
     private val challengeRepository: ChallengeRepository,
 ) {
-    operator fun invoke(
-        languageCode: String,
-    ): Flow<List<ChallengeCommentItem>?> = flow {
-        challengeRepository.reqMyCommentLisT(
-            languageCode
-        ).map {
-            if (it.code in 200..299) {
-                it.response?.let { response ->
-                    response.content.map { contentItem ->
-                        ChallengeCommentItem(
-                            id = contentItem.commentId,
-                            comment = contentItem.comment,
-                            createdAt = contentItem.createdAt,
-                            modifiedAt = "",
-                            isMine = contentItem.isMine,
-                            nickname = contentItem.nickname,
-                        )
-                    }
+
+    suspend operator fun invoke(
+        language: String,
+    ): Flow<List<ChallengeCommentItem>?> = challengeRepository.reqMyCommentList(
+        language
+    ).map {
+        if (it.code in 200..299) {
+            it.response?.let { response ->
+                response.content.map { contentItem ->
+                    ChallengeCommentItem(
+                        id = contentItem.commentId,
+                        comment = contentItem.comment,
+                        createdAt = contentItem.createdAt,
+                        modifiedAt = "",
+                        isMine = contentItem.isMine,
+                        nickname = contentItem.nickname,
+                    )
                 }
-            } else {
-                null
             }
+        } else {
+            null
         }
     }
 }

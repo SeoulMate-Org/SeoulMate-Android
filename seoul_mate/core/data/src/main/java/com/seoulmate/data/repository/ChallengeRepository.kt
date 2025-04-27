@@ -4,11 +4,13 @@ import com.seoulmate.data.dto.CommonDto
 import com.seoulmate.data.dto.challenge.ChallengeItemAllDto
 import com.seoulmate.data.dto.challenge.ChallengeItemDetailDto
 import com.seoulmate.data.dto.challenge.ChallengeItemLikeDto
+import com.seoulmate.data.dto.challenge.ChallengeLocationItemDto
 import com.seoulmate.data.dto.challenge.ChallengeStatusDto
 import com.seoulmate.data.dto.challenge.ChallengeThemeDto
 import com.seoulmate.data.dto.challenge.MyChallengeDto
 import com.seoulmate.data.dto.comment.CommentDto
 import com.seoulmate.data.dto.comment.WriteCommentDto
+import com.seoulmate.data.model.request.MyLocationReqData
 import kotlinx.coroutines.flow.Flow
 
 interface ChallengeRepository {
@@ -45,6 +47,12 @@ interface ChallengeRepository {
         id: Int,
     ): Flow<ChallengeItemLikeDto?>
 
+    // fetch challenge list location
+    suspend fun reqChallengeListLocation(
+        locationRequest: MyLocationReqData,
+        language: String = "KOR",
+    ): Flow<CommonDto<List<ChallengeLocationItemDto>?>>
+
     // fetch attraction stamp
     suspend fun reqAttractionStamp(
         id: Int,
@@ -64,8 +72,8 @@ interface ChallengeRepository {
     ): Flow<CommonDto<CommentDto>>
 
     // fetch my comments list
-    suspend fun reqMyCommentLisT(
-        languageCode: String,
+    suspend fun reqMyCommentList(
+        language: String,
     ): Flow<CommonDto<CommentDto>>
 
 }

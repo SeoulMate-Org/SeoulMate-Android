@@ -93,25 +93,25 @@ fun TopChallengeDetailInfo(
                 //
                 ChallengeDetailItem(
                     icon = com.seoulmate.ui.R.drawable.ic_bottom_nav_fill_favorite,
-                    count = 10,
+                    count = item.likedCount,
                 )
                 Spacer(modifier = Modifier.width(15.dp))
                 //
                 ChallengeDetailItem(
                     icon = com.seoulmate.ui.R.drawable.ic_bottom_nav_fill_my,
-                    count = 0,
+                    count = item.progressCount,
                 )
                 Spacer(modifier = Modifier.width(15.dp))
                 //
                 ChallengeDetailItem(
                     icon = com.seoulmate.ui.R.drawable.ic_fill_location,
-                    count = 1,
+                    count = item.attractionCount,
                 )
                 Spacer(modifier = Modifier.width(15.dp))
                 //
                 ChallengeDetailItem(
                     icon = com.seoulmate.ui.R.drawable.ic_fill_reply,
-                    count = 30,
+                    count = item.commentCount,
                 )
                 Spacer(modifier = Modifier.width(15.dp))
             }

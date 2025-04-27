@@ -6,14 +6,19 @@ import androidx.lifecycle.viewModelScope
 import com.seoulmate.data.ChallengeInfo
 import com.seoulmate.data.UserInfo
 import com.seoulmate.data.dto.challenge.MyChallengeType
+import com.seoulmate.data.model.ChallengeCommentItem
 import com.seoulmate.data.model.ChallengeItemData
+import com.seoulmate.data.model.ChallengeLocationItemData
 import com.seoulmate.data.model.ChallengeThemeData
 import com.seoulmate.data.model.MyChallengeItemData
 import com.seoulmate.data.model.UserData
+import com.seoulmate.data.model.request.MyLocationReqData
 import com.seoulmate.data.repository.PreferDataStoreRepository
 import com.seoulmate.domain.usecase.GetAllChallengeItemListUseCase
+import com.seoulmate.domain.usecase.GetChallengeListLocationUseCase
 import com.seoulmate.domain.usecase.GetChallengeThemeListUseCase
 import com.seoulmate.domain.usecase.GetMyChallengeItemListUseCase
+import com.seoulmate.domain.usecase.GetMyCommentListUseCase
 import com.seoulmate.domain.usecase.GetUserInfoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -30,24 +35,25 @@ data class SplashInitData(
 )
 
 data class SplashChallengeInitData(
-    val themeList: List<ChallengeThemeData>,
-    val itemList: List<ChallengeItemData>,
     val myChallengeList: List<MyChallengeItemData> = listOf(),
+    val myCommentList: List<ChallengeCommentItem>?,
+    val myChallengeLocationItemList: List<ChallengeLocationItemData>? = null,
 )
 
 @HiltViewModel
 class SplashViewModel @Inject constructor(
     private val preferDataStoreRepository: PreferDataStoreRepository,
     private val getUserInfoUseCase: GetUserInfoUseCase,
-    private val getChallengeThemeListUseCase: GetChallengeThemeListUseCase,
-    private val getAllChallengeItemListUseCase: GetAllChallengeItemListUseCase,
     private val getMyChallengeItemListUseCase: GetMyChallengeItemListUseCase,
+    private val getMyCommentListUseCase: GetMyCommentListUseCase,
+    private val getChallengeListLocationUseCase: GetChallengeListLocationUseCase,
 ): ViewModel() {
 
     private val _splashInitDataFlow = MutableSharedFlow<SplashInitData>()
     val splashInitDataFlow = _splashInitDataFlow.asSharedFlow()
 
     var isShowLoading = mutableStateOf<Boolean?>(null)
+    var grantedLocationPermission = mutableStateOf(false)
 
     fun reqSplashInit() {
         viewModelScope.launch {
@@ -77,34 +83,42 @@ class SplashViewModel @Inject constructor(
     }
 
     fun reqInit() {
+        val languageCode = if(UserInfo.localeLanguage == "ko") "KOR" else "ENG"
+
         viewModelScope.launch {
-
-            val themeFlow = getChallengeThemeListUseCase()
-            val allItemFlow = getAllChallengeItemListUseCase(
-                page = 0, size = 10,
-            )
-            // TODO chan Language Setting
-            val myChallenge = getMyChallengeItemListUseCase(
-                type = MyChallengeType.PROGRESS.type,
-                language = "KOR",
-            )
-
             if (UserInfo.isUserLogin()) {
-                combine(themeFlow, allItemFlow, myChallenge) { themeList, allItemList, myChallengeList ->
-                    SplashChallengeInitData(themeList, allItemList, myChallengeList)
-                }.collectLatest { data ->
-//                    ChallengeInfo.themeList = data.themeList
-//                    ChallengeInfo.allItemList = data.itemList
-                    UserInfo.myChallengeList = data.myChallengeList
-                    isShowLoading.value = false
-                }
-            } else {
-                combine(themeFlow, allItemFlow) { themeList, allItemList ->
-                    SplashChallengeInitData(themeList, allItemList)
-                }.collectLatest { data ->
-//                    ChallengeInfo.themeList = data.themeList
-//                    ChallengeInfo.allItemList = data.itemList
-                    isShowLoading.value = false
+                val myChallenge = getMyChallengeItemListUseCase(
+                    type = MyChallengeType.PROGRESS.type,
+                    language = languageCode,
+                )
+                val myCommentList = getMyCommentListUseCase(
+                    language = languageCode,
+                )
+                val myChallengeLocationList = getChallengeListLocationUseCase(
+                    locationRequest = MyLocationReqData(
+                        locationX = UserInfo.myLocationX,
+                        locationY = UserInfo.myLocationY,
+                    ),
+                    language = languageCode,
+                )
+
+                if (grantedLocationPermission.value) {
+                    combine(myChallenge, myCommentList, myChallengeLocationList) { myChallengeList, myCommentList, challengeLocationItemList ->
+                        SplashChallengeInitData(myChallengeList, myCommentList, challengeLocationItemList)
+                    }.collectLatest { data ->
+                        UserInfo.myChallengeList = data.myChallengeList
+                        UserInfo.myCommentList = data.myCommentList ?: listOf()
+                        UserInfo.myChallengeLocationList = data.myChallengeLocationItemList ?: listOf()
+                        isShowLoading.value = false
+                    }
+                } else {
+                    combine(myChallenge, myCommentList) { myChallengeList, myCommentList ->
+                        SplashChallengeInitData(myChallengeList, myCommentList)
+                    }.collectLatest { data ->
+                        UserInfo.myChallengeList = data.myChallengeList
+                        UserInfo.myCommentList = data.myCommentList ?: listOf()
+                        isShowLoading.value = false
+                    }
                 }
             }
 

@@ -44,13 +44,20 @@ class GetChallengeItemDetailUseCase @Inject constructor(
                 attractions = attractions,
                 isInterest = it.isLiked ?: false,
                 mainLocation = it.mainLocation,
+                likedCount = it.likedCount,
+                progressCount = it.progressCount,
+                attractionCount = it.attractionCount,
+                commentCount = it.commentCount,
                 comments = it.comments.map {
                     commentItem ->
                     ChallengeCommentItem(
-                        id = commentItem.id,
+                        id = commentItem.commentId,
                         comment = commentItem.comment,
                         createdAt = commentItem.createdAt,
-                        modifiedAt = commentItem.modifiedAt,)
+                        modifiedAt = "",
+                        nickname = commentItem.nickname,
+                        isMine = commentItem.isMine,
+                    )
                 },
             )
         }

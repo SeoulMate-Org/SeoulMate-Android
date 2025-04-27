@@ -15,7 +15,11 @@ data class ChallengeItemDetailDto(
     @Json(name = "challengeThemeName") val challengeThemeName: String,
     @Json(name = "comments") val comments: List<ChallengeCommentItem>,
     @Json(name = "isLiked") val isLiked: Boolean?,
-    @Json(name = "challengeStatusCode") val likes: String?,
+    @Json(name = "likedCount") val likedCount: Int,
+    @Json(name = "progressCount") val progressCount: Int,
+    @Json(name = "attractionCount") val attractionCount: Int,
+    @Json(name = "commentCount") val commentCount: Int,
+    @Json(name = "challengeStatusCode") val challengeStatusCode: String?,
 )
 
 @JsonClass(generateAdapter = true)
@@ -32,10 +36,13 @@ data class AttractionItem(
 
 @JsonClass(generateAdapter = true)
 data class ChallengeCommentItem(
-    @Json(name = "id") val id: Int,
+    @Json(name = "commentId") val commentId: Int,
     @Json(name = "comment") val comment: String,
     @Json(name = "createdAt") val createdAt: String,
-    @Json(name = "modifiedAt") val modifiedAt: String,
+//    @Json(name = "modifiedAt") val modifiedAt: String,
+    @Json(name = "nickname") val nickname: String,
+    @Json(name = "isMine") val isMine: Boolean,
+    @Json(name = "challengeStatusCode") val challengeStatusCode: String,
 )
 
 @JsonClass(generateAdapter = true)

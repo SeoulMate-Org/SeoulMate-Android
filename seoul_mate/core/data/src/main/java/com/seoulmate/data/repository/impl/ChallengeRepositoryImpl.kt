@@ -5,12 +5,14 @@ import com.seoulmate.data.dto.CommonDto
 import com.seoulmate.data.dto.challenge.ChallengeItemAllDto
 import com.seoulmate.data.dto.challenge.ChallengeItemDetailDto
 import com.seoulmate.data.dto.challenge.ChallengeItemLikeDto
+import com.seoulmate.data.dto.challenge.ChallengeLocationItemDto
 import com.seoulmate.data.dto.challenge.ChallengeStatusDto
 import com.seoulmate.data.dto.challenge.ChallengeThemeDto
 import com.seoulmate.data.dto.challenge.MyChallengeDto
 import com.seoulmate.data.dto.comment.CommentDto
 import com.seoulmate.data.dto.comment.WriteCommentDto
 import com.seoulmate.data.model.request.AttractionStampReqData
+import com.seoulmate.data.model.request.MyLocationReqData
 import com.seoulmate.data.model.request.WriteCommentReqData
 import com.seoulmate.data.repository.ChallengeRepository
 import kotlinx.coroutines.flow.Flow
@@ -80,6 +82,24 @@ class ChallengeRepositoryImpl @Inject constructor(
         emit(response.body())
     }
 
+    override suspend fun reqChallengeListLocation(
+        locationRequest: MyLocationReqData,
+        language: String
+    ): Flow<CommonDto<List<ChallengeLocationItemDto>?>> = flow {
+        val response = apiService.reqChallengeListLocation(
+            locationRequest = locationRequest,
+            language = language,
+        )
+        emit(
+            CommonDto(
+                code = response.code(),
+                message = response.message(),
+                response = response.body(),
+            )
+        )
+    }
+
+
     override suspend fun reqAttractionStamp(
         id: Int
     ): Flow<Boolean?> = flow {
@@ -130,11 +150,11 @@ class ChallengeRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun reqMyCommentLisT(
-        languageCode: String
+    override suspend fun reqMyCommentList(
+        language: String
     ): Flow<CommonDto<CommentDto>> = flow {
         val response = apiService.reqMyCommentList(
-            languageCode = languageCode,
+            language = language,
         )
         emit(
             CommonDto(

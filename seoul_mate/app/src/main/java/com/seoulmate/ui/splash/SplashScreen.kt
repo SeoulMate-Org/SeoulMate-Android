@@ -28,6 +28,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.seoulmate.R
 import com.seoulmate.datastore.repository.Language
+import com.seoulmate.ui.component.Loading
 import com.seoulmate.ui.component.PpsButton
 import com.seoulmate.ui.component.PpsText
 import com.seoulmate.ui.main.MainActivity
@@ -94,7 +95,7 @@ fun SplashScreen(
         )
 
         if (viewModel.isShowLoading.value == true) {
-            LoadingIndicator(
+            Loading(
                 modifier = Modifier.wrapContentSize()
                     .constrainAs(loading) {
                         top.linkTo(parent.top)

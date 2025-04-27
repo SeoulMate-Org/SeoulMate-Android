@@ -10,6 +10,7 @@ import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -17,7 +18,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 import com.seoulmate.ui.R
 
 @Composable
@@ -35,8 +38,10 @@ fun Loading(
     )
 
     Image(
-        modifier = modifier.rotate(rotationAngle),
+        modifier = modifier.rotate(rotationAngle)
+            .size(50.dp),
         painter = painterResource(R.drawable.ic_default_loading_1),
-        contentDescription = "Loading" // decorative element
-    )
+        contentDescription = "Loading", // decorative element
+        contentScale = ContentScale.Fit,
+        )
 }

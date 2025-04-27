@@ -6,6 +6,7 @@ import androidx.annotation.RequiresPermission
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
+import com.seoulmate.data.UserInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -23,6 +24,9 @@ class HomeViewModel @Inject constructor(
     fun getLastLocation() {
         fusedLocationProviderClient.lastLocation.addOnSuccessListener { location: Location? ->
             lastLocation.value = location
+
+            UserInfo.myLocationX = location?.latitude ?: 0.0
+            UserInfo.myLocationY = location?.longitude ?: 0.0
         }
     }
 

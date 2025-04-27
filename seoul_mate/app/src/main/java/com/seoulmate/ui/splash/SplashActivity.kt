@@ -10,6 +10,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.runtime.mutableStateOf
+import androidx.core.content.ContextCompat
 import androidx.core.os.LocaleListCompat
 import androidx.lifecycle.lifecycleScope
 import com.seoulmate.data.UserInfo
@@ -32,9 +33,23 @@ class SplashActivity : ComponentActivity()  {
 
     var isFirst = mutableStateOf(true)
 
+    private val permissionList = listOf(
+        android.Manifest.permission.ACCESS_FINE_LOCATION,
+        android.Manifest.permission.ACCESS_COARSE_LOCATION,
+    )
+    var permissionGranted = true
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        permissionList.forEach {
+            val result = ContextCompat.checkSelfPermission(this, it)
+            if (result != android.content.pm.PackageManager.PERMISSION_GRANTED) {
+                permissionGranted = false
+            }
+        }
+
+        viewModel.grantedLocationPermission.value = permissionGranted
         viewModel.reqSplashInit()
 
         enableEdgeToEdge()

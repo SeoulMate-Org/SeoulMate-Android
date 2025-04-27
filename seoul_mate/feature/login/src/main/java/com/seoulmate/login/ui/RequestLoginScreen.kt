@@ -1,6 +1,8 @@
 package com.seoulmate.login.ui
 
+import android.Manifest
 import android.content.Context
+import android.content.pm.PackageManager
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.Image
@@ -32,6 +34,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.credentials.CredentialManager
 import androidx.credentials.CustomCredential
 import androidx.credentials.GetCredentialRequest
@@ -83,9 +86,21 @@ fun RequestLoginScreen(
         facebookLoginManager.createLogInActivityResultContract(callbackManager, null)) {
     }
 
+    val locationPermission = listOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+    val fineLocationPermissionGranted = remember{ mutableStateOf(false) }
+
+    LaunchedEffect(Unit) {
+        fineLocationPermissionGranted.value = locationPermission.all {
+            ContextCompat.checkSelfPermission(
+                activityContext,
+                it
+            ) == PackageManager.PERMISSION_GRANTED
+        }
+    }
+
     LaunchedEffect(viewModel.isSuccessLogin.value) {
         if(viewModel.isSuccessLogin.value) {
-            viewModel.getMyData()
+            viewModel.getMyData(fineLocationPermissionGranted.value)
         }
     }
 

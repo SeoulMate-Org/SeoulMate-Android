@@ -13,6 +13,10 @@ data class ChallengeItemData(
     val attractions: List<AttractionItem> = listOf(),
     val isInterest: Boolean = false,
     val mainLocation: String? = "",
+    val likedCount: Int = 0,
+    val progressCount: Int = 0,
+    val attractionCount: Int = 0,
+    val commentCount: Int = 0,
     val comments: List<ChallengeCommentItem> = listOf(),
 )
 

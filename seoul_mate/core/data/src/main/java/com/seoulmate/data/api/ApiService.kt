@@ -4,12 +4,14 @@ import com.seoulmate.data.dto.attraction.AttractionStampDto
 import com.seoulmate.data.dto.challenge.ChallengeItemAllDto
 import com.seoulmate.data.dto.challenge.ChallengeItemDetailDto
 import com.seoulmate.data.dto.challenge.ChallengeItemLikeDto
+import com.seoulmate.data.dto.challenge.ChallengeLocationItemDto
 import com.seoulmate.data.dto.challenge.ChallengeStatusDto
 import com.seoulmate.data.dto.challenge.ChallengeThemeDto
 import com.seoulmate.data.dto.challenge.MyChallengeDto
 import com.seoulmate.data.dto.comment.CommentDto
 import com.seoulmate.data.dto.comment.WriteCommentDto
 import com.seoulmate.data.model.request.AttractionStampReqData
+import com.seoulmate.data.model.request.MyLocationReqData
 import com.seoulmate.data.model.request.WriteCommentReqData
 import com.seoulmate.data.utils.NetworkConfig
 import retrofit2.Response
@@ -56,6 +58,12 @@ interface ApiService {
         @Query("id") id: Int,
     ): Response<ChallengeItemLikeDto?>
 
+    @GET(NetworkConfig.Service.CHALLENGE_LIST_LOCATION)
+    suspend fun reqChallengeListLocation(
+        @Query("locationRequest") locationRequest: MyLocationReqData,
+        @Query("language") language: String,
+    ): Response<List<ChallengeLocationItemDto>?>
+
     // Attraction
     @POST(NetworkConfig.Service.ATTRACTION_STAMP)
     suspend fun reqAttractionStamp(
@@ -79,9 +87,9 @@ interface ApiService {
         @Query("languageCode") languageCode: String,
     ): Response<CommentDto>
 
-    @GET(NetworkConfig.Service.CHALLENGE_MY)
+    @GET(NetworkConfig.Service.COMMENT_MY)
     suspend fun reqMyCommentList(
-        @Query("languageCode") languageCode: String,
+        @Query("language") language: String,
     ): Response<CommentDto>
 
 }

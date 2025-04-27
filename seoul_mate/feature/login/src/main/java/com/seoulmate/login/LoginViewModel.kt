@@ -7,8 +7,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.seoulmate.data.UserInfo
 import com.seoulmate.data.model.ChallengeCommentItem
+import com.seoulmate.data.model.ChallengeLocationItemData
 import com.seoulmate.data.model.MyChallengeItemData
+import com.seoulmate.data.model.request.MyLocationReqData
 import com.seoulmate.data.repository.PreferDataStoreRepository
+import com.seoulmate.domain.usecase.GetChallengeListLocationUseCase
 import com.seoulmate.domain.usecase.GetLoginInfoUseCase
 import com.seoulmate.domain.usecase.GetMyChallengeItemListUseCase
 import com.seoulmate.domain.usecase.GetMyCommentListUseCase
@@ -21,8 +24,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class LoginMyData(
-    val myChallengeList: List<MyChallengeItemData>,
-    val myCommentList: List<ChallengeCommentItem>?
+    val myChallengeList: List<MyChallengeItemData> = listOf(),
+    val myCommentList: List<ChallengeCommentItem>?,
+    val myChallengeLocationItemList: List<ChallengeLocationItemData>? = null,
 )
 
 @HiltViewModel
@@ -32,6 +36,7 @@ class LoginViewModel @Inject constructor(
     private val saveUserInfoUseCase: SaveUserInfoUseCase,
     private val getMyChallengeItemListUseCase: GetMyChallengeItemListUseCase,
     private val getMyCommentListUseCase: GetMyCommentListUseCase,
+    private val getChallengeListLocationUseCase: GetChallengeListLocationUseCase,
 ) : ViewModel() {
 
     var isSuccessLogin = mutableStateOf(false)
@@ -40,7 +45,6 @@ class LoginViewModel @Inject constructor(
     var isFirstEnter = mutableStateOf<Boolean?>(null)
 
     private val languageCode = if(UserInfo.localeLanguage == "ko") "KOR" else "ENG"
-
 
     fun getLoginInfo(token: String, loginType: String) {
         viewModelScope.launch {
@@ -70,35 +74,45 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    fun getMyData() {
+    fun getMyData(grantedLocationPermission: Boolean = false) {
         viewModelScope.launch {
             val myChallengeList = getMyChallengeItemListUseCase(
                 type = "PROGRESS",
                 language = languageCode,
             )
             val myCommentList = getMyCommentListUseCase(
-                languageCode = languageCode,
+                language = languageCode,
+            )
+            val myChallengeLocationList = getChallengeListLocationUseCase(
+                locationRequest = MyLocationReqData(
+                    locationX = UserInfo.myLocationX,
+                    locationY = UserInfo.myLocationY,
+                ),
+                language = languageCode,
             )
 
-//            combine(myChallengeList, myCommentList) { challengeList, commentList ->
-//                LoginMyData(challengeList, commentList)
-//            }.collectLatest { data ->
-//                UserInfo.myChallengeList = data.myChallengeList
-//                UserInfo.myCommentList = data.myCommentList ?: listOf()
-//
-//                finishedFetchMyData.value = true
-//
-//            }
+            if(grantedLocationPermission) {
+                combine(myChallengeList, myCommentList, myChallengeLocationList) { challengeList, commentList, challengeLocationItemList ->
+                    LoginMyData(challengeList, commentList, challengeLocationItemList)
+                }.collectLatest { data ->
+                    UserInfo.myChallengeList = data.myChallengeList
+                    UserInfo.myCommentList = data.myCommentList ?: listOf()
+                    UserInfo.myChallengeLocationList = data.myChallengeLocationItemList ?: listOf()
 
-//            myChallengeList.collectLatest { challengeList ->
-//                UserInfo.myChallengeList = challengeList
-//                finishedFetchMyData.value = true
-//            }
+                    finishedFetchMyData.value = true
+                }
+            } else {
+                combine(myChallengeList, myCommentList) { challengeList, commentList ->
+                    LoginMyData(challengeList, commentList)
+                }.collectLatest { data ->
+                    UserInfo.myChallengeList = data.myChallengeList
+                    UserInfo.myCommentList = data.myCommentList ?: listOf()
 
-            myCommentList.collectLatest { commentList ->
-                UserInfo.myCommentList = commentList ?: listOf()
-                finishedFetchMyData.value = true
+                    finishedFetchMyData.value = true
+                }
             }
+
+
 
         }
 
