@@ -11,7 +11,7 @@ import com.codesubmission.interest.navigation.interestScreen
 import com.codesubmission.settings.badge.SettingMyBadgeScreen
 import com.codesubmission.settings.notification.SettingNotificationScreen
 import com.seoulmate.challenge.detail.ChallengeDetailScreen
-import com.seoulmate.challenge.reply.ChallengeReplyListScreen
+import com.seoulmate.challenge.comment.ChallengeCommentListScreen
 import com.seoulmate.challenge.theme.ChallengeThemeListScreen
 import com.seoulmate.data.model.PlaceInfoData
 import com.seoulmate.login.LoginScreen
@@ -89,15 +89,19 @@ fun MainNavHost(
                 onBackClick = { appState.navController.popBackStack() },
             )
         }
-        composable(route = Screen.ChallengeReplyList.route) {
-            ChallengeReplyListScreen(
+        composable(route = Screen.ChallengeCommentList.route) {
+            ChallengeCommentListScreen(
                 onBackClick = { appState.navController.popBackStack() },
             )
         }
         composable(route = Screen.ChallengeDetail.route) {
             ChallengeDetailScreen(
+                context = appState.getContext,
                 item = appState.selectedChallengeItem.value,
-                onBackClick = { appState.navController.popBackStack() }
+                onBackClick = { appState.navController.popBackStack() },
+                onChangeScreen = { screen ->
+                    appState.navigate(screen)
+                },
             )
         }
         composable(route = Screen.ChallengeThemeList.route) {

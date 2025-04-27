@@ -161,8 +161,6 @@ fun HomeScreen(
                 viewModel.getLastLocation()
             }
 
-            Log.d("@@@@@@@", "HomeScreen ChallengeInfo : ${ChallengeInfo.themeList} , ${ChallengeInfo.allItemList} , ${ChallengeInfo.myChallengeList}" )
-
         }
     }
 

@@ -21,6 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.codesubmission.home.R
+import com.seoulmate.data.UserInfo
 import com.seoulmate.ui.component.PpsText
 import com.seoulmate.ui.noRippleClickable
 import com.seoulmate.ui.theme.Black
@@ -33,7 +34,6 @@ import com.seoulmate.ui.theme.White
 fun MyPageActiveLog(
     cntBadge: Int = 0,
     cntFavorite: Int = 0,
-    cntReply: Int = 0,
     onBadgeClick: () -> Unit = {},
 ) {
     Row(
@@ -111,7 +111,7 @@ fun MyPageActiveLog(
                 .padding(8.dp),
             color = CoolGray75,
         )
-        // Reply
+        // Comment
         Column(
             modifier = Modifier
                 .weight(1f)
@@ -129,7 +129,7 @@ fun MyPageActiveLog(
             )
             PpsText(
                 modifier = Modifier.wrapContentSize(),
-                text = if (cntReply == 0) "-" else cntReply.toString(),
+                text = if (UserInfo.myCommentList.isEmpty()) "-" else UserInfo.myCommentList.size.toString(),
                 style = TextStyle(
                     fontSize = 16.sp,
                     color = Black,

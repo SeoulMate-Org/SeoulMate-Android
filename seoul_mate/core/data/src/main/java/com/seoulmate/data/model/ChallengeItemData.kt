@@ -1,5 +1,6 @@
 package com.seoulmate.data.model
 
+
 data class ChallengeItemData(
     val id: Int,
     val title: String,
@@ -12,17 +13,27 @@ data class ChallengeItemData(
     val attractions: List<AttractionItem> = listOf(),
     val isInterest: Boolean = false,
     val mainLocation: String? = "",
+    val comments: List<ChallengeCommentItem> = listOf(),
 )
 
 data class AttractionItem(
     val id: Int,
-    val name: String,
-    val locationX: String,
-    val locationY: String,
+    val name: String?,
+    val locationX: String?,
+    val locationY: String?,
     val isLiked: Boolean,
     val likes: Int,
     val isStamped: Boolean,
     val stampCount: Int,
+)
+
+data class ChallengeCommentItem(
+    val id: Int,
+    val comment: String,
+    val createdAt: String,
+    val modifiedAt: String = "",
+    val isMine: Boolean = false,
+    val nickname: String = ""
 )
 
 object DefaultChallengeItemData {

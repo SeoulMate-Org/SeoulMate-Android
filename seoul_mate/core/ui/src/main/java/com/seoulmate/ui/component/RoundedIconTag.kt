@@ -94,7 +94,7 @@ fun RoundedIconTag(
 private fun PreViewRoundedTag() {
     RoundedIconTag(
         drawableIconRes = R.drawable.ic_bottom_nav_favorite,
-        titleRes = R.string.str_test,
+        titleRes = R.string.bottom_nav_my_title,
         colorRes = R.color.orange,
     )
 }

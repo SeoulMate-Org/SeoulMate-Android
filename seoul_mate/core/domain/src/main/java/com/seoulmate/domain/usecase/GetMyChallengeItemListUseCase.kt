@@ -20,17 +20,18 @@ class GetMyChallengeItemListUseCase @Inject constructor(
         val myChallengeItemList = mutableListOf<MyChallengeItemData>()
         response?.let {
             it.forEach { contentItem ->
-                MyChallengeItemData(
-                    id = contentItem.id,
-                    name = contentItem.name,
-                    title = contentItem.title,
-                    description = contentItem.description,
-                    like = contentItem.like,
-                    attractionCount = contentItem.attractionCount,
-                    myStampCount = contentItem.myStampCount,
-                    mainLocation = contentItem.mainLocation,
-                    challengeThemeId = contentItem.challengeThemeId,
-                    challengeThemeName = contentItem.challengeThemeName,
+                myChallengeItemList.add(
+                    MyChallengeItemData(
+                        id = contentItem.id,
+                        name = contentItem.name,
+                        title = contentItem.title,
+                        likes = contentItem.likes,
+                        attractionCount = contentItem.attractionCount,
+                        myStampCount = contentItem.myStampCount,
+                        mainLocation = contentItem.mainLocation,
+                        challengeThemeId = contentItem.challengeThemeId,
+                        challengeThemeName = contentItem.challengeThemeName,
+                    )
                 )
             }
         }

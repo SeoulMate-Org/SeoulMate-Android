@@ -29,6 +29,7 @@ fun HorizontalCarousel(
         .background(color = Color.Transparent)
         .height(280.dp),
     itemList: List<ChallengeItemData>,
+    onChallengeItemClick: (item: ChallengeItemData) -> Unit = {},
 ) {
     val contentPadding = 40.dp
     val pageSpacing = 10.dp
@@ -47,7 +48,10 @@ fun HorizontalCarousel(
         Row(
             horizontalArrangement = Arrangement.Center
         ) {
-            ChallengeBigSquareImageTypeLayout(item = pageItem)
+            ChallengeBigSquareImageTypeLayout(
+                item = pageItem,
+                onChallengeItemClick = onChallengeItemClick,
+            )
 
         }
     }

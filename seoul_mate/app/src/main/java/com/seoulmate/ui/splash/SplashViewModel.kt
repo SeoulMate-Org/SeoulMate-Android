@@ -93,17 +93,17 @@ class SplashViewModel @Inject constructor(
                 combine(themeFlow, allItemFlow, myChallenge) { themeList, allItemList, myChallengeList ->
                     SplashChallengeInitData(themeList, allItemList, myChallengeList)
                 }.collectLatest { data ->
-                    ChallengeInfo.themeList = data.themeList
-                    ChallengeInfo.allItemList = data.itemList
-                    ChallengeInfo.myChallengeList = data.myChallengeList
+//                    ChallengeInfo.themeList = data.themeList
+//                    ChallengeInfo.allItemList = data.itemList
+                    UserInfo.myChallengeList = data.myChallengeList
                     isShowLoading.value = false
                 }
             } else {
                 combine(themeFlow, allItemFlow) { themeList, allItemList ->
                     SplashChallengeInitData(themeList, allItemList)
                 }.collectLatest { data ->
-                    ChallengeInfo.themeList = data.themeList
-                    ChallengeInfo.allItemList = data.itemList
+//                    ChallengeInfo.themeList = data.themeList
+//                    ChallengeInfo.allItemList = data.itemList
                     isShowLoading.value = false
                 }
             }

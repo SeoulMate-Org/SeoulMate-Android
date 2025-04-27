@@ -56,6 +56,8 @@ fun HomeMainScreen(
     onThemeMoreClick: () -> Unit = {},
     onChangeScreen: (screen: Screen) -> Unit = { _ -> },
 ) {
+    val locationPermission = listOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+    val fineLocationPermissionGranted = remember{ mutableStateOf(false) }
 
     val testRankingList = listOf(
         ChallengeItemData(
@@ -104,37 +106,22 @@ fun HomeMainScreen(
         ),
     )
 
-    val fineLocationPermissionGranted = remember{ mutableStateOf(false) }
-
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult()) { result ->
-
-
-        val locationPermission = listOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
-        if (locationPermission.all {
-                ContextCompat.checkSelfPermission(
-                    context,
-                    it
-                ) == PackageManager.PERMISSION_GRANTED
-            }) {
-            fineLocationPermissionGranted.value = true
-        } else {
-            fineLocationPermissionGranted.value = false
+        fineLocationPermissionGranted.value = locationPermission.all {
+            ContextCompat.checkSelfPermission(
+                context,
+                it
+            ) == PackageManager.PERMISSION_GRANTED
         }
     }
 
     LaunchedEffect(Unit) {
-
-        val locationPermission = listOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
-        if (locationPermission.all {
-                ContextCompat.checkSelfPermission(
-                    context,
-                    it
-                ) == PackageManager.PERMISSION_GRANTED
-            }) {
-            fineLocationPermissionGranted.value = true
-        } else {
-            fineLocationPermissionGranted.value = false
+        fineLocationPermissionGranted.value = locationPermission.all {
+            ContextCompat.checkSelfPermission(
+                context,
+                it
+            ) == PackageManager.PERMISSION_GRANTED
         }
     }
 
@@ -240,7 +227,8 @@ fun HomeMainScreen(
                                 title = "Third Challenge Title",
                                 imgUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPzlSPtQD3H6OK36fZXlVpI-PiRR8elwtGyw&s",
                             ),
-                        )
+                        ),
+                        onChallengeItemClick = onChallengeItemClick,
                     )
                 }
             }
@@ -301,7 +289,6 @@ fun HomeMainScreen(
                         onLocationPermissionClick = {
                             launcher.launch(
                                 Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
-//                                flags = Intent.FLAG_ACTIVITY_NEW_TASK
                                 data = "package:${context.packageName}".toUri()
                             })
                         },

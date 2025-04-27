@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="str_skip">Skip</string>
+    <string name="str_welcome">🎉 Welcome 🎉</string>
+    <string name="str_welcome_sub">{%s}aaabbbbbccccc!</string>
 </resources>

@@ -19,8 +19,11 @@ class SettingMyBadgeViewModel @Inject constructor(
         viewModelScope.launch {
             loginRepository.getToken(
                 UserInfo.refreshToken,
-            ).collectLatest {
-
+            ).collectLatest { response ->
+                response?.let {
+                    UserInfo.accessToken = it.accessToken
+                    UserInfo.refreshToken = it.refreshToken
+                }
             }
         }
     }

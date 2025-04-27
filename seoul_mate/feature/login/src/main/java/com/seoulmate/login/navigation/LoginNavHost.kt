@@ -9,6 +9,7 @@ import com.seoulmate.login.LoginViewModel
 import com.seoulmate.login.LoginScreen
 import com.seoulmate.login.ui.LoginState
 import com.seoulmate.login.ui.RequestLoginScreen
+import com.seoulmate.login.ui.SignupSucceedScreen
 import com.seoulmate.ui.component.Screen
 
 @Composable
@@ -22,10 +23,10 @@ fun LoginNavHost(
 ) {
     NavHost(
         navController = loginState.navController,
-        startDestination = Screen.Login.route,
+        startDestination = Screen.Signin.route,
         modifier = modifier
     ) {
-        composable(route = Screen.Login.route) {
+        composable(route = Screen.Signin.route) {
             RequestLoginScreen (
                 activityContext,
                 viewModel,
@@ -37,6 +38,14 @@ fun LoginNavHost(
                 },
                 onSkipClick = onSkipClick,
                 succeedLogin = onSuccessLogin,
+                succeedSignup = {
+                    loginState.navController.navigate(Screen.Signup.route)
+                }
+            )
+        }
+        composable(route = Screen.Signup.route) {
+            SignupSucceedScreen(
+                succeedSignup = onSuccessLogin,
             )
         }
     }

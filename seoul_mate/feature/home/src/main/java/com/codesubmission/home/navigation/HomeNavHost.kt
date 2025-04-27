@@ -1,14 +1,10 @@
 package com.codesubmission.home.navigation
 
 import android.content.Context
-import android.content.Intent
-import android.provider.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.core.net.toUri
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.codesubmission.home.location.geofencing.GeofencingScreen
 import com.codesubmission.home.ui.HomeState
 import com.codesubmission.home.ui.challenge.HomeChallengeScreen
 import com.codesubmission.home.ui.main.HomeMainScreen
@@ -49,7 +45,7 @@ fun HomeNavHost(
             HomeChallengeScreen(
                 homeState = appState,
                 onReplyClick = {
-                    onScreenChange(Screen.ChallengeReplyList)
+                    onScreenChange(Screen.ChallengeCommentList)
                 },
                 onChallengeItemClick = onChallengeItemClick
             )

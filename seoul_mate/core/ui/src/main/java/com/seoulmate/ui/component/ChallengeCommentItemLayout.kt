@@ -16,7 +16,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.seoulmate.data.model.ReplyItemData
+import com.seoulmate.data.model.ChallengeCommentItem
 import com.seoulmate.ui.R
 import com.seoulmate.ui.theme.CoolGray300
 import com.seoulmate.ui.theme.CoolGray700
@@ -24,9 +24,9 @@ import com.seoulmate.ui.theme.CoolGray900
 import com.seoulmate.ui.theme.SeoulMateTheme
 
 @Composable
-fun ChallengeReplyItemLayout(
+fun ChallengeCommentItemLayout(
     modifier: Modifier = Modifier.fillMaxWidth(),
-    item: ReplyItemData,
+    item: ChallengeCommentItem,
 ) {
     Column(
         modifier = modifier,
@@ -45,7 +45,7 @@ fun ChallengeReplyItemLayout(
                 modifier = Modifier
                     .weight(1f)
                     .padding(start = 10.dp),
-                text = item.userNickName,
+                text = "NickName",
                 style = TextStyle(
                     fontSize = 13.sp,
                     color = CoolGray700,
@@ -57,7 +57,7 @@ fun ChallengeReplyItemLayout(
         // Reply Content
         PpsText(
             modifier = Modifier.wrapContentSize(),
-            text = item.title,
+            text = item.comment,
             style = TextStyle(
                 fontSize = 14.sp,
                 color = CoolGray900,
@@ -67,7 +67,7 @@ fun ChallengeReplyItemLayout(
         // TimeStamp
         PpsText(
             modifier = Modifier.wrapContentSize(),
-            text = item.timeStamp,
+            text = item.createdAt,
             style = TextStyle(
                 fontSize = 12.sp,
                 color = CoolGray300,
@@ -82,12 +82,12 @@ fun ChallengeReplyItemLayout(
 @Composable
 private fun PreviewChallengeReplyItemLayout() {
     SeoulMateTheme {
-        ChallengeReplyItemLayout(
-            item = ReplyItemData(
+        ChallengeCommentItemLayout(
+            item = ChallengeCommentItem(
                 id = 0,
-                title = "Lorem ipsum dolor sit amet consectetur. Ipsum sdv semper nisl bibendum dolor pretium commodo.",
-                userNickName = "어리버리 송편",
-                timeStamp = "2025.04.04 11:00",
+                comment = "Lorem ipsum dolor sit amet consectetur. Ipsum sdv semper nisl bibendum dolor pretium commodo.",
+                createdAt = "2025.04.04 11:00",
+                modifiedAt = "2025.04.04 11:00",
             ),
         )
     }

@@ -11,5 +11,6 @@ data class LoginDto(
     @Json(name = "loginType") val loginType: String,
     @Json(name = "accessToken") val accessToken: String,
     @Json(name = "refreshToken") val refreshToken: String,
+    @Json(name = "isNewUser") val isNewUser: Boolean,
 )
 

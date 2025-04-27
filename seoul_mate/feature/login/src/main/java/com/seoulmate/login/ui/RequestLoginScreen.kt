@@ -65,20 +65,15 @@ fun RequestLoginScreen(
     onFacebookLoginClick: (String) -> Unit,
     onSkipClick: () -> Unit,
     succeedLogin: () -> Unit,
+    succeedSignup: () -> Unit,
 ) {
     val rememberCoroutineScope = rememberCoroutineScope()
-
-    var languageCode = "KOR"
 
     val googleIdOption: GetGoogleIdOption = GetGoogleIdOption.Builder()
         .setFilterByAuthorizedAccounts(false)
         .setServerClientId(BuildConfig.GOOGLE_CLOUD_CLIENT_ID)
         .setAutoSelectEnabled(true)
 //        .setNonce(<nonce string to use when generating a Google ID token>)
-        .build()
-
-    val signInWithGoogleOption: GetSignInWithGoogleOption = GetSignInWithGoogleOption
-        .Builder(BuildConfig.GOOGLE_CLOUD_CLIENT_ID)
         .build()
 
     val credentialManager = CredentialManager.create(activityContext)
@@ -88,17 +83,16 @@ fun RequestLoginScreen(
         facebookLoginManager.createLogInActivityResultContract(callbackManager, null)) {
     }
 
-    LaunchedEffect(Unit) {
-        val localeLanguageIsKorean = Locale.getDefault().language == "ko"
-        languageCode = if (localeLanguageIsKorean) {
-            "KOR"
-        } else {
-            "US"
+    LaunchedEffect(viewModel.isSuccessLogin.value) {
+        if(viewModel.isSuccessLogin.value) {
+            viewModel.getMyData()
         }
     }
 
-    LaunchedEffect(viewModel.isSuccessLogin.value) {
-        if (viewModel.isSuccessLogin.value) {
+    LaunchedEffect(viewModel.finishedFetchMyData.value) {
+        if (viewModel.isNewUser.value) {
+            succeedSignup()
+        } else if (viewModel.finishedFetchMyData.value) {
             succeedLogin()
         }
     }

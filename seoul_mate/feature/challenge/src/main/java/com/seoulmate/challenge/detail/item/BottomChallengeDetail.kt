@@ -11,18 +11,27 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.seoulmate.challenge.R
 import com.seoulmate.ui.component.PpsButton
+import com.seoulmate.ui.component.PpsText
+import com.seoulmate.ui.component.Screen
 import com.seoulmate.ui.theme.Blue500
+import com.seoulmate.ui.theme.CoolGray25
+import com.seoulmate.ui.theme.CoolGray900
 import com.seoulmate.ui.theme.SeoulMateTheme
 import com.seoulmate.ui.theme.TrueWhite
 import com.seoulmate.ui.theme.White
@@ -30,7 +39,13 @@ import com.seoulmate.ui.theme.White
 @Composable
 fun BottomChallengeDetail(
     isLogin: Boolean = false,
+    isFavorite: Boolean = false,
     startedChallenge: Boolean = false,
+    onChangeScreen: (Screen) -> Unit = {},
+    onStampClick: () -> Unit = {},
+    onChallengeStartClick: () -> Unit = {},
+    onMapClick: () -> Unit = {},
+    onFavoriteClick: (Boolean) -> Unit = {},
 ) {
     Surface (
         modifier = Modifier.height(68.dp),
@@ -40,7 +55,13 @@ fun BottomChallengeDetail(
     ) {
         BottomRow(
             isLogin = isLogin,
+            isFavorite = isFavorite,
             startedChallenge = startedChallenge,
+            onChangeScreen = onChangeScreen,
+            onStampClick = onStampClick,
+            onChallengeStartClick = onChallengeStartClick,
+            onMapClick = onMapClick,
+            onFavoriteClick = onFavoriteClick,
         )
     }
 }
@@ -48,8 +69,20 @@ fun BottomChallengeDetail(
 @Composable
 private fun BottomRow(
     isLogin: Boolean = false,
+    isFavorite: Boolean = false,
     startedChallenge: Boolean = false,
+    onChangeScreen: (Screen) -> Unit = {},
+    onStampClick: () -> Unit = {},
+    onChallengeStartClick: () -> Unit = {},
+    onMapClick: () -> Unit = {},
+    onFavoriteClick: (Boolean) -> Unit = {},
 ) {
+    var rememberFavorite = remember { mutableStateOf(false) }
+
+    LaunchedEffect(Unit) {
+        rememberFavorite.value = isFavorite
+    }
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -59,7 +92,10 @@ private fun BottomRow(
         // Like
         IconButton(
             modifier = Modifier.size(48.dp),
-            onClick = {}
+            onClick = {
+                rememberFavorite.value = !rememberFavorite.value
+                onFavoriteClick(rememberFavorite.value)
+            },
         ) {
             Column(
                 verticalArrangement = Arrangement.Center,
@@ -67,11 +103,20 @@ private fun BottomRow(
             ) {
                 Icon(
                     modifier = Modifier.size(32.dp),
-                    painter = painterResource(com.seoulmate.ui.R.drawable.ic_bottom_nav_favorite),
-                    contentDescription = "Challenge Bottom Favorite"
+                    painter = painterResource(
+                        if (isFavorite) {
+                            com.seoulmate.ui.R.drawable.ic_bottom_nav_fill_favorite
+                        } else {
+                            com.seoulmate.ui.R.drawable.ic_bottom_nav_favorite
+                        }
+                    ),
+                    contentDescription = "Challenge Bottom Favorite",
+                    tint = if (isFavorite) CoolGray900 else CoolGray25
                 )
-                Text(
-                    text = "좋아요"
+                PpsText(
+                    modifier = Modifier,
+                    text = stringResource(com.seoulmate.ui.R.string.str_favorite),
+                    style = MaterialTheme.typography.labelLarge
                 )
             }
         }
@@ -86,24 +131,32 @@ private fun BottomRow(
                     stringRes = R.string.show_in_map,
                     color = TrueWhite,
                     fontColor = Blue500,
-                )
+                ){
+                    onMapClick()
+                }
                 Spacer(modifier = Modifier.width(10.dp))
                 if (startedChallenge) {
                     PpsButton(
                         modifier = Modifier.weight(1f),
                         stringRes = R.string.tap_stamp,
-                    )
+                    ){
+                        onStampClick()
+                    }
                 } else {
                     PpsButton(
                         modifier = Modifier.weight(1f),
                         stringRes = R.string.start_challenge,
-                    )
+                    ){
+                        onChallengeStartClick()
+                    }
                 }
             } else {
                 PpsButton(
                     modifier = Modifier.weight(1f),
                     stringRes = R.string.tap_stamp_after_login,
-                )
+                ) {
+                    onChangeScreen(Screen.Login)
+                }
             }
         }
 

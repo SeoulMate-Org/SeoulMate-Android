@@ -4,6 +4,7 @@ sealed class ScreenGraph(val route: String) {
     data object HomeGraph: ScreenGraph("homeGraph")
     data object MapGraph: ScreenGraph("mapGraph")
     data object UserInterestsGraph: ScreenGraph("userInterestsGraph")
+    data object LoginGraph: ScreenGraph("loginGraph")
 }
 
 sealed class Screen(val route: String) {
@@ -24,8 +25,10 @@ sealed class Screen(val route: String) {
     data object MapDefault: Screen("mapDefault")
 
     data object Login: Screen("login")
+    data object Signin: Screen("signin")
+    data object Signup: Screen("signup")
 
-    data object ChallengeReplyList: Screen("challengeReplyList")
+    data object ChallengeCommentList: Screen("challengeReplyList")
     data object ChallengeDetail: Screen("challengeDetail")
     data object ChallengeThemeList: Screen("challengeThemeList")
 

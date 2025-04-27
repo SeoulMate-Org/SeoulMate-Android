@@ -31,24 +31,7 @@ data class ChallengeContentItem(
 
 )
 
-@JsonClass(generateAdapter = true)
-data class ChallengeCommentItem(
-    @Json(name = "id") val id: Int,
-    @Json(name = "comment") val comment: String,
-    @Json(name = "user") val user: User,
-    @Json(name = "createdAt") val createdAt: String,
-    @Json(name = "modifiedAt") val modifiedAt: String,
-)
 
-@JsonClass(generateAdapter = true)
-data class User(
-    @Json(name = "id") val id: Int,
-    @Json(name = "email") val email: String,
-    @Json(name = "nicknameKor") val nicknameKor: String,
-    @Json(name = "nicknameEng") val nicknameEng: String,
-    @Json(name = "loginType") val loginType: String,
-    @Json(name = "visitStamps") val visitStamps: VisitStamp,
-)
 
 @JsonClass(generateAdapter = true)
 data class VisitStamp(

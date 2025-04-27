@@ -1,9 +1,14 @@
 package com.seoulmate.data.repository
 
+import com.seoulmate.data.dto.CommonDto
 import com.seoulmate.data.dto.challenge.ChallengeItemAllDto
 import com.seoulmate.data.dto.challenge.ChallengeItemDetailDto
+import com.seoulmate.data.dto.challenge.ChallengeItemLikeDto
+import com.seoulmate.data.dto.challenge.ChallengeStatusDto
 import com.seoulmate.data.dto.challenge.ChallengeThemeDto
 import com.seoulmate.data.dto.challenge.MyChallengeDto
+import com.seoulmate.data.dto.comment.CommentDto
+import com.seoulmate.data.dto.comment.WriteCommentDto
 import kotlinx.coroutines.flow.Flow
 
 interface ChallengeRepository {
@@ -28,4 +33,39 @@ interface ChallengeRepository {
         type: String,
         language: String = "KOR",
     ): Flow<List<MyChallengeDto>?>
+
+    // put challenge status
+    suspend fun reqChallengeStatus(
+        id: Int,
+        status: String, // Available values : PROGRESS, COMPLETE
+    ): Flow<ChallengeStatusDto?>
+
+    // put Challenge Like
+    suspend fun reqChallengeLike(
+        id: Int,
+    ): Flow<ChallengeItemLikeDto?>
+
+    // fetch attraction stamp
+    suspend fun reqAttractionStamp(
+        id: Int,
+    ): Flow<Boolean?>
+
+    // write comments
+    suspend fun writeComment(
+        id: Int,
+        comment: String,
+        languageCode: String,
+    ): Flow<CommonDto<WriteCommentDto?>>
+
+    // fetch comments list
+    suspend fun reqCommentList(
+        id: Int,
+        languageCode: String,
+    ): Flow<CommonDto<CommentDto>>
+
+    // fetch my comments list
+    suspend fun reqMyCommentLisT(
+        languageCode: String,
+    ): Flow<CommonDto<CommentDto>>
+
 }

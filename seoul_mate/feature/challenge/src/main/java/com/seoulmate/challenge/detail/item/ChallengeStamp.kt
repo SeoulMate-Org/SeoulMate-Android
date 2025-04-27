@@ -23,6 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.seoulmate.challenge.R
+import com.seoulmate.data.model.AttractionItem
 import com.seoulmate.ui.component.LinearStampIndicator
 import com.seoulmate.ui.component.PpsText
 import com.seoulmate.ui.component.StampIndicator
@@ -35,7 +36,7 @@ import com.seoulmate.ui.theme.SeoulMateTheme
 
 @Composable
 fun ChallengeStamp(
-
+    attractions: List<AttractionItem> = listOf()
 ) {
     Column(
         modifier = Modifier
@@ -73,9 +74,15 @@ fun ChallengeStamp(
                     Row(
                         modifier = Modifier.weight(1f)
                     ) {
-                        LinearStampIndicator(
-                            modifier = Modifier.weight(1f),
-                        )
+                        attractions.forEachIndexed { index, attractionItem ->
+                            LinearStampIndicator(
+                                modifier = Modifier.weight(1f),
+                                isCompleted = attractionItem.isStamped,
+                            )
+                            if (index > 0) {
+                                Spacer(modifier = Modifier.width(5.dp))
+                            }
+                        }
                     }
                     // Indicator Count
                     Spacer(modifier = Modifier.width(10.dp))
@@ -98,9 +105,13 @@ fun ChallengeStamp(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 20.dp),
-                    horizontalArrangement = Arrangement.Center,
+                    horizontalArrangement = Arrangement.SpaceAround
                 ) {
-                    StampIndicator()
+                    attractions.forEachIndexed { index, attractionItem ->
+                        StampIndicator(
+                            isCompleted = attractionItem.isStamped
+                        )
+                    }
                 }
             }
         }

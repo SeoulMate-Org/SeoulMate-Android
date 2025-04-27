@@ -1,9 +1,7 @@
 <resources>
     <string name="top_app_bar_untitled">TopAppBar</string>
-    <string name="str_test">TEST</string>
 
     <string name="bottom_nav_challenge_title">나의 챌린지</string>
-    <string name="bottom_nav_favorite_title">좋아요</string>
     <string name="bottom_nav_my_title">MY</string>
 
     <string name="top_map_tag_trashcan">쓰레기통</string>
@@ -13,6 +11,7 @@
     <string name="str_now_pop">지금 Pop!</string>
 
     <string name="str_more">더보기</string>
+    <string name="str_favorite">찜하기</string>
 
     <string name="str_confirm">확인</string>
     <string name="str_cancel">취소</string>

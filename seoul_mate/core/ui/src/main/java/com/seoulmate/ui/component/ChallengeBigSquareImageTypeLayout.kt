@@ -25,6 +25,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.seoulmate.data.model.ChallengeItemData
 import com.seoulmate.ui.R
+import com.seoulmate.ui.noRippleClickable
 import com.seoulmate.ui.theme.CoolGray25
 import com.seoulmate.ui.theme.White
 
@@ -34,9 +35,13 @@ fun ChallengeBigSquareImageTypeLayout(
     item: ChallengeItemData,
     fontSize: TextUnit = 18.sp,
     textColor: Color = White,
+    onChallengeItemClick: (item: ChallengeItemData) -> Unit = {},
 ) {
     ConstraintLayout(
-        modifier = modifier,
+        modifier = modifier
+            .noRippleClickable {
+                onChallengeItemClick(item)
+            },
     ){
         val (image, info) = createRefs()
 

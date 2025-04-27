@@ -30,11 +30,8 @@ class LoginRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getToken(refreshToken: String): Flow<RefreshTokenDto?> = flow {
-//        val response = apiService.reqRefreshToken(
-//            TokenReqData(refreshToken)
-//        )
-        val response = apiService.reqRefreshTokenTest(
-            refreshToken
+        val response = apiService.reqRefreshToken(
+            TokenReqData(refreshToken)
         )
         emit(response.body())
     }

@@ -1,6 +1,7 @@
 package com.seoulmate.domain.usecase
 
 import com.seoulmate.data.model.AttractionItem
+import com.seoulmate.data.model.ChallengeCommentItem
 import com.seoulmate.data.model.ChallengeItemData
 import com.seoulmate.data.repository.ChallengeRepository
 import kotlinx.coroutines.flow.Flow
@@ -43,6 +44,14 @@ class GetChallengeItemDetailUseCase @Inject constructor(
                 attractions = attractions,
                 isInterest = it.isLiked ?: false,
                 mainLocation = it.mainLocation,
+                comments = it.comments.map {
+                    commentItem ->
+                    ChallengeCommentItem(
+                        id = commentItem.id,
+                        comment = commentItem.comment,
+                        createdAt = commentItem.createdAt,
+                        modifiedAt = commentItem.modifiedAt,)
+                },
             )
         }
     }

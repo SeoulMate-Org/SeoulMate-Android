@@ -15,4 +15,6 @@
     <string name="stamp_floating">남은 장소 방문하고 뱃지 받기!</string>
 
     <string name="title_theme">테마별 챌린지</string>
+
+    <string name="comment_list_empty">스탬프를 찍고 첫 댓글을 남겨주세요!</string>
 </resources>

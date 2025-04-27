@@ -28,5 +28,6 @@ dependencies {
     implementation(projects.core.database)
 
     implementation(libs.moshi.kotlin)
+    implementation(libs.retrofit.converter.moshi)
 
 }
