@@ -1,23 +1,21 @@
 package com.seoulmate.domain.usecase
 
 import com.seoulmate.data.dto.CommonDto
-import com.seoulmate.data.model.ChallengeLocationItemData
-import com.seoulmate.data.model.request.MyLocationReqData
+import com.seoulmate.data.model.ChallengeStampItemData
 import com.seoulmate.data.repository.ChallengeRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class GetChallengeListLocationUseCase @Inject constructor(
+class GetChallengeListStampUseCase @Inject constructor(
     private val challengeRepository: ChallengeRepository,
 ) {
+
     suspend operator fun invoke(
-        locationRequest: MyLocationReqData,
+        attractionId: Int?,
         language: String = "KOR",
-    ): Flow<CommonDto<List<ChallengeLocationItemData>>> = challengeRepository
-        .reqChallengeListLocation(
-            locationRequest, language
-        ).map {
+    ): Flow<CommonDto<List<ChallengeStampItemData>>> = challengeRepository
+        .reqChallengeListStamp(attractionId, language).map {
             if (it.response == null) {
                 CommonDto(
                     code = it.code,
@@ -25,11 +23,11 @@ class GetChallengeListLocationUseCase @Inject constructor(
                     response = listOf(),
                 )
             } else {
-                val returnResponse = mutableListOf<ChallengeLocationItemData>()
+                val returnResponse = mutableListOf<ChallengeStampItemData>()
                 it.response?.let { response ->
                     response.forEach { item ->
                         returnResponse.add(
-                            ChallengeLocationItemData(
+                            ChallengeStampItemData(
                                 id = item.id,
                                 name = item.name,
                                 title = item.title,
@@ -38,12 +36,13 @@ class GetChallengeListLocationUseCase @Inject constructor(
                                 mainLocation = item.mainLocation,
                                 challengeThemeId = item.challengeThemeId,
                                 challengeThemeName = item.challengeThemeName,
+                                likes = item.likes,
                                 isLiked = item.isLiked,
                                 myStampCount = item.myStampCount,
-                                progressCount = null,
                                 attractionCount = item.attractionCount,
                                 commentCount = item.commentCount,
                                 distance = item.distance,
+                                displayRank = item.displayRank,
                             )
                         )
                     }
@@ -55,4 +54,5 @@ class GetChallengeListLocationUseCase @Inject constructor(
                 )
             }
         }
+
 }

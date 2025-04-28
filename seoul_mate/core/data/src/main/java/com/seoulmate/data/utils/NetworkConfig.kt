@@ -18,6 +18,8 @@ object NetworkConfig {
         const val CHALLENGE_STATUS = "challenge/status"
         const val CHALLENGE_LIKE = "challenge/like"
         const val CHALLENGE_LIST_LOCATION = "challenge/list/location"
+        const val CHALLENGE_LIST_STAMP = "challenge/list/stamp"
+        const val CHALLENGE_LIST_THEME = "challenge/list/theme"
         // Attraction
         const val ATTRACTION_STAMP = "attraction/stamp"
         // Comment

@@ -17,13 +17,13 @@ class LoginRepositoryImpl @Inject constructor(
     override suspend fun getLoginInfo(
         token: String,
         loginType: String,
-        languageCode: String
+        language: String
     ): Flow<LoginDto?> = flow {
         val response = apiService.reqLogin(
             LoginReqData(
                 token = token,
                 loginType = loginType,
-                languageCode = languageCode,
+                languageCode = language,
             )
         )
         emit(response.body())

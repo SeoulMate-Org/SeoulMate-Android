@@ -1,5 +1,6 @@
 package com.seoulmate.domain.usecase
 
+import com.seoulmate.data.dto.CommonDto
 import com.seoulmate.data.model.ChallengeCommentItem
 import com.seoulmate.data.repository.ChallengeRepository
 import kotlinx.coroutines.flow.Flow
@@ -13,24 +14,37 @@ class GetMyCommentListUseCase @Inject constructor(
 
     suspend operator fun invoke(
         language: String,
-    ): Flow<List<ChallengeCommentItem>?> = challengeRepository.reqMyCommentList(
+    ): Flow<CommonDto<List<ChallengeCommentItem>>> = challengeRepository.reqMyCommentList(
         language
     ).map {
-        if (it.code in 200..299) {
+        val returnResponse = if (it.response == null) {
+            CommonDto(
+                code = it.code,
+                message = it.message,
+                response = listOf(),
+            )
+        } else {
+            val returnResponse = mutableListOf<ChallengeCommentItem>()
             it.response?.let { response ->
-                response.content.map { contentItem ->
-                    ChallengeCommentItem(
-                        id = contentItem.commentId,
-                        comment = contentItem.comment,
-                        createdAt = contentItem.createdAt,
-                        modifiedAt = "",
-                        isMine = contentItem.isMine,
-                        nickname = contentItem.nickname,
+                response.forEach { contentItem ->
+                    returnResponse.add(
+                        ChallengeCommentItem(
+                            id = contentItem.commentId,
+                            comment = contentItem.comment,
+                            createdAt = contentItem.createdAt,
+                            modifiedAt = "",
+                            isMine = contentItem.isMine,
+                            nickname = contentItem.nickname,
+                        )
                     )
                 }
             }
-        } else {
-            null
+            CommonDto(
+                code = it.code,
+                message = it.message,
+                response = returnResponse.toList(),
+            )
         }
+        return@map returnResponse
     }
 }

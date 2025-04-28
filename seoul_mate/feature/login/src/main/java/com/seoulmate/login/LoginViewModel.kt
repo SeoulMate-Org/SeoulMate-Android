@@ -2,56 +2,67 @@ package com.seoulmate.login
 
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.facebook.common.Common
 import com.seoulmate.data.UserInfo
+import com.seoulmate.data.dto.CommonDto
 import com.seoulmate.data.model.ChallengeCommentItem
 import com.seoulmate.data.model.ChallengeLocationItemData
+import com.seoulmate.data.model.ChallengeStampItemData
 import com.seoulmate.data.model.MyChallengeItemData
 import com.seoulmate.data.model.request.MyLocationReqData
 import com.seoulmate.data.repository.PreferDataStoreRepository
 import com.seoulmate.domain.usecase.GetChallengeListLocationUseCase
+import com.seoulmate.domain.usecase.GetChallengeThemeItemListUseCase
 import com.seoulmate.domain.usecase.GetLoginInfoUseCase
 import com.seoulmate.domain.usecase.GetMyChallengeItemListUseCase
 import com.seoulmate.domain.usecase.GetMyCommentListUseCase
+import com.seoulmate.domain.usecase.RefreshTokenUseCase
 import com.seoulmate.domain.usecase.SaveUserInfoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class LoginMyData(
-    val myChallengeList: List<MyChallengeItemData> = listOf(),
-    val myCommentList: List<ChallengeCommentItem>?,
-    val myChallengeLocationItemList: List<ChallengeLocationItemData>? = null,
+    val responseMyChallengeList: CommonDto<List<MyChallengeItemData>>? = null,
+    val responseMyCommentList: CommonDto<List<ChallengeCommentItem>>? = null,
+    val responseChallengeLocationItemList: CommonDto<List<ChallengeLocationItemData>>? = null,
 )
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val getLoginInfoUseCase: GetLoginInfoUseCase,
+    private val refreshTokenUseCase: RefreshTokenUseCase,
     private val preferDataStoreRepository: PreferDataStoreRepository,
     private val saveUserInfoUseCase: SaveUserInfoUseCase,
     private val getMyChallengeItemListUseCase: GetMyChallengeItemListUseCase,
     private val getMyCommentListUseCase: GetMyCommentListUseCase,
     private val getChallengeListLocationUseCase: GetChallengeListLocationUseCase,
+    private val getChallengeThemeItemListUseCase: GetChallengeThemeItemListUseCase,
 ) : ViewModel() {
 
+    var isShowLoading = mutableStateOf<Boolean?>(null)
     var isSuccessLogin = mutableStateOf(false)
-    var finishedFetchMyData = mutableStateOf(false)
+    var finishedFetchMyData = mutableStateOf<Boolean?>(null)
+    var finishedFetchHomeItems = mutableStateOf(false)
     var isNewUser = mutableStateOf(false)
     var isFirstEnter = mutableStateOf<Boolean?>(null)
+    var needRefreshToken = mutableStateOf<Boolean?>(null)
 
     private val languageCode = if(UserInfo.localeLanguage == "ko") "KOR" else "ENG"
 
     fun getLoginInfo(token: String, loginType: String) {
         viewModelScope.launch {
+            isShowLoading.value = true
             getLoginInfoUseCase.getLoginInfo(
                 token = token,
                 loginType = loginType,
-                languageCode = languageCode,
+                language = languageCode,
             ).collectLatest {
                 it?.let {
                     Log.d("LoginViewModel", "getLoginInfo: $it")
@@ -85,34 +96,84 @@ class LoginViewModel @Inject constructor(
             )
             val myChallengeLocationList = getChallengeListLocationUseCase(
                 locationRequest = MyLocationReqData(
-                    locationX = UserInfo.myLocationX,
-                    locationY = UserInfo.myLocationY,
+//                    locationX = UserInfo.myLocationX,
+//                    locationY = UserInfo.myLocationY,
+                    locationY = 37.5686076,
+                    locationX = 126.9816627,
                 ),
                 language = languageCode,
             )
 
             if(grantedLocationPermission) {
-                combine(myChallengeList, myCommentList, myChallengeLocationList) { challengeList, commentList, challengeLocationItemList ->
-                    LoginMyData(challengeList, commentList, challengeLocationItemList)
+                combine(myChallengeList, myCommentList, myChallengeLocationList) { challengeList, commentList, myChallengeLocationList ->
+                    LoginMyData(challengeList, commentList, myChallengeLocationList)
                 }.collectLatest { data ->
-                    UserInfo.myChallengeList = data.myChallengeList
-                    UserInfo.myCommentList = data.myCommentList ?: listOf()
-                    UserInfo.myChallengeLocationList = data.myChallengeLocationItemList ?: listOf()
+                    data.responseMyChallengeList?.let {
+                        if (it.code in 200..299) {
+                            UserInfo.myChallengeList = it.response ?: listOf()
+                        } else if(it.code == 403) {
+                            needRefreshToken.value = true
+                            return@collectLatest
+                        } else {
 
+                            isShowLoading.value = false
+                            finishedFetchMyData.value = true
+                            return@collectLatest
+                        }
+                    }
+                    data.responseMyCommentList?.let {
+                        if (it.code in 200..299) {
+                            UserInfo.myCommentList = it.response ?: listOf()
+                        } else {
+
+                            isShowLoading.value = false
+                            finishedFetchMyData.value = true
+                            return@collectLatest
+                        }
+                    }
+                    data.responseChallengeLocationItemList?.let {
+                        if (it.code in 200..299) {
+                            UserInfo.myChallengeLocationList = it.response ?: listOf()
+                        } else {
+
+                            isShowLoading.value = false
+                            finishedFetchMyData.value = true
+                            return@collectLatest
+                        }
+                    }
+
+                    isShowLoading.value = false
                     finishedFetchMyData.value = true
                 }
             } else {
                 combine(myChallengeList, myCommentList) { challengeList, commentList ->
                     LoginMyData(challengeList, commentList)
                 }.collectLatest { data ->
-                    UserInfo.myChallengeList = data.myChallengeList
-                    UserInfo.myCommentList = data.myCommentList ?: listOf()
+                    data.responseMyChallengeList?.let {
+                        if (it.code in 200..299) {
+                            UserInfo.myChallengeList = it.response ?: listOf()
+                        } else {
 
+                            isShowLoading.value = false
+                            finishedFetchMyData.value = true
+                            return@collectLatest
+                        }
+                    }
+                    data.responseMyCommentList?.let {
+                        if (it.code in 200..299) {
+                            UserInfo.myCommentList = it.response ?: listOf()
+                        } else {
+
+                            isShowLoading.value = false
+                            finishedFetchMyData.value = true
+                            return@collectLatest
+                        }
+                    }
+
+                    isShowLoading.value = false
                     finishedFetchMyData.value = true
                 }
             }
-
-
 
         }
 
@@ -134,6 +195,57 @@ class LoginViewModel @Inject constructor(
     private fun updateIsFirstEnter() {
         viewModelScope.launch {
             preferDataStoreRepository.updateIsFirstEnter(false)
+        }
+    }
+
+    // Fetch Home Challenge Items
+    fun reqHomeChallengeItems() {
+        val languageCode = if(UserInfo.localeLanguage == "ko") "KOR" else "ENG"
+
+        viewModelScope.launch {
+
+            val deferredList = mutableListOf<Deferred<CommonDto<List<ChallengeStampItemData>>?>>()
+            for(i in 1..9) {
+                deferredList.add(
+                    async {
+                        var returnValue: CommonDto<List<ChallengeStampItemData>>? = null
+                        getChallengeThemeItemListUseCase(i, languageCode).collectLatest {
+                            returnValue = it
+                        }
+                        return@async returnValue
+                    }
+                )
+            }
+
+            val themeList = mutableListOf<List<ChallengeStampItemData>>()
+            deferredList.forEach { item ->
+                val valueDeferred = item.await()
+                valueDeferred?.let {
+                    if(it.code in 200..299) {
+                        themeList.add(it.response ?: listOf())
+                    } else if (it.code == 403) {
+                        needRefreshToken.value = true
+                        return@launch
+                    }
+                }
+            }
+            UserInfo.challengeThemeList = themeList.toList()
+
+            finishedFetchHomeItems.value = true
+
+        }
+    }
+
+    fun refreshToken() {
+        viewModelScope.launch {
+            refreshTokenUseCase(UserInfo.refreshToken).collectLatest { response ->
+                response?.let {
+                    UserInfo.refreshToken = it.refreshToken
+                    UserInfo.accessToken = it.accessToken
+
+                    needRefreshToken.value = false
+                }
+            }
         }
     }
 

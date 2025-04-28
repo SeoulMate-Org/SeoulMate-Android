@@ -6,17 +6,21 @@ import com.seoulmate.data.dto.challenge.ChallengeItemAllDto
 import com.seoulmate.data.dto.challenge.ChallengeItemDetailDto
 import com.seoulmate.data.dto.challenge.ChallengeItemLikeDto
 import com.seoulmate.data.dto.challenge.ChallengeLocationItemDto
+import com.seoulmate.data.dto.challenge.ChallengeStampItemDto
 import com.seoulmate.data.dto.challenge.ChallengeStatusDto
 import com.seoulmate.data.dto.challenge.ChallengeThemeDto
 import com.seoulmate.data.dto.challenge.MyChallengeDto
+import com.seoulmate.data.dto.comment.CommentContentDto
 import com.seoulmate.data.dto.comment.CommentDto
 import com.seoulmate.data.dto.comment.WriteCommentDto
 import com.seoulmate.data.model.request.AttractionStampReqData
 import com.seoulmate.data.model.request.MyLocationReqData
 import com.seoulmate.data.model.request.WriteCommentReqData
+import com.seoulmate.data.model.request.toJson
 import com.seoulmate.data.repository.ChallengeRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import org.json.JSONObject
 import javax.inject.Inject
 
 class ChallengeRepositoryImpl @Inject constructor(
@@ -55,12 +59,18 @@ class ChallengeRepositoryImpl @Inject constructor(
     override suspend fun getMyChallengeList(
         type: String,
         language: String,
-    ): Flow<List<MyChallengeDto>?> = flow {
+    ): Flow<CommonDto<List<MyChallengeDto>?>> = flow {
         val response = apiService.reqMyChallenge(
             myChallenge = type,
             language = language,
         )
-        emit(response.body())
+        emit(
+            CommonDto(
+                code = response.code(),
+                message = response.message(),
+                response = response.body(),
+            )
+        )
     }
 
     override suspend fun reqChallengeStatus(
@@ -87,7 +97,10 @@ class ChallengeRepositoryImpl @Inject constructor(
         language: String
     ): Flow<CommonDto<List<ChallengeLocationItemDto>?>> = flow {
         val response = apiService.reqChallengeListLocation(
-            locationRequest = locationRequest,
+            locationX = locationRequest.locationX,
+            locationY = locationRequest.locationY,
+            limit = locationRequest.limit,
+            radius = locationRequest.radius,
             language = language,
         )
         emit(
@@ -97,6 +110,36 @@ class ChallengeRepositoryImpl @Inject constructor(
                 response = response.body(),
             )
         )
+    }
+
+    override suspend fun reqChallengeListStamp(
+        attractionId: Int?,
+        language: String
+    ): Flow<CommonDto<List<ChallengeStampItemDto>?>> = flow {
+        val response = apiService.reqChallengeListStamp(
+            attractionId = attractionId,
+            language = language,
+        )
+        emit(
+            CommonDto(
+                code = response.code(),
+                message = response.message(),
+                response = response.body(),))
+    }
+
+    override suspend fun reqChallengeListTheme(
+        themeId: Int,
+        language: String
+    ): Flow<CommonDto<List<ChallengeStampItemDto>?>> = flow {
+        val response = apiService.reqChallengeListTheme(
+            themeId = themeId,
+            language = language,
+        )
+        emit(
+            CommonDto(
+                code = response.code(),
+                message = response.message(),
+                response = response.body(),))
     }
 
 
@@ -152,7 +195,7 @@ class ChallengeRepositoryImpl @Inject constructor(
 
     override suspend fun reqMyCommentList(
         language: String
-    ): Flow<CommonDto<CommentDto>> = flow {
+    ): Flow<CommonDto<List<CommentContentDto>>> = flow {
         val response = apiService.reqMyCommentList(
             language = language,
         )

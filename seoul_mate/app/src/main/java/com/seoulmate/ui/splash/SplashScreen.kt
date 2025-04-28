@@ -1,43 +1,25 @@
 package com.seoulmate.ui.splash
 
 import android.content.Context
-import android.content.Intent
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
-import androidx.compose.material3.LoadingIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.seoulmate.R
-import com.seoulmate.datastore.repository.Language
 import com.seoulmate.ui.component.Loading
-import com.seoulmate.ui.component.PpsButton
-import com.seoulmate.ui.component.PpsText
-import com.seoulmate.ui.main.MainActivity
-import com.seoulmate.ui.theme.Blue500
-import com.seoulmate.ui.theme.Color1D8EFE
 import com.seoulmate.ui.theme.SplashGradientEnd
 import com.seoulmate.ui.theme.SplashGradientStart
-import com.seoulmate.ui.theme.TrueWhite
-import java.util.Locale
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -57,6 +39,21 @@ fun SplashScreen(
             } else {
                 moveMain()
             }
+        }
+    }
+
+    LaunchedEffect(viewModel.needRefreshToken.value) {
+        if (viewModel.needRefreshToken.value == true) {
+            viewModel.refreshToken()
+        } else if(viewModel.needRefreshToken.value == false) {
+            viewModel.reqInit()
+        }
+
+    }
+
+    LaunchedEffect(viewModel.finishedFetchUserInfo.value) {
+        if (viewModel.finishedFetchUserInfo.value) {
+            viewModel.reqHomeChallengeItems()
         }
     }
 

@@ -5,9 +5,11 @@ import com.seoulmate.data.dto.challenge.ChallengeItemAllDto
 import com.seoulmate.data.dto.challenge.ChallengeItemDetailDto
 import com.seoulmate.data.dto.challenge.ChallengeItemLikeDto
 import com.seoulmate.data.dto.challenge.ChallengeLocationItemDto
+import com.seoulmate.data.dto.challenge.ChallengeStampItemDto
 import com.seoulmate.data.dto.challenge.ChallengeStatusDto
 import com.seoulmate.data.dto.challenge.ChallengeThemeDto
 import com.seoulmate.data.dto.challenge.MyChallengeDto
+import com.seoulmate.data.dto.comment.CommentContentDto
 import com.seoulmate.data.dto.comment.CommentDto
 import com.seoulmate.data.dto.comment.WriteCommentDto
 import com.seoulmate.data.model.request.MyLocationReqData
@@ -34,7 +36,7 @@ interface ChallengeRepository {
     suspend fun getMyChallengeList(
         type: String,
         language: String = "KOR",
-    ): Flow<List<MyChallengeDto>?>
+    ): Flow<CommonDto<List<MyChallengeDto>?>>
 
     // put challenge status
     suspend fun reqChallengeStatus(
@@ -52,6 +54,18 @@ interface ChallengeRepository {
         locationRequest: MyLocationReqData,
         language: String = "KOR",
     ): Flow<CommonDto<List<ChallengeLocationItemDto>?>>
+
+    // fetch challenge list stamp
+    suspend fun reqChallengeListStamp(
+        attractionId: Int?,
+        language: String = "KOR",
+    ): Flow<CommonDto<List<ChallengeStampItemDto>?>>
+
+    // fetch challenge list theme
+    suspend fun reqChallengeListTheme(
+        themeId: Int,
+        language: String = "KOR",
+    ): Flow<CommonDto<List<ChallengeStampItemDto>?>>
 
     // fetch attraction stamp
     suspend fun reqAttractionStamp(
@@ -74,6 +88,6 @@ interface ChallengeRepository {
     // fetch my comments list
     suspend fun reqMyCommentList(
         language: String,
-    ): Flow<CommonDto<CommentDto>>
+    ): Flow<CommonDto<List<CommentContentDto>>>
 
 }

@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Icon
@@ -51,6 +52,7 @@ import com.seoulmate.data.UserInfo
 import com.seoulmate.login.BuildConfig
 import com.seoulmate.login.LoginViewModel
 import com.seoulmate.login.R
+import com.seoulmate.ui.component.Loading
 import com.seoulmate.ui.component.PpsText
 import com.seoulmate.ui.noRippleClickable
 import com.seoulmate.ui.theme.IntroBlue
@@ -100,6 +102,12 @@ fun RequestLoginScreen(
 
     LaunchedEffect(viewModel.isSuccessLogin.value) {
         if(viewModel.isSuccessLogin.value) {
+            viewModel.reqHomeChallengeItems()
+        }
+    }
+
+    LaunchedEffect(viewModel.finishedFetchHomeItems.value) {
+        if(viewModel.finishedFetchHomeItems.value) {
             viewModel.getMyData(fineLocationPermissionGranted.value)
         }
     }
@@ -107,8 +115,16 @@ fun RequestLoginScreen(
     LaunchedEffect(viewModel.finishedFetchMyData.value) {
         if (viewModel.isNewUser.value) {
             succeedSignup()
-        } else if (viewModel.finishedFetchMyData.value) {
+        } else if (viewModel.finishedFetchMyData.value == true) {
             succeedLogin()
+        }
+    }
+
+    LaunchedEffect(viewModel.needRefreshToken.value) {
+        if(viewModel.needRefreshToken.value == true) {
+            viewModel.refreshToken()
+        } else if(viewModel.needRefreshToken.value == false) {
+            viewModel.reqHomeChallengeItems()
         }
     }
 
@@ -143,7 +159,7 @@ fun RequestLoginScreen(
                 alpha = 1f,
             ),
     ) {
-        val (loginColumn, skip, back, titleImg) = createRefs()
+        val (loginColumn, skip, back, titleImg, loading) = createRefs()
 
         // Title Image
         Image(
@@ -265,6 +281,18 @@ fun RequestLoginScreen(
                     }
                 ),
                 contentDescription = "Google Login"
+            )
+        }
+
+        if (viewModel.isShowLoading.value == true) {
+            Loading(
+                modifier = Modifier.wrapContentSize()
+                    .constrainAs(loading) {
+                        top.linkTo(parent.top)
+                        bottom.linkTo(parent.bottom)
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                    },
             )
         }
 

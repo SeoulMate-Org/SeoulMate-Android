@@ -53,6 +53,7 @@ dependencies {
     implementation(libs.moshi.kotlin)
     implementation(libs.okhttp.logging)
     implementation(libs.okhttp.profiler)
+    implementation("com.google.code.gson:gson:2.13.1")
 
     implementation(libs.android.gms.location)
 

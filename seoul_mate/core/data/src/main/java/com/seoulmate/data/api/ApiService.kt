@@ -5,15 +5,18 @@ import com.seoulmate.data.dto.challenge.ChallengeItemAllDto
 import com.seoulmate.data.dto.challenge.ChallengeItemDetailDto
 import com.seoulmate.data.dto.challenge.ChallengeItemLikeDto
 import com.seoulmate.data.dto.challenge.ChallengeLocationItemDto
+import com.seoulmate.data.dto.challenge.ChallengeStampItemDto
 import com.seoulmate.data.dto.challenge.ChallengeStatusDto
 import com.seoulmate.data.dto.challenge.ChallengeThemeDto
 import com.seoulmate.data.dto.challenge.MyChallengeDto
+import com.seoulmate.data.dto.comment.CommentContentDto
 import com.seoulmate.data.dto.comment.CommentDto
 import com.seoulmate.data.dto.comment.WriteCommentDto
 import com.seoulmate.data.model.request.AttractionStampReqData
 import com.seoulmate.data.model.request.MyLocationReqData
 import com.seoulmate.data.model.request.WriteCommentReqData
 import com.seoulmate.data.utils.NetworkConfig
+import org.json.JSONObject
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -60,9 +63,24 @@ interface ApiService {
 
     @GET(NetworkConfig.Service.CHALLENGE_LIST_LOCATION)
     suspend fun reqChallengeListLocation(
-        @Query("locationRequest") locationRequest: MyLocationReqData,
+        @Query("locationX") locationX: Double,
+        @Query("locationY") locationY: Double,
+        @Query("radius") radius: Int,
+        @Query("limit") limit: Int,
         @Query("language") language: String,
     ): Response<List<ChallengeLocationItemDto>?>
+
+    @GET(NetworkConfig.Service.CHALLENGE_LIST_STAMP)
+    suspend fun reqChallengeListStamp(
+        @Query("attractionId") attractionId: Int?,
+        @Query("language") language: String,
+    ): Response<List<ChallengeStampItemDto>?>
+
+    @GET(NetworkConfig.Service.CHALLENGE_LIST_THEME)
+    suspend fun reqChallengeListTheme(
+        @Query("themeId") themeId: Int,
+        @Query("language") language: String,
+    ): Response<List<ChallengeStampItemDto>?>
 
     // Attraction
     @POST(NetworkConfig.Service.ATTRACTION_STAMP)
@@ -90,6 +108,6 @@ interface ApiService {
     @GET(NetworkConfig.Service.COMMENT_MY)
     suspend fun reqMyCommentList(
         @Query("language") language: String,
-    ): Response<CommentDto>
+    ): Response<List<CommentContentDto>>
 
 }

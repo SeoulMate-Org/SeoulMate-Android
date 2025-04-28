@@ -8,7 +8,7 @@ data class CommentDto(
     @Json(name = "totalPages") val totalPages: Int,
     @Json(name = "totalElements") val totalElements: Int,
     @Json(name = "size") val size: Int,
-    @Json(name = "content") val content: List<CommentContent>,
+    @Json(name = "content") val content: List<CommentContentDto>,
     @Json(name = "first") val first: Boolean,
     @Json(name = "last") val last: Boolean,
 )
@@ -25,7 +25,7 @@ data class WriteCommentDto(
 
 
 @JsonClass(generateAdapter = true)
-data class CommentContent(
+data class CommentContentDto(
     @Json(name = "commentId") val commentId: Int,
     @Json(name = "comment") val comment: String,
     @Json(name = "nickname") val nickname: String,
@@ -33,3 +33,4 @@ data class CommentContent(
     @Json(name = "challengeId") val challengeId: Int,
     @Json(name = "createdAt") val createdAt: String,
 )
+

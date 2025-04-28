@@ -12,7 +12,7 @@ class GetLoginInfoUseCase @Inject constructor(
     suspend fun getLoginInfo(
         token: String,
         loginType: String,
-        languageCode: String,
+        language: String,
     ): Flow<LoginDto?> =
-        loginRepository.getLoginInfo(token = token, loginType = loginType, languageCode = languageCode)
+        loginRepository.getLoginInfo(token = token, loginType = loginType, language = language)
 }
