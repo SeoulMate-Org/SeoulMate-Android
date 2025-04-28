@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.codesubmission.home.HomeViewModel
 import com.codesubmission.home.ui.HomeState
 import com.codesubmission.home.ui.challenge.HomeChallengeScreen
 import com.codesubmission.home.ui.main.HomeMainScreen
@@ -17,6 +18,7 @@ fun HomeNavHost(
     appState: HomeState,
     modifier: Modifier,
     context: Context,
+    viewModel: HomeViewModel,
     onScreenChange: (screen: Screen) -> Unit = { _ -> },
     onChallengeItemClick: (item: ChallengeItemData) -> Unit = {},
     onThemeMoreClick: () -> Unit = {},
@@ -34,6 +36,9 @@ fun HomeNavHost(
                 onChangeScreen = { screen ->
                     onScreenChange(screen)
                 },
+                onChallengeLikeClick = { id ->
+                    viewModel.reqChallengeLike(id)
+                }
             )
 //            GeofencingScreen(
 //                context,

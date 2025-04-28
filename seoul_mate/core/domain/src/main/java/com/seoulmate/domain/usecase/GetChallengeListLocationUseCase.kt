@@ -44,6 +44,7 @@ class GetChallengeListLocationUseCase @Inject constructor(
                                 attractionCount = item.attractionCount,
                                 commentCount = item.commentCount,
                                 distance = item.distance,
+                                likes = item.likes,
                             )
                         )
                     }

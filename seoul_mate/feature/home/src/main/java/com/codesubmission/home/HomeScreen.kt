@@ -210,6 +210,7 @@ fun HomeScreen(
                     modifier = Modifier.weight(1f),
                     appState = homeState,
                     context = context,
+                    viewModel = viewModel,
                     onScreenChange = onChangeScreen,
                     onChallengeItemClick = onChallengeItemClick,
                     onThemeMoreClick = onThemeMorClick,

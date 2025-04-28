@@ -77,7 +77,7 @@ fun SplashScreen(
                 end.linkTo(parent.end)
                 top.linkTo(parent.top, margin = 75.dp)
             },
-            painter = painterResource(R.drawable.img_splash_pop),
+            painter = painterResource(R.drawable.img_splash_pop_cut),
             contentDescription = "Splash Image",
         )
 

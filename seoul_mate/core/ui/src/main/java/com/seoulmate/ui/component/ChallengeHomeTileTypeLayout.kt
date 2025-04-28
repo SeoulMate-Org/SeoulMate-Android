@@ -15,6 +15,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -31,6 +34,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.seoulmate.data.model.ChallengeItemData
+import com.seoulmate.data.model.ChallengeStampItemData
 import com.seoulmate.ui.R
 import com.seoulmate.ui.theme.Blue50
 import com.seoulmate.ui.theme.Blue500
@@ -45,8 +49,15 @@ import com.seoulmate.ui.theme.White
 @Composable
 fun ChallengeHomeTileTypeLayout(
     modifier: Modifier,
-    item: ChallengeItemData,
+    item: ChallengeStampItemData,
+    onChallengeLikeClick: (challengeId: Int) -> Unit = {},
 ) {
+    var isInterest = remember { mutableStateOf(false) }
+
+    LaunchedEffect(Unit) {
+        isInterest.value = item.isLiked ?: false
+    }
+
     Row(
         modifier = modifier
             .height(92.dp),
@@ -54,6 +65,7 @@ fun ChallengeHomeTileTypeLayout(
         horizontalArrangement = Arrangement.Start,
     ) {
         // Image Challenge Item
+        // TODO chan placeholder
         AsyncImage(
             modifier = Modifier
                 .size(76.dp)
@@ -61,7 +73,7 @@ fun ChallengeHomeTileTypeLayout(
                 .background(color = CoolGray50),
             model = ImageRequest
                 .Builder(LocalContext.current)
-                .data(item.imgUrl)
+                .data(item.imageUrl)
                 .crossfade(true)
                 .placeholder(R.drawable.ic_empty_challenge)
                 .build(),
@@ -101,7 +113,7 @@ fun ChallengeHomeTileTypeLayout(
                 )
                 PpsText(
                     modifier = Modifier,
-                    text = "12",
+                    text = item.likes.toString(),
                     style = MaterialTheme.typography.labelSmall.copy(
                         color = CoolGray300,
                     )
@@ -115,7 +127,7 @@ fun ChallengeHomeTileTypeLayout(
                 )
                 PpsText(
                     modifier = Modifier,
-                    text = "5",
+                    text = item.attractionCount.toString(),
                     style = MaterialTheme.typography.labelSmall.copy(
                         color = CoolGray300,
                     )
@@ -123,57 +135,46 @@ fun ChallengeHomeTileTypeLayout(
             }
             Spacer(modifier = Modifier.height(4.dp))
             // Major Location
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Start,
-            ) {
-                Box(
-                    modifier = Modifier
-                        .background(
-                            shape = RoundedCornerShape(4.dp),
-                            color = Blue50
-                        ),
+            if (item.mainLocation != null) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Start,
                 ) {
+                    Box(
+                        modifier = Modifier
+                            .background(
+                                shape = RoundedCornerShape(4.dp),
+                                color = Blue50
+                            ),
+                    ) {
+                        PpsText(
+                            modifier = Modifier.padding(horizontal = 4.dp),
+                            text = stringResource(R.string.str_major_location),
+                            style = MaterialTheme.typography.labelSmall.copy(
+                                color = Blue500,
+                            )
+                        )
+                    }
                     PpsText(
                         modifier = Modifier.padding(horizontal = 4.dp),
-                        text = stringResource(R.string.str_major_location),
+                        text = item.mainLocation ?: "",
                         style = MaterialTheme.typography.labelSmall.copy(
-                            color = Blue500,
-                        )
+                            color = CoolGray600,
+                        ),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
                     )
                 }
-                PpsText(
-                    modifier = Modifier.padding(horizontal = 4.dp),
-                    text = "한남동/이태원",
-                    style = MaterialTheme.typography.labelSmall.copy(
-                        color = CoolGray600,
-                    )
-                )
             }
         }
         Spacer(modifier = Modifier.width(8.dp))
         // Interest Icon
         ChallengeInterestButton(
-            isInterest = item.isInterest,
+            isInterest = isInterest.value,
             size = 32.dp
         ) {
-
+            isInterest.value = !isInterest.value
+            onChallengeLikeClick(item.id)
         }
     }
-}
-
-@Preview
-@Composable
-private fun PreviewChallengeHomeTileTypeLayout() {
-    SeoulMateTheme {
-        ChallengeHomeTileTypeLayout(
-            modifier = Modifier.width(200.dp),
-            item = ChallengeItemData(
-                id = 11,
-                title = "Third Challenge Title",
-                imgUrl = "https://abcdabcd",
-            )
-        )
-    }
-
 }

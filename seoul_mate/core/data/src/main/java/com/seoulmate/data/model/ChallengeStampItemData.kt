@@ -10,7 +10,7 @@ data class ChallengeStampItemData(
     val challengeThemeId: Int,
     val challengeThemeName: String,
     val likes: Int,
-    val isLiked: Boolean?,
+    var isLiked: Boolean?,
     val myStampCount: Int?,
     val attractionCount: Int,
     val commentCount: Int,

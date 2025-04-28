@@ -26,6 +26,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.seoulmate.challenge.R
 import com.seoulmate.challenge.theme.item.ChallengeThemeTabRow
+import com.seoulmate.data.ChallengeInfo
+import com.seoulmate.data.UserInfo
 import com.seoulmate.data.model.ChallengeItemData
 import com.seoulmate.ui.component.ChallengeHomeTileTypeLayout
 import com.seoulmate.ui.component.PpsText
@@ -41,59 +43,8 @@ fun ChallengeThemeListScreen(
     coroutineScope: CoroutineScope,
     onBackClick: () -> Unit = {},
 ) {
-    val testRankingList = listOf(
-        ChallengeItemData(
-            id = 0,
-            title = "First Challenge Title",
-            imgUrl = "https://cdn.britannica.com/70/234870-050-D4D024BB/Orange-colored-cat-yawns-displaying-teeth.jpg",
-            isInterest = true,
-        ),
-        ChallengeItemData(
-            id = 1,
-            title = "Second Challenge Title",
-            imgUrl = "https://cdn.britannica.com/39/226539-050-D21D7721/Portrait-of-a-cat-with-whiskers-visible.jpg",
-        ),
-        ChallengeItemData(
-            id = 2,
-            title = "Third Challenge Title",
-            imgUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPzlSPtQD3H6OK36fZXlVpI-PiRR8elwtGyw&s",
-        ),
-        ChallengeItemData(
-            id = 3,
-            title = "First Challenge Title",
-            imgUrl = "https://cdn.britannica.com/70/234870-050-D4D024BB/Orange-colored-cat-yawns-displaying-teeth.jpg",
-            isInterest = true,
-        ),
-        ChallengeItemData(
-            id = 4,
-            title = "Second Challenge Title",
-            imgUrl = "https://cdn.britannica.com/39/226539-050-D21D7721/Portrait-of-a-cat-with-whiskers-visible.jpg",
-            isInterest = true,
-        ),
-        ChallengeItemData(
-            id = 5,
-            title = "Third Challenge Title",
-            imgUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPzlSPtQD3H6OK36fZXlVpI-PiRR8elwtGyw&s",
-            isInterest = true,
-        ),
-        ChallengeItemData(
-            id = 6,
-            title = "First Challenge Title",
-            imgUrl = "https://cdn.britannica.com/70/234870-050-D4D024BB/Orange-colored-cat-yawns-displaying-teeth.jpg",
-        ),
-    )
-
-    val testList = listOf(
-        "핵심 관광지 정복",
-        "인생샷&인증샷",
-        "도보 여행",
-        "핵심 관광지 정복",
-        "인생샷&인증샷",
-        "도보 여행",
-    )
-
     val pagerState = rememberPagerState(
-        pageCount = { testList.size },
+        pageCount = { ChallengeInfo.themeList.size },
         initialPage = 0,
         initialPageOffsetFraction = 0f,
     )
@@ -140,7 +91,7 @@ fun ChallengeThemeListScreen(
         ) {
             ChallengeThemeTabRow(
                 coroutineScope = coroutineScope,
-                pageList = testList,
+                pageList = ChallengeInfo.themeList,
                 pagerState = pagerState,
             )
 
@@ -148,18 +99,15 @@ fun ChallengeThemeListScreen(
             HorizontalPager(
                 state = pagerState,
                 userScrollEnabled = false,
-            ) { index ->
-//                when (testList[index]) {
-//
-//                }
+            ) { pageIndex ->
                 LazyColumn {
                     items(
-                        count = testRankingList.size,
-                        key = { index -> testRankingList[index].id }
+                        count = UserInfo.challengeThemeList[pageIndex].size,
+                        key = { index -> UserInfo.challengeThemeList[pageIndex][index].id }
                     ) { index ->
                         ChallengeHomeTileTypeLayout(
                             modifier = Modifier.fillMaxWidth(),
-                            item = testRankingList[index],
+                            item = UserInfo.challengeThemeList[pageIndex][index],
                         )
                     }
                 }

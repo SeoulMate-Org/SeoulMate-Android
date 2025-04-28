@@ -171,7 +171,7 @@ fun RequestLoginScreen(
                     end.linkTo(parent.end)
                     top.linkTo(parent.top, margin = 25.dp)
                 },
-            painter = painterResource(R.drawable.img_title),
+            painter = painterResource(R.drawable.img_title_cut),
             contentDescription = "Splash Image",
         )
 

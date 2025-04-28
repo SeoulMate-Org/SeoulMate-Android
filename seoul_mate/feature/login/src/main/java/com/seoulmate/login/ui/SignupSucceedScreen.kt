@@ -46,7 +46,7 @@ fun SignupSucceedScreen(
                 verticalArrangement = Arrangement.Center,
             ) {
                 Image(
-                    painter = painterResource(com.seoulmate.ui.R.drawable.img_location_point),
+                    painter = painterResource(com.seoulmate.ui.R.drawable.ic_complete),
                     contentDescription = "Succeed Image"
                 )
                 PpsText(

@@ -16,6 +16,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.seoulmate.data.UserInfo
+import com.seoulmate.data.model.ChallengeThemeData
 import com.seoulmate.ui.component.PpsText
 import com.seoulmate.ui.theme.Blue500
 import com.seoulmate.ui.theme.CoolGray500
@@ -30,7 +32,7 @@ fun ChallengeThemeTabRow(
         .height(41.dp)
         .padding(horizontal = 15.dp),
     coroutineScope: CoroutineScope,
-    pageList: List<String>,
+    pageList: List<ChallengeThemeData>,
     pagerState: PagerState,
 ) {
     val currentSelectedTabIndex = pagerState.currentPage
@@ -61,7 +63,7 @@ fun ChallengeThemeTabRow(
             ) {
                 PpsText(
                     modifier = Modifier.height(39.dp),
-                    text = pageItem,
+                    text = if (UserInfo.localeLanguage == "ko") pageItem.nameKor else pageItem.title,
                     style = MaterialTheme.typography.bodySmall.copy(
                         color = if(isSelected) Blue500 else CoolGray500,
                     ),

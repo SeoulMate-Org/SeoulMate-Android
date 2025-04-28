@@ -1,6 +1,7 @@
 package com.codesubmission.home.ui.main.item
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,6 +24,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ScrollableTabRow
+import androidx.compose.material3.TabRowDefaults
+import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -41,28 +45,29 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.codesubmission.home.R
+import com.seoulmate.data.ChallengeInfo
+import com.seoulmate.data.UserInfo
 import com.seoulmate.data.model.ChallengeItemData
 import com.seoulmate.ui.component.ChallengeHomeTileTypeLayout
 import com.seoulmate.ui.component.ChallengeSquareImageTypeLayout
 import com.seoulmate.ui.component.PpsText
 import com.seoulmate.ui.component.RoundedTag
+import com.seoulmate.ui.theme.Blue500
 import com.seoulmate.ui.theme.CoolGray400
 import com.seoulmate.ui.theme.CoolGray700
 import com.seoulmate.ui.theme.CoolGray75
 import com.seoulmate.ui.theme.CoolGray900
 import com.seoulmate.ui.theme.SeoulMateTheme
+import com.seoulmate.ui.theme.TrueWhite
 
 @Composable
 fun ChallengeCategory(
     modifier: Modifier,
-    categoryList: List<String> = listOf(),
-    itemList: List<ChallengeItemData> = listOf(),
     onMoreClick: () -> Unit = {},
+    onChallengeLikeClick: (challengeId: Int) -> Unit = {},
 ) {
-    var categoryIndex by remember { mutableIntStateOf(0) }
-
     val pagerState = rememberPagerState(
-        pageCount = { (itemList.size/3) + if(itemList.size%3 > 0) 1 else 0 },
+        pageCount = { ChallengeInfo.themeList.size },
         initialPage = 0,
         initialPageOffsetFraction = 0f,
     )
@@ -107,17 +112,29 @@ fun ChallengeCategory(
             }
         }
         // Category
-        LazyRow{
-            itemsIndexed(
-                items = categoryList,
-                key = { _, item -> item }
-            ) { index, item ->
+        ScrollableTabRow(
+            modifier = Modifier.fillMaxWidth(),
+            selectedTabIndex = pagerState.currentPage,
+            indicator = { tabPositions ->
+                TabRowDefaults.SecondaryIndicator(
+                    modifier = Modifier.tabIndicatorOffset(
+                        tabPositions[pagerState.currentPage]
+                    ),
+                    height = 0.dp,
+                    color = Color.Transparent,
+                )
+            },
+            divider = {},
+            containerColor = TrueWhite,
+            contentColor = TrueWhite,
+        ) {
+            ChallengeInfo.themeList.forEachIndexed { index, item ->
                 Box(modifier = Modifier.padding(end = 8.dp, start = if(index == 0) 20.dp else 0.dp),) {
                     RoundedTag(
-                        title = item,
-                        isSelected = index == categoryIndex
+                        title = if(UserInfo.localeLanguage == "ko") item.nameKor else item.title,
+                        isSelected = index == pagerState.currentPage
                     ) {
-                        categoryIndex = index
+
                     }
                 }
             }
@@ -129,41 +146,38 @@ fun ChallengeCategory(
                 .padding(top = 20.dp)
                 .padding(horizontal = 20.dp)
         ) { index ->
-
             ChallengeCategoryPagerItem(
-                itemList = itemList,
-                startIndex = if(index == 0) 0 else (index * 3)
+                pagerIndex = index,
+                onChallengeLikeClick = onChallengeLikeClick,
             )
         }
 
-        PagerIndicator(pageCount = pagerState.pageCount, currentPageIndex = pagerState.currentPage)
+        PagerIndicator(
+            modifier = Modifier.padding(top = 16.dp),
+            pageCount = pagerState.pageCount,
+            currentPageIndex = pagerState.currentPage,
+        )
     }
 }
 
 @Composable
 private fun ChallengeCategoryPagerItem(
-    itemList: List<ChallengeItemData>,
-    startIndex: Int = 0
+    pagerIndex: Int,
+    onChallengeLikeClick: (challengeId: Int) -> Unit = {},
 ) {
-    val pagerItemList = mutableListOf<ChallengeItemData>()
-    if (startIndex + 2 < itemList.lastIndex) {
-        pagerItemList.add(itemList[startIndex])
-        pagerItemList.add(itemList[startIndex + 1])
-        pagerItemList.add(itemList[startIndex + 2])
-    } else {
-        for (i in startIndex..itemList.lastIndex) {
-            pagerItemList.add(itemList[i])
-        }
-    }
     Column(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
     ) {
-        pagerItemList.forEach { item ->
-            ChallengeHomeTileTypeLayout(
-                modifier = Modifier,
-                item = item,
-            )
+        if (UserInfo.challengeThemeList[pagerIndex].size > 3) {
+            for (i in 0..2) {
+                ChallengeHomeTileTypeLayout(
+                    modifier = Modifier,
+                    item = UserInfo.challengeThemeList[pagerIndex][i],
+                    onChallengeLikeClick = onChallengeLikeClick,
+                )
+            }
         }
+
     }
 }
 
@@ -213,7 +227,6 @@ private fun PreviewChallengeCategory() {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 15.dp),
-            categoryList = listOf("Tag1", "Tag2", "Tag3", "Tag4", "Tag5", "Tag6", "Tag7", "Tag8", "Tag9"),
         )
     }
 }

@@ -10,6 +10,7 @@ data class ChallengeLocationItemData(
     val challengeThemeId: Int,
     val challengeThemeName: String,
     val isLiked: Boolean?,
+    val likes: Int,
     val myStampCount: Int?,
     val progressCount: Int?,
     val attractionCount: Int,

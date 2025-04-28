@@ -47,24 +47,24 @@ interface ChallengeRepository {
     // put Challenge Like
     suspend fun reqChallengeLike(
         id: Int,
-    ): Flow<ChallengeItemLikeDto?>
+    ): Flow<CommonDto<ChallengeItemLikeDto>?>
 
     // fetch challenge list location
     suspend fun reqChallengeListLocation(
         locationRequest: MyLocationReqData,
-        language: String = "KOR",
+        language: String,
     ): Flow<CommonDto<List<ChallengeLocationItemDto>?>>
 
     // fetch challenge list stamp
     suspend fun reqChallengeListStamp(
         attractionId: Int?,
-        language: String = "KOR",
+        language: String,
     ): Flow<CommonDto<List<ChallengeStampItemDto>?>>
 
     // fetch challenge list theme
     suspend fun reqChallengeListTheme(
         themeId: Int,
-        language: String = "KOR",
+        language: String,
     ): Flow<CommonDto<List<ChallengeStampItemDto>?>>
 
     // fetch attraction stamp

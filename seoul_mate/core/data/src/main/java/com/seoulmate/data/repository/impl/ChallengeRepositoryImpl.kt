@@ -85,11 +85,17 @@ class ChallengeRepositoryImpl @Inject constructor(
 
     override suspend fun reqChallengeLike(
         id: Int
-    ): Flow<ChallengeItemLikeDto?> = flow {
+    ): Flow<CommonDto<ChallengeItemLikeDto>?> = flow {
         val response = apiService.reqChallengeLike(
             id = id,
         )
-        emit(response.body())
+        emit(
+            CommonDto(
+                code = response.code(),
+                message = response.message(),
+                response = response.body(),
+            )
+        )
     }
 
     override suspend fun reqChallengeListLocation(

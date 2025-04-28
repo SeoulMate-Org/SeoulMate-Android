@@ -31,6 +31,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
@@ -38,21 +39,26 @@ import com.codesubmission.home.R
 import com.codesubmission.home.ui.main.item.ChallengeCategory
 import com.codesubmission.home.ui.main.item.ChallengeRanking
 import com.codesubmission.home.ui.main.item.HorizontalCarousel
+import com.codesubmission.home.ui.main.item.MissingChallenge
 import com.codesubmission.home.ui.main.item.MyLocationChallenge
 import com.seoulmate.data.UserInfo
 import com.seoulmate.data.model.ChallengeItemData
+import com.seoulmate.data.model.ChallengeStampItemData
 import com.seoulmate.ui.component.ChallengeRankingTileTypeLayout
 import com.seoulmate.ui.component.PpsText
 import com.seoulmate.ui.component.Screen
 import com.seoulmate.ui.theme.Color1D8EFE
 import com.seoulmate.ui.theme.CoolGray25
+import com.seoulmate.ui.theme.MainMissingChallengeGradientStart
 import com.seoulmate.ui.theme.MainTopGradientStart
 import com.seoulmate.ui.theme.TrueWhite
+import com.seoulmate.ui.theme.White
 
 @Composable
 fun HomeMainScreen(
     context: Context,
     onChallengeItemClick: (item: ChallengeItemData) -> Unit = {},
+    onChallengeLikeClick: (challengeId: Int) -> Unit = {},
     onThemeMoreClick: () -> Unit = {},
     onChangeScreen: (screen: Screen) -> Unit = { _ -> },
 ) {
@@ -152,7 +158,7 @@ fun HomeMainScreen(
                             modifier = Modifier.padding(start = 20.dp, bottom = 16.dp),
                             text = stringResource(R.string.home_top_title),
                             style = MaterialTheme.typography.titleLarge.copy(
-                                color = CoolGray25,
+                                color = White,
                             ),
                         )
                         Image(
@@ -304,15 +310,14 @@ fun HomeMainScreen(
                 ) {
                     ChallengeCategory(
                         modifier = Modifier.fillMaxWidth(),
-                        categoryList = listOf("Tag1", "Tag2", "Tag3", "Tag4", "Tag5", "Tag6", "Tag7", "Tag8", "Tag9"),
-                        itemList = testRankingList,
                         onMoreClick = onThemeMoreClick,
+                        onChallengeLikeClick = onChallengeLikeClick,
                     )
                 }
             }
             // Missing Challenge
             item {
-
+                MissingChallenge()
             }
             // Challenge Ranking
             item {
