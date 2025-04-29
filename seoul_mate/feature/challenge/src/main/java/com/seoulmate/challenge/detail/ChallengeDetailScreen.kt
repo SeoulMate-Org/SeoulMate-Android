@@ -27,15 +27,18 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.TopAppBarDefaults.exitUntilCollapsedScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -150,7 +153,8 @@ fun ChallengeDetailScreen(
                     containerColor = TrueWhite,
                     titleContentColor = TrueWhite,
                     navigationIconContentColor = TrueWhite,
-                )
+                ),
+                scrollBehavior = exitUntilCollapsedScrollBehavior(),
             )
         }
     ) { padding ->
@@ -203,44 +207,54 @@ fun ChallengeDetailScreen(
                             thickness = 2.dp,
                         )
                     }
-                    // Stamp Mission Location
-                    item {
-                        Column(
-                            modifier = Modifier.padding(horizontal = 15.dp),
-                        ) {
-                            PpsText(
-                                modifier = Modifier.wrapContentSize(),
-                                text = stringResource(id = R.string.stamp_mission_location_title),
-                                style = TextStyle(
-                                    fontSize = 18.sp,
-                                    color = CoolGray900,
+                    if (viewModel.challengeItem.value.attractions.isNotEmpty()) {
+                        // Stamp Mission Location
+                        item {
+                            Column(
+                                modifier = Modifier
+                                    .padding(horizontal = 20.dp)
+                                    .padding(top = 28.dp),
+                            ) {
+                                PpsText(
+                                    modifier = Modifier.wrapContentSize(),
+                                    text = stringResource(id = R.string.stamp_mission_location_title),
+                                    style = MaterialTheme.typography.titleSmall.copy(
+                                        color = CoolGray900,
+                                    )
                                 )
-                            )
-                            PpsText(
-                                modifier = Modifier.wrapContentSize(),
-                                text = stringResource(id = R.string.stamp_mission_location_info),
-                                style = TextStyle(
-                                    fontSize = 13.sp,
-                                    color = CoolGray400,
+                                PpsText(
+                                    modifier = Modifier.wrapContentSize(),
+                                    text = stringResource(id = R.string.stamp_mission_location_info),
+                                    style = MaterialTheme.typography.labelLarge.copy(
+                                        color = CoolGray400,
+                                    )
                                 )
-                            )
+                            }
                         }
-                    }
-                    items(
-                        count = viewModel.challengeItem.value.attractions.size
-                    ) { index ->
-                        Box(modifier = Modifier.padding(horizontal = 20.dp)) {
-                            AttractionItemTile(
-                                item = viewModel.challengeItem.value.attractions[index],
-                                onItemClick = { item ->
-                                    onAttractionClick(item.id)
-                                },
-                                onItemLikeClick = { item ->
-                                    viewModel.reqAttractionLike(item.id)
+                        items(
+                            count = viewModel.challengeItem.value.attractions.size
+                        ) { index ->
+                            Column (modifier = Modifier.padding(horizontal = 20.dp)) {
+                                if(index > 0) {
+                                    HorizontalDivider(
+                                        color = CoolGray25,
+                                        thickness = 1.dp,
+                                    )
                                 }
-                            )
+
+                                AttractionItemTile(
+                                    item = viewModel.challengeItem.value.attractions[index],
+                                    onItemClick = { item ->
+                                        onAttractionClick(item.id)
+                                    },
+                                    onItemLikeClick = { item ->
+                                        viewModel.reqAttractionLike(item.id)
+                                    }
+                                )
+                            }
                         }
                     }
+
                     // Divider
                     item{
                         HorizontalDivider(
@@ -252,7 +266,9 @@ fun ChallengeDetailScreen(
                     // Comment
                     item {
                         Column(
-                            modifier = Modifier.padding(horizontal = 15.dp),
+                            modifier = Modifier
+                                .padding(horizontal = 20.dp)
+                                .padding(top = 16.dp),
                         ) {
                             Row(
                                 modifier = Modifier.fillMaxWidth(),
@@ -260,41 +276,59 @@ fun ChallengeDetailScreen(
                             ) {
                                 PpsText(
                                     modifier = Modifier.wrapContentSize(),
-                                    text = stringResource(id = R.string.title_reply),
-                                    style = TextStyle(
-                                        fontSize = 18.sp,
+                                    text = stringResource(
+                                        id = R.string.title_comment,
+                                        viewModel.challengeItem.value.comments.size
+                                    ),
+                                    style = MaterialTheme.typography.titleSmall.copy(
                                         color = CoolGray900,
                                     )
                                 )
-                                IconButton(
-                                    onClick = {
-                                        onChangeScreen(Screen.ChallengeCommentList)
+                                if (viewModel.isStamped.value) {
+                                    IconButton(
+                                        onClick = {
+                                            onChangeScreen(Screen.ChallengeCommentList)
+                                        }
+                                    ) {
+                                        Icon(
+                                            modifier = Modifier.size(20.dp),
+                                            painter = painterResource(id = com.seoulmate.ui.R.drawable.ic_write),
+                                            contentDescription = "Write Icon",
+                                            tint = CoolGray300,
+                                        )
                                     }
-                                ) {
-                                    Icon(
-                                        painter = painterResource(id = com.seoulmate.ui.R.drawable.ic_write),
-                                        contentDescription = "Write Icon",
-                                        tint = CoolGray300,
-                                    )
                                 }
                             }
 
-                            if (viewModel.challengeItem.value.comments.isEmpty()) {
-                                PpsText(
-                                    modifier = Modifier.padding(start = 10.dp),
-                                    text = "댓글 없음",
-                                    style = TextStyle(
-                                        fontSize = 18.sp,
-                                        color = CoolGray900,
+                            if (!viewModel.isStamped.value) {
+                                Column(
+                                    modifier = Modifier.height(53.dp).fillMaxWidth(),
+                                    verticalArrangement = Arrangement.Center,
+                                    horizontalAlignment = Alignment.CenterHorizontally
+                                ) {
+                                    PpsText(
+                                        modifier = Modifier.padding(start = 10.dp),
+                                        text = stringResource(R.string.comment_empty),
+                                        style = MaterialTheme.typography.bodyMedium.copy(
+                                            color = CoolGray900,
+                                        )
                                     )
-                                )
+                                }
                             }
                         }
                     }
                     items(
                         count = ChallengeDetailInfo.commentList.size
                     ) { index ->
-                        Box(modifier = Modifier.padding(horizontal = 15.dp)) {
+                        Column (modifier = Modifier.padding(horizontal = 20.dp)) {
+                            if (index > 0) {
+                                HorizontalDivider(
+                                    modifier = Modifier.padding(top = 16.dp),
+                                    color = CoolGray25,
+                                    thickness = 1.dp,
+                                )
+                            }
+
                             ChallengeCommentItemLayout(
                                 item = ChallengeDetailInfo.commentList[index]
                             )
@@ -303,7 +337,7 @@ fun ChallengeDetailScreen(
 
                     // Bottom Spacer
                     item {
-                        Spacer(modifier = Modifier.height(25.dp))
+                        Spacer(modifier = Modifier.height(55.dp))
                     }
 
                 }
@@ -312,6 +346,7 @@ fun ChallengeDetailScreen(
                 if (isShowBottomFloating) {
                     Box(
                         modifier = Modifier
+                            .padding(bottom = 10.dp)
                             .wrapContentWidth()
                             .background(
                                 color = ColorEDF4FF,
@@ -329,10 +364,9 @@ fun ChallengeDetailScreen(
                     ) {
                         PpsText(
                             modifier = Modifier
-                                .padding(horizontal = 10.dp, vertical = 5.dp),
+                                .padding(horizontal = 24.dp, vertical = 11.dp),
                             text = stringResource(R.string.stamp_floating),
-                            style = TextStyle(
-                                fontSize = 12.sp,
+                            style = MaterialTheme.typography.labelLarge.copy(
                                 color = Blue500,
                             )
                         )

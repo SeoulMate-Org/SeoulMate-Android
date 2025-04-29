@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,6 +24,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
@@ -30,7 +32,9 @@ import coil.request.ImageRequest
 import com.seoulmate.data.model.challenge.ChallengeRankItemData
 import com.seoulmate.ui.R
 import com.seoulmate.ui.noRippleClickable
+import com.seoulmate.ui.theme.Color2B2B2B
 import com.seoulmate.ui.theme.CoolGray25
+import com.seoulmate.ui.theme.CoolGray300
 import com.seoulmate.ui.theme.CoolGray600
 import com.seoulmate.ui.theme.TrueWhite
 
@@ -49,7 +53,7 @@ fun ChallengeRankingTileTypeLayout(
             .noRippleClickable {
                 onItemClick(item)
             },
-        shape = RoundedCornerShape(20.dp),
+        shape = RoundedCornerShape(12.dp),
         colors = CardColors(
             contentColor = backColor,
             containerColor = backColor,
@@ -67,8 +71,7 @@ fun ChallengeRankingTileTypeLayout(
             PpsText(
                 modifier = Modifier.wrapContentSize(),
                 text = (index + 1).toString(),
-                style = TextStyle(
-                    fontSize = 18.sp,
+                style = MaterialTheme.typography.titleLarge.copy(
                     color = CoolGray600,
                 )
             )
@@ -92,24 +95,26 @@ fun ChallengeRankingTileTypeLayout(
             Column(
                 modifier = Modifier
                     .padding(start = 10.dp)
-                    .weight(1f)
+                    .weight(1f),
+                horizontalAlignment = Alignment.Start,
+                verticalArrangement = Arrangement.Center,
             ) {
                 // Title
                 PpsText(
                     modifier = Modifier,
                     text = item.name,
-                    style = TextStyle(
-                        fontSize = 16.sp,
-                        color = fontColor,
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        color = Color2B2B2B,
                     ),
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
                 )
                 // Progress Count
                 PpsText(
-                    modifier = Modifier,
+                    modifier = Modifier.padding(top = 3.dp),
                     text = stringResource(R.string.home_challenge_ranking_join_count, item.progressCount),
-                    style = TextStyle(
-                        fontSize = 16.sp,
-                        color = fontColor,
+                    style = MaterialTheme.typography.labelLarge.copy(
+                        color = CoolGray300,
                     ),
                 )
             }

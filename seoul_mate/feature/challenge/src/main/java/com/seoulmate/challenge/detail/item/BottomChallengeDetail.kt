@@ -9,6 +9,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardColors
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -20,6 +24,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -31,7 +36,10 @@ import com.seoulmate.ui.component.PpsText
 import com.seoulmate.ui.component.Screen
 import com.seoulmate.ui.theme.Blue500
 import com.seoulmate.ui.theme.CoolGray25
+import com.seoulmate.ui.theme.CoolGray500
+import com.seoulmate.ui.theme.CoolGray700
 import com.seoulmate.ui.theme.CoolGray900
+import com.seoulmate.ui.theme.Red
 import com.seoulmate.ui.theme.SeoulMateTheme
 import com.seoulmate.ui.theme.TrueWhite
 import com.seoulmate.ui.theme.White
@@ -47,11 +55,18 @@ fun BottomChallengeDetail(
     onMapClick: () -> Unit = {},
     onFavoriteClick: (Boolean) -> Unit = {},
 ) {
-    Surface (
+    Card(
         modifier = Modifier.height(68.dp),
         shape = RectangleShape,
-        color = White,
-        shadowElevation = 20.dp,
+        colors = CardColors(
+            contentColor = TrueWhite,
+            containerColor = TrueWhite,
+            disabledContentColor = TrueWhite,
+            disabledContainerColor = TrueWhite,
+        ),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 55.dp
+        )
     ) {
         BottomRow(
             isLogin = isLogin,
@@ -91,7 +106,7 @@ private fun BottomRow(
     ) {
         // Like
         IconButton(
-            modifier = Modifier.size(48.dp),
+            modifier = Modifier.size(24.dp),
             onClick = {
                 rememberFavorite.value = !rememberFavorite.value
                 onFavoriteClick(rememberFavorite.value)
@@ -111,12 +126,14 @@ private fun BottomRow(
                         }
                     ),
                     contentDescription = "Challenge Bottom Favorite",
-                    tint = if (isFavorite) CoolGray900 else CoolGray25
+                    tint = if (isFavorite) Red else CoolGray500
                 )
                 PpsText(
                     modifier = Modifier,
                     text = stringResource(com.seoulmate.ui.R.string.str_favorite),
-                    style = MaterialTheme.typography.labelLarge
+                    style = MaterialTheme.typography.labelSmall.copy(
+                        color = CoolGray700,
+                    )
                 )
             }
         }

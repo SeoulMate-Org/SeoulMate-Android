@@ -44,6 +44,7 @@ fun AttractionItemTile(
 ) {
     Surface(
         modifier = Modifier
+            .padding(vertical = 12.dp)
             .background(color = TrueWhite)
             .clickable {
                 onItemClick(item)

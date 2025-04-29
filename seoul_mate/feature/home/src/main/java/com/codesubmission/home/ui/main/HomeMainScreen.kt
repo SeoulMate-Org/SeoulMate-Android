@@ -46,6 +46,7 @@ import com.seoulmate.data.model.challenge.ChallengeItemData
 import com.seoulmate.ui.component.ChallengeRankingTileTypeLayout
 import com.seoulmate.ui.component.PpsText
 import com.seoulmate.ui.component.Screen
+import com.seoulmate.ui.theme.CoolGray25
 import com.seoulmate.ui.theme.MainTopGradientStart
 import com.seoulmate.ui.theme.TrueWhite
 import com.seoulmate.ui.theme.White
@@ -119,68 +120,43 @@ fun HomeMainScreen(
                         itemList = listOf(
                             ChallengeItemData(
                                 id = 0,
+                                name = "First Challenge Title",
                                 title = "First Challenge Title",
                                 imgUrl = "https://cdn.britannica.com/70/234870-050-D4D024BB/Orange-colored-cat-yawns-displaying-teeth.jpg",
                                 isInterest = true,
                             ),
                             ChallengeItemData(
                                 id = 1,
+                                name = "First Challenge Title",
                                 title = "Second Challenge Title",
                                 imgUrl = "https://cdn.britannica.com/39/226539-050-D21D7721/Portrait-of-a-cat-with-whiskers-visible.jpg",
                             ),
                             ChallengeItemData(
                                 id = 2,
+                                name = "First Challenge Title",
                                 title = "Third Challenge Title",
                                 imgUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPzlSPtQD3H6OK36fZXlVpI-PiRR8elwtGyw&s",
                             ),
                             ChallengeItemData(
                                 id = 3,
+                                name = "First Challenge Title",
                                 title = "First Challenge Title",
                                 imgUrl = "https://cdn.britannica.com/70/234870-050-D4D024BB/Orange-colored-cat-yawns-displaying-teeth.jpg",
                                 isInterest = true,
                             ),
                             ChallengeItemData(
                                 id = 4,
+                                name = "First Challenge Title",
                                 title = "Second Challenge Title",
                                 imgUrl = "https://cdn.britannica.com/39/226539-050-D21D7721/Portrait-of-a-cat-with-whiskers-visible.jpg",
                                 isInterest = true,
                             ),
                             ChallengeItemData(
                                 id = 5,
+                                name = "First Challenge Title",
                                 title = "Third Challenge Title",
                                 imgUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPzlSPtQD3H6OK36fZXlVpI-PiRR8elwtGyw&s",
                                 isInterest = true,
-                            ),
-                            ChallengeItemData(
-                                id = 6,
-                                title = "First Challenge Title",
-                                imgUrl = "https://cdn.britannica.com/70/234870-050-D4D024BB/Orange-colored-cat-yawns-displaying-teeth.jpg",
-                            ),
-                            ChallengeItemData(
-                                id = 7,
-                                title = "Second Challenge Title",
-                                imgUrl = "https://cdn.britannica.com/39/226539-050-D21D7721/Portrait-of-a-cat-with-whiskers-visible.jpg",
-                            ),
-                            ChallengeItemData(
-                                id = 8,
-                                title = "Third Challenge Title",
-                                imgUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPzlSPtQD3H6OK36fZXlVpI-PiRR8elwtGyw&s",
-                            ),
-                            ChallengeItemData(
-                                id = 9,
-                                title = "First Challenge Title",
-                                imgUrl = "https://cdn.britannica.com/70/234870-050-D4D024BB/Orange-colored-cat-yawns-displaying-teeth.jpg",
-                            ),
-                            ChallengeItemData(
-                                id = 10,
-                                title = "Second Challenge Title",
-                                imgUrl = "https://cdn.britannica.com/39/226539-050-D21D7721/Portrait-of-a-cat-with-whiskers-visible.jpg",
-                                isInterest = true,
-                            ),
-                            ChallengeItemData(
-                                id = 11,
-                                title = "Third Challenge Title",
-                                imgUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPzlSPtQD3H6OK36fZXlVpI-PiRR8elwtGyw&s",
                             ),
                         ),
                         onChallengeItemClick = onChallengeItemClick,
@@ -200,42 +176,36 @@ fun HomeMainScreen(
                         possibleStampList = listOf(
                             ChallengeItemData(
                                 id = 0,
+                                name = "First Challenge Title",
                                 title = "First Challenge Title",
                                 imgUrl = "https://cdn.britannica.com/70/234870-050-D4D024BB/Orange-colored-cat-yawns-displaying-teeth.jpg",
                                 isInterest = true,
                             ),
                             ChallengeItemData(
                                 id = 1,
+                                name = "First Challenge Title",
                                 title = "Second Challenge Title",
                                 imgUrl = "https://cdn.britannica.com/39/226539-050-D21D7721/Portrait-of-a-cat-with-whiskers-visible.jpg",
                             ),
                             ChallengeItemData(
                                 id = 2,
+                                name = "First Challenge Title",
                                 title = "Third Challenge Title",
                                 imgUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPzlSPtQD3H6OK36fZXlVpI-PiRR8elwtGyw&s",
                             ),
                             ChallengeItemData(
                                 id = 3,
+                                name = "First Challenge Title",
                                 title = "First Challenge Title",
                                 imgUrl = "https://cdn.britannica.com/70/234870-050-D4D024BB/Orange-colored-cat-yawns-displaying-teeth.jpg",
                                 isInterest = true,
                             ),
                             ChallengeItemData(
                                 id = 4,
+                                name = "First Challenge Title",
                                 title = "Second Challenge Title",
                                 imgUrl = "https://cdn.britannica.com/39/226539-050-D21D7721/Portrait-of-a-cat-with-whiskers-visible.jpg",
                                 isInterest = true,
-                            ),
-                            ChallengeItemData(
-                                id = 5,
-                                title = "Third Challenge Title",
-                                imgUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPzlSPtQD3H6OK36fZXlVpI-PiRR8elwtGyw&s",
-                                isInterest = true,
-                            ),
-                            ChallengeItemData(
-                                id = 6,
-                                title = "First Challenge Title",
-                                imgUrl = "https://cdn.britannica.com/70/234870-050-D4D024BB/Orange-colored-cat-yawns-displaying-teeth.jpg",
                             ),
                         ),
                         onSignUpClick = {
@@ -262,6 +232,7 @@ fun HomeMainScreen(
                         themeItemList = viewModel.challengeThemeList.value,
                         onMoreClick = onThemeMoreClick,
                         onChallengeLikeClick = onChallengeLikeClick,
+                        onChallengeItemClick = onChallengeItemClick,
                     )
                 }
             }
@@ -273,33 +244,39 @@ fun HomeMainScreen(
             }
             // Challenge Ranking
             item {
-                ChallengeRanking(
-                    modifier = Modifier.fillMaxWidth().padding(horizontal = 15.dp),
-                    onMoreClick = {
-                        onChangeScreen(Screen.ChallengeRankList)
-                    },
-                )
-            }
-            items(
-                count = 5
-            ) { index ->
-                Box(modifier = Modifier
-                    .padding(vertical = 5.dp, horizontal = 15.dp),
+                Column(
+                    modifier = Modifier
+                        .background(color = CoolGray25)
                 ) {
-                    ChallengeRankingTileTypeLayout(
-                        item = viewModel.challengeRankList.value[index],
-                        index = index,
-                        onItemClick = { item ->
-                            onChallengeItemClick(item.id)
+                    Spacer(modifier = Modifier.height(30.dp))
+
+                    ChallengeRanking(
+                        modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp),
+                        onMoreClick = {
+                            onChangeScreen(Screen.ChallengeRankList)
                         },
-                        onItemLikeClick = { item ->
-                            onChallengeLikeClick(item.id)
-                        }
                     )
+
+                    for(index in 0..4) {
+                        Box(modifier = Modifier
+                            .padding(vertical = 5.dp, horizontal = 20.dp),
+                        ) {
+                            ChallengeRankingTileTypeLayout(
+                                item = viewModel.challengeRankList.value[index],
+                                index = index,
+                                onItemClick = { item ->
+                                    onChallengeItemClick(item.id)
+                                },
+                                onItemLikeClick = { item ->
+                                    onChallengeLikeClick(item.id)
+                                }
+                            )
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(90.dp))
+
                 }
-            }
-            item {
-                Spacer(modifier = Modifier.height(90.dp))
             }
         }
     }

@@ -3,13 +3,16 @@ package com.codesubmission.home.ui.main.item
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -36,11 +39,13 @@ import com.seoulmate.data.model.challenge.ChallengeLocationItemData
 import com.seoulmate.ui.component.LinearStampIndicator
 import com.seoulmate.ui.component.PpsButton
 import com.seoulmate.ui.component.PpsText
+import com.seoulmate.ui.theme.Blue200
 import com.seoulmate.ui.theme.Blue500
 import com.seoulmate.ui.theme.Color2B2B2B
 import com.seoulmate.ui.theme.CoolGray100
 import com.seoulmate.ui.theme.CoolGray25
 import com.seoulmate.ui.theme.CoolGray300
+import com.seoulmate.ui.theme.CoolGray900
 import com.seoulmate.ui.theme.MainMissingChallengeGradientStart
 import com.seoulmate.ui.theme.TrueWhite
 import com.seoulmate.ui.theme.White
@@ -90,12 +95,25 @@ fun MissingChallenge(
             )
         }
         // Item Row
-        LazyRow {
+        LazyRow(
+            modifier = Modifier.fillMaxWidth()
+        ) {
             itemsIndexed(
                 items = UserInfo.myChallengeLocationList,
                 key = { index, item -> item.id },
             ) { index, item ->
-                MissionChallengeItem(item = UserInfo.myChallengeLocationList[index])
+                Row {
+                    if (index == 0) {
+                        Spacer(modifier = Modifier.width(16.dp))
+                    }
+                    Box(modifier = Modifier.padding(horizontal = 4.dp)) {
+                        MissionChallengeItem(item = UserInfo.myChallengeLocationList[index])
+                    }
+                    if (index == UserInfo.myChallengeLocationList.lastIndex) {
+                        Spacer(modifier = Modifier.width(16.dp))
+                    }
+                }
+
             }
         }
     }
@@ -106,7 +124,9 @@ fun MissionChallengeItem(
     item: ChallengeLocationItemData,
 ) {
     Column(
-        modifier = Modifier.width(160.dp),
+        modifier = Modifier
+            .width(160.dp)
+            .wrapContentHeight(),
     ) {
         ConstraintLayout {
             val (img, attractionRow) = createRefs()
@@ -116,7 +136,8 @@ fun MissionChallengeItem(
                 modifier = Modifier
                     .size(160.dp)
                     .clip(RoundedCornerShape(16.dp))
-                    .background(color = CoolGray25)
+//                    .background(color = CoolGray25)
+                    .background(color = CoolGray900)
                     .constrainAs(img) {
                         top.linkTo(parent.top)
                         start.linkTo(parent.start)
@@ -150,10 +171,8 @@ fun MissionChallengeItem(
                             LinearStampIndicator(
                                 modifier = Modifier.weight(1f),
                                 isCompleted = i <= (item.myStampCount ?: 0),
+                                horizontalPadding = 2.dp,
                             )
-                            if (i > 1) {
-                                Spacer(modifier = Modifier.width(4.dp))
-                            }
                         }
                     }
                     PpsText(
@@ -166,17 +185,20 @@ fun MissionChallengeItem(
                 }
             }
         }
-        Spacer(modifier = Modifier.padding(top = 8.dp))
+        Spacer(modifier = Modifier.height(8.dp))
         // Start Challenge Button
         PpsButton(
-            modifier = Modifier.weight(1f),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(32.dp),
+            borderColor = Blue200,
             stringRes = R.string.start_challenge,
             color = TrueWhite,
             fontColor = Blue500,
         ){
 
         }
-        Spacer(modifier = Modifier.padding(top = 8.dp))
+        Spacer(modifier = Modifier.height(8.dp))
         // Challenge Title
         PpsText(
             modifier = Modifier,

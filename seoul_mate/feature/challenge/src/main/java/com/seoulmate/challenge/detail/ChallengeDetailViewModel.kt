@@ -35,6 +35,7 @@ class ChallengeDetailViewModel @Inject constructor(
     var challengeItem = mutableStateOf(DefaultChallengeItemData.item)
     var startedChallenge = mutableStateOf(false)
     var needUserLogin = mutableStateOf(false)
+    var isStamped = mutableStateOf(false)
 
     // fetch Challenge Item
     fun getChallengeItem(
@@ -63,11 +64,22 @@ class ChallengeDetailViewModel @Inject constructor(
                     ChallengeDetailInfo.commentList = it.comments.map { commentItem ->
                         ChallengeCommentItem(
                             id = commentItem.id,
+                            nickname = commentItem.nickname,
                             comment = commentItem.comment,
                             createdAt = commentItem.createdAt,
                             modifiedAt = commentItem.modifiedAt,
                         )
                     }
+
+                    run breaker@ {
+                        ChallengeDetailInfo.attractions.forEach {
+                            if (it.isStamped) {
+                                isStamped.value = true
+                                return@breaker
+                            }
+                        }
+                    }
+
                 }
             }
         }

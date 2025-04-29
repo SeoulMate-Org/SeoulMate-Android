@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,8 +34,7 @@ fun ChallengeRanking(
         PpsText(
             modifier = Modifier.fillMaxWidth(),
             text = stringResource(R.string.home_challenge_ranking_title),
-            style = TextStyle(
-                fontSize = 20.sp,
+            style = MaterialTheme.typography.titleMedium.copy(
                 color = CoolGray900,
             ),
             overflow = TextOverflow.Ellipsis,
@@ -48,8 +48,7 @@ fun ChallengeRanking(
             PpsText(
                 modifier = Modifier.weight(1f),
                 text = stringResource(R.string.home_challenge_ranking_sub_title),
-                style = TextStyle(
-                    fontSize = 16.sp,
+                style = MaterialTheme.typography.labelLarge.copy(
                     color = CoolGray600,
                 ),
                 overflow = TextOverflow.Ellipsis,
@@ -68,9 +67,8 @@ fun ChallengeRanking(
                 PpsText(
                     modifier = Modifier.wrapContentSize(),
                     text = stringResource(com.seoulmate.ui.R.string.str_more),
-                    style = TextStyle(
-                        fontSize = 13.sp,
-                        color = CoolGray400,
+                    style = MaterialTheme.typography.labelLarge.copy(
+                        color = CoolGray600,
                     ),
                 )
             }

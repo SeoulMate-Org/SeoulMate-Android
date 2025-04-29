@@ -53,6 +53,7 @@ fun ChallengeCategory(
     themeItemList: List<List<ChallengeStampItemData>>,
     onMoreClick: () -> Unit = {},
     onChallengeLikeClick: (challengeId: Int) -> Unit = {},
+    onChallengeItemClick: (challengeId: Int) -> Unit = {},
 ) {
     val pagerState = rememberPagerState(
         pageCount = { ChallengeInfo.themeList.size },
@@ -141,6 +142,7 @@ fun ChallengeCategory(
                 pagerIndex = index,
                 themeItemList = themeItemList,
                 onChallengeLikeClick = onChallengeLikeClick,
+                onChallengeItemClick = onChallengeItemClick,
             )
         }
 
@@ -157,6 +159,7 @@ private fun ChallengeCategoryPagerItem(
     pagerIndex: Int,
     themeItemList: List<List<ChallengeStampItemData>>,
     onChallengeLikeClick: (challengeId: Int) -> Unit = {},
+    onChallengeItemClick: (challengeId: Int) -> Unit = {},
 ) {
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -167,6 +170,7 @@ private fun ChallengeCategoryPagerItem(
                     modifier = Modifier,
                     item = themeItemList[pagerIndex][i],
                     onChallengeLikeClick = onChallengeLikeClick,
+                    onChallengeItemClick = onChallengeItemClick,
                 )
             }
         }

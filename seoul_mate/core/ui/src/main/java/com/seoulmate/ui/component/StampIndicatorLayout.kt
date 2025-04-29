@@ -28,13 +28,14 @@ fun LinearStampIndicator(
     modifier: Modifier = Modifier,
     isCompleted: Boolean = false,
     height: Dp = 8.dp,
+    horizontalPadding: Dp = 5.dp,
 ) {
     Box(
         modifier = modifier
             .fillMaxWidth()
             .height(height)
             .clip(RoundedCornerShape(4.dp))
-            .padding(horizontal = 5.dp)
+            .padding(horizontal = horizontalPadding)
             .background(
                 color = if (isCompleted) Blue400 else CoolGray100,
                 shape = RoundedCornerShape(4.dp),

@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,6 +29,8 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.seoulmate.data.model.challenge.ChallengeItemData
 import com.seoulmate.ui.component.PpsText
+import com.seoulmate.ui.theme.Color2B2B2B
+import com.seoulmate.ui.theme.CoolGray200
 import com.seoulmate.ui.theme.CoolGray25
 import com.seoulmate.ui.theme.CoolGray300
 import com.seoulmate.ui.theme.CoolGray50
@@ -43,8 +46,7 @@ fun TopChallengeDetailInfo(
         AsyncImage(
             modifier = Modifier
                 .fillMaxWidth()
-                .aspectRatio(3.7f / 2.3f)
-                .background(color = CoolGray25),
+                .aspectRatio(3.7f / 2.3f),
             model = ImageRequest
                 .Builder(LocalContext.current)
                 .data(item.imgUrl)
@@ -56,15 +58,14 @@ fun TopChallengeDetailInfo(
         Spacer(modifier = Modifier.height(15.dp))
         // Info
         Column(
-            modifier = Modifier.padding(horizontal = 15.dp),
+            modifier = Modifier.padding(horizontal = 20.dp),
         ) {
-            // Challenge Title
+            // Challenge Name
             PpsText(
                 modifier = Modifier.wrapContentSize(),
-                text = "\uD83E\uDDED 인사동 복합 감각 정복 챌린지 (챌린지명)",
-                style = TextStyle(
-                    fontSize = 13.sp,
-                    color = CoolGray50,
+                text = item.name,
+                style = MaterialTheme.typography.labelLarge.copy(
+                    color = Color2B2B2B
                 ),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
@@ -73,11 +74,10 @@ fun TopChallengeDetailInfo(
             PpsText(
                 modifier = Modifier.wrapContentSize(),
                 text = item.title,
-                style = TextStyle(
-                    fontSize = 18.sp,
-                    color = CoolGray500,
+                style = MaterialTheme.typography.titleSmall.copy(
+                    color = Color2B2B2B,
                 ),
-                maxLines = 1,
+                maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
             )
             Spacer(modifier = Modifier.height(35.dp))
@@ -113,12 +113,14 @@ fun TopChallengeDetailInfo(
             }
             // Description
             PpsText(
-                modifier = Modifier.wrapContentSize(),
-                text = "관광지 설명관광지 설명관광지 설명관광지 설명관광지 설명관광지 설명관광지 설명관광지 설명관광지 설명관광지 ",
-                style = TextStyle(
-                    fontSize = 13.sp,
+                modifier = Modifier.wrapContentSize()
+                    .padding(top = 8.dp),
+                text = item.description,
+                style = MaterialTheme.typography.labelLarge.copy(
                     color = CoolGray300,
                 ),
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
             )
         }
     }
@@ -134,13 +136,12 @@ private fun ChallengeDetailItem(
             modifier = Modifier.size(16.dp),
             painter = painterResource(icon),
             contentDescription = "Challenge Detail Info",
-            tint = CoolGray300,
+            tint = CoolGray200,
         )
         PpsText(
             modifier = Modifier.wrapContentSize(),
             text = count.toString(),
-            style = TextStyle(
-                fontSize = 13.sp,
+            style = MaterialTheme.typography.labelLarge.copy(
                 color = CoolGray300,
             )
         )
@@ -154,6 +155,7 @@ private fun PreviewTopChallengeDetailInfo() {
         TopChallengeDetailInfo(
             item = ChallengeItemData(
                 id = 0,
+                name = "First Challenge",
                 title = "First Challenge Title",
                 imgUrl = "https://cdn.britannica.com/70/234870-050-D4D024BB/Orange-colored-cat-yawns-displaying-teeth.jpg",
             ),

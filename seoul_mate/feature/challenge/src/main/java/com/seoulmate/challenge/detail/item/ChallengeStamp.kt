@@ -7,11 +7,13 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,25 +41,25 @@ fun ChallengeStamp(
 ) {
     Column(
         modifier = Modifier
-            .padding(horizontal = 15.dp),
+            .padding(horizontal = 20.dp)
+            .padding(top = 28.dp),
     ) {
         PpsText(
             modifier = Modifier.wrapContentSize(),
             text = stringResource(id = R.string.stamp_title),
-            style = TextStyle(
-                fontSize = 18.sp,
+            style = MaterialTheme.typography.titleSmall.copy(
                 color = CoolGray900,
             )
         )
         PpsText(
             modifier = Modifier.wrapContentSize(),
             text = stringResource(id = R.string.stamp_info),
-            style = TextStyle(
-                fontSize = 13.sp,
+            style = MaterialTheme.typography.labelLarge.copy(
                 color = CoolGray400,
             )
         )
         // Stamp Progress
+        Spacer(modifier = Modifier.height(16.dp))
         Box(
             modifier = Modifier
                 .clip(RoundedCornerShape(20.dp))
@@ -88,8 +90,7 @@ fun ChallengeStamp(
                     PpsText(
                         modifier = Modifier.wrapContentSize(),
                         text = "0/1",
-                        style = TextStyle(
-                            fontSize = 12.sp,
+                        style = MaterialTheme.typography.labelSmall.copy(
                             color = CoolGray500,
                         )
                     )

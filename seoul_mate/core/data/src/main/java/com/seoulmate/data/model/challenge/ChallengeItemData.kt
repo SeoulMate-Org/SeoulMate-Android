@@ -4,9 +4,8 @@ package com.seoulmate.data.model.challenge
 data class ChallengeItemData(
     val id: Int,
     val title: String,
-    val titleEng: String = "",
+    val name: String,
     val description: String = "",
-    val descriptionEng: String = "",
     val imgUrl: String,
     val themeList: List<Int> = listOf(),
     val attractionIdList: List<Int> = listOf(),
@@ -44,6 +43,7 @@ object DefaultChallengeItemData {
     val item = ChallengeItemData(
         id = 0,
         title = "",
+        name = "",
         imgUrl = "",
     )
 }

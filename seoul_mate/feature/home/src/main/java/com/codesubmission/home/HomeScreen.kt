@@ -184,9 +184,6 @@ fun HomeScreen(
                     onThemeMoreClick = onThemeMorClick,
                 )
                 HomeBottomNav(
-                    modifier = Modifier
-                        .height(55.dp)
-                        .fillMaxWidth(),
                     onHomeClick = {
                         homeState.navigate(Screen.HomeMain.route)
                     },

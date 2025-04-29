@@ -7,9 +7,11 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -33,12 +35,14 @@ fun PpsButton(
     color: Color = Blue500,
     borderColor: Color = Blue500,
     @StringRes stringRes: Int,
-    fontSize: TextUnit = 16.sp,
     fontColor: Color = TrueWhite,
     onClick: () -> Unit = {},
 ) {
     Button(
         modifier = modifier
+            .clip(
+                shape = RoundedCornerShape(15.dp),
+            )
             .background(
                 shape = RoundedCornerShape(15.dp),
                 color = color,
@@ -58,8 +62,7 @@ fun PpsButton(
         PpsText(
             modifier = Modifier.wrapContentSize(),
             text = stringResource(stringRes),
-            style = TextStyle(
-                fontSize = fontSize,
+            style = MaterialTheme.typography.bodyMedium.copy(
                 color = fontColor,
             ),
             fontWeight = FontWeight.SemiBold,

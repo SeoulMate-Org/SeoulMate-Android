@@ -31,6 +31,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.seoulmate.data.model.challenge.ChallengeStampItemData
 import com.seoulmate.ui.R
+import com.seoulmate.ui.noRippleClickable
 import com.seoulmate.ui.theme.Blue50
 import com.seoulmate.ui.theme.Blue500
 import com.seoulmate.ui.theme.Color2B2B2B
@@ -44,6 +45,7 @@ fun ChallengeHomeTileTypeLayout(
     modifier: Modifier,
     item: ChallengeStampItemData,
     onChallengeLikeClick: (challengeId: Int) -> Unit = {},
+    onChallengeItemClick: (challengeId: Int) -> Unit = {},
 ) {
     var isInterest = remember { mutableStateOf(false) }
 
@@ -53,7 +55,10 @@ fun ChallengeHomeTileTypeLayout(
 
     Row(
         modifier = modifier
-            .height(92.dp),
+            .height(92.dp)
+            .noRippleClickable {
+                onChallengeItemClick(item.id)
+            },
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Start,
     ) {

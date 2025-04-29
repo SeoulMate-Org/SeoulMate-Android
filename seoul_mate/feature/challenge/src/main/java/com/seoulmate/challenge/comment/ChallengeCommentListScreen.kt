@@ -73,7 +73,7 @@ fun ChallengeCommentListScreen(
                 title = {
                     PpsText(
                         modifier = Modifier.wrapContentSize(),
-                        text = stringResource(R.string.title_reply),
+                        text = stringResource(R.string.title_comment),
                         style = TextStyle(
                             fontSize = 18.sp,
                             color = CoolGray900,

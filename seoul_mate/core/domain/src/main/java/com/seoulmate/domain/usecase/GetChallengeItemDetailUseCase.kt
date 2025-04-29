@@ -39,8 +39,9 @@ class GetChallengeItemDetailUseCase @Inject constructor(
             ChallengeItemData(
                 id = it.id,
                 title = it.title,
+                name = it.name,
                 description = it.description,
-                imgUrl = "",
+                imgUrl = it.imageUrl,
                 attractions = attractions,
                 isInterest = it.isLiked ?: false,
                 mainLocation = it.mainLocation,

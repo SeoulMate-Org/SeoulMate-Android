@@ -8,7 +8,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardColors
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Surface
@@ -28,11 +32,11 @@ import androidx.compose.ui.unit.sp
 import com.seoulmate.ui.component.PpsText
 import com.seoulmate.ui.theme.Blue500
 import com.seoulmate.ui.theme.CoolGray300
+import com.seoulmate.ui.theme.TrueWhite
 import com.seoulmate.ui.theme.White
 
 @Composable
 fun HomeBottomNav(
-    modifier: Modifier,
     onHomeClick: () -> Unit = {},
     onMyPageClick: () -> Unit = {},
     onChallengeClick: () -> Unit = {},
@@ -45,14 +49,23 @@ fun HomeBottomNav(
         BottomNavItem.Challenge,
         BottomNavItem.MyPage,
     )
-    Surface (
-        modifier = modifier,
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight(),
         shape = RectangleShape,
-        color = White,
-        shadowElevation = 20.dp,
+        colors = CardColors(
+            contentColor = TrueWhite,
+            containerColor = TrueWhite,
+            disabledContentColor = TrueWhite,
+            disabledContainerColor = TrueWhite,
+        ),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 55.dp
+        )
     ) {
         Row(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxWidth().height(55.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceAround,
         ) {
@@ -99,9 +112,6 @@ fun HomeBottomNav(
 @Composable
 private fun PreviewHomeBottomNav() {
     HomeBottomNav(
-        modifier = Modifier
-            .height(55.dp)
-            .fillMaxWidth(),
         selectedRoute = BottomNavItem.Home.route,
     )
 }

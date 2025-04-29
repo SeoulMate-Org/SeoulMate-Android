@@ -6,7 +6,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.seoulmate.data.model.challenge.ChallengeCommentItem
 import com.seoulmate.ui.R
+import com.seoulmate.ui.theme.CoolGray25
 import com.seoulmate.ui.theme.CoolGray300
 import com.seoulmate.ui.theme.CoolGray700
 import com.seoulmate.ui.theme.CoolGray900
@@ -33,7 +36,8 @@ fun ChallengeCommentItemLayout(
     ) {
         // User Info
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth()
+                .padding(vertical = 8.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Icon(
@@ -45,31 +49,29 @@ fun ChallengeCommentItemLayout(
                 modifier = Modifier
                     .weight(1f)
                     .padding(start = 10.dp),
-                text = "NickName",
-                style = TextStyle(
-                    fontSize = 13.sp,
-                    color = CoolGray700,
+                text = item.nickname,
+                style = MaterialTheme.typography.labelLarge.copy(
+                    color = CoolGray700
                 ),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
         }
-        // Reply Content
+        // Comment Content
         PpsText(
-            modifier = Modifier.wrapContentSize(),
+            modifier = Modifier.wrapContentSize()
+                .padding(top = 6.dp),
             text = item.comment,
-            style = TextStyle(
-                fontSize = 14.sp,
+            style = MaterialTheme.typography.bodySmall.copy(
                 color = CoolGray900,
-                lineHeight = 21.sp,
             )
         )
         // TimeStamp
         PpsText(
-            modifier = Modifier.wrapContentSize(),
+            modifier = Modifier.wrapContentSize()
+                .padding(top = 3.dp),
             text = item.createdAt,
-            style = TextStyle(
-                fontSize = 12.sp,
+            style = MaterialTheme.typography.labelLarge.copy(
                 color = CoolGray300,
             ),
             maxLines = 1,

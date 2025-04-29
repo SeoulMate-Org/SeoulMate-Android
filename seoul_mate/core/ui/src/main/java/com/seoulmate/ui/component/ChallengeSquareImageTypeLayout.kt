@@ -153,6 +153,7 @@ private fun PreviewChallengeSquareImageTypeLayout() {
         ChallengeSquareImageTypeLayout(
             item = ChallengeItemData(
                 id = 11,
+                name = "First Challenge Title",
                 title = "Third Challenge Title",
                 imgUrl = "https://abcdabcd",
             ),
