@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.seoulmate.data.model.AttractionItem
+import com.seoulmate.data.model.challenge.AttractionItem
 import com.seoulmate.ui.component.ChallengeInterestButton
 import com.seoulmate.ui.component.PpsText
 import com.seoulmate.ui.theme.CoolGray25
@@ -40,6 +40,7 @@ import com.seoulmate.ui.theme.TrueWhite
 fun AttractionItemTile(
     item: AttractionItem,
     onItemClick: (item: AttractionItem) -> Unit = {},
+    onItemLikeClick: (item: AttractionItem) -> Unit = {},
 ) {
     Surface(
         modifier = Modifier
@@ -147,7 +148,7 @@ fun AttractionItemTile(
                 isInterest = item.isLiked,
                 size = 32.dp
             ) {
-
+                onItemLikeClick(item)
             }
         }
     }

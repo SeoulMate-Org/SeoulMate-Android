@@ -2,6 +2,7 @@ package com.seoulmate.navigation
 
 import android.app.Activity
 import android.content.Intent
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -9,9 +10,12 @@ import com.codesubmission.home.HomeScreen
 import com.codesubmission.settings.language.SettingLanguageScreen
 import com.codesubmission.interest.navigation.interestScreen
 import com.codesubmission.settings.badge.SettingMyBadgeScreen
+import com.codesubmission.settings.nickname.SettingUserNicknameScreen
 import com.codesubmission.settings.notification.SettingNotificationScreen
+import com.seoulmate.challenge.attraction.AttractionDetailScreen
 import com.seoulmate.challenge.detail.ChallengeDetailScreen
 import com.seoulmate.challenge.comment.ChallengeCommentListScreen
+import com.seoulmate.challenge.rank.ChallengeRankListScreen
 import com.seoulmate.challenge.theme.ChallengeThemeListScreen
 import com.seoulmate.data.model.PlaceInfoData
 import com.seoulmate.login.LoginScreen
@@ -21,6 +25,7 @@ import com.seoulmate.ui.component.Screen
 import com.seoulmate.ui.component.ScreenGraph
 import com.seoulmate.ui.splash.SplashActivity
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainNavHost(
     appState: AppState,
@@ -62,8 +67,8 @@ fun MainNavHost(
                 onChangeScreen = { screen ->
                     appState.navigate(screen)
                 },
-                onChallengeItemClick = { item ->
-                    appState.selectedChallengeItem.value = item
+                onChallengeItemClick = { challengeId ->
+                    appState.selectedChallengeItemId.intValue = challengeId
                     appState.navigate(Screen.ChallengeDetail)
                 },
                 firstShowLogin = {
@@ -76,16 +81,7 @@ fun MainNavHost(
         }
         composable(route = Screen.PlaceInfoDetail.route) {
             PlaceInfoDetailScreen(
-                placeData = PlaceInfoData(
-                    title = "테스트 장소",
-                    lat = 0,
-                    lng = 0,
-                    placeName = "장소 이름",
-                    placeInfo = "장소 정보",
-                    placeImg = "장소 이미지",
-                    placeTel = "010-0000-0000",
-                    placeAddress = "장소 주소"
-                ),
+                bottomSheetScaffoldState = appState.bottomSheetScaffoldState,
                 onBackClick = { appState.navController.popBackStack() },
             )
         }
@@ -94,14 +90,23 @@ fun MainNavHost(
                 onBackClick = { appState.navController.popBackStack() },
             )
         }
+        composable(route = Screen.ChallengeRankList.route) {
+            ChallengeRankListScreen(
+                onBackClick = { appState.navController.popBackStack() },
+            )
+        }
         composable(route = Screen.ChallengeDetail.route) {
             ChallengeDetailScreen(
                 context = appState.getContext,
-                item = appState.selectedChallengeItem.value,
+                challengeId = appState.selectedChallengeItemId.intValue,
                 onBackClick = { appState.navController.popBackStack() },
                 onChangeScreen = { screen ->
                     appState.navigate(screen)
                 },
+                onAttractionClick = { attractionId ->
+                    appState.selectedAttractionItemId.intValue = attractionId
+                    appState.navigate(Screen.AttractionDetail)
+                }
             )
         }
         composable(route = Screen.ChallengeThemeList.route) {
@@ -129,6 +134,17 @@ fun MainNavHost(
         }
         composable(route = Screen.SettingMyBadge.route) {
             SettingMyBadgeScreen(
+                onBackClick = { appState.navController.popBackStack() },
+            )
+        }
+        composable(route = Screen.SettingUserNickname.route) {
+            SettingUserNicknameScreen(
+                onBackClick = { appState.navController.popBackStack() },
+            )
+        }
+        composable(route = Screen.AttractionDetail.route) {
+            AttractionDetailScreen(
+                attractionId = appState.selectedAttractionItemId.intValue,
                 onBackClick = { appState.navController.popBackStack() },
             )
         }

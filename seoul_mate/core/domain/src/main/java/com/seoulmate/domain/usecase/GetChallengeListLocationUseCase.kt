@@ -1,7 +1,7 @@
 package com.seoulmate.domain.usecase
 
 import com.seoulmate.data.dto.CommonDto
-import com.seoulmate.data.model.ChallengeLocationItemData
+import com.seoulmate.data.model.challenge.ChallengeLocationItemData
 import com.seoulmate.data.model.request.MyLocationReqData
 import com.seoulmate.data.repository.ChallengeRepository
 import kotlinx.coroutines.flow.Flow

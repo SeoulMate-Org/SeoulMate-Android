@@ -31,8 +31,12 @@ sealed class Screen(val route: String) {
     data object ChallengeCommentList: Screen("challengeReplyList")
     data object ChallengeDetail: Screen("challengeDetail")
     data object ChallengeThemeList: Screen("challengeThemeList")
+    data object ChallengeRankList: Screen("challengeRankList")
+
+    data object AttractionDetail: Screen("attractionDetail")
 
     data object SettingLanguage: Screen("settingLanguage")
     data object SettingNotification: Screen("settingNotification")
     data object SettingMyBadge: Screen("settingMyBadge")
+    data object SettingUserNickname: Screen("settingUserNickname")
 }

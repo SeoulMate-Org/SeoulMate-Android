@@ -31,10 +31,10 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
+import com.codesubmission.home.HomeViewModel
 import com.codesubmission.home.R
 import com.codesubmission.home.ui.main.item.ChallengeCategory
 import com.codesubmission.home.ui.main.item.ChallengeRanking
@@ -42,14 +42,10 @@ import com.codesubmission.home.ui.main.item.HorizontalCarousel
 import com.codesubmission.home.ui.main.item.MissingChallenge
 import com.codesubmission.home.ui.main.item.MyLocationChallenge
 import com.seoulmate.data.UserInfo
-import com.seoulmate.data.model.ChallengeItemData
-import com.seoulmate.data.model.ChallengeStampItemData
+import com.seoulmate.data.model.challenge.ChallengeItemData
 import com.seoulmate.ui.component.ChallengeRankingTileTypeLayout
 import com.seoulmate.ui.component.PpsText
 import com.seoulmate.ui.component.Screen
-import com.seoulmate.ui.theme.Color1D8EFE
-import com.seoulmate.ui.theme.CoolGray25
-import com.seoulmate.ui.theme.MainMissingChallengeGradientStart
 import com.seoulmate.ui.theme.MainTopGradientStart
 import com.seoulmate.ui.theme.TrueWhite
 import com.seoulmate.ui.theme.White
@@ -57,60 +53,14 @@ import com.seoulmate.ui.theme.White
 @Composable
 fun HomeMainScreen(
     context: Context,
-    onChallengeItemClick: (item: ChallengeItemData) -> Unit = {},
+    viewModel: HomeViewModel,
+    onChallengeItemClick: (challengeId: Int) -> Unit = {},
     onChallengeLikeClick: (challengeId: Int) -> Unit = {},
     onThemeMoreClick: () -> Unit = {},
     onChangeScreen: (screen: Screen) -> Unit = { _ -> },
 ) {
     val locationPermission = listOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
     val fineLocationPermissionGranted = remember{ mutableStateOf(false) }
-
-    val testRankingList = listOf(
-        ChallengeItemData(
-            id = 0,
-            title = "First Challenge Title 0",
-            imgUrl = "https://cdn.britannica.com/70/234870-050-D4D024BB/Orange-colored-cat-yawns-displaying-teeth.jpg",
-            isInterest = true,
-        ),
-        ChallengeItemData(
-            id = 1,
-            title = "Second Challenge Title 1",
-            imgUrl = "https://cdn.britannica.com/39/226539-050-D21D7721/Portrait-of-a-cat-with-whiskers-visible.jpg",
-        ),
-        ChallengeItemData(
-            id = 2,
-            title = "Third Challenge Title 2",
-            imgUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPzlSPtQD3H6OK36fZXlVpI-PiRR8elwtGyw&s",
-        ),
-        ChallengeItemData(
-            id = 3,
-            title = "First Challenge Title 3",
-            imgUrl = "https://cdn.britannica.com/70/234870-050-D4D024BB/Orange-colored-cat-yawns-displaying-teeth.jpg",
-            isInterest = true,
-        ),
-        ChallengeItemData(
-            id = 4,
-            title = "Second Challenge Title 4",
-            imgUrl = "https://cdn.britannica.com/39/226539-050-D21D7721/Portrait-of-a-cat-with-whiskers-visible.jpg",
-            isInterest = true,
-        ),
-        ChallengeItemData(
-            id = 5,
-            title = "Third Challenge Title 5",
-            imgUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPzlSPtQD3H6OK36fZXlVpI-PiRR8elwtGyw&s",
-            isInterest = true,
-        ),
-        ChallengeItemData(
-            id = 6,
-            title = "First Challenge Title 6",
-            imgUrl = "https://cdn.britannica.com/70/234870-050-D4D024BB/Orange-colored-cat-yawns-displaying-teeth.jpg",
-        ),
-        ChallengeItemData(
-            id = 7,
-            title = "First Challenge Title 7",
-            imgUrl = "https://cdn.britannica.com/70/234870-050-D4D024BB/Orange-colored-cat-yawns-displaying-teeth.jpg",
-        ),
-    )
 
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult()) { result ->
@@ -130,7 +80,6 @@ fun HomeMainScreen(
             ) == PackageManager.PERMISSION_GRANTED
         }
     }
-
 
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -310,36 +259,43 @@ fun HomeMainScreen(
                 ) {
                     ChallengeCategory(
                         modifier = Modifier.fillMaxWidth(),
+                        themeItemList = viewModel.challengeThemeList.value,
                         onMoreClick = onThemeMoreClick,
                         onChallengeLikeClick = onChallengeLikeClick,
                     )
                 }
             }
             // Missing Challenge
-            item {
-                MissingChallenge()
+            if (UserInfo.myChallengeLocationList.isNotEmpty()) {
+                item {
+                    MissingChallenge()
+                }
             }
             // Challenge Ranking
             item {
                 ChallengeRanking(
                     modifier = Modifier.fillMaxWidth().padding(horizontal = 15.dp),
                     onMoreClick = {
-
+                        onChangeScreen(Screen.ChallengeRankList)
                     },
                 )
             }
             items(
-                count = testRankingList.size
+                count = 5
             ) { index ->
                 Box(modifier = Modifier
                     .padding(vertical = 5.dp, horizontal = 15.dp),
                 ) {
                     ChallengeRankingTileTypeLayout(
-                        item = testRankingList[index],
+                        item = viewModel.challengeRankList.value[index],
                         index = index,
-                    ) { item ->
-
-                    }
+                        onItemClick = { item ->
+                            onChallengeItemClick(item.id)
+                        },
+                        onItemLikeClick = { item ->
+                            onChallengeLikeClick(item.id)
+                        }
+                    )
                 }
             }
             item {

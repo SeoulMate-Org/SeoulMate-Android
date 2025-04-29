@@ -1,4 +1,4 @@
-package com.seoulmate.data.dto
+package com.seoulmate.data.dto.geocode
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass

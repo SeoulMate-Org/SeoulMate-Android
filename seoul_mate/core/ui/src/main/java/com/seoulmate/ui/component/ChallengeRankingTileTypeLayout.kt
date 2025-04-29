@@ -2,6 +2,7 @@ package com.seoulmate.ui.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,7 +14,6 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,18 +21,17 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.seoulmate.data.model.ChallengeItemData
+import com.seoulmate.data.model.challenge.ChallengeRankItemData
 import com.seoulmate.ui.R
 import com.seoulmate.ui.noRippleClickable
 import com.seoulmate.ui.theme.CoolGray25
 import com.seoulmate.ui.theme.CoolGray600
-import com.seoulmate.ui.theme.SeoulMateTheme
 import com.seoulmate.ui.theme.TrueWhite
 
 @Composable
@@ -41,8 +40,9 @@ fun ChallengeRankingTileTypeLayout(
     backColor: Color = TrueWhite,
     fontColor: Color = CoolGray600,
     index: Int = 0,
-    item: ChallengeItemData,
-    onItemClick: (item: ChallengeItemData) -> Unit = {},
+    item: ChallengeRankItemData,
+    onItemClick: (item: ChallengeRankItemData) -> Unit = {},
+    onItemLikeClick: (item: ChallengeRankItemData) -> Unit = {},
 ) {
     Card(
         modifier = modifier
@@ -81,7 +81,7 @@ fun ChallengeRankingTileTypeLayout(
                     .background(color = CoolGray25),
                 model = ImageRequest
                     .Builder(LocalContext.current)
-                    .data(item.imgUrl)
+                    .data(item.imageUrl)
                     .crossfade(true)
                     .placeholder(R.drawable.ic_empty_challenge)
                     .build(),
@@ -89,40 +89,39 @@ fun ChallengeRankingTileTypeLayout(
                 contentScale = ContentScale.Crop,
             )
             Spacer(modifier = Modifier.width(15.dp))
-            // Title
-            PpsText(
+            Column(
                 modifier = Modifier
                     .padding(start = 10.dp)
-                    .weight(1f),
-                text = item.title,
-                style = TextStyle(
-                    fontSize = 16.sp,
-                    color = fontColor,
-                ),
-            )
+                    .weight(1f)
+            ) {
+                // Title
+                PpsText(
+                    modifier = Modifier,
+                    text = item.name,
+                    style = TextStyle(
+                        fontSize = 16.sp,
+                        color = fontColor,
+                    ),
+                )
+                // Progress Count
+                PpsText(
+                    modifier = Modifier,
+                    text = stringResource(R.string.home_challenge_ranking_join_count, item.progressCount),
+                    style = TextStyle(
+                        fontSize = 16.sp,
+                        color = fontColor,
+                    ),
+                )
+            }
+
             Spacer(modifier = Modifier.width(15.dp))
             // Interest Icon
             ChallengeInterestButton(
-                isInterest = item.isInterest,
+                isInterest = item.isLiked ?: false,
                 size = 32.dp
             ) {
-
+                onItemLikeClick(item)
             }
         }
-    }
-}
-
-@Preview
-@Composable
-private fun PreviewChallengeRankingTileTypeLayout() {
-    SeoulMateTheme {
-        ChallengeRankingTileTypeLayout(
-            item = ChallengeItemData(
-                id = 0,
-                title = "First Challenge Title",
-                imgUrl = "https://cdn.britannica.com/70/234870-050-D4D024BB/Orange-colored-cat-yawns-displaying-teeth.jpg",
-                isInterest = true,
-            ),
-        )
     }
 }

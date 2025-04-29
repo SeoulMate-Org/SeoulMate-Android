@@ -4,16 +4,18 @@ import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.facebook.common.Common
+import com.seoulmate.data.ChallengeInfo
 import com.seoulmate.data.UserInfo
 import com.seoulmate.data.dto.CommonDto
-import com.seoulmate.data.model.ChallengeCommentItem
-import com.seoulmate.data.model.ChallengeLocationItemData
-import com.seoulmate.data.model.ChallengeStampItemData
+import com.seoulmate.data.model.challenge.ChallengeCommentItem
+import com.seoulmate.data.model.challenge.ChallengeLocationItemData
+import com.seoulmate.data.model.challenge.ChallengeRankItemData
+import com.seoulmate.data.model.challenge.ChallengeStampItemData
 import com.seoulmate.data.model.MyChallengeItemData
 import com.seoulmate.data.model.request.MyLocationReqData
 import com.seoulmate.data.repository.PreferDataStoreRepository
 import com.seoulmate.domain.usecase.GetChallengeListLocationUseCase
+import com.seoulmate.domain.usecase.GetChallengeListRankUseCase
 import com.seoulmate.domain.usecase.GetChallengeThemeItemListUseCase
 import com.seoulmate.domain.usecase.GetLoginInfoUseCase
 import com.seoulmate.domain.usecase.GetMyChallengeItemListUseCase
@@ -44,6 +46,7 @@ class LoginViewModel @Inject constructor(
     private val getMyCommentListUseCase: GetMyCommentListUseCase,
     private val getChallengeListLocationUseCase: GetChallengeListLocationUseCase,
     private val getChallengeThemeItemListUseCase: GetChallengeThemeItemListUseCase,
+    private val getChallengeListRankUseCase: GetChallengeListRankUseCase,
 ) : ViewModel() {
 
     var isShowLoading = mutableStateOf<Boolean?>(null)
@@ -204,6 +207,7 @@ class LoginViewModel @Inject constructor(
 
         viewModelScope.launch {
 
+            // fetch Challenge Theme Item List
             val deferredList = mutableListOf<Deferred<CommonDto<List<ChallengeStampItemData>>?>>()
             for(i in 1..9) {
                 deferredList.add(
@@ -229,7 +233,24 @@ class LoginViewModel @Inject constructor(
                     }
                 }
             }
-            UserInfo.challengeThemeList = themeList.toList()
+            ChallengeInfo.challengeThemeList = themeList.toList()
+
+            // Fetch Challenge Rank Item List
+            val deferredRankList = async {
+                var returnValue: CommonDto<List<ChallengeRankItemData>>? = null
+                getChallengeListRankUseCase(languageCode).collectLatest {
+                    returnValue = it
+                }
+                return@async returnValue
+            }
+            deferredRankList.await()?.let {
+                if(it.code in 200..299) {
+                    ChallengeInfo.rankList = it.response ?: listOf()
+                } else if (it.code == 403) {
+                    needRefreshToken.value = true
+                    return@launch
+                }
+            }
 
             finishedFetchHomeItems.value = true
 

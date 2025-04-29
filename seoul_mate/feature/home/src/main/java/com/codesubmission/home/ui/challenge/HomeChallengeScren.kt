@@ -10,14 +10,14 @@ import com.codesubmission.home.ui.HomeState
 import com.codesubmission.home.ui.challenge.tabpage.CompleteChallengeTabScreen
 import com.codesubmission.home.ui.challenge.tabpage.InProgressChallengeTabScreen
 import com.codesubmission.home.ui.challenge.tabpage.InterestChallengeTabScreen
-import com.seoulmate.data.model.ChallengeItemData
+import com.seoulmate.data.model.challenge.ChallengeItemData
 import com.seoulmate.ui.theme.TrueWhite
 
 @Composable
 fun HomeChallengeScreen(
     homeState: HomeState,
     onReplyClick: () -> Unit = {},
-    onChallengeItemClick: (item: ChallengeItemData) -> Unit = {},
+    onChallengeItemClick: (challengeId: Int) -> Unit = {},
 ) {
     val tabList = listOf(
         ChallengeTabItem.Interest,

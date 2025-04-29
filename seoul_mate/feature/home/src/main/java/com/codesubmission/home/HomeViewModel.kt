@@ -8,6 +8,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.location.FusedLocationProviderClient
+import com.seoulmate.data.ChallengeInfo
 import com.seoulmate.data.UserInfo
 import com.seoulmate.domain.usecase.ReqChallengeLikeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,6 +23,9 @@ class HomeViewModel @Inject constructor(
 ) : ViewModel() {
 
     var lastLocation = mutableStateOf<Location?>(null)
+    var challengeRankList = mutableStateOf(ChallengeInfo.rankList)
+    var challengeThemeList = mutableStateOf(ChallengeInfo.challengeThemeList)
+    var needUserLogin = mutableStateOf(false)
 
     @RequiresPermission(
         allOf = [Manifest.permission.ACCESS_FINE_LOCATION,
@@ -44,13 +48,34 @@ class HomeViewModel @Inject constructor(
             reqChallengeLikeUseCase(challengeId).collectLatest { response ->
                 response?.let {
                     if (it.code in 200..299) {
+                        it.response?.let { likedResponse ->
+                            val isLiked = likedResponse.isLiked
+
+                            challengeRankList.value = challengeRankList.value.map { rankItem ->
+                                if (rankItem.id == challengeId) {
+                                    rankItem.copy(isLiked = isLiked)
+                                } else {
+                                    rankItem
+                                }
+                            }
+
+                            challengeThemeList.value.forEach { themeList ->
+                                themeList.map { themeItem ->
+                                    if (themeItem.id == challengeId) {
+                                        themeItem.copy(isLiked = isLiked)
+                                    } else {
+                                        themeItem
+                                    }
+                                }
+                            }
+                        }
 
                     } else if (it.code == 403) {
                         if (UserInfo.isUserLogin()) {
                             // Refresh Token
                         } else {
                             // Login
-                            // TODO chan NEED LOGIN
+                            needUserLogin.value = true
                             Log.d("@@@@", "HomeView Like Need Login")
                         }
                     }

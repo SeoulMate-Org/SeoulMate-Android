@@ -1,7 +1,6 @@
 package com.codesubmission.home.ui.main.item
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,9 +13,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
@@ -27,13 +23,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -41,28 +32,25 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.codesubmission.home.R
 import com.seoulmate.data.ChallengeInfo
 import com.seoulmate.data.UserInfo
-import com.seoulmate.data.model.ChallengeItemData
+import com.seoulmate.data.model.challenge.ChallengeStampItemData
 import com.seoulmate.ui.component.ChallengeHomeTileTypeLayout
-import com.seoulmate.ui.component.ChallengeSquareImageTypeLayout
 import com.seoulmate.ui.component.PpsText
 import com.seoulmate.ui.component.RoundedTag
-import com.seoulmate.ui.theme.Blue500
 import com.seoulmate.ui.theme.CoolGray400
 import com.seoulmate.ui.theme.CoolGray700
 import com.seoulmate.ui.theme.CoolGray75
-import com.seoulmate.ui.theme.CoolGray900
-import com.seoulmate.ui.theme.SeoulMateTheme
 import com.seoulmate.ui.theme.TrueWhite
+import kotlinx.coroutines.launch
 
 @Composable
 fun ChallengeCategory(
     modifier: Modifier,
+    themeItemList: List<List<ChallengeStampItemData>>,
     onMoreClick: () -> Unit = {},
     onChallengeLikeClick: (challengeId: Int) -> Unit = {},
 ) {
@@ -71,6 +59,7 @@ fun ChallengeCategory(
         initialPage = 0,
         initialPageOffsetFraction = 0f,
     )
+    val scope = rememberCoroutineScope()
 
     Column(
         modifier = modifier
@@ -134,7 +123,9 @@ fun ChallengeCategory(
                         title = if(UserInfo.localeLanguage == "ko") item.nameKor else item.title,
                         isSelected = index == pagerState.currentPage
                     ) {
-
+                        scope.launch {
+                            pagerState.animateScrollToPage(index)
+                        }
                     }
                 }
             }
@@ -148,6 +139,7 @@ fun ChallengeCategory(
         ) { index ->
             ChallengeCategoryPagerItem(
                 pagerIndex = index,
+                themeItemList = themeItemList,
                 onChallengeLikeClick = onChallengeLikeClick,
             )
         }
@@ -163,16 +155,17 @@ fun ChallengeCategory(
 @Composable
 private fun ChallengeCategoryPagerItem(
     pagerIndex: Int,
+    themeItemList: List<List<ChallengeStampItemData>>,
     onChallengeLikeClick: (challengeId: Int) -> Unit = {},
 ) {
     Column(
         modifier = Modifier.fillMaxWidth(),
     ) {
-        if (UserInfo.challengeThemeList[pagerIndex].size > 3) {
+        if (themeItemList[pagerIndex].size > 3) {
             for (i in 0..2) {
                 ChallengeHomeTileTypeLayout(
                     modifier = Modifier,
-                    item = UserInfo.challengeThemeList[pagerIndex][i],
+                    item = themeItemList[pagerIndex][i],
                     onChallengeLikeClick = onChallengeLikeClick,
                 )
             }
@@ -216,17 +209,5 @@ fun PagerIndicator(pageCount: Int, currentPageIndex: Int, modifier: Modifier = M
 
             }
         }
-    }
-}
-
-@Preview
-@Composable
-private fun PreviewChallengeCategory() {
-    SeoulMateTheme {
-        ChallengeCategory(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 15.dp),
-        )
     }
 }

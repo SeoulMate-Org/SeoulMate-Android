@@ -1,4 +1,4 @@
-package com.seoulmate.data.model
+package com.seoulmate.data.model.challenge
 
 
 data class ChallengeItemData(

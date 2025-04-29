@@ -1,8 +1,8 @@
 package com.seoulmate.data
 
-import com.seoulmate.data.model.ChallengeCommentItem
-import com.seoulmate.data.model.ChallengeLocationItemData
-import com.seoulmate.data.model.ChallengeStampItemData
+import com.seoulmate.data.model.challenge.ChallengeCommentItem
+import com.seoulmate.data.model.challenge.ChallengeLocationItemData
+import com.seoulmate.data.model.challenge.ChallengeStampItemData
 import com.seoulmate.data.model.MyChallengeItemData
 
 object UserInfo {
@@ -15,7 +15,6 @@ object UserInfo {
     var myCommentList = listOf<ChallengeCommentItem>()
     var myChallengeLocationList = listOf<ChallengeLocationItemData>()
     var challengeStampList = listOf<ChallengeStampItemData>()
-    var challengeThemeList: List<List<ChallengeStampItemData>> = listOf()
     var myLocationX: Double = 0.0
     var myLocationY: Double = 0.0
 

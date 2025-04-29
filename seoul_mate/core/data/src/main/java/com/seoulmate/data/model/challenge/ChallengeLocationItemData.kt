@@ -1,6 +1,6 @@
-package com.seoulmate.data.model
+package com.seoulmate.data.model.challenge
 
-data class ChallengeStampItemData(
+data class ChallengeLocationItemData(
     val id: Int,
     val name: String,
     val title: String,
@@ -9,11 +9,11 @@ data class ChallengeStampItemData(
     val mainLocation: String?,
     val challengeThemeId: Int,
     val challengeThemeName: String,
+    val isLiked: Boolean?,
     val likes: Int,
-    var isLiked: Boolean?,
     val myStampCount: Int?,
+    val progressCount: Int?,
     val attractionCount: Int,
     val commentCount: Int,
-    val distance: Int?,
-    val displayRank: String,
+    val distance: Int,
 )

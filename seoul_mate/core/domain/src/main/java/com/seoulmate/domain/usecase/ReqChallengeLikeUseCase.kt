@@ -12,7 +12,7 @@ class ReqChallengeLikeUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(
         id: Int,
-    ): Flow<CommonDto<ChallengeItemLikeDto>?> = challengeRepository.reqChallengeLike(
+    ): Flow<CommonDto<ChallengeItemLikeDto>> = challengeRepository.reqChallengeLike(
         id = id,
     )
 }

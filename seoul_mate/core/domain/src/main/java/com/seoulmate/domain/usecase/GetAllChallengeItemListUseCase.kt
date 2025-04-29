@@ -1,6 +1,6 @@
 package com.seoulmate.domain.usecase
 
-import com.seoulmate.data.model.ChallengeItemData
+import com.seoulmate.data.model.challenge.ChallengeItemData
 import com.seoulmate.data.repository.ChallengeRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

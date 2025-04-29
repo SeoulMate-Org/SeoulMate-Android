@@ -27,13 +27,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.max
 import androidx.constraintlayout.compose.ConstraintLayout
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.codesubmission.home.R
 import com.seoulmate.data.UserInfo
-import com.seoulmate.data.model.ChallengeLocationItemData
+import com.seoulmate.data.model.challenge.ChallengeLocationItemData
 import com.seoulmate.ui.component.LinearStampIndicator
 import com.seoulmate.ui.component.PpsButton
 import com.seoulmate.ui.component.PpsText

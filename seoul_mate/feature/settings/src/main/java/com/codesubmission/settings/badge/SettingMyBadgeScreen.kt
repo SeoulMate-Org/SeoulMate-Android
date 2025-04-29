@@ -100,7 +100,6 @@ fun SettingMyBadgeScreen(
     }
 
     LaunchedEffect(Unit) {
-        viewModel.refresh()
     }
 
     Scaffold(

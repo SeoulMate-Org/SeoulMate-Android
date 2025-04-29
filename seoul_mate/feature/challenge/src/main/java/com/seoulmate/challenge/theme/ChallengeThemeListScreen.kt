@@ -20,18 +20,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.seoulmate.challenge.R
 import com.seoulmate.challenge.theme.item.ChallengeThemeTabRow
 import com.seoulmate.data.ChallengeInfo
-import com.seoulmate.data.UserInfo
-import com.seoulmate.data.model.ChallengeItemData
 import com.seoulmate.ui.component.ChallengeHomeTileTypeLayout
 import com.seoulmate.ui.component.PpsText
-import com.seoulmate.ui.noRippleClickable
 import com.seoulmate.ui.theme.Black
 import com.seoulmate.ui.theme.CoolGray900
 import com.seoulmate.ui.theme.TrueWhite
@@ -102,12 +96,12 @@ fun ChallengeThemeListScreen(
             ) { pageIndex ->
                 LazyColumn {
                     items(
-                        count = UserInfo.challengeThemeList[pageIndex].size,
-                        key = { index -> UserInfo.challengeThemeList[pageIndex][index].id }
+                        count = ChallengeInfo.challengeThemeList[pageIndex].size,
+                        key = { index -> ChallengeInfo.challengeThemeList[pageIndex][index].id }
                     ) { index ->
                         ChallengeHomeTileTypeLayout(
                             modifier = Modifier.fillMaxWidth(),
-                            item = UserInfo.challengeThemeList[pageIndex][index],
+                            item = ChallengeInfo.challengeThemeList[pageIndex][index],
                         )
                     }
                 }

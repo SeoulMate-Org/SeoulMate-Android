@@ -1,0 +1,11 @@
+package com.seoulmate.data.repository
+
+import com.seoulmate.data.dto.CommonDto
+import com.seoulmate.data.dto.user.UserNicknameDto
+import kotlinx.coroutines.flow.Flow
+
+interface UserRepository {
+
+    // put user nickname
+    suspend fun reqUserNickname(nickname: String): Flow<CommonDto<UserNicknameDto>>
+}

@@ -1,7 +1,7 @@
 package com.seoulmate.domain.usecase
 
 import com.seoulmate.data.dto.CommonDto
-import com.seoulmate.data.model.ChallengeStampItemData
+import com.seoulmate.data.model.challenge.ChallengeStampItemData
 import com.seoulmate.data.repository.ChallengeRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

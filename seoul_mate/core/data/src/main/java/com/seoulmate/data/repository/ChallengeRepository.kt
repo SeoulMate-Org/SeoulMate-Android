@@ -1,10 +1,12 @@
 package com.seoulmate.data.repository
 
 import com.seoulmate.data.dto.CommonDto
+import com.seoulmate.data.dto.attraction.AttractionDetailDto
 import com.seoulmate.data.dto.challenge.ChallengeItemAllDto
 import com.seoulmate.data.dto.challenge.ChallengeItemDetailDto
 import com.seoulmate.data.dto.challenge.ChallengeItemLikeDto
 import com.seoulmate.data.dto.challenge.ChallengeLocationItemDto
+import com.seoulmate.data.dto.challenge.ChallengeRankItemDto
 import com.seoulmate.data.dto.challenge.ChallengeStampItemDto
 import com.seoulmate.data.dto.challenge.ChallengeStatusDto
 import com.seoulmate.data.dto.challenge.ChallengeThemeDto
@@ -47,7 +49,7 @@ interface ChallengeRepository {
     // put Challenge Like
     suspend fun reqChallengeLike(
         id: Int,
-    ): Flow<CommonDto<ChallengeItemLikeDto>?>
+    ): Flow<CommonDto<ChallengeItemLikeDto>>
 
     // fetch challenge list location
     suspend fun reqChallengeListLocation(
@@ -67,10 +69,26 @@ interface ChallengeRepository {
         language: String,
     ): Flow<CommonDto<List<ChallengeStampItemDto>?>>
 
+    // fetch challenge list rank
+    suspend fun reqChallengeListRank(
+        language: String,
+    ): Flow<CommonDto<List<ChallengeRankItemDto>?>>
+
     // fetch attraction stamp
     suspend fun reqAttractionStamp(
         id: Int,
     ): Flow<Boolean?>
+
+    // fetch attraction detail
+    suspend fun reqAttractionDetail(
+        id: Int,
+        language: String,
+    ): Flow<CommonDto<AttractionDetailDto>>
+
+    // put attraction like
+    suspend fun reqAttractionLike(
+        id: Int,
+    ): Flow<CommonDto<ChallengeItemLikeDto>>
 
     // write comments
     suspend fun writeComment(

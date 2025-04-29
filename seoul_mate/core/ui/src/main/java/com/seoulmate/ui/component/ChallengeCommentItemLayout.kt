@@ -16,7 +16,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.seoulmate.data.model.ChallengeCommentItem
+import com.seoulmate.data.model.challenge.ChallengeCommentItem
 import com.seoulmate.ui.R
 import com.seoulmate.ui.theme.CoolGray300
 import com.seoulmate.ui.theme.CoolGray700

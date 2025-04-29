@@ -52,7 +52,10 @@ fun HomeMyPageScreen(
                     isLogin = rememberNickName.value.isNotEmpty(),
                     nickname = rememberNickName.value,
                     loginType = UserInfo.loginType,
-                    onLoginClick = onLoginClick
+                    onLoginClick = onLoginClick,
+                    onNickNameClick = {
+                        onChangeScreen(Screen.SettingUserNickname)
+                    }
                 )
             }
             // Active Log

@@ -10,7 +10,6 @@ import com.codesubmission.home.ui.HomeState
 import com.codesubmission.home.ui.challenge.HomeChallengeScreen
 import com.codesubmission.home.ui.main.HomeMainScreen
 import com.codesubmission.home.ui.mypage.HomeMyPageScreen
-import com.seoulmate.data.model.ChallengeItemData
 import com.seoulmate.ui.component.Screen
 
 @Composable
@@ -20,7 +19,7 @@ fun HomeNavHost(
     context: Context,
     viewModel: HomeViewModel,
     onScreenChange: (screen: Screen) -> Unit = { _ -> },
-    onChallengeItemClick: (item: ChallengeItemData) -> Unit = {},
+    onChallengeItemClick: (challengeId: Int) -> Unit = {},
     onThemeMoreClick: () -> Unit = {},
 ) {
     NavHost(
@@ -31,6 +30,7 @@ fun HomeNavHost(
         composable(route = Screen.HomeMain.route) {
             HomeMainScreen(
                 context = context,
+                viewModel = viewModel,
                 onChallengeItemClick = onChallengeItemClick,
                 onThemeMoreClick = onThemeMoreClick,
                 onChangeScreen = { screen ->

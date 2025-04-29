@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,7 +22,7 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.seoulmate.data.model.ChallengeItemData
+import com.seoulmate.data.model.challenge.ChallengeItemData
 import com.seoulmate.ui.R
 import com.seoulmate.ui.noRippleClickable
 import com.seoulmate.ui.theme.CoolGray25
@@ -35,12 +34,12 @@ fun ChallengeBigSquareImageTypeLayout(
     item: ChallengeItemData,
     fontSize: TextUnit = 18.sp,
     textColor: Color = White,
-    onChallengeItemClick: (item: ChallengeItemData) -> Unit = {},
+    onChallengeItemClick: (challengeId: Int) -> Unit = {},
 ) {
     ConstraintLayout(
         modifier = modifier
             .noRippleClickable {
-                onChallengeItemClick(item)
+                onChallengeItemClick(item.id)
             },
     ){
         val (image, info) = createRefs()

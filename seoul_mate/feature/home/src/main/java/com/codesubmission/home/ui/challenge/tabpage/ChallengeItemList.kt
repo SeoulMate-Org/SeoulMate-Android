@@ -6,14 +6,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.seoulmate.data.model.ChallengeItemData
+import com.seoulmate.data.model.challenge.ChallengeItemData
 import com.seoulmate.ui.component.ChallengeTileTypeLayout
 import com.seoulmate.ui.component.PpsText
 import com.seoulmate.ui.theme.CoolGray25
@@ -25,7 +24,7 @@ import com.seoulmate.ui.theme.TrueWhite
 fun ChallengeItemList(
     modifier: Modifier = Modifier.background(color = TrueWhite),
     itemList: List<ChallengeItemData>,
-    onItemClick: (item: ChallengeItemData) -> Unit = {},
+    onItemClick: (challengeId: Int) -> Unit = {},
 ) {
     LazyColumn(
         modifier = modifier,

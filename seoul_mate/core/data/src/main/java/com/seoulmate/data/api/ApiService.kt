@@ -1,10 +1,12 @@
 package com.seoulmate.data.api
 
+import com.seoulmate.data.dto.attraction.AttractionDetailDto
 import com.seoulmate.data.dto.attraction.AttractionStampDto
 import com.seoulmate.data.dto.challenge.ChallengeItemAllDto
 import com.seoulmate.data.dto.challenge.ChallengeItemDetailDto
 import com.seoulmate.data.dto.challenge.ChallengeItemLikeDto
 import com.seoulmate.data.dto.challenge.ChallengeLocationItemDto
+import com.seoulmate.data.dto.challenge.ChallengeRankItemDto
 import com.seoulmate.data.dto.challenge.ChallengeStampItemDto
 import com.seoulmate.data.dto.challenge.ChallengeStatusDto
 import com.seoulmate.data.dto.challenge.ChallengeThemeDto
@@ -12,6 +14,7 @@ import com.seoulmate.data.dto.challenge.MyChallengeDto
 import com.seoulmate.data.dto.comment.CommentContentDto
 import com.seoulmate.data.dto.comment.CommentDto
 import com.seoulmate.data.dto.comment.WriteCommentDto
+import com.seoulmate.data.dto.user.UserNicknameDto
 import com.seoulmate.data.model.request.AttractionStampReqData
 import com.seoulmate.data.model.request.MyLocationReqData
 import com.seoulmate.data.model.request.WriteCommentReqData
@@ -82,6 +85,11 @@ interface ApiService {
         @Query("language") language: String,
     ): Response<List<ChallengeStampItemDto>?>
 
+    @GET(NetworkConfig.Service.CHALLENGE_LIST_RANK)
+    suspend fun reqChallengeListRank(
+        @Query("language") language: String,
+    ): Response<List<ChallengeRankItemDto>?>
+
     // Attraction
     @POST(NetworkConfig.Service.ATTRACTION_STAMP)
     suspend fun reqAttractionStamp(
@@ -92,6 +100,17 @@ interface ApiService {
     suspend fun reqAttractionStampTest(
         @Body body: AttractionStampReqData
     ): Response<AttractionStampDto?>
+
+    @GET(NetworkConfig.Service.ATTRACTION + "/{id}")
+    suspend fun reqAttractionDetail(
+        @Path ("id") id: Int,
+        @Query("language") language: String,
+    ): Response<AttractionDetailDto?>
+
+    @PUT(NetworkConfig.Service.ATTRACTION_LIKE)
+    suspend fun reqAttractionLike(
+        @Query("id") id: Int,
+    ): Response<ChallengeItemLikeDto?>
 
     // Comment
     @POST(NetworkConfig.Service.COMMENT)
@@ -109,5 +128,11 @@ interface ApiService {
     suspend fun reqMyCommentList(
         @Query("language") language: String,
     ): Response<List<CommentContentDto>>
+
+    // User
+    @PUT(NetworkConfig.Service.USER_NICKNAME)
+    suspend fun reqUserNickname(
+        @Query("nickname") nickname: String,
+    ): Response<UserNicknameDto>
 
 }

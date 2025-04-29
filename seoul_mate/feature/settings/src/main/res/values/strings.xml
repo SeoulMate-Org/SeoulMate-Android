@@ -10,6 +10,8 @@
 
     <string name="badge_title">내 배지</string>
 
+    <string name="nickname_title">닉네임 변경</string>
+
     <string name="badge_item_01">문화 행사 연계</string>
     <string name="badge_item_02">핵심 관광지 정복</string>
     <string name="badge_item_03">인생샷 &amp; 인증샷</string>

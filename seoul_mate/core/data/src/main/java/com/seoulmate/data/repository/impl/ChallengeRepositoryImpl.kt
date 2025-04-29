@@ -2,10 +2,12 @@ package com.seoulmate.data.repository.impl
 
 import com.seoulmate.data.api.ApiService
 import com.seoulmate.data.dto.CommonDto
+import com.seoulmate.data.dto.attraction.AttractionDetailDto
 import com.seoulmate.data.dto.challenge.ChallengeItemAllDto
 import com.seoulmate.data.dto.challenge.ChallengeItemDetailDto
 import com.seoulmate.data.dto.challenge.ChallengeItemLikeDto
 import com.seoulmate.data.dto.challenge.ChallengeLocationItemDto
+import com.seoulmate.data.dto.challenge.ChallengeRankItemDto
 import com.seoulmate.data.dto.challenge.ChallengeStampItemDto
 import com.seoulmate.data.dto.challenge.ChallengeStatusDto
 import com.seoulmate.data.dto.challenge.ChallengeThemeDto
@@ -85,7 +87,7 @@ class ChallengeRepositoryImpl @Inject constructor(
 
     override suspend fun reqChallengeLike(
         id: Int
-    ): Flow<CommonDto<ChallengeItemLikeDto>?> = flow {
+    ): Flow<CommonDto<ChallengeItemLikeDto>> = flow {
         val response = apiService.reqChallengeLike(
             id = id,
         )
@@ -148,6 +150,21 @@ class ChallengeRepositoryImpl @Inject constructor(
                 response = response.body(),))
     }
 
+    override suspend fun reqChallengeListRank(
+        language: String
+    ): Flow<CommonDto<List<ChallengeRankItemDto>?>> = flow {
+        val response = apiService.reqChallengeListRank(
+            language = language,
+        )
+        emit(
+            CommonDto(
+                code = response.code(),
+                message = response.message(),
+                response = response.body(),
+            )
+        )
+    }
+
 
     override suspend fun reqAttractionStamp(
         id: Int
@@ -159,6 +176,38 @@ class ChallengeRepositoryImpl @Inject constructor(
             AttractionStampReqData(id)
         )
         emit(response.code() in 200..299)
+    }
+
+    override suspend fun reqAttractionDetail(
+        id: Int,
+        language: String
+    ): Flow<CommonDto<AttractionDetailDto>> = flow {
+        val response = apiService.reqAttractionDetail(
+            id = id,
+            language = language,
+        )
+        emit(
+            CommonDto(
+                code = response.code(),
+                message = response.message(),
+                response = response.body(),
+            )
+        )
+    }
+
+    override suspend fun reqAttractionLike(
+        id: Int
+    ): Flow<CommonDto<ChallengeItemLikeDto>> = flow {
+        val response = apiService.reqAttractionLike(
+            id = id,
+        )
+        emit(
+            CommonDto(
+                code = response.code(),
+                message = response.message(),
+                response = response.body(),
+            )
+        )
     }
 
     override suspend fun writeComment(

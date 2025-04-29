@@ -1,11 +1,13 @@
 package com.seoulmate.data
 
-import com.seoulmate.data.model.ChallengeCommentItem
-import com.seoulmate.data.model.ChallengeItemData
-import com.seoulmate.data.model.ChallengeThemeData
+import com.seoulmate.data.model.challenge.AttractionItem
+import com.seoulmate.data.model.challenge.ChallengeCommentItem
+import com.seoulmate.data.model.challenge.ChallengeRankItemData
+import com.seoulmate.data.model.challenge.ChallengeStampItemData
+import com.seoulmate.data.model.challenge.ChallengeThemeData
 
 object ChallengeInfo {
-    var themeList = listOf<ChallengeThemeData>(
+    var themeList = listOf(
         ChallengeThemeData(
             id = 1,
             nameKor = "지역 탐방",
@@ -70,10 +72,13 @@ object ChallengeInfo {
             descriptionEng = "pooiopqsdfbsd"
         ),
     )
-    var allItemList = listOf<ChallengeItemData>()
+    var challengeThemeList: List<List<ChallengeStampItemData>> = listOf()
+    var rankList: List<ChallengeRankItemData> = listOf()
 }
 
 object ChallengeDetailInfo {
     var id = 0
+    var title =""
     var commentList = listOf<ChallengeCommentItem>()
+    var attractions: List<AttractionItem> = listOf()
 }

@@ -11,13 +11,11 @@ import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.seoulmate.data.UserInfo
-import com.seoulmate.data.model.ChallengeThemeData
+import com.seoulmate.data.model.challenge.ChallengeThemeData
 import com.seoulmate.ui.component.PpsText
 import com.seoulmate.ui.theme.Blue500
 import com.seoulmate.ui.theme.CoolGray500

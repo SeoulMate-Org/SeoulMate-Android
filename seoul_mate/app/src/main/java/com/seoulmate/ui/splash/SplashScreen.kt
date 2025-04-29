@@ -17,7 +17,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.seoulmate.R
-import com.seoulmate.ui.component.Loading
+import com.seoulmate.ui.component.PpsLoading
 import com.seoulmate.ui.theme.SplashGradientEnd
 import com.seoulmate.ui.theme.SplashGradientStart
 
@@ -92,7 +92,7 @@ fun SplashScreen(
         )
 
         if (viewModel.isShowLoading.value == true) {
-            Loading(
+            PpsLoading(
                 modifier = Modifier.wrapContentSize()
                     .constrainAs(loading) {
                         top.linkTo(parent.top)

@@ -10,17 +10,12 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.seoulmate.data.model.ChallengeItemData
+import com.seoulmate.data.model.challenge.ChallengeItemData
 import com.seoulmate.ui.component.ChallengeBigSquareImageTypeLayout
-import com.seoulmate.ui.theme.Blue500
-import com.seoulmate.ui.theme.Color1D8EFE
 import com.seoulmate.ui.theme.SeoulMateTheme
-import com.seoulmate.ui.theme.TrueWhite
 
 @Composable
 fun HorizontalCarousel(
@@ -29,7 +24,7 @@ fun HorizontalCarousel(
         .background(color = Color.Transparent)
         .height(280.dp),
     itemList: List<ChallengeItemData>,
-    onChallengeItemClick: (item: ChallengeItemData) -> Unit = {},
+    onChallengeItemClick: (challengeId: Int) -> Unit = {},
 ) {
     val contentPadding = 40.dp
     val pageSpacing = 10.dp

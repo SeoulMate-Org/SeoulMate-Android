@@ -6,11 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.seoulmate.data.model.UserData
 import com.seoulmate.data.repository.PreferDataStoreRepository
-import com.seoulmate.datastore.repository.Language
-import com.seoulmate.domain.usecase.GetAddressesFromGeocodeUseCase
 import com.seoulmate.domain.usecase.GetUserInfoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -20,7 +17,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val getAddressesFromGeocodeUseCase: GetAddressesFromGeocodeUseCase,
     private val preferDataStoreRepository: PreferDataStoreRepository,
     private val getUserInfoUseCase: GetUserInfoUseCase,
 ): ViewModel() {
@@ -45,16 +41,6 @@ class MainViewModel @Inject constructor(
 //                isShowLoading.value = false
 //            }
 //        }
-    }
-
-    private fun getAddresses(query: String) {
-        viewModelScope.launch {
-            getAddressesFromGeocodeUseCase.getAddresses(query = query).collectLatest {
-                it?.let {
-                    Log.d("MainViewModel", "getAddresses: $it")
-                }
-            }
-        }
     }
 
     fun loadLanguage() {

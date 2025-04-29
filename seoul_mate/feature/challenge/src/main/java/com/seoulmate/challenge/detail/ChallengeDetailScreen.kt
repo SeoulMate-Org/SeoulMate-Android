@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.provider.Settings
-import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -33,8 +32,10 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -53,8 +54,8 @@ import com.seoulmate.challenge.detail.item.ChallengeStamp
 import com.seoulmate.challenge.detail.item.TopChallengeDetailInfo
 import com.seoulmate.data.ChallengeDetailInfo
 import com.seoulmate.data.UserInfo
-import com.seoulmate.data.model.ChallengeItemData
 import com.seoulmate.ui.component.ChallengeCommentItemLayout
+import com.seoulmate.ui.component.PpsAlertDialog
 import com.seoulmate.ui.component.PpsText
 import com.seoulmate.ui.component.Screen
 import com.seoulmate.ui.theme.Blue400
@@ -70,14 +71,15 @@ import com.seoulmate.ui.theme.TrueWhite
 @Composable
 fun ChallengeDetailScreen(
     context: Context,
-    item: ChallengeItemData?,
+    challengeId: Int,
     onBackClick: () -> Unit = {},
     onChangeScreen: (Screen) -> Unit = {},
-    onWriteReplyClick: () -> Unit = {},
+    onAttractionClick: (attractionId: Int) -> Unit = {},
 ) {
     val viewModel = hiltViewModel<ChallengeDetailViewModel>()
     val locationPermission = listOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
     val fineLocationPermissionGranted = remember{ mutableStateOf(false) }
+    var showLoginAlertDialog by remember { mutableStateOf(false) }
 
     val isShowBottomFloating = true
 
@@ -105,7 +107,7 @@ fun ChallengeDetailScreen(
 
     LaunchedEffect(Unit) {
         viewModel.getChallengeItem(
-            id = 1,
+            id = challengeId,
             language = if(UserInfo.localeLanguage == "ko") "KOR" else "ENG"
         )
 
@@ -114,6 +116,16 @@ fun ChallengeDetailScreen(
                 context,
                 it
             ) == PackageManager.PERMISSION_GRANTED
+        }
+    }
+
+    LaunchedEffect(viewModel.needUserLogin.value) {
+        showLoginAlertDialog = viewModel.needUserLogin.value
+    }
+
+    LaunchedEffect(UserInfo.accessToken) {
+        if (UserInfo.isUserLogin()) {
+            showLoginAlertDialog = false
         }
     }
 
@@ -219,7 +231,13 @@ fun ChallengeDetailScreen(
                     ) { index ->
                         Box(modifier = Modifier.padding(horizontal = 20.dp)) {
                             AttractionItemTile(
-                                item = viewModel.challengeItem.value.attractions[index]
+                                item = viewModel.challengeItem.value.attractions[index],
+                                onItemClick = { item ->
+                                    onAttractionClick(item.id)
+                                },
+                                onItemLikeClick = { item ->
+                                    viewModel.reqAttractionLike(item.id)
+                                }
                             )
                         }
                     }
@@ -330,18 +348,16 @@ fun ChallengeDetailScreen(
                 onChangeScreen = onChangeScreen,
                 onMapClick = {
                     checkLocationPermission{
-                        Log.d("@@@@", "onMapClick !!!!!")
+                        onChangeScreen(Screen.PlaceInfoDetail)
                     }
                 },
                 onChallengeStartClick = {
                     checkLocationPermission{
-                        Log.d("@@@@", "onChallengeStartClick !!!!!")
                         viewModel.reqProgressChallengeStatus()
                     }
                 },
                 onStampClick = {
                     checkLocationPermission{
-                        Log.d("@@@@", "onStampClick !!!!!")
                         viewModel.reqAttractionStamp(36)
                     }
                 },
@@ -349,6 +365,22 @@ fun ChallengeDetailScreen(
                     viewModel.reqChallengeLike()
                 }
             )
+
+            if(showLoginAlertDialog) {
+                PpsAlertDialog(
+                    titleRes = com.seoulmate.ui.R.string.str_need_login,
+                    descriptionRes = com.seoulmate.ui.R.string.str_need_login_description,
+                    confirmRes = com.seoulmate.ui.R.string.str_login,
+                    cancelRes = com.seoulmate.ui.R.string.str_cancel,
+                    onClickCancel = {
+                        showLoginAlertDialog = false
+                    },
+                    onClickConfirm = {
+                        onChangeScreen(Screen.Login)
+                        showLoginAlertDialog = false
+                    },
+                )
+            }
         }
     }
 

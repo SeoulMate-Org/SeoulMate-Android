@@ -1,10 +1,9 @@
 package com.seoulmate.domain.usecase
 
 import com.seoulmate.data.dto.CommonDto
-import com.seoulmate.data.model.ChallengeCommentItem
+import com.seoulmate.data.model.challenge.ChallengeCommentItem
 import com.seoulmate.data.repository.ChallengeRepository
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 

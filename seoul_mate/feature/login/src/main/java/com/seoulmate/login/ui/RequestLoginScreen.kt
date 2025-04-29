@@ -18,9 +18,6 @@ import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -39,28 +36,24 @@ import androidx.core.content.ContextCompat
 import androidx.credentials.CredentialManager
 import androidx.credentials.CustomCredential
 import androidx.credentials.GetCredentialRequest
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
-import com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.seoulmate.data.UserInfo
 import com.seoulmate.login.BuildConfig
 import com.seoulmate.login.LoginViewModel
 import com.seoulmate.login.R
-import com.seoulmate.ui.component.Loading
+import com.seoulmate.ui.component.PpsLoading
 import com.seoulmate.ui.component.PpsText
 import com.seoulmate.ui.noRippleClickable
-import com.seoulmate.ui.theme.IntroBlue
 import com.seoulmate.ui.theme.SplashGradientEnd
 import com.seoulmate.ui.theme.SplashGradientStart
 import com.seoulmate.ui.theme.TrueWhite
 import kotlinx.coroutines.launch
-import java.util.Locale
 
 @Composable
 fun RequestLoginScreen(
@@ -285,7 +278,7 @@ fun RequestLoginScreen(
         }
 
         if (viewModel.isShowLoading.value == true) {
-            Loading(
+            PpsLoading(
                 modifier = Modifier.wrapContentSize()
                     .constrainAs(loading) {
                         top.linkTo(parent.top)

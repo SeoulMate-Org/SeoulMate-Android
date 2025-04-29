@@ -10,6 +10,9 @@
 
     <string name="badge_title">My Badge</string>
 
+    <string name="nickname_title">Change Nickname</string>
+
+
     <string name="badge_item_01">aaaaaaaaa</string>
     <string name="badge_item_02">bbbbbbbbb</string>
     <string name="badge_item_03">ccccc &amp; ccc</string>

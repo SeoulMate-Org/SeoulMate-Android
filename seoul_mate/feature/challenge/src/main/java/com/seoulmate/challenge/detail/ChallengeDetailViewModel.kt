@@ -1,16 +1,19 @@
 package com.seoulmate.challenge.detail
 
 import android.util.Log
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.seoulmate.data.ChallengeDetailInfo
 import com.seoulmate.data.UserInfo
-import com.seoulmate.data.model.ChallengeCommentItem
-import com.seoulmate.data.model.ChallengeItemData
-import com.seoulmate.data.model.DefaultChallengeItemData
+import com.seoulmate.data.model.challenge.ChallengeCommentItem
+import com.seoulmate.data.model.challenge.DefaultChallengeItemData
 import com.seoulmate.data.model.MyChallengeItemData
 import com.seoulmate.domain.usecase.GetChallengeItemDetailUseCase
+import com.seoulmate.domain.usecase.ReqAttractionLikeUseCase
 import com.seoulmate.domain.usecase.ReqAttractionStampUseCase
 import com.seoulmate.domain.usecase.ReqChallengeLikeUseCase
 import com.seoulmate.domain.usecase.ReqChallengeStatusUseCase
@@ -25,11 +28,13 @@ class ChallengeDetailViewModel @Inject constructor(
     private val reqChallengeStatusUseCase: ReqChallengeStatusUseCase,
     private val reqChallengeLikeUseCase: ReqChallengeLikeUseCase,
     private val reqAttractionStampUseCase: ReqAttractionStampUseCase,
+    private val reqAttractionLikeUseCase: ReqAttractionLikeUseCase,
 ): ViewModel()  {
 
     var isLoading = mutableStateOf(false)
     var challengeItem = mutableStateOf(DefaultChallengeItemData.item)
     var startedChallenge = mutableStateOf(false)
+    var needUserLogin = mutableStateOf(false)
 
     // fetch Challenge Item
     fun getChallengeItem(
@@ -49,11 +54,13 @@ class ChallengeDetailViewModel @Inject constructor(
                     challengeItem.value = it
                     Log.d("@@@@@", "myChallenge : ${UserInfo.myChallengeList}")
                     Log.d("@@@@@", "getMyChallengeId : ${UserInfo.getMyChallengeId()}")
-                    Log.d("@@@@@", "item id  : ${item.id}")
-                    startedChallenge.value = UserInfo.getMyChallengeId().contains(item.id)
+                    Log.d("@@@@@", "item id  : ${it.id}")
+                    startedChallenge.value = UserInfo.getMyChallengeId().contains(it.id)
 
-                    ChallengeDetailInfo.id = item.id
-                    ChallengeDetailInfo.commentList = item.comments.map { commentItem ->
+                    ChallengeDetailInfo.id = it.id
+                    ChallengeDetailInfo.title = it.title
+                    ChallengeDetailInfo.attractions = it.attractions
+                    ChallengeDetailInfo.commentList = it.comments.map { commentItem ->
                         ChallengeCommentItem(
                             id = commentItem.id,
                             comment = commentItem.comment,
@@ -73,7 +80,6 @@ class ChallengeDetailViewModel @Inject constructor(
                 id = challengeItem.value.id,
                 status = "PROGRESS",
             ).collectLatest {
-                // TODO chan
                 UserInfo.myChallengeList = listOf(
                     MyChallengeItemData(
                         id = challengeItem.value.id,
@@ -101,9 +107,55 @@ class ChallengeDetailViewModel @Inject constructor(
         viewModelScope.launch {
             reqChallengeLikeUseCase(
                 id = challengeItem.value.id,
-            ).collectLatest { item ->
-                Log.d("@@@@@", "item : $item")
+            ).collectLatest { response ->
+                if (response.code in 200..299) {
+                    response.response?.let {
+                        challengeItem.value = challengeItem.value.copy(
+                            isInterest = it.isLiked
+                        )
+                    }
+                } else if (response.code == 403) {
+                    if (UserInfo.isUserLogin()) {
+                        // Refresh Token
+                    } else {
+                        // Need Login
+                        needUserLogin.value = true
+                    }
+                }
             }
+        }
+    }
+
+    // Attraction Like or UnLike
+    fun reqAttractionLike(
+        attractionId: Int
+    ) {
+        viewModelScope.launch {
+            reqAttractionLikeUseCase(attractionId)
+                .collectLatest { response ->
+                    if (response.code in 200..299) {
+                        response.response?.let {
+                            challengeItem.value = challengeItem.value.copy(
+                                attractions = challengeItem.value.attractions.map { item ->
+                                    if (item.id == attractionId) {
+                                        item.copy(
+                                            isLiked = it.isLiked
+                                        )
+                                    } else {
+                                        item
+                                    }
+                                }
+                            )
+                        }
+                    } else if (response.code == 403) {
+                        if (UserInfo.isUserLogin()) {
+                            // Refresh Token
+                        } else {
+                            // Need Login
+                            needUserLogin.value = true
+                        }
+                    }
+                }
         }
     }
 

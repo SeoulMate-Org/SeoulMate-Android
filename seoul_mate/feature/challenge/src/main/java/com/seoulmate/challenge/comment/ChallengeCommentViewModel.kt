@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.seoulmate.data.ChallengeDetailInfo
 import com.seoulmate.data.UserInfo
-import com.seoulmate.data.model.ChallengeCommentItem
+import com.seoulmate.data.model.challenge.ChallengeCommentItem
 import com.seoulmate.domain.usecase.GetCommentListUseCase
 import com.seoulmate.domain.usecase.WriteCommentUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel

@@ -22,4 +22,6 @@
     <string name="str_need_login_description">해당 기능은 로그인 후 이용하실 수 있습니다.</string>
 
     <string name="str_major_location">주요 동네</string>
+
+    <string name="home_challenge_ranking_join_count">%d명이 참여중!!</string>
 </resources>

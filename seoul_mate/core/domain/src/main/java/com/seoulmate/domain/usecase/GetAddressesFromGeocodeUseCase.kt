@@ -1,6 +1,6 @@
 package com.seoulmate.domain.usecase
 
-import com.seoulmate.data.dto.GeocodeDTO
+import com.seoulmate.data.dto.geocode.GeocodeDTO
 import com.seoulmate.data.repository.GeocodeRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
