@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.seoulmate.data.ChallengeInfo
 import com.seoulmate.data.UserInfo
 import com.seoulmate.data.dto.CommonDto
+import com.seoulmate.data.dto.challenge.MyChallengeType
 import com.seoulmate.data.model.challenge.ChallengeCommentItem
 import com.seoulmate.data.model.challenge.ChallengeLocationItemData
 import com.seoulmate.data.model.challenge.ChallengeRankItemData
@@ -91,7 +92,7 @@ class LoginViewModel @Inject constructor(
     fun getMyData(grantedLocationPermission: Boolean = false) {
         viewModelScope.launch {
             val myChallengeList = getMyChallengeItemListUseCase(
-                type = "PROGRESS",
+                type = MyChallengeType.LIKE.type,
                 language = languageCode,
             )
             val myCommentList = getMyCommentListUseCase(
@@ -113,35 +114,20 @@ class LoginViewModel @Inject constructor(
                 }.collectLatest { data ->
                     data.responseMyChallengeList?.let {
                         if (it.code in 200..299) {
-                            UserInfo.myChallengeList = it.response ?: listOf()
+                            UserInfo.myLikeChallengeList = it.response ?: listOf()
                         } else if(it.code == 403) {
                             needRefreshToken.value = true
-                            return@collectLatest
-                        } else {
-
-                            isShowLoading.value = false
-                            finishedFetchMyData.value = true
                             return@collectLatest
                         }
                     }
                     data.responseMyCommentList?.let {
                         if (it.code in 200..299) {
                             UserInfo.myCommentList = it.response ?: listOf()
-                        } else {
-
-                            isShowLoading.value = false
-                            finishedFetchMyData.value = true
-                            return@collectLatest
                         }
                     }
                     data.responseChallengeLocationItemList?.let {
                         if (it.code in 200..299) {
                             UserInfo.myChallengeLocationList = it.response ?: listOf()
-                        } else {
-
-                            isShowLoading.value = false
-                            finishedFetchMyData.value = true
-                            return@collectLatest
                         }
                     }
 
@@ -154,23 +140,13 @@ class LoginViewModel @Inject constructor(
                 }.collectLatest { data ->
                     data.responseMyChallengeList?.let {
                         if (it.code in 200..299) {
-                            UserInfo.myChallengeList = it.response ?: listOf()
-                        } else {
-
-                            isShowLoading.value = false
-                            finishedFetchMyData.value = true
-                            return@collectLatest
+                            UserInfo.myLikeChallengeList = it.response ?: listOf()
                         }
                     }
                     data.responseMyCommentList?.let {
                         if (it.code in 200..299) {
                             UserInfo.myCommentList = it.response ?: listOf()
-                        } else {
-
-                            isShowLoading.value = false
-                            finishedFetchMyData.value = true
-                            return@collectLatest
-                        }
+                        } 
                     }
 
                     isShowLoading.value = false

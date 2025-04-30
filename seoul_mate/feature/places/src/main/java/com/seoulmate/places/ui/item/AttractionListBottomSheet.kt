@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -20,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.seoulmate.data.ChallengeDetailInfo
 import com.seoulmate.data.model.challenge.AttractionItem
 import com.seoulmate.ui.R
 import com.seoulmate.ui.component.ChallengeInterestButton
@@ -31,13 +34,23 @@ import com.seoulmate.ui.theme.CoolGray900
 fun AttractionListBottomSheet(
     onItemLikeClick: (attractionId: Int) -> Unit = {},
 ) {
-    Column {
+    LazyColumn{
+        items(
+            items = ChallengeDetailInfo.attractions,
+            key = { item -> item.id }
+        ) { item ->
+
+            AttractionItemLayout(
+                item = item,
+                onItemLikeClick = onItemLikeClick,
+            )
+        }
 
     }
 }
 
 @Composable
-fun AttractionItem(
+fun AttractionItemLayout(
     item: AttractionItem,
     onItemLikeClick: (attractionId: Int) -> Unit = {},
 ) {
@@ -80,7 +93,7 @@ fun AttractionItem(
             // Address
             PpsText(
                 modifier = Modifier,
-                text = "",
+                text = item.address ?: "",
                 style = TextStyle(
                     fontSize = 16.sp,
                     color = CoolGray900,
@@ -91,7 +104,7 @@ fun AttractionItem(
         Spacer(modifier = Modifier.width(15.dp))
         // Interest Icon
         ChallengeInterestButton(
-            isInterest = item.isLiked ?: false,
+            isInterest = item.isLiked,
             size = 32.dp
         ) {
             onItemLikeClick(item.id)

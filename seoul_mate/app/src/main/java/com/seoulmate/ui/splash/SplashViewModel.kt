@@ -101,7 +101,7 @@ class SplashViewModel @Inject constructor(
         viewModelScope.launch {
             if (UserInfo.isUserLogin()) {
                 val myChallenge = getMyChallengeItemListUseCase(
-                    type = MyChallengeType.PROGRESS.type,
+                    type = MyChallengeType.LIKE.type,
                     language = languageCode,
                 )
                 val myCommentList = getMyCommentListUseCase(
@@ -128,13 +128,9 @@ class SplashViewModel @Inject constructor(
                     }.collectLatest { data ->
                         data.responseMyChallengeList?.let {
                             if (it.code in 200..299) {
-                                UserInfo.myChallengeList = it.response ?: listOf()
+                                UserInfo.myLikeChallengeList = it.response ?: listOf()
                             } else if(it.code == 403) {
                                 needRefreshToken.value = true
-                                return@collectLatest
-                            } else {
-
-                                isShowLoading.value = false
                                 return@collectLatest
                             }
                         }
@@ -144,10 +140,6 @@ class SplashViewModel @Inject constructor(
                             } else if(it.code == 403) {
                                 needRefreshToken.value = true
                                 return@collectLatest
-                            } else {
-
-                                isShowLoading.value = false
-                                return@collectLatest
                             }
                         }
                         data.responseMyChallengeLocationItemList?.let {
@@ -156,10 +148,6 @@ class SplashViewModel @Inject constructor(
                             } else if(it.code == 401) {
                                 needRefreshToken.value = true
                                 return@collectLatest
-                            } else {
-
-                                isShowLoading.value = false
-                                return@collectLatest
                             }
                         }
                         data.responseChallengeStampItemList?.let {
@@ -167,10 +155,6 @@ class SplashViewModel @Inject constructor(
                                 UserInfo.challengeStampList = it.response ?: listOf()
                             } else if(it.code == 403) {
                                 needRefreshToken.value = true
-                                return@collectLatest
-                            } else {
-
-                                isShowLoading.value = false
                                 return@collectLatest
                             }
                         }
@@ -182,13 +166,9 @@ class SplashViewModel @Inject constructor(
                     }.collectLatest { data ->
                         data.responseMyChallengeList?.let {
                             if (it.code in 200..299) {
-                                UserInfo.myChallengeList = it.response ?: listOf()
+                                UserInfo.myLikeChallengeList = it.response ?: listOf()
                             } else if(it.code == 403) {
                                 needRefreshToken.value = true
-                                return@collectLatest
-                            } else {
-
-                                isShowLoading.value = false
                                 return@collectLatest
                             }
                         }
@@ -197,10 +177,6 @@ class SplashViewModel @Inject constructor(
                                 UserInfo.myCommentList = it.response ?: listOf()
                             } else if(it.code == 403) {
                                 needRefreshToken.value = true
-                                return@collectLatest
-                            } else {
-
-                                isShowLoading.value = false
                                 return@collectLatest
                             }
                         }

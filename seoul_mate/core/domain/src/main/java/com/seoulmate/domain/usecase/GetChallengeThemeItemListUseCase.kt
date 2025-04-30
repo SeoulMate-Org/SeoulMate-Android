@@ -31,7 +31,7 @@ class GetChallengeThemeItemListUseCase @Inject constructor(
                             id = item.id,
                             name = item.name,
                             title = item.title,
-                            description = item.description,
+                            description = item.description ?: "",
                             imageUrl = item.imageUrl,
                             mainLocation = item.mainLocation,
                             challengeThemeId = item.challengeThemeId,

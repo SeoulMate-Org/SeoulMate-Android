@@ -15,6 +15,7 @@ import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarColors
@@ -47,12 +48,14 @@ import com.seoulmate.ui.component.snackBarType
 import com.seoulmate.ui.theme.Black
 import com.seoulmate.ui.theme.CoolGray900
 import com.seoulmate.ui.theme.TrueWhite
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalNaverMapApi::class)
 @Composable
 fun PlaceInfoDetailScreen(
     bottomSheetScaffoldState: BottomSheetScaffoldState,
     onBackClick: () -> Unit,
+    expandBottomSheet: () -> Unit = {},
 ) {
     val viewModel = hiltViewModel<PlaceInfoDetailViewModel>()
     var markerList = listOf<LatLng>()
@@ -61,6 +64,10 @@ fun PlaceInfoDetailScreen(
     LaunchedEffect(Unit) {
         markerList = ChallengeDetailInfo.attractions.map {
             LatLng((it.locationY ?: "0.0").toDouble(), (it.locationX ?: "0.0").toDouble())
+        }
+
+        if (markerList.isNotEmpty()) {
+            expandBottomSheet()
         }
     }
 
@@ -73,11 +80,9 @@ fun PlaceInfoDetailScreen(
                     PpsText(
                         modifier = Modifier.wrapContentSize(),
                         text = ChallengeDetailInfo.title,
-                        style = TextStyle(
-                            fontSize = 18.sp,
+                        style = MaterialTheme.typography.titleSmall.copy(
                             color = CoolGray900,
-                        ),
-                        fontWeight = FontWeight.SemiBold,
+                        )
                     )
                 },
                 navigationIcon = {
@@ -107,15 +112,14 @@ fun PlaceInfoDetailScreen(
         sheetContent = {
             AttractionListBottomSheet()
         },
-        sheetPeekHeight = 50.dp,
+        sheetPeekHeight = 60.dp,
         snackbarHost = { }
     ) { padding ->
 
         val cameraPositionState: CameraPositionState = rememberCameraPositionState {
-            // 카메라 초기 위치를 설정합니다.
             position = CameraPosition(
                 if(markerList.isNotEmpty()) markerList[0] else seoul,
-                11.0
+                12.0
             )
         }
 
@@ -126,7 +130,12 @@ fun PlaceInfoDetailScreen(
             Box(
                 Modifier
                     .fillMaxSize()
-                    .constrainAs(mapContent) {}
+                    .constrainAs(mapContent) {
+                        top.linkTo(parent.top)
+                        bottom.linkTo(parent.bottom)
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                    }
             ) {
                 NaverMap(
                     cameraPositionState = cameraPositionState,

@@ -5,10 +5,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.seoulmate.data.UserInfo
 import com.seoulmate.data.repository.UserRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class SettingUserNicknameViewModel @Inject constructor(
     private val userRepository: UserRepository,
 ): ViewModel() {

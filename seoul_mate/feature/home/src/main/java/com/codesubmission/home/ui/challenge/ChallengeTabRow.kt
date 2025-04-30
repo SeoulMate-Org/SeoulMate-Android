@@ -1,7 +1,5 @@
 package com.codesubmission.home.ui.challenge
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -9,18 +7,13 @@ import androidx.compose.foundation.pager.PagerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SecondaryTabRow
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRowDefaults
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.seoulmate.ui.component.PpsText
 import com.seoulmate.ui.theme.Blue500
 import com.seoulmate.ui.theme.CoolGray500
@@ -38,6 +31,7 @@ fun ChallengeTabRow(
     coroutineScope: CoroutineScope,
     pageList: List<String>,
     pagerState: PagerState,
+    onTabClick: (Int) -> Unit = {},
 ) {
     val currentSelectedTabIndex = pagerState.currentPage
     SecondaryTabRow(
@@ -60,9 +54,7 @@ fun ChallengeTabRow(
             Tab(
                 selected = isSelected,
                 onClick = {
-                    coroutineScope.launch {
-                        pagerState.animateScrollToPage(index)
-                    }
+                    onTabClick(index)
                 }
             ) {
                 PpsText(

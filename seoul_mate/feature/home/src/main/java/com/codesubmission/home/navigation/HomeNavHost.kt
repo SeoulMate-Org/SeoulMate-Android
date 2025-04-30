@@ -49,6 +49,7 @@ fun HomeNavHost(
         composable(route = Screen.HomeChallenge.route) {
             HomeChallengeScreen(
                 homeState = appState,
+                viewModel = viewModel,
                 onReplyClick = {
                     onScreenChange(Screen.ChallengeCommentList)
                 },

@@ -12,6 +12,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.seoulmate.data.model.MyChallengeItemData
 import com.seoulmate.data.model.challenge.ChallengeItemData
 import com.seoulmate.ui.component.ChallengeTileTypeLayout
 import com.seoulmate.ui.component.PpsText
@@ -23,7 +24,7 @@ import com.seoulmate.ui.theme.TrueWhite
 @Composable
 fun ChallengeItemList(
     modifier: Modifier = Modifier.background(color = TrueWhite),
-    itemList: List<ChallengeItemData>,
+    itemList: List<MyChallengeItemData>,
     onItemClick: (challengeId: Int) -> Unit = {},
 ) {
     LazyColumn(

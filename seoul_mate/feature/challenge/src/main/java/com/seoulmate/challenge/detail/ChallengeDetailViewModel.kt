@@ -1,10 +1,7 @@
 package com.seoulmate.challenge.detail
 
 import android.util.Log
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.seoulmate.data.ChallengeDetailInfo
@@ -53,7 +50,7 @@ class ChallengeDetailViewModel @Inject constructor(
 
                 item?.let {
                     challengeItem.value = it
-                    Log.d("@@@@@", "myChallenge : ${UserInfo.myChallengeList}")
+                    Log.d("@@@@@", "myChallenge : ${UserInfo.myLikeChallengeList}")
                     Log.d("@@@@@", "getMyChallengeId : ${UserInfo.getMyChallengeId()}")
                     Log.d("@@@@@", "item id  : ${it.id}")
                     startedChallenge.value = UserInfo.getMyChallengeId().contains(it.id)
@@ -92,19 +89,6 @@ class ChallengeDetailViewModel @Inject constructor(
                 id = challengeItem.value.id,
                 status = "PROGRESS",
             ).collectLatest {
-                UserInfo.myChallengeList = listOf(
-                    MyChallengeItemData(
-                        id = challengeItem.value.id,
-                        name = "",
-                        title = challengeItem.value.title,
-                        likes = 0,
-                        attractionCount = challengeItem.value.attractions.size,
-                        myStampCount = 0,
-                        mainLocation = challengeItem.value.mainLocation,
-                        challengeThemeId = 0,
-                        challengeThemeName = "",
-                    )
-                )
 
                 getChallengeItem(
                     id = challengeItem.value.id,
@@ -158,6 +142,7 @@ class ChallengeDetailViewModel @Inject constructor(
                                     }
                                 }
                             )
+                            ChallengeDetailInfo.attractions = challengeItem.value.attractions
                         }
                     } else if (response.code == 403) {
                         if (UserInfo.isUserLogin()) {

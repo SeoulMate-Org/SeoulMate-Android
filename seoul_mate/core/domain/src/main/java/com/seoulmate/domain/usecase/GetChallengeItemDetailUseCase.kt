@@ -32,6 +32,7 @@ class GetChallengeItemDetailUseCase @Inject constructor(
                         likes = attractionItem.likes,
                         isStamped = attractionItem.isStamped,
                         stampCount = attractionItem.stampCount,
+                        address = attractionItem.address,
                     )
                 )
             }

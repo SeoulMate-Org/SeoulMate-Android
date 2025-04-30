@@ -11,7 +11,9 @@ object UserInfo {
     var refreshToken: String = ""
     var loginType: String = ""
     var localeLanguage: String = ""
-    var myChallengeList = listOf<MyChallengeItemData>()
+    var myLikeChallengeList = listOf<MyChallengeItemData>()
+    var myProgressChallengeList = listOf<MyChallengeItemData>()
+    var myCompleteChallengeList = listOf<MyChallengeItemData>()
     var myCommentList = listOf<ChallengeCommentItem>()
     var myChallengeLocationList = listOf<ChallengeLocationItemData>()
     var challengeStampList = listOf<ChallengeStampItemData>()
@@ -20,5 +22,5 @@ object UserInfo {
 
     fun isUserLogin(): Boolean = accessToken.isNotEmpty()
 
-    fun getMyChallengeId(): List<Int> = myChallengeList.map { it.id }
+    fun getMyChallengeId(): List<Int> = myProgressChallengeList.map { it.id }
 }

@@ -74,11 +74,9 @@ fun ChallengeCommentListScreen(
                     PpsText(
                         modifier = Modifier.wrapContentSize(),
                         text = stringResource(R.string.title_comment),
-                        style = TextStyle(
-                            fontSize = 18.sp,
+                        style = MaterialTheme.typography.titleSmall.copy(
                             color = CoolGray900,
-                        ),
-                        fontWeight = FontWeight.SemiBold,
+                        )
                     )
                 },
                 navigationIcon = {

@@ -4,12 +4,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.seoulmate.data.model.MyChallengeItemData
 import com.seoulmate.data.model.challenge.ChallengeItemData
 
 @Composable
 fun InProgressChallengeTabScreen(
     modifier: Modifier = Modifier.fillMaxSize(),
-    itemList: List<ChallengeItemData>,
+    itemList: List<MyChallengeItemData>,
 ) {
     Surface(
         modifier = modifier

@@ -8,6 +8,7 @@ import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.TopAppBarColors
@@ -37,11 +38,9 @@ fun ChallengeRankListScreen(
                     PpsText(
                         modifier = Modifier.wrapContentSize(),
                         text = stringResource(R.string.title_rank),
-                        style = TextStyle(
-                            fontSize = 18.sp,
+                        style = MaterialTheme.typography.titleSmall.copy(
                             color = CoolGray900,
-                        ),
-                        fontWeight = FontWeight.SemiBold,
+                        )
                     )
                 },
                 navigationIcon = {

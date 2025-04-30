@@ -299,22 +299,6 @@ fun ChallengeDetailScreen(
                                     }
                                 }
                             }
-
-                            if (!viewModel.isStamped.value) {
-                                Column(
-                                    modifier = Modifier.height(53.dp).fillMaxWidth(),
-                                    verticalArrangement = Arrangement.Center,
-                                    horizontalAlignment = Alignment.CenterHorizontally
-                                ) {
-                                    PpsText(
-                                        modifier = Modifier.padding(start = 10.dp),
-                                        text = stringResource(R.string.comment_empty),
-                                        style = MaterialTheme.typography.bodyMedium.copy(
-                                            color = CoolGray900,
-                                        )
-                                    )
-                                }
-                            }
                         }
                     }
                     items(
@@ -332,6 +316,23 @@ fun ChallengeDetailScreen(
                             ChallengeCommentItemLayout(
                                 item = ChallengeDetailInfo.commentList[index]
                             )
+                        }
+                    }
+                    item {
+                        if (!viewModel.isStamped.value) {
+                            Column(
+                                modifier = Modifier.height(53.dp).fillMaxWidth(),
+                                verticalArrangement = Arrangement.Center,
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                PpsText(
+                                    modifier = Modifier.padding(start = 10.dp),
+                                    text = stringResource(R.string.comment_empty),
+                                    style = MaterialTheme.typography.bodyMedium.copy(
+                                        color = CoolGray900,
+                                    )
+                                )
+                            }
                         }
                     }
 

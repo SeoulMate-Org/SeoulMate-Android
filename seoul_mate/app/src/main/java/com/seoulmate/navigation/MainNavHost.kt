@@ -83,6 +83,7 @@ fun MainNavHost(
             PlaceInfoDetailScreen(
                 bottomSheetScaffoldState = appState.bottomSheetScaffoldState,
                 onBackClick = { appState.navController.popBackStack() },
+                expandBottomSheet = { appState.expandBottomSheet() },
             )
         }
         composable(route = Screen.ChallengeCommentList.route) {
@@ -146,6 +147,9 @@ fun MainNavHost(
             AttractionDetailScreen(
                 attractionId = appState.selectedAttractionItemId.intValue,
                 onBackClick = { appState.navController.popBackStack() },
+                onChangeScreen = { screen ->
+                    appState.navigate(screen)
+                },
             )
         }
     }

@@ -33,12 +33,17 @@ class GetMyChallengeItemListUseCase @Inject constructor(
                             id = contentItem.id,
                             name = contentItem.name,
                             title = contentItem.title,
+                            description = contentItem.description ?: "",
                             likes = contentItem.likes,
+                            isLiked = contentItem.isLiked ?: false,
+                            imageUrl = contentItem.imageUrl ?: "",
                             attractionCount = contentItem.attractionCount,
-                            myStampCount = contentItem.myStampCount,
+                            myStampCount = contentItem.myStampCount ?: 0,
                             mainLocation = contentItem.mainLocation,
                             challengeThemeId = contentItem.challengeThemeId,
                             challengeThemeName = contentItem.challengeThemeName,
+                            distance = contentItem.distance ?: "",
+                            displayRank = contentItem.displayRank ?: "",
                         )
                     )
                 }

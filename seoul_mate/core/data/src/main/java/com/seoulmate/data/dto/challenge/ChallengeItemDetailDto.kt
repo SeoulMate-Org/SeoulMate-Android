@@ -33,6 +33,7 @@ data class AttractionItem(
     @Json(name = "likes") val likes: Int,
     @Json(name = "isStamped") val isStamped: Boolean,
     @Json(name = "stampCount") val stampCount: Int,
+    @Json(name = "address") val address: String?,
 )
 
 @JsonClass(generateAdapter = true)

@@ -49,6 +49,7 @@ fun ChallengeHomeTileTypeLayout(
 ) {
     var isInterest = remember { mutableStateOf(false) }
 
+
     LaunchedEffect(Unit) {
         isInterest.value = item.isLiked ?: false
     }
@@ -168,7 +169,7 @@ fun ChallengeHomeTileTypeLayout(
         Spacer(modifier = Modifier.width(8.dp))
         // Interest Icon
         ChallengeInterestButton(
-            isInterest = isInterest.value,
+            isInterest = item.isLiked ?: false,
             size = 32.dp
         ) {
             onChallengeLikeClick(item.id)
