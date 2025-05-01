@@ -18,6 +18,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -36,16 +37,13 @@ fun PpsButton(
     borderColor: Color = Blue500,
     @StringRes stringRes: Int,
     fontColor: Color = TrueWhite,
+    cornerRound: Dp = 15.dp,
     onClick: () -> Unit = {},
 ) {
     Button(
         modifier = modifier
             .clip(
-                shape = RoundedCornerShape(15.dp),
-            )
-            .background(
-                shape = RoundedCornerShape(15.dp),
-                color = color,
+                shape = RoundedCornerShape(cornerRound),
             ),
         colors = ButtonColors(
             containerColor = color,

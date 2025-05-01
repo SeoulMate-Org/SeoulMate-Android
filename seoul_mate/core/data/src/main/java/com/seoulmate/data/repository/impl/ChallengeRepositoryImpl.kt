@@ -3,6 +3,7 @@ package com.seoulmate.data.repository.impl
 import com.seoulmate.data.api.ApiService
 import com.seoulmate.data.dto.CommonDto
 import com.seoulmate.data.dto.attraction.AttractionDetailDto
+import com.seoulmate.data.dto.challenge.ChallengeCulturalEventDto
 import com.seoulmate.data.dto.challenge.ChallengeItemAllDto
 import com.seoulmate.data.dto.challenge.ChallengeItemDetailDto
 import com.seoulmate.data.dto.challenge.ChallengeItemLikeDto
@@ -11,6 +12,7 @@ import com.seoulmate.data.dto.challenge.ChallengeRankItemDto
 import com.seoulmate.data.dto.challenge.ChallengeStampItemDto
 import com.seoulmate.data.dto.challenge.ChallengeStatusDto
 import com.seoulmate.data.dto.challenge.ChallengeThemeDto
+import com.seoulmate.data.dto.challenge.ChallengeThemeItemDto
 import com.seoulmate.data.dto.challenge.MyChallengeDto
 import com.seoulmate.data.dto.comment.CommentContentDto
 import com.seoulmate.data.dto.comment.CommentDto
@@ -45,12 +47,18 @@ class ChallengeRepositoryImpl @Inject constructor(
     override suspend fun getChallengeItemDetail(
         id: Int,
         language: String
-    ): Flow<ChallengeItemDetailDto?> = flow {
+    ): Flow<CommonDto<ChallengeItemDetailDto?>> = flow {
         val response = apiService.reqChallengeItemDetail(
             id = id,
             language = language,
         )
-        emit(response.body())
+        emit(
+            CommonDto(
+                code = response.code(),
+                message = response.message(),
+                response = response.body(),
+            )
+        )
     }
 
     override suspend fun getChallengeTheme(): Flow<List<ChallengeThemeDto>?> = flow {
@@ -77,12 +85,18 @@ class ChallengeRepositoryImpl @Inject constructor(
 
     override suspend fun reqChallengeStatus(
         id: Int, status: String
-    ): Flow<ChallengeStatusDto?> = flow {
+    ): Flow<CommonDto<ChallengeStatusDto?>> = flow {
         val response = apiService.reqChallengeStatus(
             id = id,
             status = status,
         )
-        emit(response.body())
+        emit(
+            CommonDto(
+                code = response.code(),
+                message = response.message(),
+                response = response.body(),
+            )
+        )
     }
 
     override suspend fun reqChallengeLike(
@@ -103,7 +117,7 @@ class ChallengeRepositoryImpl @Inject constructor(
     override suspend fun reqChallengeListLocation(
         locationRequest: MyLocationReqData,
         language: String
-    ): Flow<CommonDto<List<ChallengeLocationItemDto>?>> = flow {
+    ): Flow<CommonDto<ChallengeLocationItemDto?>> = flow {
         val response = apiService.reqChallengeListLocation(
             locationX = locationRequest.locationX,
             locationY = locationRequest.locationY,
@@ -123,7 +137,7 @@ class ChallengeRepositoryImpl @Inject constructor(
     override suspend fun reqChallengeListStamp(
         attractionId: Int?,
         language: String
-    ): Flow<CommonDto<List<ChallengeStampItemDto>?>> = flow {
+    ): Flow<CommonDto<ChallengeStampItemDto?>> = flow {
         val response = apiService.reqChallengeListStamp(
             attractionId = attractionId,
             language = language,
@@ -138,7 +152,7 @@ class ChallengeRepositoryImpl @Inject constructor(
     override suspend fun reqChallengeListTheme(
         themeId: Int,
         language: String
-    ): Flow<CommonDto<List<ChallengeStampItemDto>?>> = flow {
+    ): Flow<CommonDto<List<ChallengeThemeItemDto>?>> = flow {
         val response = apiService.reqChallengeListTheme(
             themeId = themeId,
             language = language,
@@ -165,6 +179,20 @@ class ChallengeRepositoryImpl @Inject constructor(
         )
     }
 
+    override suspend fun reqChallengeCulturalEvent(
+        language: String
+    ): Flow<CommonDto<List<ChallengeCulturalEventDto>?>> = flow {
+        val response = apiService.reqChallengeListCulturalEvent(
+            language = language,
+        )
+        emit(
+            CommonDto(
+                code = response.code(),
+                message = response.message(),
+                response = response.body(),
+            )
+        )
+    }
 
     override suspend fun reqAttractionStamp(
         id: Int

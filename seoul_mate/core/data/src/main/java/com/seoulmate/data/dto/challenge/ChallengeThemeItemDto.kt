@@ -4,13 +4,7 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class ChallengeStampItemDto(
-    @Json(name = "dataCode") val dataCode: String?,
-    @Json(name = "challenges") val challenges: List<ChallengeStampListItem>,
-)
-
-@JsonClass(generateAdapter = true)
-data class ChallengeStampListItem(
+data class ChallengeThemeItemDto(
     @Json(name = "id") val id: Int,
     @Json(name = "name") val name: String?,
     @Json(name = "title") val title: String?,

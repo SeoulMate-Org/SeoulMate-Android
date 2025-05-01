@@ -11,8 +11,8 @@ import com.seoulmate.data.dto.challenge.MyChallengeType
 import com.seoulmate.data.model.challenge.ChallengeCommentItem
 import com.seoulmate.data.model.challenge.ChallengeLocationItemData
 import com.seoulmate.data.model.challenge.ChallengeRankItemData
-import com.seoulmate.data.model.challenge.ChallengeStampItemData
 import com.seoulmate.data.model.MyChallengeItemData
+import com.seoulmate.data.model.challenge.ChallengeThemeItemData
 import com.seoulmate.data.model.request.MyLocationReqData
 import com.seoulmate.data.repository.PreferDataStoreRepository
 import com.seoulmate.domain.usecase.GetChallengeListLocationUseCase
@@ -34,7 +34,7 @@ import javax.inject.Inject
 data class LoginMyData(
     val responseMyChallengeList: CommonDto<List<MyChallengeItemData>>? = null,
     val responseMyCommentList: CommonDto<List<ChallengeCommentItem>>? = null,
-    val responseChallengeLocationItemList: CommonDto<List<ChallengeLocationItemData>>? = null,
+    val responseChallengeLocationItemList: CommonDto<ChallengeLocationItemData>? = null,
 )
 
 @HiltViewModel
@@ -58,15 +58,13 @@ class LoginViewModel @Inject constructor(
     var isFirstEnter = mutableStateOf<Boolean?>(null)
     var needRefreshToken = mutableStateOf<Boolean?>(null)
 
-    private val languageCode = if(UserInfo.localeLanguage == "ko") "KOR" else "ENG"
-
     fun getLoginInfo(token: String, loginType: String) {
         viewModelScope.launch {
             isShowLoading.value = true
             getLoginInfoUseCase.getLoginInfo(
                 token = token,
                 loginType = loginType,
-                language = languageCode,
+                language = UserInfo.getLanguageCode(),
             ).collectLatest {
                 it?.let {
                     Log.d("LoginViewModel", "getLoginInfo: $it")
@@ -93,10 +91,10 @@ class LoginViewModel @Inject constructor(
         viewModelScope.launch {
             val myChallengeList = getMyChallengeItemListUseCase(
                 type = MyChallengeType.LIKE.type,
-                language = languageCode,
+                language = UserInfo.getLanguageCode(),
             )
             val myCommentList = getMyCommentListUseCase(
-                language = languageCode,
+                language = UserInfo.getLanguageCode(),
             )
             val myChallengeLocationList = getChallengeListLocationUseCase(
                 locationRequest = MyLocationReqData(
@@ -105,7 +103,7 @@ class LoginViewModel @Inject constructor(
                     locationY = 37.5686076,
                     locationX = 126.9816627,
                 ),
-                language = languageCode,
+                language = UserInfo.getLanguageCode(),
             )
 
             if(grantedLocationPermission) {
@@ -127,7 +125,7 @@ class LoginViewModel @Inject constructor(
                     }
                     data.responseChallengeLocationItemList?.let {
                         if (it.code in 200..299) {
-                            UserInfo.myChallengeLocationList = it.response ?: listOf()
+                            ChallengeInfo.challengeLocationData = it.response
                         }
                     }
 
@@ -179,17 +177,15 @@ class LoginViewModel @Inject constructor(
 
     // Fetch Home Challenge Items
     fun reqHomeChallengeItems() {
-        val languageCode = if(UserInfo.localeLanguage == "ko") "KOR" else "ENG"
-
         viewModelScope.launch {
 
             // fetch Challenge Theme Item List
-            val deferredList = mutableListOf<Deferred<CommonDto<List<ChallengeStampItemData>>?>>()
+            val deferredList = mutableListOf<Deferred<CommonDto<List<ChallengeThemeItemData>>?>>()
             for(i in 1..9) {
                 deferredList.add(
                     async {
-                        var returnValue: CommonDto<List<ChallengeStampItemData>>? = null
-                        getChallengeThemeItemListUseCase(i, languageCode).collectLatest {
+                        var returnValue: CommonDto<List<ChallengeThemeItemData>>? = null
+                        getChallengeThemeItemListUseCase(i, UserInfo.getLanguageCode()).collectLatest {
                             returnValue = it
                         }
                         return@async returnValue
@@ -197,7 +193,7 @@ class LoginViewModel @Inject constructor(
                 )
             }
 
-            val themeList = mutableListOf<List<ChallengeStampItemData>>()
+            val themeList = mutableListOf<List<ChallengeThemeItemData>>()
             deferredList.forEach { item ->
                 val valueDeferred = item.await()
                 valueDeferred?.let {
@@ -214,7 +210,7 @@ class LoginViewModel @Inject constructor(
             // Fetch Challenge Rank Item List
             val deferredRankList = async {
                 var returnValue: CommonDto<List<ChallengeRankItemData>>? = null
-                getChallengeListRankUseCase(languageCode).collectLatest {
+                getChallengeListRankUseCase(UserInfo.getLanguageCode()).collectLatest {
                     returnValue = it
                 }
                 return@async returnValue

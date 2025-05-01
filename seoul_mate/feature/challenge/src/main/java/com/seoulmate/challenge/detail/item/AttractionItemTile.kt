@@ -24,6 +24,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -32,13 +33,20 @@ import coil.request.ImageRequest
 import com.seoulmate.data.model.challenge.AttractionItem
 import com.seoulmate.ui.component.ChallengeInterestButton
 import com.seoulmate.ui.component.PpsText
-import com.seoulmate.ui.theme.CoolGray25
-import com.seoulmate.ui.theme.CoolGray600
+import com.seoulmate.ui.theme.CoolGray100
+import com.seoulmate.ui.theme.CoolGray200
+import com.seoulmate.ui.theme.CoolGray300
+import com.seoulmate.ui.theme.CoolGray400
+import com.seoulmate.ui.theme.CoolGray50
+import com.seoulmate.ui.theme.CoolGray900
 import com.seoulmate.ui.theme.TrueWhite
+import kotlin.math.round
 
 @Composable
 fun AttractionItemTile(
     item: AttractionItem,
+    grantedPermission: Boolean = false,
+    distance: String? = null,
     onItemClick: (item: AttractionItem) -> Unit = {},
     onItemLikeClick: (item: AttractionItem) -> Unit = {},
 ) {
@@ -67,8 +75,8 @@ fun AttractionItemTile(
                 AsyncImage(
                     modifier = Modifier
                         .fillMaxSize()
-                        .clip(RoundedCornerShape(10.dp))
-                        .background(color = CoolGray25)
+                        .clip(RoundedCornerShape(16.dp))
+                        .background(color = CoolGray50)
                         .aspectRatio(1.0f)
                         .constrainAs(img) {
                             top.linkTo(parent.top)
@@ -78,7 +86,8 @@ fun AttractionItemTile(
                         },
                     model = ImageRequest
                         .Builder(LocalContext.current)
-                        .data("")
+                        .data(item.imageUrl)
+                        .placeholder(com.seoulmate.ui.R.drawable.ic_placeholder)
                         .crossfade(true)
                         .build(),
                     contentDescription = "Attraction Item Image",
@@ -108,39 +117,82 @@ fun AttractionItemTile(
                 PpsText(
                     modifier = Modifier.fillMaxWidth(),
                     text = item.name ?: item.id.toString(),
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        color = CoolGray900,
+                    ),
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
                 )
                 // Count Row
                 Row(
                     horizontalArrangement = Arrangement.Start,
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    Icon(
-                        modifier = Modifier.size(8.dp),
-                        painter = painterResource(com.seoulmate.ui.R.drawable.ic_bottom_nav_fill_favorite),
-                        contentDescription = "Attraction Favorite",
-                        tint = CoolGray600,
-                    )
-                    PpsText(
-                        modifier = Modifier.padding(start = 5.dp),
-                        text = item.likes.toString(),
-                        style = MaterialTheme.typography.labelSmall.copy(
-                            color = CoolGray600,
+                    if (item.likes > 0) {
+                        Icon(
+                            modifier = Modifier.size(16.dp),
+                            painter = painterResource(com.seoulmate.ui.R.drawable.ic_bottom_nav_fill_favorite),
+                            contentDescription = "Attraction Favorite",
+                            tint = CoolGray100,
                         )
-                    )
-                    Spacer(modifier = Modifier.width(6.dp))
-                    Icon(
-                        modifier = Modifier.size(8.dp),
-                        painter = painterResource(com.seoulmate.ui.R.drawable.ic_bottom_nav_fill_my),
-                        contentDescription = "Attraction Favorite",
-                        tint = CoolGray600,
-                    )
-                    PpsText(
-                        modifier = Modifier.padding(start = 5.dp),
-                        text = item.stampCount.toString(),
-                        style = MaterialTheme.typography.labelSmall.copy(
-                            color = CoolGray600,
+                        PpsText(
+                            modifier = Modifier.padding(start = 5.dp),
+                            text = item.likes.toString(),
+                            style = MaterialTheme.typography.labelSmall.copy(
+                                color = CoolGray300,
+                            )
                         )
+                        Spacer(modifier = Modifier.width(6.dp))
+                    }
+
+                    if (item.stampCount > 0) {
+                        Icon(
+                            modifier = Modifier.size(16.dp),
+                            painter = painterResource(com.seoulmate.ui.R.drawable.ic_bottom_nav_fill_my),
+                            contentDescription = "Attraction Favorite",
+                            tint = CoolGray100,
+                        )
+                        PpsText(
+                            modifier = Modifier.padding(start = 5.dp),
+                            text = item.stampCount.toString(),
+                            style = MaterialTheme.typography.labelSmall.copy(
+                                color = CoolGray300,
+                            )
+                        )
+                    }
+
+                }
+                // Location
+                if (grantedPermission && distance != null) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Icon(
+                            modifier = Modifier.size(16.dp),
+                            painter = painterResource(com.seoulmate.ui.R.drawable.ic_distance),
+                            contentDescription = "Icon Distance",
+                            tint = CoolGray200,
+                        )
+                        PpsText(
+                            modifier = Modifier,
+                            text = stringResource(
+                                com.seoulmate.ui.R.string.distance_from_me, distance
+                            ),
+                            style = MaterialTheme.typography.labelLarge.copy(
+                                color = CoolGray400,
+                            ),
+                        )
+                    }
+                } else {
+                    PpsText(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = item.address ?: "",
+                        style = MaterialTheme.typography.labelLarge.copy(
+                            color = CoolGray400,
+                        ),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
                     )
                 }
             }

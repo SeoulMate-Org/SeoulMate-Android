@@ -39,6 +39,7 @@ class GetMyChallengeItemListUseCase @Inject constructor(
                             imageUrl = contentItem.imageUrl ?: "",
                             attractionCount = contentItem.attractionCount,
                             myStampCount = contentItem.myStampCount ?: 0,
+                            commentCount = contentItem.commentCount ?: 0,
                             mainLocation = contentItem.mainLocation,
                             challengeThemeId = contentItem.challengeThemeId,
                             challengeThemeName = contentItem.challengeThemeName,

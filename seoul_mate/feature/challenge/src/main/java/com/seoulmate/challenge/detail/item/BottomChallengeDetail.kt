@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
@@ -56,7 +58,9 @@ fun BottomChallengeDetail(
     onFavoriteClick: (Boolean) -> Unit = {},
 ) {
     Card(
-        modifier = Modifier.height(68.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight(),
         shape = RectangleShape,
         colors = CardColors(
             contentColor = TrueWhite,
@@ -101,12 +105,13 @@ private fun BottomRow(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(15.dp),
+            .height(68.dp)
+            .padding(vertical = 10.dp, horizontal = 15.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         // Like
         IconButton(
-            modifier = Modifier.size(24.dp),
+            modifier = Modifier.size(48.dp),
             onClick = {
                 rememberFavorite.value = !rememberFavorite.value
                 onFavoriteClick(rememberFavorite.value)
@@ -117,7 +122,7 @@ private fun BottomRow(
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Icon(
-                    modifier = Modifier.size(32.dp),
+                    modifier = Modifier.size(24.dp),
                     painter = painterResource(
                         if (isFavorite) {
                             com.seoulmate.ui.R.drawable.ic_bottom_nav_fill_favorite
@@ -148,6 +153,7 @@ private fun BottomRow(
                     stringRes = R.string.show_in_map,
                     color = TrueWhite,
                     fontColor = Blue500,
+                    cornerRound = 10.dp,
                 ){
                     onMapClick()
                 }
@@ -156,6 +162,7 @@ private fun BottomRow(
                     PpsButton(
                         modifier = Modifier.weight(1f),
                         stringRes = R.string.tap_stamp,
+                        cornerRound = 10.dp,
                     ){
                         onStampClick()
                     }
@@ -163,6 +170,7 @@ private fun BottomRow(
                     PpsButton(
                         modifier = Modifier.weight(1f),
                         stringRes = R.string.start_challenge,
+                        cornerRound = 10.dp,
                     ){
                         onChallengeStartClick()
                     }
@@ -171,6 +179,7 @@ private fun BottomRow(
                 PpsButton(
                     modifier = Modifier.weight(1f),
                     stringRes = R.string.tap_stamp_after_login,
+                    cornerRound = 10.dp,
                 ) {
                     onChangeScreen(Screen.Login)
                 }

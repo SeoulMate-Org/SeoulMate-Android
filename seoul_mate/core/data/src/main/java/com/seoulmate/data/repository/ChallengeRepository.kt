@@ -2,6 +2,7 @@ package com.seoulmate.data.repository
 
 import com.seoulmate.data.dto.CommonDto
 import com.seoulmate.data.dto.attraction.AttractionDetailDto
+import com.seoulmate.data.dto.challenge.ChallengeCulturalEventDto
 import com.seoulmate.data.dto.challenge.ChallengeItemAllDto
 import com.seoulmate.data.dto.challenge.ChallengeItemDetailDto
 import com.seoulmate.data.dto.challenge.ChallengeItemLikeDto
@@ -10,6 +11,7 @@ import com.seoulmate.data.dto.challenge.ChallengeRankItemDto
 import com.seoulmate.data.dto.challenge.ChallengeStampItemDto
 import com.seoulmate.data.dto.challenge.ChallengeStatusDto
 import com.seoulmate.data.dto.challenge.ChallengeThemeDto
+import com.seoulmate.data.dto.challenge.ChallengeThemeItemDto
 import com.seoulmate.data.dto.challenge.MyChallengeDto
 import com.seoulmate.data.dto.comment.CommentContentDto
 import com.seoulmate.data.dto.comment.CommentDto
@@ -29,7 +31,7 @@ interface ChallengeRepository {
     suspend fun getChallengeItemDetail(
         id: Int,
         language: String = "KOR",
-    ): Flow<ChallengeItemDetailDto?>
+    ): Flow<CommonDto<ChallengeItemDetailDto?>>
 
     // fetch challenge theme item list
     suspend fun getChallengeTheme(): Flow<List<ChallengeThemeDto>?>
@@ -44,7 +46,7 @@ interface ChallengeRepository {
     suspend fun reqChallengeStatus(
         id: Int,
         status: String, // Available values : PROGRESS, COMPLETE
-    ): Flow<ChallengeStatusDto?>
+    ): Flow<CommonDto<ChallengeStatusDto?>>
 
     // put Challenge Like
     suspend fun reqChallengeLike(
@@ -55,24 +57,29 @@ interface ChallengeRepository {
     suspend fun reqChallengeListLocation(
         locationRequest: MyLocationReqData,
         language: String,
-    ): Flow<CommonDto<List<ChallengeLocationItemDto>?>>
+    ): Flow<CommonDto<ChallengeLocationItemDto?>>
 
     // fetch challenge list stamp
     suspend fun reqChallengeListStamp(
         attractionId: Int?,
         language: String,
-    ): Flow<CommonDto<List<ChallengeStampItemDto>?>>
+    ): Flow<CommonDto<ChallengeStampItemDto?>>
 
     // fetch challenge list theme
     suspend fun reqChallengeListTheme(
         themeId: Int,
         language: String,
-    ): Flow<CommonDto<List<ChallengeStampItemDto>?>>
+    ): Flow<CommonDto<List<ChallengeThemeItemDto>?>>
 
     // fetch challenge list rank
     suspend fun reqChallengeListRank(
         language: String,
     ): Flow<CommonDto<List<ChallengeRankItemDto>?>>
+
+    // fetch challenge cultural event
+    suspend fun reqChallengeCulturalEvent(
+        language: String,
+    ): Flow<CommonDto<List<ChallengeCulturalEventDto>?>>
 
     // fetch attraction stamp
     suspend fun reqAttractionStamp(

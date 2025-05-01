@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.seoulmate.data.model.challenge.ChallengeCulturalEventData
 import com.seoulmate.data.model.challenge.ChallengeItemData
 import com.seoulmate.ui.component.ChallengeBigSquareImageTypeLayout
 import com.seoulmate.ui.theme.SeoulMateTheme
@@ -23,8 +24,9 @@ fun HorizontalCarousel(
         .fillMaxWidth()
         .background(color = Color.Transparent)
         .height(280.dp),
-    itemList: List<ChallengeItemData>,
+    itemList: List<ChallengeCulturalEventData>,
     onChallengeItemClick: (challengeId: Int) -> Unit = {},
+    onChallengeLikeClick: (challengeId: Int) -> Unit = {},
 ) {
     val contentPadding = 40.dp
     val pageSpacing = 10.dp
@@ -46,52 +48,9 @@ fun HorizontalCarousel(
             ChallengeBigSquareImageTypeLayout(
                 item = pageItem,
                 onChallengeItemClick = onChallengeItemClick,
+                onChallengeLikeClick = onChallengeLikeClick,
             )
 
         }
-    }
-}
-
-@Preview
-@Composable
-private fun HorizontalCarouselPreview() {
-    SeoulMateTheme {
-        HorizontalCarousel(
-            itemList = listOf(
-                ChallengeItemData(
-                    id = 0,
-                    name = "First Challenge Title",
-                    title = "First Challenge Title",
-                    imgUrl = "https://cdn.britannica.com/70/234870-050-D4D024BB/Orange-colored-cat-yawns-displaying-teeth.jpg",
-                    isInterest = true,
-                ),
-                ChallengeItemData(
-                    id = 1,
-                    name = "First Challenge Title",
-                    title = "Second Challenge Title",
-                    imgUrl = "https://cdn.britannica.com/39/226539-050-D21D7721/Portrait-of-a-cat-with-whiskers-visible.jpg",
-                ),
-                ChallengeItemData(
-                    id = 2,
-                    name = "First Challenge Title",
-                    title = "Third Challenge Title",
-                    imgUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPzlSPtQD3H6OK36fZXlVpI-PiRR8elwtGyw&s",
-                ),
-                ChallengeItemData(
-                    id = 3,
-                    name = "First Challenge Title",
-                    title = "First Challenge Title",
-                    imgUrl = "https://cdn.britannica.com/70/234870-050-D4D024BB/Orange-colored-cat-yawns-displaying-teeth.jpg",
-                    isInterest = true,
-                ),
-                ChallengeItemData(
-                    id = 4,
-                    name = "First Challenge Title",
-                    title = "Second Challenge Title",
-                    imgUrl = "https://cdn.britannica.com/39/226539-050-D21D7721/Portrait-of-a-cat-with-whiskers-visible.jpg",
-                    isInterest = true,
-                ),
-            )
-        )
     }
 }

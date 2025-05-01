@@ -7,9 +7,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -20,6 +23,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -28,6 +32,8 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.codesubmission.home.R
 import com.seoulmate.data.model.challenge.ChallengeItemData
+import com.seoulmate.data.model.challenge.ChallengeLocationData
+import com.seoulmate.data.model.challenge.ChallengeLocationItemData
 import com.seoulmate.ui.component.ChallengeSquareImageTypeLayout
 import com.seoulmate.ui.component.PpsText
 import com.seoulmate.ui.theme.Blue500
@@ -44,39 +50,44 @@ import com.seoulmate.ui.theme.TrueWhite
 fun MyLocationChallenge(
     modifier: Modifier,
     isLoginUser: Boolean,
-    isLocationPermission: Boolean = false,
-    possibleStampList: List<ChallengeItemData> = listOf(),
+    isLocationPermission: Boolean,
+    possibleStampList: List<ChallengeLocationData> = listOf(),
     onSignUpClick: () -> Unit = {},
     onLocationPermissionClick: () -> Unit = {},
+    onItemCLick: (challengeId: Int) -> Unit = {},
 ) {
 
     Surface(
         modifier = modifier,
+        color = TrueWhite
     ) {
         if (isLoginUser && isLocationPermission) {
-            Column (
-                modifier = Modifier.padding(horizontal = 20.dp)
-            ){
-                PpsText(
-                    modifier = Modifier.fillMaxWidth(),
-                    text = stringResource(R.string.home_my_location_possible_stamp_title),
-                    style = MaterialTheme.typography.titleMedium.copy(
-                        color = CoolGray900,
-                    ),
-                    overflow = TextOverflow.Ellipsis,
-                    maxLines = 1,
-                )
-                PpsText(
-                    modifier = Modifier.fillMaxWidth().padding(top = 4.dp),
-                    text = stringResource(R.string.home_my_location_possible_stamp_sub),
-                    style = MaterialTheme.typography.labelLarge.copy(
-                        color = CoolGray600,
-                    ),
-                    overflow = TextOverflow.Ellipsis,
-                    maxLines = 1,
-                )
+            Column{
+                Column(
+                    modifier = Modifier.padding(horizontal = 20.dp)
+                ){
+                    PpsText(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = stringResource(R.string.home_my_location_possible_stamp_title),
+                        style = MaterialTheme.typography.titleMedium.copy(
+                            color = CoolGray900,
+                        ),
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 1,
+                    )
+                    PpsText(
+                        modifier = Modifier.fillMaxWidth().padding(top = 4.dp),
+                        text = stringResource(R.string.home_my_location_possible_stamp_sub),
+                        style = MaterialTheme.typography.labelLarge.copy(
+                            color = CoolGray600,
+                        ),
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 1,
+                    )
+                }
                 PossibleStampList(
                     possibleStampList = possibleStampList,
+                    onItemCLick = onItemCLick,
                 )
             }
         } else if (!isLoginUser)  {
@@ -129,29 +140,18 @@ fun LocationPermissionTile(
                     overflow = TextOverflow.Ellipsis,
                 )
             }
-            ConstraintLayout {
-                val (img, button) = createRefs()
 
+            Box(
+                modifier = Modifier.padding(end = 15.dp, bottom = 10.dp)
+            ) {
                 Image(
-                    modifier = Modifier.size(66.dp),
-                    painter = painterResource(com.seoulmate.ui.R.drawable.img_location_point),
+                    modifier = Modifier.width(75.dp).height(92.dp),
+                    painter = painterResource(com.seoulmate.ui.R.drawable.img_location_permission),
                     contentDescription = "SignUp Image",
+                    contentScale = ContentScale.Fit,
                 )
-
-                Box(
-                    modifier = Modifier
-                ) {
-                    PpsText(
-                        modifier = Modifier,
-                        text = stringResource(R.string.home_my_location_permission_content_sub_title),
-                        style = MaterialTheme.typography.labelLarge.copy(
-                            color = Blue500,
-                        ),
-                        maxLines = 2,
-                        overflow = TextOverflow.Ellipsis,
-                    )
-                }
             }
+
         }
     }
 }
@@ -208,7 +208,8 @@ fun SignUpTile(
 
 @Composable
 fun PossibleStampList(
-    possibleStampList: List<ChallengeItemData>,
+    possibleStampList: List<ChallengeLocationData>,
+    onItemCLick: (challengeId: Int) -> Unit = {},
 ) {
     LazyRow(
         modifier = Modifier.fillMaxWidth(),
@@ -218,60 +219,23 @@ fun PossibleStampList(
             items = possibleStampList,
             key = { _, item -> item.id }
         ) { index, item ->
-            Box(
-                modifier = Modifier.padding(top = 16.dp)
+            Row(
+                modifier = Modifier
+                    .padding(top = 16.dp)
+                    .padding(horizontal = 4.dp)
             ) {
+                if (index == 0) {
+                    Spacer(modifier = Modifier.width(16.dp))
+                }
                 ChallengeSquareImageTypeLayout(
                     item = item,
                     isShowNowPop = true,
+                    onItemCLick = onItemCLick,
                 )
+                if (index == possibleStampList.lastIndex) {
+                    Spacer(modifier = Modifier.width(16.dp))
+                }
             }
         }
-    }
-}
-
-@Preview
-@Composable
-private fun PreviewMyLocationChallenge() {
-    SeoulMateTheme {
-        MyLocationChallenge(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 15.dp),
-            isLoginUser = true,
-            possibleStampList = listOf(
-                ChallengeItemData(
-                    id = 0,
-                    name = "First Challenge Title",
-                    title = "First Challenge Title",
-                    imgUrl = "https://cdn.britannica.com/70/234870-050-D4D024BB/Orange-colored-cat-yawns-displaying-teeth.jpg",
-                    isInterest = true,
-                ),
-                ChallengeItemData(
-                    id = 1,
-                    name = "First Challenge Title",
-                    title = "Second Challenge Title",
-                    imgUrl = "https://cdn.britannica.com/39/226539-050-D21D7721/Portrait-of-a-cat-with-whiskers-visible.jpg",
-                ),
-                ChallengeItemData(
-                    id = 2,
-                    name = "First Challenge Title",
-                    title = "Third Challenge Title",
-                    imgUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPzlSPtQD3H6OK36fZXlVpI-PiRR8elwtGyw&s",
-                ),
-                ChallengeItemData(
-                    id = 3,
-                    name = "First Challenge Title",
-                    title = "First Challenge Title",
-                    imgUrl = "https://cdn.britannica.com/70/234870-050-D4D024BB/Orange-colored-cat-yawns-displaying-teeth.jpg",
-                    isInterest = true,
-                ),
-                ChallengeItemData(
-                    id = 4,
-                    name = "First Challenge Title",
-                    title = "Second Challenge Title",
-                    imgUrl = "https://cdn.britannica.com/39/226539-050-D21D7721/Portrait-of-a-cat-with-whiskers-visible.jpg",
-                    isInterest = true,
-                ),
-            )
-        )
     }
 }

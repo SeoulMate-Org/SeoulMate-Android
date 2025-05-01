@@ -1,11 +1,6 @@
 package com.seoulmate.data.model.challenge
 
-data class ChallengeLocationItemData(
-    val challenges: List<ChallengeLocationData> = listOf(),
-    val jongGak: Boolean = false,
-)
-
-data class ChallengeLocationData(
+data class ChallengeThemeItemData(
     val id: Int,
     val name: String,
     val title: String,
@@ -14,12 +9,11 @@ data class ChallengeLocationData(
     val mainLocation: String,
     val challengeThemeId: Int,
     val challengeThemeName: String,
-    val isLiked: Boolean,
     val likes: Int,
+    var isLiked: Boolean,
     val myStampCount: Int,
     val attractionCount: Int,
     val commentCount: Int,
     val distance: Int,
     val displayRank: String,
-    val level: String,
 )

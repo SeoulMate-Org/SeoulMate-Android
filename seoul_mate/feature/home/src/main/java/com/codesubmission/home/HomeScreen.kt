@@ -50,7 +50,7 @@ import com.seoulmate.ui.R
 import com.seoulmate.ui.component.PpsAlertDialog
 import com.seoulmate.ui.theme.SeoulMateTheme
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class)
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun HomeScreen(
     context: Context,
@@ -129,18 +129,6 @@ fun HomeScreen(
     LaunchedEffect(viewModel.needUserLogin.value) {
         if(viewModel.needUserLogin.value) {
             showLoginAlertDialog = true
-        }
-    }
-
-    LaunchedEffect(viewModel.lastLocation.value) {
-        viewModel.lastLocation.value?.let {
-            Log.d("@@@@@@", "lastLocation : ${it.latitude} , ${it.longitude}")
-            val testLocation = Location("test").apply {
-                latitude = 37.5686076
-                longitude = 126.9816627
-            }
-            val d = viewModel.getLocationDistance(it, testLocation)
-            Log.d("@@@@@@", "getLocationDistance : $d")
         }
     }
 

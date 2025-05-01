@@ -7,12 +7,18 @@
     <string name="nav_challenge_label">나의 챌린지</string>
     <string name="nav_my_page_label">MY</string>
 
+    <string name="challenge_count">전체 {%d}개</string>
+
     <string name="tab_complete_challenge">완료</string>
     <string name="tab_in_progress_challenge">진행중</string>
-    <string name="tab_interest_challenge">관심</string>
+    <string name="tab_interest_challenge">찜</string>
 
-    <string name="empty_interest_challenge">아직 관심있는 챌린지가 없어요!</string>
+    <string name="empty_interest_challenge">아직 찜한 챌린지가 없어요!</string>
+    <string name="empty_progress_challenge">아직 시작한 챌린지가 없어요!</string>
+    <string name="empty_complete_challenge">아직 완료한 챌린지가 없어요!</string>
     <string name="empty_challenge_info">여러 챌린지를 찾아보고 추가하세요.</string>
+    <string name="empty_complete_challenge_sub">가벼운 챌린지부터 완료해보세요.</string>
+
     <string name="find_challenge">챌린지 찾아보기</string>
 
     <string name="home_top_title">⛳️ 지금 바로\n도전 가능한 챌린지!</string>

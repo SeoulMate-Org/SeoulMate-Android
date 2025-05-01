@@ -19,7 +19,6 @@ class ChallengeCommentViewModel @Inject constructor(
     private val writeCommentUseCase: WriteCommentUseCase,
     private val getCommentListUseCase: GetCommentListUseCase,
 ): ViewModel(){
-    private val languageCode = if(UserInfo.localeLanguage == "ko") "KOR" else "ENG"
     var commentList = mutableStateOf<List<ChallengeCommentItem>>(listOf())
 
     fun writeComment(
@@ -28,11 +27,11 @@ class ChallengeCommentViewModel @Inject constructor(
     ) {
         viewModelScope.launch {
             writeCommentUseCase(
-                id, comment, languageCode
+                id, comment, UserInfo.getLanguageCode()
             ).collectLatest { suspend ->
                 Log.d("@@@@@", "writeComment : $suspend")
 
-                getCommentList(id, languageCode)
+                getCommentList(id, UserInfo.getLanguageCode())
             }
         }
     }

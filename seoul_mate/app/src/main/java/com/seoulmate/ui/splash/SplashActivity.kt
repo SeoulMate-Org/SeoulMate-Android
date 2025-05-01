@@ -49,9 +49,6 @@ class SplashActivity : ComponentActivity()  {
             }
         }
 
-        viewModel.grantedLocationPermission.value = permissionGranted
-        viewModel.reqSplashInit()
-
         enableEdgeToEdge()
 
         Log.d("@@@@", "Splash Locale Language : ${Locale.getDefault().language}")
@@ -65,6 +62,9 @@ class SplashActivity : ComponentActivity()  {
             UserInfo.localeLanguage = "en"
         }
         changeLanguage(languageCode)
+
+        viewModel.grantedLocationPermission.value = permissionGranted
+        viewModel.reqSplashInit()
 
         setContent {
             SeoulMateTheme {

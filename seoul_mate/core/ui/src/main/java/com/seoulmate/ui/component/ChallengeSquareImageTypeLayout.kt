@@ -14,6 +14,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,6 +23,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
@@ -33,23 +36,30 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.seoulmate.data.model.challenge.ChallengeItemData
+import com.seoulmate.data.model.challenge.ChallengeLocationData
+import com.seoulmate.data.model.challenge.ChallengeLocationItemData
 import com.seoulmate.ui.R
 import com.seoulmate.ui.noRippleClickable
 import com.seoulmate.ui.theme.Black40
+import com.seoulmate.ui.theme.Blue50
 import com.seoulmate.ui.theme.Blue500
+import com.seoulmate.ui.theme.Color2B2B2B
+import com.seoulmate.ui.theme.CoolGray100
 import com.seoulmate.ui.theme.CoolGray25
+import com.seoulmate.ui.theme.CoolGray300
+import com.seoulmate.ui.theme.CoolGray50
 import com.seoulmate.ui.theme.SeoulMateTheme
 import com.seoulmate.ui.theme.TrueWhite
 
 @Composable
 fun ChallengeSquareImageTypeLayout(
-    item: ChallengeItemData,
+    item: ChallengeLocationData,
     imageSize: Dp = 160.dp,
     imageCornerRadius: Dp = 16.dp,
     fontSize: TextUnit = 16.sp,
     textColor: Color = Black40,
     isShowNowPop: Boolean = false,
-    onItemCLick: (ChallengeItemData) -> Unit = {},
+    onItemCLick: (challengeId: Int) -> Unit = {},
 ) {
 
     Column(
@@ -58,7 +68,7 @@ fun ChallengeSquareImageTypeLayout(
             .wrapContentHeight()
             .background(color = TrueWhite)
             .noRippleClickable {
-                onItemCLick(item)
+                onItemCLick(item.id)
             },
     ) {
         // Challenge Image + interest Icon + Now POP
@@ -79,12 +89,12 @@ fun ChallengeSquareImageTypeLayout(
                         end.linkTo(parent.end)
                         bottom.linkTo(parent.bottom)
                     }
-                    .background(color = CoolGray25),
+                    .background(color = CoolGray50),
                 model = ImageRequest
                     .Builder(LocalContext.current)
-                    .data(item.imgUrl)
+                    .data(item.imageUrl)
                     .crossfade(true)
-                    .placeholder(R.drawable.ic_empty_challenge)
+                    .placeholder(R.drawable.ic_placeholder)
                     .build(),
                 contentDescription = "Challenge Image",
                 contentScale = ContentScale.Crop,
@@ -95,10 +105,10 @@ fun ChallengeSquareImageTypeLayout(
                     end.linkTo(parent.end, margin = 10.dp)
                     bottom.linkTo(parent.bottom, margin = 10.dp)
                 },
-                isInterest = item.isInterest,
+                isInterest = item.isLiked ?: false,
             )
             // NowPOP
-            if (isShowNowPop) {
+            if (item.distance > 0) {
                 Box(
                     modifier = Modifier
                         .wrapContentSize()
@@ -110,29 +120,40 @@ fun ChallengeSquareImageTypeLayout(
                         },
                     contentAlignment = Alignment.Center,
                 ) {
-                    PpsText(
-                        modifier = Modifier.padding(5.dp),
-                        text = stringResource(R.string.str_now_pop),
-                        style = TextStyle(
-                            fontSize = 12.sp,
-                            color = TrueWhite,
-                        ),
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                    )
+                    Row(
+                        modifier = Modifier.padding(8.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Icon(
+                            modifier = Modifier.size(16.dp),
+                            painter = painterResource(R.drawable.ic_distance),
+                            contentDescription = "Distance Icon",
+                            tint = Blue50,
+                        )
+                        Spacer(modifier = Modifier.width(4.dp))
+                        PpsText(
+                            modifier = Modifier,
+                            text = "${item.distance}km",
+                            style = MaterialTheme.typography.labelSmall.copy(
+                                color = Blue50,
+                            ),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                        )
+                    }
+
                 }
             }
         }
-        Spacer(modifier = Modifier.height(10.dp))
-        // Challenge Title
+        Spacer(modifier = Modifier.height(8.dp))
+        // Challenge Name
         PpsText(
             modifier = Modifier.fillMaxWidth(),
-            text = item.title,
-            style = TextStyle(
-                fontSize = fontSize,
-                color = textColor,
+            text = item.name,
+            style = MaterialTheme.typography.bodyMedium.copy(
+                color = Color2B2B2B,
             ),
-            maxLines = 1,
+            maxLines = 2,
             overflow = TextOverflow.Ellipsis,
         )
         // Challenge Info
@@ -141,24 +162,38 @@ fun ChallengeSquareImageTypeLayout(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start
         ) {
+            if (item.likes > 0) {
+                Icon(
+                    modifier = Modifier.size(16.dp),
+                    painter = painterResource(R.drawable.ic_bottom_nav_fill_favorite),
+                    contentDescription = "Challenge Interest Icon",
+                    tint = CoolGray100,
+                )
+                PpsText(
+                    modifier = Modifier,
+                    text = item.likes.toString(),
+                    style = MaterialTheme.typography.labelSmall.copy(
+                        color = CoolGray300,
+                    )
+                )
+                Spacer(modifier = Modifier.width(10.dp))
+            }
 
+            if (item.attractionCount > 0) {
+                Icon(
+                    modifier = Modifier.size(16.dp),
+                    painter = painterResource(R.drawable.ic_fill_location),
+                    contentDescription = "Challenge Interest Icon",
+                    tint = CoolGray100,
+                )
+                PpsText(
+                    modifier = Modifier,
+                    text = item.attractionCount.toString(),
+                    style = MaterialTheme.typography.labelSmall.copy(
+                        color = CoolGray300,
+                    )
+                )
+            }
         }
-    }
-}
-
-@Preview
-@Composable
-private fun PreviewChallengeSquareImageTypeLayout() {
-    SeoulMateTheme {
-        ChallengeSquareImageTypeLayout(
-            item = ChallengeItemData(
-                id = 11,
-                name = "First Challenge Title",
-                title = "Third Challenge Title",
-                imgUrl = "https://abcdabcd",
-            ),
-            isShowNowPop = true,
-        )
-
     }
 }

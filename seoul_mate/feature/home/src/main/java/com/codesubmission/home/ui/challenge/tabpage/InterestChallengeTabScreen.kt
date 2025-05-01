@@ -14,6 +14,7 @@ fun InterestChallengeTabScreen(
     modifier: Modifier = Modifier.fillMaxSize().padding(vertical = 15.dp),
     itemList: List<MyChallengeItemData>,
     onItemClick: (challengeId: Int) -> Unit = {},
+    onItemLikeClick: (challengeId: Int) -> Unit = {},
 ) {
     Surface(
         modifier = modifier
@@ -25,7 +26,8 @@ fun InterestChallengeTabScreen(
             // Challenge List
             ChallengeItemList(
                 itemList = itemList,
-                onItemClick = onItemClick
+                onItemClick = onItemClick,
+                onItemLikeClick = onItemLikeClick,
             )
         }
     }

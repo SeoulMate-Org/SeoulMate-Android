@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -30,24 +29,23 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.seoulmate.data.model.MyChallengeItemData
-import com.seoulmate.data.model.challenge.ChallengeItemData
 import com.seoulmate.ui.theme.CoolGray100
 import com.seoulmate.ui.theme.CoolGray300
 import com.seoulmate.ui.theme.CoolGray400
 import com.seoulmate.ui.theme.CoolGray50
-import com.seoulmate.ui.theme.CoolGray600
+import com.seoulmate.ui.theme.CoolGray500
 import com.seoulmate.ui.theme.CoolGray900
 import com.seoulmate.ui.theme.TrueWhite
+import com.seoulmate.ui.theme.White
 
 @Composable
-fun ChallengeTileTypeLayout(
+fun ChallengeTileProgressTypeLayout(
     modifier: Modifier = Modifier
         .fillMaxWidth()
         .wrapContentHeight()
         .padding(horizontal = 20.dp, vertical = 8.dp),
     item: MyChallengeItemData,
     onItemClick: (challengeId: Int) -> Unit = {},
-    onItemLikeClick: (challengeId: Int) -> Unit = {},
 ) {
     Surface(
         modifier = modifier
@@ -87,6 +85,33 @@ fun ChallengeTileTypeLayout(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.Start
             ) {
+                // Attraction Row
+                if (item.attractionCount > 0) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Row(
+                            modifier = Modifier.weight(1f)
+                        ) {
+                            for (i in 1..item.attractionCount) {
+                                LinearStampIndicator(
+                                    modifier = Modifier.weight(1f),
+                                    isCompleted = i <= item.myStampCount,
+                                    height = 5.dp,
+                                    horizontalPadding = 2.dp,
+                                )
+                            }
+                        }
+                        PpsText(
+                            modifier = Modifier.padding(start = 5.dp),
+                            text = "${item.myStampCount}/${item.attractionCount}",
+                            style = MaterialTheme.typography.labelSmall.copy(
+                                color = CoolGray500,
+                            ),
+                        )
+                    }
+                }
                 // Theme Name
                 PpsText(
                     modifier = Modifier,
@@ -130,7 +155,6 @@ fun ChallengeTileTypeLayout(
                         )
                         Spacer(modifier = Modifier.width(6.dp))
                     }
-
                     if (item.commentCount > 0) {
                         Icon(
                             modifier = Modifier.size(16.dp),
@@ -147,7 +171,6 @@ fun ChallengeTileTypeLayout(
                         )
                         Spacer(modifier = Modifier.width(6.dp))
                     }
-
                     if (item.attractionCount > 0) {
                         Icon(
                             modifier = Modifier.size(16.dp),
@@ -166,13 +189,6 @@ fun ChallengeTileTypeLayout(
 
                 }
 
-            }
-            // Interest Button
-            ChallengeInterestButton(
-                isInterest = item.isLiked,
-                size = 32.dp
-            ) {
-                onItemLikeClick(item.id)
             }
         }
     }

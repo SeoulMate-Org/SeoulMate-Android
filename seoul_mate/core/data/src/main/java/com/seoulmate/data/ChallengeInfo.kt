@@ -2,9 +2,14 @@ package com.seoulmate.data
 
 import com.seoulmate.data.model.challenge.AttractionItem
 import com.seoulmate.data.model.challenge.ChallengeCommentItem
+import com.seoulmate.data.model.challenge.ChallengeCulturalEventData
+import com.seoulmate.data.model.challenge.ChallengeLocationData
+import com.seoulmate.data.model.challenge.ChallengeLocationItemData
 import com.seoulmate.data.model.challenge.ChallengeRankItemData
 import com.seoulmate.data.model.challenge.ChallengeStampItemData
+import com.seoulmate.data.model.challenge.ChallengeStampResponseData
 import com.seoulmate.data.model.challenge.ChallengeThemeData
+import com.seoulmate.data.model.challenge.ChallengeThemeItemData
 
 object ChallengeInfo {
     var themeList = listOf(
@@ -72,8 +77,44 @@ object ChallengeInfo {
             descriptionEng = "pooiopqsdfbsd"
         ),
     )
-    var challengeThemeList: List<List<ChallengeStampItemData>> = listOf()
+    var challengeThemeList: List<List<ChallengeThemeItemData>> = listOf()
     var rankList: List<ChallengeRankItemData> = listOf()
+    var challengeCulturalList: List<ChallengeCulturalEventData> = listOf()
+    var challengeStampData: ChallengeStampResponseData? = null
+    var challengeLocationData: ChallengeLocationItemData? = null
+
+
+    fun getChallengeStampList(): List<ChallengeStampItemData> {
+        if (challengeStampData == null) {
+            return listOf()
+        } else {
+            return challengeStampData!!.itemList
+        }
+    }
+
+    fun setChallengeStampList(list: List<ChallengeStampItemData>) {
+        challengeStampData?.let {
+            challengeStampData = it.copy(
+                itemList = list
+            )
+        }
+    }
+
+    fun getChallengeLocationList() : List<ChallengeLocationData> {
+        if (challengeLocationData == null) {
+            return listOf()
+        } else {
+            return challengeLocationData!!.challenges
+        }
+    }
+
+    fun setChallengeLocationList(list: List<ChallengeLocationData>) {
+        challengeLocationData?.let {
+            challengeLocationData = it.copy(
+                challenges = list
+            )
+        }
+    }
 }
 
 object ChallengeDetailInfo {

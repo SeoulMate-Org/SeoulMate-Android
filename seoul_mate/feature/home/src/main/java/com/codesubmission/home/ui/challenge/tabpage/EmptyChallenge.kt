@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -38,6 +39,7 @@ fun EmptyChallenge(
         .background(color = TrueWhite),
     @StringRes titleRes: Int = R.string.empty_interest_challenge,
     @StringRes infoRes: Int = R.string.empty_challenge_info,
+    isShowButton: Boolean = true,
 ) {
     Column(
         modifier = modifier,
@@ -54,8 +56,7 @@ fun EmptyChallenge(
         PpsText(
             modifier = Modifier.wrapContentWidth(),
             text = stringResource(titleRes),
-            style = TextStyle(
-                fontSize = 18.sp,
+            style = MaterialTheme.typography.titleSmall.copy(
                 color = CoolGray900,
             ),
             maxLines = 1,
@@ -65,19 +66,22 @@ fun EmptyChallenge(
         PpsText(
             modifier = Modifier.wrapContentWidth(),
             text = stringResource(infoRes),
-            style = TextStyle(
-                fontSize = 14.sp,
+            style = MaterialTheme.typography.bodySmall.copy(
                 color = CoolGray400,
             ),
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
         )
-        Spacer(modifier = Modifier.height(35.dp))
-        PpsButton(
-            modifier = Modifier.height(38.dp).wrapContentWidth(),
-            stringRes = R.string.find_challenge,
-            onClick = {}
-        )
+        if(isShowButton) {
+            Spacer(modifier = Modifier.height(35.dp))
+            PpsButton(
+                modifier = Modifier.height(38.dp).wrapContentWidth(),
+                stringRes = R.string.find_challenge,
+                onClick = {
+                    // TODO chan Find Challenge
+                }
+            )
+        }
     }
 }
 

@@ -35,6 +35,7 @@ import com.seoulmate.ui.noRippleClickable
 import com.seoulmate.ui.theme.Color2B2B2B
 import com.seoulmate.ui.theme.CoolGray25
 import com.seoulmate.ui.theme.CoolGray300
+import com.seoulmate.ui.theme.CoolGray50
 import com.seoulmate.ui.theme.CoolGray600
 import com.seoulmate.ui.theme.TrueWhite
 
@@ -81,12 +82,12 @@ fun ChallengeRankingTileTypeLayout(
                 modifier = Modifier
                     .size(56.dp)
                     .clip(RoundedCornerShape(16.dp))
-                    .background(color = CoolGray25),
+                    .background(color = CoolGray50),
                 model = ImageRequest
                     .Builder(LocalContext.current)
                     .data(item.imageUrl)
                     .crossfade(true)
-                    .placeholder(R.drawable.ic_empty_challenge)
+                    .placeholder(R.drawable.ic_placeholder)
                     .build(),
                 contentDescription = "Challenge Image",
                 contentScale = ContentScale.Crop,

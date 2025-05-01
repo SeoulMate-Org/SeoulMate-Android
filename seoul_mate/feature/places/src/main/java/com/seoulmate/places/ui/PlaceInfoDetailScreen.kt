@@ -58,17 +58,13 @@ fun PlaceInfoDetailScreen(
     expandBottomSheet: () -> Unit = {},
 ) {
     val viewModel = hiltViewModel<PlaceInfoDetailViewModel>()
-    var markerList = listOf<LatLng>()
+    val markerList = ChallengeDetailInfo.attractions.map {
+        LatLng((it.locationY ?: "0.0").toDouble(), (it.locationX ?: "0.0").toDouble())
+    }
     val seoul = LatLng(37.532600, 127.024612)
 
     LaunchedEffect(Unit) {
-        markerList = ChallengeDetailInfo.attractions.map {
-            LatLng((it.locationY ?: "0.0").toDouble(), (it.locationX ?: "0.0").toDouble())
-        }
 
-        if (markerList.isNotEmpty()) {
-            expandBottomSheet()
-        }
     }
 
     BottomSheetScaffold(
@@ -112,19 +108,22 @@ fun PlaceInfoDetailScreen(
         sheetContent = {
             AttractionListBottomSheet()
         },
-        sheetPeekHeight = 60.dp,
+        sheetContentColor = TrueWhite,
+        sheetPeekHeight = 100.dp,
         snackbarHost = { }
     ) { padding ->
 
         val cameraPositionState: CameraPositionState = rememberCameraPositionState {
             position = CameraPosition(
                 if(markerList.isNotEmpty()) markerList[0] else seoul,
-                12.0
+                16.0
             )
         }
 
         ConstraintLayout(
-            modifier = Modifier.fillMaxSize().padding(padding)
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
         ) {
             val (mapContent) = createRefs()
             Box(

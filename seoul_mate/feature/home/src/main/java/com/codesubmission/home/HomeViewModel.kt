@@ -34,8 +34,6 @@ class HomeViewModel @Inject constructor(
     var myProgressChallengeList = mutableStateOf(UserInfo.myProgressChallengeList)
     var myCompleteChallengeList = mutableStateOf(UserInfo.myCompleteChallengeList)
 
-    val languageCode = if(UserInfo.localeLanguage == "ko") "KOR" else "ENG"
-
     @RequiresPermission(
         allOf = [Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.ACCESS_COARSE_LOCATION]
@@ -44,8 +42,10 @@ class HomeViewModel @Inject constructor(
         fusedLocationProviderClient.lastLocation.addOnSuccessListener { location: Location? ->
             lastLocation.value = location
 
-            UserInfo.myLocationX = location?.latitude ?: 0.0
-            UserInfo.myLocationY = location?.longitude ?: 0.0
+            location?. let {
+                UserInfo.myLocationX = it.longitude
+                UserInfo.myLocationY = it.latitude
+            }
         }
     }
 
@@ -60,14 +60,16 @@ class HomeViewModel @Inject constructor(
                         it.response?.let { likedResponse ->
                             val isLiked = likedResponse.isLiked
 
-                            challengeRankList.value = challengeRankList.value.map { rankItem ->
+                            ChallengeInfo.rankList = challengeRankList.value.map { rankItem ->
                                 if (rankItem.id == challengeId) {
                                     rankItem.copy(isLiked = isLiked)
                                 } else {
                                     rankItem
                                 }
                             }
-                            challengeThemeList.value = challengeThemeList.value.map { challengeList ->
+                            challengeRankList.value = ChallengeInfo.rankList
+
+                            ChallengeInfo.challengeThemeList = challengeThemeList.value.map { challengeList ->
                                 challengeList.map { themeItem ->
                                     if (themeItem.id == challengeId) {
                                         themeItem.copy(isLiked = isLiked)
@@ -76,6 +78,7 @@ class HomeViewModel @Inject constructor(
                                     }
                                 }
                             }
+                            challengeThemeList.value = ChallengeInfo.challengeThemeList
                         }
 
                     } else if (it.code == 403) {
@@ -98,7 +101,7 @@ class HomeViewModel @Inject constructor(
             viewModelScope.launch {
                 getMyChallengeItemListUseCase(
                     type = type,
-                    language = languageCode,
+                    language = UserInfo.getLanguageCode(),
                 ).collectLatest { response ->
                     if (response.code in 200..299) {
                         response.response?.let {

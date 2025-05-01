@@ -1,7 +1,7 @@
 package com.seoulmate.domain.usecase
 
 import com.seoulmate.data.dto.CommonDto
-import com.seoulmate.data.model.challenge.ChallengeStampItemData
+import com.seoulmate.data.model.challenge.ChallengeThemeItemData
 import com.seoulmate.data.repository.ChallengeRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -13,7 +13,7 @@ class GetChallengeThemeItemListUseCase @Inject constructor(
     suspend operator fun invoke(
         themeId: Int,
         language: String,
-    ): Flow<CommonDto<List<ChallengeStampItemData>>> = challengeRepository.reqChallengeListTheme(
+    ): Flow<CommonDto<List<ChallengeThemeItemData>>?> = challengeRepository.reqChallengeListTheme(
         themeId, language
     ).map {
         if (it.response == null) {
@@ -23,26 +23,26 @@ class GetChallengeThemeItemListUseCase @Inject constructor(
                 response = listOf(),
             )
         } else {
-            val returnResponse = mutableListOf<ChallengeStampItemData>()
+            val returnResponse = mutableListOf<ChallengeThemeItemData>()
             it.response?.let { response ->
                 response.forEach { item ->
                     returnResponse.add(
-                        ChallengeStampItemData(
+                        ChallengeThemeItemData(
                             id = item.id,
-                            name = item.name,
-                            title = item.title,
+                            name = item.name ?: "",
+                            title = item.title ?: "",
                             description = item.description ?: "",
-                            imageUrl = item.imageUrl,
-                            mainLocation = item.mainLocation,
-                            challengeThemeId = item.challengeThemeId,
-                            challengeThemeName = item.challengeThemeName,
-                            likes = item.likes,
-                            isLiked = item.isLiked,
-                            myStampCount = item.myStampCount,
-                            attractionCount = item.attractionCount,
-                            commentCount = item.commentCount,
-                            distance = item.distance,
-                            displayRank = item.displayRank,
+                            imageUrl = item.imageUrl ?: "",
+                            mainLocation = item.mainLocation ?: "",
+                            challengeThemeId = item.challengeThemeId ?: 0,
+                            challengeThemeName = item.challengeThemeName ?: "",
+                            likes = item.likes ?: 0,
+                            isLiked = item.isLiked ?: false,
+                            myStampCount = item.myStampCount ?: 0,
+                            attractionCount = item.attractionCount ?: 0,
+                            commentCount = item.commentCount ?: 0,
+                            distance = item.distance ?: 0,
+                            displayRank = item.displayRank ?: "",
                         )
                     )
                 }

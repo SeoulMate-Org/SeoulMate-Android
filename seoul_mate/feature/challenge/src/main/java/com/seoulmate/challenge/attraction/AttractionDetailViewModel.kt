@@ -19,7 +19,6 @@ class AttractionDetailViewModel @Inject constructor(
     private val reqAttractionLikeUseCase: ReqAttractionLikeUseCase,
 ): ViewModel() {
 
-    val languageCode = if(UserInfo.localeLanguage == "ko") "KOR" else "ENG"
     var isShowLoading = mutableStateOf(false)
     var attractionItem = mutableStateOf<AttractionDetailData?>(null)
     var needUserLogin = mutableStateOf(false)
@@ -30,7 +29,7 @@ class AttractionDetailViewModel @Inject constructor(
         viewModelScope.launch {
             isShowLoading.value = true
             getAttractionDetailUseCase(
-                attractionId, languageCode
+                attractionId, UserInfo.getLanguageCode()
             ).collectLatest { response ->
                 isShowLoading.value = false
                 if (response.code in 200..299) {

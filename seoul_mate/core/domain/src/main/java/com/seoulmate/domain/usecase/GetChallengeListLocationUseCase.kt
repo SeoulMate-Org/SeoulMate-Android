@@ -1,6 +1,7 @@
 package com.seoulmate.domain.usecase
 
 import com.seoulmate.data.dto.CommonDto
+import com.seoulmate.data.model.challenge.ChallengeLocationData
 import com.seoulmate.data.model.challenge.ChallengeLocationItemData
 import com.seoulmate.data.model.request.MyLocationReqData
 import com.seoulmate.data.repository.ChallengeRepository
@@ -14,7 +15,7 @@ class GetChallengeListLocationUseCase @Inject constructor(
     suspend operator fun invoke(
         locationRequest: MyLocationReqData,
         language: String = "KOR",
-    ): Flow<CommonDto<List<ChallengeLocationItemData>>> = challengeRepository
+    ): Flow<CommonDto<ChallengeLocationItemData>> = challengeRepository
         .reqChallengeListLocation(
             locationRequest, language
         ).map {
@@ -22,32 +23,34 @@ class GetChallengeListLocationUseCase @Inject constructor(
                 CommonDto(
                     code = it.code,
                     message = it.message,
-                    response = listOf(),
+                    response = null,
                 )
             } else {
-                val returnResponse = mutableListOf<ChallengeLocationItemData>()
+                var returnResponse: ChallengeLocationItemData? = null
                 it.response?.let { response ->
-                    response.forEach { item ->
-                        returnResponse.add(
-                            ChallengeLocationItemData(
-                                id = item.id,
-                                name = item.name,
-                                title = item.title,
-                                description = item.description,
-                                imageUrl = item.imageUrl,
-                                mainLocation = item.mainLocation,
-                                challengeThemeId = item.challengeThemeId,
-                                challengeThemeName = item.challengeThemeName,
-                                isLiked = item.isLiked,
-                                myStampCount = item.myStampCount,
-                                progressCount = null,
-                                attractionCount = item.attractionCount,
-                                commentCount = item.commentCount,
-                                distance = item.distance,
-                                likes = item.likes,
+                    returnResponse = ChallengeLocationItemData(
+                        jongGak = response.jongGak ?: false,
+                        challenges = response.challenges.map {
+                            ChallengeLocationData(
+                                id = it.id,
+                                name = it.name ?: "",
+                                title = it.title ?: "",
+                                description = it.description ?: "",
+                                imageUrl = it.imageUrl ?: "",
+                                mainLocation = it.mainLocation ?: "",
+                                challengeThemeId = it.challengeThemeId ?: 0,
+                                challengeThemeName = it.challengeThemeName ?: "",
+                                isLiked = it.isLiked ?: false,
+                                likes = it.likes ?: 0,
+                                myStampCount = it.myStampCount ?: 0,
+                                attractionCount = it.attractionCount ?: 0,
+                                commentCount = it.commentCount ?: 0,
+                                distance = it.distance ?: 0,
+                                displayRank = it.displayRank ?: "",
+                                level = it.level ?: "",
                             )
-                        )
-                    }
+                        },
+                    )
                 }
                 CommonDto(
                     code = it.code,

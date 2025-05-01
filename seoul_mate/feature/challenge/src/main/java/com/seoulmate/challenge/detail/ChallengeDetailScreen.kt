@@ -23,6 +23,8 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -43,9 +45,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
@@ -59,6 +59,7 @@ import com.seoulmate.data.ChallengeDetailInfo
 import com.seoulmate.data.UserInfo
 import com.seoulmate.ui.component.ChallengeCommentItemLayout
 import com.seoulmate.ui.component.PpsAlertDialog
+import com.seoulmate.ui.component.PpsLoading
 import com.seoulmate.ui.component.PpsText
 import com.seoulmate.ui.component.Screen
 import com.seoulmate.ui.theme.Blue400
@@ -81,14 +82,12 @@ fun ChallengeDetailScreen(
 ) {
     val viewModel = hiltViewModel<ChallengeDetailViewModel>()
     val locationPermission = listOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
-    val fineLocationPermissionGranted = remember{ mutableStateOf(false) }
     var showLoginAlertDialog by remember { mutableStateOf(false) }
-
-    val isShowBottomFloating = true
+    var dropDownExpanded by remember { mutableStateOf(false) }
 
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult()) { result ->
-        fineLocationPermissionGranted.value = locationPermission.all {
+        viewModel.fineLocationPermissionGranted.value = locationPermission.all {
             ContextCompat.checkSelfPermission(
                 context,
                 it
@@ -98,7 +97,7 @@ fun ChallengeDetailScreen(
 
     fun checkLocationPermission(grantedAction: () -> Unit = {}) {
         // TODO chan show alert
-        if (!fineLocationPermissionGranted.value) {
+        if (!viewModel.fineLocationPermissionGranted.value) {
             launcher.launch(
                 Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
                     data = "package:${context.packageName}".toUri()
@@ -109,17 +108,19 @@ fun ChallengeDetailScreen(
     }
 
     LaunchedEffect(Unit) {
-        viewModel.getChallengeItem(
-            id = challengeId,
-            language = if(UserInfo.localeLanguage == "ko") "KOR" else "ENG"
-        )
-
-        fineLocationPermissionGranted.value = locationPermission.all {
+        viewModel.fineLocationPermissionGranted.value = locationPermission.all {
             ContextCompat.checkSelfPermission(
                 context,
                 it
             ) == PackageManager.PERMISSION_GRANTED
         }
+
+        viewModel.getChallengeItem(
+            id = challengeId,
+            language = UserInfo.getLanguageCode()
+        )
+
+
     }
 
     LaunchedEffect(viewModel.needUserLogin.value) {
@@ -149,6 +150,42 @@ fun ChallengeDetailScreen(
                         )
                     }
                 },
+                actions = {
+                    if (viewModel.startedChallenge.value) {
+                        IconButton(
+                            modifier = Modifier.padding(start = 10.dp),
+                            onClick = {
+                                dropDownExpanded = true
+                            }
+                        ) {
+                            Icon(
+                                modifier = Modifier.size(24.dp),
+                                painter = painterResource(id = com.seoulmate.ui.R.drawable.ic_more),
+                                contentDescription = "Search Icon",
+                                tint = CoolGray900,
+                            )
+                        }
+                        DropdownMenu(
+                            expanded = dropDownExpanded,
+                            onDismissRequest = { dropDownExpanded = false }
+                        ) {
+                            DropdownMenuItem(
+                                text = {
+                                    PpsText(
+                                        modifier = Modifier,
+                                        text = stringResource(com.seoulmate.ui.R.string.quit_challenge),
+                                        style = MaterialTheme.typography.labelLarge.copy(
+                                            color = CoolGray900,
+                                        )
+                                    )
+                                },
+                                onClick = {
+                                    dropDownExpanded = false
+                                }
+                            )
+                        }
+                    }
+                },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = TrueWhite,
                     titleContentColor = TrueWhite,
@@ -169,7 +206,7 @@ fun ChallengeDetailScreen(
                     .weight(1f)
                     .background(color = Color.Transparent)
             ) {
-                val (body, floating) = createRefs()
+                val (body, floating, loading) = createRefs()
 
                 LazyColumn(
                     modifier = Modifier
@@ -244,6 +281,16 @@ fun ChallengeDetailScreen(
 
                                 AttractionItemTile(
                                     item = viewModel.challengeItem.value.attractions[index],
+                                    grantedPermission = viewModel.fineLocationPermissionGranted.value,
+                                    distance = if(viewModel.attractionDistanceItemList.value.size > index) {
+                                        if (viewModel.attractionDistanceItemList.value[index] == null) {
+                                            null
+                                        } else {
+                                            String.format("%.2f", (viewModel.attractionDistanceItemList.value[index]!!/1000))
+                                        }
+                                    } else {
+                                        null
+                                    },
                                     onItemClick = { item ->
                                         onAttractionClick(item.id)
                                     },
@@ -341,10 +388,24 @@ fun ChallengeDetailScreen(
                         Spacer(modifier = Modifier.height(55.dp))
                     }
 
+                    item {
+                        if (viewModel.isShowLoading.value) {
+                            PpsLoading(
+                                modifier = Modifier.wrapContentSize()
+                                    .constrainAs(loading) {
+                                        top.linkTo(parent.top)
+                                        bottom.linkTo(parent.bottom)
+                                        start.linkTo(parent.start)
+                                        end.linkTo(parent.end)
+                                    },
+                            )
+                        }
+                    }
+
                 }
 
                 // Bottom Floating UI
-                if (isShowBottomFloating) {
+                if (viewModel.startedChallenge.value) {
                     Box(
                         modifier = Modifier
                             .padding(bottom = 10.dp)

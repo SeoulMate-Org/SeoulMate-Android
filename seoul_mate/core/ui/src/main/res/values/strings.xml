@@ -24,4 +24,8 @@
     <string name="str_major_location">주요 동네</string>
 
     <string name="home_challenge_ranking_join_count">%d명이 참여중!!</string>
+
+    <string name="distance_from_me">나로부터 %skm</string>
+
+    <string name="quit_challenge">챌린지 그만두기</string>
 </resources>

@@ -1,7 +1,6 @@
 package com.seoulmate.challenge.detail.item
 
 import androidx.annotation.DrawableRes
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -20,21 +19,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.seoulmate.data.model.challenge.ChallengeItemData
 import com.seoulmate.ui.component.PpsText
 import com.seoulmate.ui.theme.Color2B2B2B
 import com.seoulmate.ui.theme.CoolGray200
-import com.seoulmate.ui.theme.CoolGray25
 import com.seoulmate.ui.theme.CoolGray300
-import com.seoulmate.ui.theme.CoolGray50
-import com.seoulmate.ui.theme.CoolGray500
 import com.seoulmate.ui.theme.SeoulMateTheme
 
 @Composable
@@ -50,6 +44,7 @@ fun TopChallengeDetailInfo(
             model = ImageRequest
                 .Builder(LocalContext.current)
                 .data(item.imgUrl)
+                .placeholder(com.seoulmate.ui.R.drawable.ic_placeholder)
                 .crossfade(true)
                 .build(),
             contentDescription = "Challenge Detail Image",
@@ -86,30 +81,42 @@ fun TopChallengeDetailInfo(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                //
-                ChallengeDetailItem(
-                    icon = com.seoulmate.ui.R.drawable.ic_bottom_nav_fill_favorite,
-                    count = item.likedCount,
-                )
-                Spacer(modifier = Modifier.width(15.dp))
-                //
-                ChallengeDetailItem(
-                    icon = com.seoulmate.ui.R.drawable.ic_bottom_nav_fill_my,
-                    count = item.progressCount,
-                )
-                Spacer(modifier = Modifier.width(15.dp))
-                //
-                ChallengeDetailItem(
-                    icon = com.seoulmate.ui.R.drawable.ic_fill_location,
-                    count = item.attractionCount,
-                )
-                Spacer(modifier = Modifier.width(15.dp))
-                //
-                ChallengeDetailItem(
-                    icon = com.seoulmate.ui.R.drawable.ic_fill_reply,
-                    count = item.commentCount,
-                )
-                Spacer(modifier = Modifier.width(15.dp))
+                if (item.likedCount > 0) {
+                    //
+                    ChallengeDetailItem(
+                        icon = com.seoulmate.ui.R.drawable.ic_bottom_nav_fill_favorite,
+                        count = item.likedCount,
+                    )
+                    Spacer(modifier = Modifier.width(15.dp))
+                }
+
+                if (item.progressCount > 0) {
+                    //
+                    ChallengeDetailItem(
+                        icon = com.seoulmate.ui.R.drawable.ic_bottom_nav_fill_my,
+                        count = item.progressCount,
+                    )
+                    Spacer(modifier = Modifier.width(15.dp))
+                }
+
+                if (item.attractionCount > 0) {
+                    //
+                    ChallengeDetailItem(
+                        icon = com.seoulmate.ui.R.drawable.ic_fill_location,
+                        count = item.attractionCount,
+                    )
+                    Spacer(modifier = Modifier.width(15.dp))
+                }
+
+                if (item.commentCount > 0) {
+                    //
+                    ChallengeDetailItem(
+                        icon = com.seoulmate.ui.R.drawable.ic_fill_reply,
+                        count = item.commentCount,
+                    )
+                    Spacer(modifier = Modifier.width(15.dp))
+                }
+
             }
             // Description
             PpsText(
@@ -131,7 +138,9 @@ private fun ChallengeDetailItem(
     @DrawableRes icon: Int = com.seoulmate.ui.R.drawable.ic_bottom_nav_fill_favorite,
     count: Int = 0,
 ) {
-    Row{
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+    ){
         Icon(
             modifier = Modifier.size(16.dp),
             painter = painterResource(icon),

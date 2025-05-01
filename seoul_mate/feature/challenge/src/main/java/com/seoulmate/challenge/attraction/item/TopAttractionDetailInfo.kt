@@ -48,7 +48,7 @@ fun TopAttractionDetailInfo(
                 modifier = Modifier
                     .fillMaxWidth()
                     .aspectRatio(3.7f / 2.3f)
-                    .background(color = CoolGray25)
+                    .background(color = CoolGray50)
                     .constrainAs(img) {
                         top.linkTo(parent.top)
                         start.linkTo(parent.start)
@@ -57,6 +57,7 @@ fun TopAttractionDetailInfo(
                 model = ImageRequest
                     .Builder(LocalContext.current)
                     .data(item.imageUrl)
+                    .placeholder(com.seoulmate.ui.R.drawable.ic_placeholder)
                     .crossfade(true)
                     .build(),
                 contentDescription = "Challenge Detail Image",

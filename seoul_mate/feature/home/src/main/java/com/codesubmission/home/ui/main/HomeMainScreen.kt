@@ -41,6 +41,7 @@ import com.codesubmission.home.ui.main.item.ChallengeRanking
 import com.codesubmission.home.ui.main.item.HorizontalCarousel
 import com.codesubmission.home.ui.main.item.MissingChallenge
 import com.codesubmission.home.ui.main.item.MyLocationChallenge
+import com.seoulmate.data.ChallengeInfo
 import com.seoulmate.data.UserInfo
 import com.seoulmate.data.model.challenge.ChallengeItemData
 import com.seoulmate.ui.component.ChallengeRankingTileTypeLayout
@@ -117,109 +118,43 @@ fun HomeMainScreen(
                         )
                     }
                     HorizontalCarousel(
-                        itemList = listOf(
-                            ChallengeItemData(
-                                id = 0,
-                                name = "First Challenge Title",
-                                title = "First Challenge Title",
-                                imgUrl = "https://cdn.britannica.com/70/234870-050-D4D024BB/Orange-colored-cat-yawns-displaying-teeth.jpg",
-                                isInterest = true,
-                            ),
-                            ChallengeItemData(
-                                id = 1,
-                                name = "First Challenge Title",
-                                title = "Second Challenge Title",
-                                imgUrl = "https://cdn.britannica.com/39/226539-050-D21D7721/Portrait-of-a-cat-with-whiskers-visible.jpg",
-                            ),
-                            ChallengeItemData(
-                                id = 2,
-                                name = "First Challenge Title",
-                                title = "Third Challenge Title",
-                                imgUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPzlSPtQD3H6OK36fZXlVpI-PiRR8elwtGyw&s",
-                            ),
-                            ChallengeItemData(
-                                id = 3,
-                                name = "First Challenge Title",
-                                title = "First Challenge Title",
-                                imgUrl = "https://cdn.britannica.com/70/234870-050-D4D024BB/Orange-colored-cat-yawns-displaying-teeth.jpg",
-                                isInterest = true,
-                            ),
-                            ChallengeItemData(
-                                id = 4,
-                                name = "First Challenge Title",
-                                title = "Second Challenge Title",
-                                imgUrl = "https://cdn.britannica.com/39/226539-050-D21D7721/Portrait-of-a-cat-with-whiskers-visible.jpg",
-                                isInterest = true,
-                            ),
-                            ChallengeItemData(
-                                id = 5,
-                                name = "First Challenge Title",
-                                title = "Third Challenge Title",
-                                imgUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPzlSPtQD3H6OK36fZXlVpI-PiRR8elwtGyw&s",
-                                isInterest = true,
-                            ),
-                        ),
+                        itemList = ChallengeInfo.challengeCulturalList,
                         onChallengeItemClick = onChallengeItemClick,
+                        onChallengeLikeClick = { challengeId ->
+                            viewModel.reqChallengeLike(challengeId)
+                        }
                     )
                 }
             }
-            // My Location Challenge
-            item {
-                Surface(
-                    modifier = Modifier.padding(top = 48.dp),
-                    color = TrueWhite
-                ) {
-                    MyLocationChallenge(
-                        modifier = Modifier.fillMaxWidth(),
-                        isLoginUser = UserInfo.isUserLogin(),
-                        isLocationPermission = fineLocationPermissionGranted.value,
-                        possibleStampList = listOf(
-                            ChallengeItemData(
-                                id = 0,
-                                name = "First Challenge Title",
-                                title = "First Challenge Title",
-                                imgUrl = "https://cdn.britannica.com/70/234870-050-D4D024BB/Orange-colored-cat-yawns-displaying-teeth.jpg",
-                                isInterest = true,
-                            ),
-                            ChallengeItemData(
-                                id = 1,
-                                name = "First Challenge Title",
-                                title = "Second Challenge Title",
-                                imgUrl = "https://cdn.britannica.com/39/226539-050-D21D7721/Portrait-of-a-cat-with-whiskers-visible.jpg",
-                            ),
-                            ChallengeItemData(
-                                id = 2,
-                                name = "First Challenge Title",
-                                title = "Third Challenge Title",
-                                imgUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPzlSPtQD3H6OK36fZXlVpI-PiRR8elwtGyw&s",
-                            ),
-                            ChallengeItemData(
-                                id = 3,
-                                name = "First Challenge Title",
-                                title = "First Challenge Title",
-                                imgUrl = "https://cdn.britannica.com/70/234870-050-D4D024BB/Orange-colored-cat-yawns-displaying-teeth.jpg",
-                                isInterest = true,
-                            ),
-                            ChallengeItemData(
-                                id = 4,
-                                name = "First Challenge Title",
-                                title = "Second Challenge Title",
-                                imgUrl = "https://cdn.britannica.com/39/226539-050-D21D7721/Portrait-of-a-cat-with-whiskers-visible.jpg",
-                                isInterest = true,
-                            ),
-                        ),
-                        onSignUpClick = {
-                            onChangeScreen(Screen.Login)
-                        },
-                        onLocationPermissionClick = {
-                            launcher.launch(
-                                Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
-                                data = "package:${context.packageName}".toUri()
-                            })
-                        },
-                    )
+            if(ChallengeInfo.getChallengeLocationList().isNotEmpty()) {
+                // My Location Challenge
+                item {
+                    Surface(
+                        modifier = Modifier.padding(top = 48.dp),
+                        color = TrueWhite
+                    ) {
+                        MyLocationChallenge(
+                            modifier = Modifier.fillMaxWidth(),
+                            isLoginUser = UserInfo.isUserLogin(),
+                            isLocationPermission = fineLocationPermissionGranted.value,
+                            possibleStampList = ChallengeInfo.getChallengeLocationList(),
+                            onSignUpClick = {
+                                onChangeScreen(Screen.Login)
+                            },
+                            onLocationPermissionClick = {
+                                launcher.launch(
+                                    Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                                        data = "package:${context.packageName}".toUri()
+                                    })
+                            },
+                            onItemCLick = { challengeId ->
+                                onChallengeItemClick(challengeId)
+                            }
+                        )
+                    }
                 }
             }
+
             // Challenge Category
             item {
                 Column (
@@ -237,9 +172,16 @@ fun HomeMainScreen(
                 }
             }
             // Missing Challenge
-            if (UserInfo.myChallengeLocationList.isNotEmpty()) {
+            if (ChallengeInfo.challengeStampData != null) {
                 item {
-                    MissingChallenge()
+                    MissingChallenge(
+                        onItemClick = { challengeId ->
+                            onChallengeItemClick(challengeId)
+                        },
+                        startChallengeClick = { challengeId ->
+
+                        }
+                    )
                 }
             }
             // Challenge Ranking
@@ -252,9 +194,9 @@ fun HomeMainScreen(
 
                     ChallengeRanking(
                         modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp),
-                        onMoreClick = {
-                            onChangeScreen(Screen.ChallengeRankList)
-                        },
+//                        onMoreClick = {
+//                            onChangeScreen(Screen.ChallengeRankList)
+//                        },
                     )
 
                     for(index in 0..4) {

@@ -29,7 +29,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.seoulmate.data.model.challenge.ChallengeStampItemData
+import com.seoulmate.data.model.challenge.ChallengeThemeItemData
 import com.seoulmate.ui.R
 import com.seoulmate.ui.noRippleClickable
 import com.seoulmate.ui.theme.Blue50
@@ -43,7 +43,7 @@ import com.seoulmate.ui.theme.CoolGray600
 @Composable
 fun ChallengeHomeTileTypeLayout(
     modifier: Modifier,
-    item: ChallengeStampItemData,
+    item: ChallengeThemeItemData,
     onChallengeLikeClick: (challengeId: Int) -> Unit = {},
     onChallengeItemClick: (challengeId: Int) -> Unit = {},
 ) {
@@ -74,7 +74,7 @@ fun ChallengeHomeTileTypeLayout(
                 .Builder(LocalContext.current)
                 .data(item.imageUrl)
                 .crossfade(true)
-                .placeholder(R.drawable.ic_empty_challenge)
+                .placeholder(R.drawable.ic_placeholder)
                 .build(),
             contentDescription = "Challenge Image",
             contentScale = ContentScale.Crop,
@@ -104,37 +104,43 @@ fun ChallengeHomeTileTypeLayout(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Start,
             ) {
-                Icon(
-                    modifier = Modifier.size(16.dp),
-                    painter = painterResource(R.drawable.ic_bottom_nav_fill_favorite),
-                    contentDescription = "Challenge Interest Icon",
-                    tint = CoolGray100,
-                )
-                PpsText(
-                    modifier = Modifier,
-                    text = item.likes.toString(),
-                    style = MaterialTheme.typography.labelSmall.copy(
-                        color = CoolGray300,
+                if (item.likes > 0) {
+                    Icon(
+                        modifier = Modifier.size(16.dp),
+                        painter = painterResource(R.drawable.ic_bottom_nav_fill_favorite),
+                        contentDescription = "Challenge Interest Icon",
+                        tint = CoolGray100,
                     )
-                )
-                Spacer(modifier = Modifier.width(10.dp))
-                Icon(
-                    modifier = Modifier.size(16.dp),
-                    painter = painterResource(R.drawable.ic_fill_location),
-                    contentDescription = "Challenge Interest Icon",
-                    tint = CoolGray100,
-                )
-                PpsText(
-                    modifier = Modifier,
-                    text = item.attractionCount.toString(),
-                    style = MaterialTheme.typography.labelSmall.copy(
-                        color = CoolGray300,
+                    PpsText(
+                        modifier = Modifier,
+                        text = item.likes.toString(),
+                        style = MaterialTheme.typography.labelSmall.copy(
+                            color = CoolGray300,
+                        )
                     )
-                )
+                    Spacer(modifier = Modifier.width(10.dp))
+                }
+
+                if (item.attractionCount > 0) {
+                    Icon(
+                        modifier = Modifier.size(16.dp),
+                        painter = painterResource(R.drawable.ic_fill_location),
+                        contentDescription = "Challenge Interest Icon",
+                        tint = CoolGray100,
+                    )
+                    PpsText(
+                        modifier = Modifier,
+                        text = item.attractionCount.toString(),
+                        style = MaterialTheme.typography.labelSmall.copy(
+                            color = CoolGray300,
+                        )
+                    )
+                }
+
             }
             Spacer(modifier = Modifier.height(4.dp))
             // Major Location
-            if (item.mainLocation != null) {
+            if (item.mainLocation.isNotEmpty()) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Start,

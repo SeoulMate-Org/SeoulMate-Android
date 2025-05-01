@@ -27,6 +27,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.request.ImageResult
 import com.seoulmate.data.model.MapListCardItemData
+import com.seoulmate.ui.theme.CoolGray50
 
 @Composable
 fun MapListCardItem(
@@ -61,10 +62,12 @@ fun MapListCardItem(
                     .align(Alignment.Top)
                     .weight(0.3f)
                     .clip(RoundedCornerShape(10.dp))
+                    .background(color = CoolGray50)
                     .aspectRatio(1.0f),
                 model = ImageRequest
                     .Builder(LocalContext.current)
                     .data(item.imgUrl)
+                    .placeholder(com.seoulmate.ui.R.drawable.ic_placeholder)
                     .crossfade(true)
                     .build(),
                 contentDescription = "Map List Card Image",

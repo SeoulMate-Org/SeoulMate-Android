@@ -10,11 +10,14 @@ import com.seoulmate.data.dto.challenge.MyChallengeType
 import com.seoulmate.data.model.challenge.ChallengeCommentItem
 import com.seoulmate.data.model.challenge.ChallengeLocationItemData
 import com.seoulmate.data.model.challenge.ChallengeRankItemData
-import com.seoulmate.data.model.challenge.ChallengeStampItemData
 import com.seoulmate.data.model.MyChallengeItemData
 import com.seoulmate.data.model.UserData
+import com.seoulmate.data.model.challenge.ChallengeCulturalEventData
+import com.seoulmate.data.model.challenge.ChallengeStampResponseData
+import com.seoulmate.data.model.challenge.ChallengeThemeItemData
 import com.seoulmate.data.model.request.MyLocationReqData
 import com.seoulmate.data.repository.PreferDataStoreRepository
+import com.seoulmate.domain.usecase.GetChallengeCulturalEventUseCase
 import com.seoulmate.domain.usecase.GetChallengeListLocationUseCase
 import com.seoulmate.domain.usecase.GetChallengeListRankUseCase
 import com.seoulmate.domain.usecase.GetChallengeListStampUseCase
@@ -42,8 +45,7 @@ data class SplashInitData(
 data class SplashChallengeInitData(
     val responseMyChallengeList: CommonDto<List<MyChallengeItemData>>? = null,
     val responseMyCommentList: CommonDto<List<ChallengeCommentItem>>? = null,
-    val responseMyChallengeLocationItemList: CommonDto<List<ChallengeLocationItemData>>? = null,
-    val responseChallengeStampItemList: CommonDto<List<ChallengeStampItemData>>? = null,
+    val responseMyChallengeLocationItemList: CommonDto<ChallengeLocationItemData>? = null,
 )
 
 @HiltViewModel
@@ -57,6 +59,7 @@ class SplashViewModel @Inject constructor(
     private val getChallengeListStampUseCase: GetChallengeListStampUseCase,
     private val getChallengeThemeItemListUseCase: GetChallengeThemeItemListUseCase,
     private val getChallengeListRankUseCase: GetChallengeListRankUseCase,
+    private val getChallengeCulturalEventUseCase: GetChallengeCulturalEventUseCase,
 ): ViewModel() {
 
     private val _splashInitDataFlow = MutableSharedFlow<SplashInitData>()
@@ -80,7 +83,9 @@ class SplashViewModel @Inject constructor(
             }.collectLatest { splashInitData ->
                 _splashInitDataFlow.emit(splashInitData)
 
-                UserInfo.localeLanguage = splashInitData.language
+                if(splashInitData.language.isNotEmpty()) {
+                    UserInfo.localeLanguage = splashInitData.language
+                }
 
                 splashInitData.userData?.let {
                     with(UserInfo) {
@@ -96,35 +101,27 @@ class SplashViewModel @Inject constructor(
     }
 
     fun reqInit() {
-        val languageCode = if(UserInfo.localeLanguage == "ko") "KOR" else "ENG"
 
         viewModelScope.launch {
             if (UserInfo.isUserLogin()) {
                 val myChallenge = getMyChallengeItemListUseCase(
                     type = MyChallengeType.LIKE.type,
-                    language = languageCode,
+                    language = UserInfo.getLanguageCode(),
                 )
                 val myCommentList = getMyCommentListUseCase(
-                    language = languageCode,
+                    language = UserInfo.getLanguageCode(),
                 )
                 val myChallengeLocationList = getChallengeListLocationUseCase(
                     locationRequest = MyLocationReqData(
-//                        locationX = UserInfo.myLocationX,
-//                        locationY = UserInfo.myLocationY,
-                        locationY = 37.5686076,
-                        locationX = 126.9816627,
-
+                        locationX = UserInfo.myLocationY,
+                        locationY = UserInfo.myLocationX,
                     ),
-                    language = languageCode,
-                )
-                val challengeStampList = getChallengeListStampUseCase(
-                    attractionId = null,
-                    language = languageCode,
+                    language = UserInfo.getLanguageCode(),
                 )
 
                 if (grantedLocationPermission.value) {
-                    combine(myChallenge, myCommentList, myChallengeLocationList, challengeStampList) { myChallengeList, myCommentList, myChallengeLocationList, challengeStapList ->
-                        SplashChallengeInitData(myChallengeList, myCommentList, myChallengeLocationList, challengeStapList)
+                    combine(myChallenge, myCommentList, myChallengeLocationList) { myChallengeList, myCommentList, myChallengeLocationList ->
+                        SplashChallengeInitData(myChallengeList, myCommentList, myChallengeLocationList)
                     }.collectLatest { data ->
                         data.responseMyChallengeList?.let {
                             if (it.code in 200..299) {
@@ -144,16 +141,8 @@ class SplashViewModel @Inject constructor(
                         }
                         data.responseMyChallengeLocationItemList?.let {
                             if (it.code in 200..299) {
-                                UserInfo.myChallengeLocationList = it.response ?: listOf()
+                                ChallengeInfo.challengeLocationData = it.response
                             } else if(it.code == 401) {
-                                needRefreshToken.value = true
-                                return@collectLatest
-                            }
-                        }
-                        data.responseChallengeStampItemList?.let {
-                            if (it.code in 200..299) {
-                                UserInfo.challengeStampList = it.response ?: listOf()
-                            } else if(it.code == 403) {
                                 needRefreshToken.value = true
                                 return@collectLatest
                             }
@@ -193,16 +182,15 @@ class SplashViewModel @Inject constructor(
 
     // Fetch Home Challenge Items
     fun reqHomeChallengeItems() {
-        val languageCode = if(UserInfo.localeLanguage == "ko") "KOR" else "ENG"
 
         viewModelScope.launch {
             // fetch Challenge Theme Item List
-            val deferredList = mutableListOf<Deferred<CommonDto<List<ChallengeStampItemData>>?>>()
+            val deferredList = mutableListOf<Deferred<CommonDto<List<ChallengeThemeItemData>>?>>()
             for(i in 1..9) {
                 deferredList.add(
                     async {
-                        var returnValue: CommonDto<List<ChallengeStampItemData>>? = null
-                        getChallengeThemeItemListUseCase(i, languageCode).collectLatest {
+                        var returnValue: CommonDto<List<ChallengeThemeItemData>>? = null
+                        getChallengeThemeItemListUseCase(i, UserInfo.getLanguageCode()).collectLatest {
                             returnValue = it
                         }
                         return@async returnValue
@@ -210,7 +198,7 @@ class SplashViewModel @Inject constructor(
                 )
             }
 
-            val themeList = mutableListOf<List<ChallengeStampItemData>>()
+            val themeList = mutableListOf<List<ChallengeThemeItemData>>()
             deferredList.forEach { item ->
                 val valueDeferred = item.await()
                 valueDeferred?.let {
@@ -227,7 +215,7 @@ class SplashViewModel @Inject constructor(
             // fetch Challenge Rank Item List
             val deferredRankList = async {
                 var returnValue: CommonDto<List<ChallengeRankItemData>>? = null
-                getChallengeListRankUseCase(languageCode).collectLatest {
+                getChallengeListRankUseCase(UserInfo.getLanguageCode()).collectLatest {
                     returnValue = it
                 }
                 return@async returnValue
@@ -236,6 +224,43 @@ class SplashViewModel @Inject constructor(
                 if(it.code in 200..299) {
                     ChallengeInfo.rankList = it.response ?: listOf()
                 } else if (it.code == 403) {
+                    needRefreshToken.value = true
+                    return@launch
+                }
+            }
+
+            // fetch Challenge Cultural Event Item List
+            val deferredCulturalEventList = async {
+                var returnValue: CommonDto<List<ChallengeCulturalEventData>>? = null
+                getChallengeCulturalEventUseCase(UserInfo.getLanguageCode()).collectLatest {
+                    returnValue = it
+                }
+                return@async returnValue
+            }
+            deferredCulturalEventList.await()?.let {
+                if(it.code in 200..299) {
+                    ChallengeInfo.challengeCulturalList = it.response ?: listOf()
+                } else if (it.code == 403) {
+                    needRefreshToken.value = true
+                    return@launch
+                }
+            }
+
+            // fetch Challenge Stamp Item List
+            val deferredChallengeStampList = async {
+                var returnValue: CommonDto<ChallengeStampResponseData?>? = null
+                getChallengeListStampUseCase(
+                    attractionId = null,
+                    language = UserInfo.getLanguageCode(),
+                ).collectLatest {
+                    returnValue = it
+                }
+                return@async returnValue
+            }
+            deferredChallengeStampList.await()?.let {
+                if (it.code in 200..299) {
+                    ChallengeInfo.challengeStampData = it.response
+                } else if(it.code == 403) {
                     needRefreshToken.value = true
                     return@launch
                 }

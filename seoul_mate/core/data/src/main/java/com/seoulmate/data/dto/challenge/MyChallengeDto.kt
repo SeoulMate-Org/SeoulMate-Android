@@ -14,6 +14,7 @@ data class MyChallengeDto(
     @Json(name = "isLiked") val isLiked: Boolean?,
     @Json(name = "attractionCount") val attractionCount: Int,
     @Json(name = "myStampCount") val myStampCount: Int?,
+    @Json(name = "commentCount") val commentCount: Int?,
     @Json(name = "mainLocation") val mainLocation: String?,
     @Json(name = "challengeThemeId") val challengeThemeId: Int,
     @Json(name = "challengeThemeName") val challengeThemeName: String,

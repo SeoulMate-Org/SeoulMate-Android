@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -28,13 +29,17 @@ import com.seoulmate.ui.R
 import com.seoulmate.ui.component.ChallengeInterestButton
 import com.seoulmate.ui.component.PpsText
 import com.seoulmate.ui.theme.CoolGray25
+import com.seoulmate.ui.theme.CoolGray50
 import com.seoulmate.ui.theme.CoolGray900
+import com.seoulmate.ui.theme.TrueWhite
 
 @Composable
 fun AttractionListBottomSheet(
     onItemLikeClick: (attractionId: Int) -> Unit = {},
 ) {
-    LazyColumn{
+    LazyColumn(
+        modifier = Modifier.background(color = TrueWhite)
+    ){
         items(
             items = ChallengeDetailInfo.attractions,
             key = { item -> item.id }
@@ -44,6 +49,10 @@ fun AttractionListBottomSheet(
                 item = item,
                 onItemLikeClick = onItemLikeClick,
             )
+        }
+
+        item {
+            Spacer(modifier = Modifier.height(65.dp))
         }
 
     }
@@ -65,12 +74,12 @@ fun AttractionItemLayout(
             modifier = Modifier
                 .size(56.dp)
                 .clip(RoundedCornerShape(16.dp))
-                .background(color = CoolGray25),
+                .background(color = CoolGray50),
             model = ImageRequest
                 .Builder(LocalContext.current)
                 .data("")
                 .crossfade(true)
-                .placeholder(R.drawable.ic_empty_challenge)
+                .placeholder(R.drawable.ic_placeholder)
                 .build(),
             contentDescription = "Challenge Image",
             contentScale = ContentScale.Crop,

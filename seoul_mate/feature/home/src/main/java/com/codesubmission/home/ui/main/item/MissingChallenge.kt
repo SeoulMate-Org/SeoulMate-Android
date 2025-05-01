@@ -34,17 +34,20 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.codesubmission.home.R
+import com.seoulmate.data.ChallengeInfo
 import com.seoulmate.data.UserInfo
-import com.seoulmate.data.model.challenge.ChallengeLocationItemData
+import com.seoulmate.data.model.challenge.ChallengeStampItemData
 import com.seoulmate.ui.component.LinearStampIndicator
 import com.seoulmate.ui.component.PpsButton
 import com.seoulmate.ui.component.PpsText
+import com.seoulmate.ui.noRippleClickable
 import com.seoulmate.ui.theme.Blue200
 import com.seoulmate.ui.theme.Blue500
 import com.seoulmate.ui.theme.Color2B2B2B
 import com.seoulmate.ui.theme.CoolGray100
 import com.seoulmate.ui.theme.CoolGray25
 import com.seoulmate.ui.theme.CoolGray300
+import com.seoulmate.ui.theme.CoolGray50
 import com.seoulmate.ui.theme.CoolGray900
 import com.seoulmate.ui.theme.MainMissingChallengeGradientStart
 import com.seoulmate.ui.theme.TrueWhite
@@ -52,7 +55,8 @@ import com.seoulmate.ui.theme.White
 
 @Composable
 fun MissingChallenge(
-
+    onItemClick: (challengeId: Int) -> Unit = {},
+    startChallengeClick: (challengeId: Int) -> Unit = {},
 ) {
     Column(
         modifier = Modifier
@@ -90,6 +94,7 @@ fun MissingChallenge(
             }
 
             Image(
+                modifier = Modifier.size(138.dp),
                 painter = painterResource(com.seoulmate.ui.R.drawable.ic_home_missing),
                 contentDescription = "Main Top Title Image"
             )
@@ -99,7 +104,7 @@ fun MissingChallenge(
             modifier = Modifier.fillMaxWidth()
         ) {
             itemsIndexed(
-                items = UserInfo.myChallengeLocationList,
+                items = ChallengeInfo.getChallengeStampList(),
                 key = { index, item -> item.id },
             ) { index, item ->
                 Row {
@@ -107,26 +112,36 @@ fun MissingChallenge(
                         Spacer(modifier = Modifier.width(16.dp))
                     }
                     Box(modifier = Modifier.padding(horizontal = 4.dp)) {
-                        MissionChallengeItem(item = UserInfo.myChallengeLocationList[index])
+                        MissionChallengeItem(
+                            item = ChallengeInfo.getChallengeStampList()[index],
+                            onItemClick = onItemClick,
+                            startChallengeClick = startChallengeClick,
+                        )
                     }
-                    if (index == UserInfo.myChallengeLocationList.lastIndex) {
+                    if (index == ChallengeInfo.getChallengeStampList().lastIndex) {
                         Spacer(modifier = Modifier.width(16.dp))
                     }
                 }
 
             }
         }
+        Spacer(modifier = Modifier.height(48.dp))
     }
 }
 
 @Composable
 fun MissionChallengeItem(
-    item: ChallengeLocationItemData,
+    item: ChallengeStampItemData,
+    onItemClick: (challengeId: Int) -> Unit = {},
+    startChallengeClick: (challengeId: Int) -> Unit = {},
 ) {
     Column(
         modifier = Modifier
             .width(160.dp)
-            .wrapContentHeight(),
+            .wrapContentHeight()
+            .noRippleClickable {
+                onItemClick(item.id)
+            },
     ) {
         ConstraintLayout {
             val (img, attractionRow) = createRefs()
@@ -136,8 +151,7 @@ fun MissionChallengeItem(
                 modifier = Modifier
                     .size(160.dp)
                     .clip(RoundedCornerShape(16.dp))
-//                    .background(color = CoolGray25)
-                    .background(color = CoolGray900)
+                    .background(color = CoolGray50)
                     .constrainAs(img) {
                         top.linkTo(parent.top)
                         start.linkTo(parent.start)
@@ -148,7 +162,7 @@ fun MissionChallengeItem(
                     .Builder(LocalContext.current)
                     .data(item.imageUrl)
                     .crossfade(true)
-                    .placeholder(com.seoulmate.ui.R.drawable.ic_empty_challenge)
+                    .placeholder(com.seoulmate.ui.R.drawable.ic_placeholder)
                     .build(),
                 contentDescription = "Challenge Image",
                 contentScale = ContentScale.Crop,
@@ -165,12 +179,14 @@ fun MissionChallengeItem(
                         }
                 ) {
                     Row(
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
+                        verticalAlignment = Alignment.CenterVertically,
                     ) {
                         for (i in 1..item.attractionCount) {
                             LinearStampIndicator(
                                 modifier = Modifier.weight(1f),
                                 isCompleted = i <= (item.myStampCount ?: 0),
+                                height = 6.dp,
                                 horizontalPadding = 2.dp,
                             )
                         }
@@ -195,14 +211,15 @@ fun MissionChallengeItem(
             stringRes = R.string.start_challenge,
             color = TrueWhite,
             fontColor = Blue500,
+            cornerRound = 12.dp
         ){
-
+            startChallengeClick(item.id)
         }
         Spacer(modifier = Modifier.height(8.dp))
-        // Challenge Title
+        // Challenge Name
         PpsText(
             modifier = Modifier,
-            text = item.title,
+            text = item.name,
             style = MaterialTheme.typography.bodyMedium.copy(
                 color = Color2B2B2B
             ),
@@ -214,33 +231,39 @@ fun MissionChallengeItem(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start,
         ) {
-            Icon(
-                modifier = Modifier.size(16.dp),
-                painter = painterResource(com.seoulmate.ui.R.drawable.ic_bottom_nav_fill_favorite),
-                contentDescription = "Challenge Interest Icon",
-                tint = CoolGray100,
-            )
-            PpsText(
-                modifier = Modifier,
-                text = item.likes.toString(),
-                style = MaterialTheme.typography.labelSmall.copy(
-                    color = CoolGray300,
+            if (item.likes > 0) {
+                Icon(
+                    modifier = Modifier.size(16.dp),
+                    painter = painterResource(com.seoulmate.ui.R.drawable.ic_bottom_nav_fill_favorite),
+                    contentDescription = "Challenge Interest Icon",
+                    tint = CoolGray100,
                 )
-            )
-            Spacer(modifier = Modifier.width(10.dp))
-            Icon(
-                modifier = Modifier.size(16.dp),
-                painter = painterResource(com.seoulmate.ui.R.drawable.ic_fill_location),
-                contentDescription = "Challenge Interest Icon",
-                tint = CoolGray100,
-            )
-            PpsText(
-                modifier = Modifier,
-                text = item.attractionCount.toString(),
-                style = MaterialTheme.typography.labelSmall.copy(
-                    color = CoolGray300,
+                PpsText(
+                    modifier = Modifier,
+                    text = item.likes.toString(),
+                    style = MaterialTheme.typography.labelSmall.copy(
+                        color = CoolGray300,
+                    )
                 )
-            )
+                Spacer(modifier = Modifier.width(10.dp))
+            }
+
+            if (item.attractionCount > 0) {
+                Icon(
+                    modifier = Modifier.size(16.dp),
+                    painter = painterResource(com.seoulmate.ui.R.drawable.ic_fill_location),
+                    contentDescription = "Challenge Interest Icon",
+                    tint = CoolGray100,
+                )
+                PpsText(
+                    modifier = Modifier,
+                    text = item.attractionCount.toString(),
+                    style = MaterialTheme.typography.labelSmall.copy(
+                        color = CoolGray300,
+                    )
+                )
+            }
+
         }
     }
 }

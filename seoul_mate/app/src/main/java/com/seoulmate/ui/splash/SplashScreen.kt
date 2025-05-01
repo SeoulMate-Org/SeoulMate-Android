@@ -21,7 +21,6 @@ import com.seoulmate.ui.component.PpsLoading
 import com.seoulmate.ui.theme.SplashGradientEnd
 import com.seoulmate.ui.theme.SplashGradientStart
 
-@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun SplashScreen(
     context: Context,

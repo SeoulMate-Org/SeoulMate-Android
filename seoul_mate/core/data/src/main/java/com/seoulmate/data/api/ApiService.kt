@@ -2,6 +2,7 @@ package com.seoulmate.data.api
 
 import com.seoulmate.data.dto.attraction.AttractionDetailDto
 import com.seoulmate.data.dto.attraction.AttractionStampDto
+import com.seoulmate.data.dto.challenge.ChallengeCulturalEventDto
 import com.seoulmate.data.dto.challenge.ChallengeItemAllDto
 import com.seoulmate.data.dto.challenge.ChallengeItemDetailDto
 import com.seoulmate.data.dto.challenge.ChallengeItemLikeDto
@@ -10,6 +11,7 @@ import com.seoulmate.data.dto.challenge.ChallengeRankItemDto
 import com.seoulmate.data.dto.challenge.ChallengeStampItemDto
 import com.seoulmate.data.dto.challenge.ChallengeStatusDto
 import com.seoulmate.data.dto.challenge.ChallengeThemeDto
+import com.seoulmate.data.dto.challenge.ChallengeThemeItemDto
 import com.seoulmate.data.dto.challenge.MyChallengeDto
 import com.seoulmate.data.dto.comment.CommentContentDto
 import com.seoulmate.data.dto.comment.CommentDto
@@ -71,24 +73,29 @@ interface ApiService {
         @Query("radius") radius: Int,
         @Query("limit") limit: Int,
         @Query("language") language: String,
-    ): Response<List<ChallengeLocationItemDto>?>
+    ): Response<ChallengeLocationItemDto?>
 
     @GET(NetworkConfig.Service.CHALLENGE_LIST_STAMP)
     suspend fun reqChallengeListStamp(
         @Query("attractionId") attractionId: Int?,
         @Query("language") language: String,
-    ): Response<List<ChallengeStampItemDto>?>
+    ): Response<ChallengeStampItemDto?>
 
     @GET(NetworkConfig.Service.CHALLENGE_LIST_THEME)
     suspend fun reqChallengeListTheme(
         @Query("themeId") themeId: Int,
         @Query("language") language: String,
-    ): Response<List<ChallengeStampItemDto>?>
+    ): Response<List<ChallengeThemeItemDto>?>
 
     @GET(NetworkConfig.Service.CHALLENGE_LIST_RANK)
     suspend fun reqChallengeListRank(
         @Query("language") language: String,
     ): Response<List<ChallengeRankItemDto>?>
+
+    @GET(NetworkConfig.Service.CHALLENGE_LIST_CULTURAL_EVENT)
+    suspend fun reqChallengeListCulturalEvent(
+        @Query("language") language: String,
+    ): Response<List<ChallengeCulturalEventDto>?>
 
     // Attraction
     @POST(NetworkConfig.Service.ATTRACTION_STAMP)

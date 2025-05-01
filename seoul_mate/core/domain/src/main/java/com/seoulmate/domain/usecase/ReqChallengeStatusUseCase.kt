@@ -6,8 +6,6 @@ import javax.inject.Inject
 class ReqChallengeStatusUseCase @Inject constructor(
     private val challengeRepository: ChallengeRepository,
 ) {
-    // TODO chan need Common Error Handler
-
     suspend operator fun invoke(
         id: Int,
         status: String,

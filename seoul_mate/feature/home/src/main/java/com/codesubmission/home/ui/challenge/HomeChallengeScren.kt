@@ -66,13 +66,21 @@ fun HomeChallengeScreen(
                 when(tabList[index]) {
                     ChallengeTabItem.Interest -> InterestChallengeTabScreen(
                         itemList = viewModel.myLikeChallengeList.value,
-                        onItemClick = onChallengeItemClick
+                        onItemClick = onChallengeItemClick,
+                        onItemLikeClick = { challengeId ->
+                            viewModel.reqChallengeLike(challengeId)
+                        },
                     )
                     ChallengeTabItem.InProgress -> InProgressChallengeTabScreen(
                         itemList = viewModel.myProgressChallengeList.value,
+                        onItemClick = onChallengeItemClick,
                     )
                     ChallengeTabItem.Complete -> CompleteChallengeTabScreen(
                         itemList = viewModel.myCompleteChallengeList.value,
+                        onItemClick = onChallengeItemClick,
+                        onItemLikeClick = { challengeId ->
+                            viewModel.reqChallengeLike(challengeId)
+                        },
                     )
                 }
             }

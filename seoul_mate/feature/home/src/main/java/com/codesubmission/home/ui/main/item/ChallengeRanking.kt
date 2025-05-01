@@ -25,7 +25,7 @@ import com.seoulmate.ui.theme.CoolGray900
 @Composable
 fun ChallengeRanking(
     modifier: Modifier,
-    onMoreClick: () -> Unit = {},
+//    onMoreClick: () -> Unit = {},
 ) {
     Column(
         modifier = modifier
@@ -55,23 +55,23 @@ fun ChallengeRanking(
                 maxLines = 1,
             )
             // More Button
-            Button(
-                onClick = onMoreClick,
-                colors = ButtonColors(
-                    containerColor = Color.Transparent,
-                    contentColor = Color.Transparent,
-                    disabledContainerColor = Color.Transparent,
-                    disabledContentColor = Color.Transparent,
-                )
-            ) {
-                PpsText(
-                    modifier = Modifier.wrapContentSize(),
-                    text = stringResource(com.seoulmate.ui.R.string.str_more),
-                    style = MaterialTheme.typography.labelLarge.copy(
-                        color = CoolGray600,
-                    ),
-                )
-            }
+//            Button(
+//                onClick = onMoreClick,
+//                colors = ButtonColors(
+//                    containerColor = Color.Transparent,
+//                    contentColor = Color.Transparent,
+//                    disabledContainerColor = Color.Transparent,
+//                    disabledContentColor = Color.Transparent,
+//                )
+//            ) {
+//                PpsText(
+//                    modifier = Modifier.wrapContentSize(),
+//                    text = stringResource(com.seoulmate.ui.R.string.str_more),
+//                    style = MaterialTheme.typography.labelLarge.copy(
+//                        color = CoolGray600,
+//                    ),
+//                )
+//            }
         }
     }
 }

@@ -13,6 +13,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
@@ -20,10 +23,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ScrollableTabRow
-import androidx.compose.material3.TabRowDefaults
-import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,20 +38,19 @@ import androidx.compose.ui.unit.sp
 import com.codesubmission.home.R
 import com.seoulmate.data.ChallengeInfo
 import com.seoulmate.data.UserInfo
-import com.seoulmate.data.model.challenge.ChallengeStampItemData
+import com.seoulmate.data.model.challenge.ChallengeThemeItemData
 import com.seoulmate.ui.component.ChallengeHomeTileTypeLayout
 import com.seoulmate.ui.component.PpsText
 import com.seoulmate.ui.component.RoundedTag
 import com.seoulmate.ui.theme.CoolGray400
 import com.seoulmate.ui.theme.CoolGray700
 import com.seoulmate.ui.theme.CoolGray75
-import com.seoulmate.ui.theme.TrueWhite
 import kotlinx.coroutines.launch
 
 @Composable
 fun ChallengeCategory(
     modifier: Modifier,
-    themeItemList: List<List<ChallengeStampItemData>>,
+    themeItemList: List<List<ChallengeThemeItemData>>,
     onMoreClick: () -> Unit = {},
     onChallengeLikeClick: (challengeId: Int) -> Unit = {},
     onChallengeItemClick: (challengeId: Int) -> Unit = {},
@@ -59,6 +59,9 @@ fun ChallengeCategory(
         pageCount = { ChallengeInfo.themeList.size },
         initialPage = 0,
         initialPageOffsetFraction = 0f,
+    )
+    val pageState = rememberLazyListState(
+        initialFirstVisibleItemIndex = pagerState.currentPage,
     )
     val scope = rememberCoroutineScope()
 
@@ -102,23 +105,14 @@ fun ChallengeCategory(
             }
         }
         // Category
-        ScrollableTabRow(
+        LazyRow(
             modifier = Modifier.fillMaxWidth(),
-            selectedTabIndex = pagerState.currentPage,
-            indicator = { tabPositions ->
-                TabRowDefaults.SecondaryIndicator(
-                    modifier = Modifier.tabIndicatorOffset(
-                        tabPositions[pagerState.currentPage]
-                    ),
-                    height = 0.dp,
-                    color = Color.Transparent,
-                )
-            },
-            divider = {},
-            containerColor = TrueWhite,
-            contentColor = TrueWhite,
+            state = pageState,
         ) {
-            ChallengeInfo.themeList.forEachIndexed { index, item ->
+            itemsIndexed(
+                items = ChallengeInfo.themeList,
+                key = { index, item -> item.id }
+            ) { index, item ->
                 Box(modifier = Modifier.padding(end = 8.dp, start = if(index == 0) 20.dp else 0.dp),) {
                     RoundedTag(
                         title = if(UserInfo.localeLanguage == "ko") item.nameKor else item.title,
@@ -157,7 +151,7 @@ fun ChallengeCategory(
 @Composable
 private fun ChallengeCategoryPagerItem(
     pagerIndex: Int,
-    themeItemList: List<List<ChallengeStampItemData>>,
+    themeItemList: List<List<ChallengeThemeItemData>>,
     onChallengeLikeClick: (challengeId: Int) -> Unit = {},
     onChallengeItemClick: (challengeId: Int) -> Unit = {},
 ) {

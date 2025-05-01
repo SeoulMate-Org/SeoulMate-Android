@@ -29,6 +29,7 @@ data class AttractionItem(
     val isStamped: Boolean,
     val stampCount: Int,
     val address: String?,
+    val imageUrl: String,
 )
 
 data class ChallengeCommentItem(

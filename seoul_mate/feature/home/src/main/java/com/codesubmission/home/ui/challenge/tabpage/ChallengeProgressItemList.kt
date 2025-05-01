@@ -12,27 +12,22 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.codesubmission.home.R
 import com.seoulmate.data.model.MyChallengeItemData
-import com.seoulmate.data.model.challenge.ChallengeItemData
-import com.seoulmate.ui.component.ChallengeTileTypeLayout
+import com.seoulmate.ui.component.ChallengeTileProgressTypeLayout
 import com.seoulmate.ui.component.PpsText
 import com.seoulmate.ui.theme.CoolGray25
 import com.seoulmate.ui.theme.CoolGray300
 import com.seoulmate.ui.theme.TrueWhite
 
-// Challenge Item Tile
 @Composable
-fun ChallengeItemList(
+fun ChallengeProgressItemList(
     modifier: Modifier = Modifier.background(color = TrueWhite),
     itemList: List<MyChallengeItemData>,
     onItemClick: (challengeId: Int) -> Unit = {},
-    onItemLikeClick: (challengeId: Int) -> Unit = {},
 ) {
     LazyColumn(
         modifier = modifier,
@@ -66,10 +61,9 @@ fun ChallengeItemList(
                 )
             }
 
-            ChallengeTileTypeLayout(
+            ChallengeTileProgressTypeLayout(
                 item = item,
                 onItemClick = onItemClick,
-                onItemLikeClick = onItemLikeClick,
             )
         }
     }
