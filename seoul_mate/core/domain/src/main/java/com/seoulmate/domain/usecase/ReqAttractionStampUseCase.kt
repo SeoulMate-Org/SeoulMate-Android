@@ -1,5 +1,7 @@
 package com.seoulmate.domain.usecase
 
+import com.seoulmate.data.dto.CommonDto
+import com.seoulmate.data.dto.attraction.AttractionStampDto
 import com.seoulmate.data.repository.ChallengeRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -10,7 +12,7 @@ class ReqAttractionStampUseCase @Inject constructor(
 
     suspend operator fun invoke(
         id: Int,
-    ): Flow<Boolean?> = challengeRepository.reqAttractionStamp(
+    ): Flow<CommonDto<AttractionStampDto?>> = challengeRepository.reqAttractionStamp(
         id = id,
     )
 

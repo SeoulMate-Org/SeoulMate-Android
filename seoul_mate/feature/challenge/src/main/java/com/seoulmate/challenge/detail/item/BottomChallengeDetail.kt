@@ -48,6 +48,7 @@ import com.seoulmate.ui.theme.White
 
 @Composable
 fun BottomChallengeDetail(
+    modifier: Modifier,
     isLogin: Boolean = false,
     isFavorite: Boolean = false,
     startedChallenge: Boolean = false,
@@ -58,9 +59,7 @@ fun BottomChallengeDetail(
     onFavoriteClick: (Boolean) -> Unit = {},
 ) {
     Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight(),
+        modifier = modifier,
         shape = RectangleShape,
         colors = CardColors(
             contentColor = TrueWhite,
@@ -194,6 +193,7 @@ private fun BottomRow(
 private fun NeedLogin() {
     SeoulMateTheme {
         BottomChallengeDetail(
+            modifier = Modifier.fillMaxWidth(),
             isLogin = false,
         )
     }
@@ -204,6 +204,7 @@ private fun NeedLogin() {
 private fun Login() {
     SeoulMateTheme {
         BottomChallengeDetail(
+            modifier = Modifier.fillMaxWidth(),
             isLogin = true,
             startedChallenge = false
         )
@@ -215,6 +216,7 @@ private fun Login() {
 private fun StartChallenge() {
     SeoulMateTheme {
         BottomChallengeDetail(
+            modifier = Modifier.fillMaxWidth(),
             isLogin = true,
             startedChallenge = true,
         )

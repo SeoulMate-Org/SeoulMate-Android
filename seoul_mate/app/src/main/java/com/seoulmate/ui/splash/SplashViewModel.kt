@@ -1,8 +1,12 @@
 package com.seoulmate.ui.splash
 
+import android.Manifest
+import android.location.Location
+import androidx.annotation.RequiresPermission
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.location.FusedLocationProviderClient
 import com.seoulmate.data.ChallengeInfo
 import com.seoulmate.data.UserInfo
 import com.seoulmate.data.dto.CommonDto
@@ -21,6 +25,7 @@ import com.seoulmate.domain.usecase.GetChallengeCulturalEventUseCase
 import com.seoulmate.domain.usecase.GetChallengeListLocationUseCase
 import com.seoulmate.domain.usecase.GetChallengeListRankUseCase
 import com.seoulmate.domain.usecase.GetChallengeListStampUseCase
+import com.seoulmate.domain.usecase.GetChallengeSeoulMasterUseCase
 import com.seoulmate.domain.usecase.GetChallengeThemeItemListUseCase
 import com.seoulmate.domain.usecase.GetMyChallengeItemListUseCase
 import com.seoulmate.domain.usecase.GetMyCommentListUseCase
@@ -40,6 +45,7 @@ data class SplashInitData(
     val language: String,
     val userData: UserData?,
     val isFirstEnter: Boolean,
+    val lastStampedAttractionId: Int,
 )
 
 data class SplashChallengeInitData(
@@ -60,6 +66,8 @@ class SplashViewModel @Inject constructor(
     private val getChallengeThemeItemListUseCase: GetChallengeThemeItemListUseCase,
     private val getChallengeListRankUseCase: GetChallengeListRankUseCase,
     private val getChallengeCulturalEventUseCase: GetChallengeCulturalEventUseCase,
+    private val getChallengeSeoulMasterUseCase: GetChallengeSeoulMasterUseCase,
+    private val fusedLocationProviderClient: FusedLocationProviderClient,
 ): ViewModel() {
 
     private val _splashInitDataFlow = MutableSharedFlow<SplashInitData>()
@@ -67,6 +75,7 @@ class SplashViewModel @Inject constructor(
 
     var isShowLoading = mutableStateOf<Boolean?>(null)
     var finishedFetchUserInfo = mutableStateOf(false)
+    var finishedGetLocation = mutableStateOf(false)
     var needRefreshToken = mutableStateOf<Boolean?>(null)
     var grantedLocationPermission = mutableStateOf(false)
 
@@ -76,15 +85,20 @@ class SplashViewModel @Inject constructor(
 
             val languageFlow = preferDataStoreRepository.loadLanguage()
             val isFirstEnterFlow = preferDataStoreRepository.loadIsFirstEnter()
+            val lastLocationRequest = preferDataStoreRepository.loadLastStampedAttractionId()
             val userDataFlow = getUserInfoUseCase()
 
-            combine(languageFlow, isFirstEnterFlow, userDataFlow) { language, isFirstEnter, userData ->
-                SplashInitData(language, userData, isFirstEnter)
+            combine(languageFlow, isFirstEnterFlow, userDataFlow, lastLocationRequest) { language, isFirstEnter, userData, lastLocationRequest ->
+                SplashInitData(language, userData, isFirstEnter, lastLocationRequest)
             }.collectLatest { splashInitData ->
                 _splashInitDataFlow.emit(splashInitData)
 
                 if(splashInitData.language.isNotEmpty()) {
                     UserInfo.localeLanguage = splashInitData.language
+                }
+
+                if (splashInitData.lastStampedAttractionId >= 0) {
+                    UserInfo.lastStampedAttractionId = splashInitData.lastStampedAttractionId
                 }
 
                 splashInitData.userData?.let {
@@ -100,8 +114,28 @@ class SplashViewModel @Inject constructor(
         }
     }
 
-    fun reqInit() {
+    @RequiresPermission(
+        allOf = [Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION]
+    )
+    fun getLocation() {
+        if (grantedLocationPermission.value) {
+            viewModelScope.launch {
+                async {
+                    fusedLocationProviderClient.lastLocation.addOnSuccessListener { location: Location? ->
+                        location?. let {
+                            UserInfo.myLocationX = it.longitude
+                            UserInfo.myLocationY = it.latitude
+                        }
+                    }
+                }.await()
 
+                finishedGetLocation.value = true
+            }
+        }
+    }
+
+    fun reqInit() {
         viewModelScope.launch {
             if (UserInfo.isUserLogin()) {
                 val myChallenge = getMyChallengeItemListUseCase(
@@ -246,25 +280,49 @@ class SplashViewModel @Inject constructor(
                 }
             }
 
-            // fetch Challenge Stamp Item List
-            val deferredChallengeStampList = async {
-                var returnValue: CommonDto<ChallengeStampResponseData?>? = null
-                getChallengeListStampUseCase(
-                    attractionId = null,
-                    language = UserInfo.getLanguageCode(),
-                ).collectLatest {
+            // fetch Challenge Seoul Master Item List
+            val deferredSeoulMasterList = async {
+                var returnValue: CommonDto<List<ChallengeCulturalEventData>>? = null
+                getChallengeSeoulMasterUseCase(UserInfo.getLanguageCode()).collectLatest {
                     returnValue = it
                 }
                 return@async returnValue
             }
-            deferredChallengeStampList.await()?.let {
-                if (it.code in 200..299) {
-                    ChallengeInfo.challengeStampData = it.response
-                } else if(it.code == 403) {
+            deferredSeoulMasterList.await()?.let {
+                if(it.code in 200..299) {
+                    ChallengeInfo.challengeSeoulMasterList = it.response ?: listOf()
+                } else if (it.code == 403) {
                     needRefreshToken.value = true
                     return@launch
                 }
             }
+
+            if (UserInfo.isUserLogin()) {
+                // fetch Challenge Stamp Item List
+                val deferredChallengeStampList = async {
+                    var returnValue: CommonDto<ChallengeStampResponseData?>? = null
+                    getChallengeListStampUseCase(
+                        attractionId = if(UserInfo.lastStampedAttractionId >=0) {
+                            UserInfo.lastStampedAttractionId
+                        } else {
+                            null
+                        },
+                        language = UserInfo.getLanguageCode(),
+                    ).collectLatest {
+                        returnValue = it
+                    }
+                    return@async returnValue
+                }
+                deferredChallengeStampList.await()?.let {
+                    if (it.code in 200..299) {
+                        ChallengeInfo.challengeStampData = it.response
+                    } else if(it.code == 403) {
+                        needRefreshToken.value = true
+                        return@launch
+                    }
+                }
+            }
+
 
             isShowLoading.value = false
 

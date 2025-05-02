@@ -10,9 +10,15 @@ class PreferDataStoreRepositoryImpl @Inject constructor(
 ): PreferDataStoreRepository {
 
     override suspend fun loadLanguage(): Flow<String> = dataSource.getLanguage()
-    override suspend fun updateLanguage(language: String): String = dataSource.setLanguage(language)
+    override suspend fun updateLanguage(language: String): String =
+        dataSource.setLanguage(language)
 
     override suspend fun loadIsFirstEnter(): Flow<Boolean> = dataSource.getIsFirstEnter()
-    override suspend fun updateIsFirstEnter(isFirstEnter: Boolean): String = dataSource.setIsFirstEnter(isFirstEnter)
+    override suspend fun updateIsFirstEnter(isFirstEnter: Boolean): String =
+        dataSource.setIsFirstEnter(isFirstEnter)
+
+    override suspend fun loadLastStampedAttractionId(): Flow<Int> = dataSource.getLastStampedAttractionId()
+    override suspend fun updateLastStampedAttractionId(lastStampedAttractionId: Int): String =
+        dataSource.setLastStampedAttractionId(lastStampedAttractionId)
 
 }

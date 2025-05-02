@@ -55,6 +55,16 @@ fun SettingUserNicknameScreen(
         }
     }
 
+    LaunchedEffect(viewModel.needRefreshToken.value) {
+        if (viewModel.needRefreshToken.value == true) {
+            viewModel.refreshToken()
+        } else if(viewModel.needRefreshToken.value == false) {
+            viewModel.needRefreshToken.value = null
+
+            viewModel.reqUserNickname(textFieldState)
+        }
+    }
+
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(

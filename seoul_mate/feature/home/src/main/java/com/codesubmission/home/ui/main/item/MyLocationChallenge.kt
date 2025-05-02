@@ -213,7 +213,7 @@ fun PossibleStampList(
 ) {
     LazyRow(
         modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
+        verticalAlignment = Alignment.Top,
     ) {
         itemsIndexed(
             items = possibleStampList,

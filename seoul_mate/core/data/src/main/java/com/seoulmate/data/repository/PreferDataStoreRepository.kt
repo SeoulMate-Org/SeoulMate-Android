@@ -9,4 +9,8 @@ interface PreferDataStoreRepository {
 
     suspend fun loadIsFirstEnter(): Flow<Boolean>
     suspend fun updateIsFirstEnter(isFirstEnter: Boolean): String
+
+    suspend fun loadLastStampedAttractionId(): Flow<Int>
+    suspend fun updateLastStampedAttractionId(lastStampedAttractionId: Int): String
+
 }

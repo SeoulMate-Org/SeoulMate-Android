@@ -3,6 +3,7 @@ package com.seoulmate.data.repository.impl
 import com.seoulmate.data.api.ApiService
 import com.seoulmate.data.dto.CommonDto
 import com.seoulmate.data.dto.attraction.AttractionDetailDto
+import com.seoulmate.data.dto.attraction.AttractionStampDto
 import com.seoulmate.data.dto.challenge.ChallengeCulturalEventDto
 import com.seoulmate.data.dto.challenge.ChallengeItemAllDto
 import com.seoulmate.data.dto.challenge.ChallengeItemDetailDto
@@ -194,16 +195,38 @@ class ChallengeRepositoryImpl @Inject constructor(
         )
     }
 
+    override suspend fun reqChallengeSeoulMaster(
+        language: String
+    ): Flow<CommonDto<List<ChallengeCulturalEventDto>?>> = flow {
+        val response = apiService.reqChallengeListSeoulMaster(
+            language = language,
+        )
+        emit(
+            CommonDto(
+                code = response.code(),
+                message = response.message(),
+                response = response.body(),
+            )
+        )
+    }
+
     override suspend fun reqAttractionStamp(
         id: Int
-    ): Flow<Boolean?> = flow {
+    ): Flow<CommonDto<AttractionStampDto?>> = flow {
 //        val response = apiService.reqAttractionStamp(
 //            id = id,
 //        )
-        val response = apiService.reqAttractionStampTest(
-            AttractionStampReqData(id)
+        val response = apiService.reqAttractionStamp(
+//            AttractionStampReqData(id)
+            id = id,
         )
-        emit(response.code() in 200..299)
+        emit(
+            CommonDto(
+                code = response.code(),
+                message = response.message(),
+                response = response.body(),
+            )
+        )
     }
 
     override suspend fun reqAttractionDetail(

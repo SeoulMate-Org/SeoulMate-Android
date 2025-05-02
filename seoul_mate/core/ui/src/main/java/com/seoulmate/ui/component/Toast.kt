@@ -69,6 +69,14 @@ class CustomToast(context: Context): Toast(context) {
                 resourceIcon = resourceIcon
             )
         }
+
+        views.setViewTreeLifecycleOwner(LocalLifecycleOwner.current)
+        views.setViewTreeSavedStateRegistryOwner(LocalSavedStateRegistryOwner.current)
+        views.setViewTreeViewModelStoreOwner(LocalViewModelStoreOwner.current)
+
+        this.duration = duration
+        this.view = views
+        this.show()
     }
 
     @Composable

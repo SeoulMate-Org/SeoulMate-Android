@@ -5,7 +5,9 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.res.stringResource
+import com.codesubmission.home.HomeAfterRefreshTokenType
 import com.codesubmission.home.HomeViewModel
 import com.codesubmission.home.ui.HomeState
 import com.codesubmission.home.ui.challenge.tabpage.CompleteChallengeTabScreen
@@ -20,7 +22,6 @@ import kotlinx.coroutines.launch
 fun HomeChallengeScreen(
     homeState: HomeState,
     viewModel: HomeViewModel,
-    onReplyClick: () -> Unit = {},
     onChallengeItemClick: (challengeId: Int) -> Unit = {},
 ) {
     val tabList = listOf(
@@ -34,6 +35,33 @@ fun HomeChallengeScreen(
         initialPage = 0,
         initialPageOffsetFraction = 0f,
     )
+
+    LaunchedEffect(viewModel.needRefreshToken.value) {
+        if (viewModel.needRefreshToken.value == true) {
+            viewModel.refreshToken()
+        } else if(viewModel.needRefreshToken.value == false) {
+            viewModel.needRefreshToken.value = null
+
+            when(viewModel.afterRefreshToken.value) {
+                HomeAfterRefreshTokenType.MyChallengeLike -> {
+                    viewModel.afterRefreshToken.value = null
+
+                    viewModel.getMyChallenge(MyChallengeType.LIKE.type)
+                }
+                HomeAfterRefreshTokenType.MyChallengeProgress -> {
+                    viewModel.afterRefreshToken.value = null
+
+                    viewModel.getMyChallenge(MyChallengeType.PROGRESS.type)
+                }
+                HomeAfterRefreshTokenType.MyChallengeComplete -> {
+                    viewModel.afterRefreshToken.value = null
+
+                    viewModel.getMyChallenge(MyChallengeType.COMPLETE.type)
+                }
+                else -> {}
+            }
+        }
+    }
 
     Surface(
         color = TrueWhite

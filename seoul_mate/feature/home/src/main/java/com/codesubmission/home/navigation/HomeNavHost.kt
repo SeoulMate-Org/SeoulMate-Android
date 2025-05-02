@@ -50,9 +50,6 @@ fun HomeNavHost(
             HomeChallengeScreen(
                 homeState = appState,
                 viewModel = viewModel,
-                onReplyClick = {
-                    onScreenChange(Screen.ChallengeCommentList)
-                },
                 onChallengeItemClick = onChallengeItemClick
             )
         }

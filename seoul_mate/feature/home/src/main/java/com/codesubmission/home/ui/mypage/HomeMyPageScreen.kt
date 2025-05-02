@@ -64,6 +64,8 @@ fun HomeMyPageScreen(
                     .padding(top = 40.dp),
                 ) {
                     MyPageActiveLog(
+                        cntFavorite = UserInfo.myLikeChallengeList.size,
+                        cntComment = UserInfo.myCommentList.size,
                         onBadgeClick = {
                             onChangeScreen(Screen.SettingMyBadge)
                         }

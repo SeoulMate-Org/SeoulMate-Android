@@ -19,8 +19,10 @@ import com.seoulmate.data.model.challenge.ChallengeCommentItem
 import com.seoulmate.data.model.challenge.DefaultChallengeItemData
 import com.seoulmate.data.model.MyChallengeItemData
 import com.seoulmate.data.model.challenge.ChallengeItemData
+import com.seoulmate.data.repository.PreferDataStoreRepository
 import com.seoulmate.domain.usecase.GetChallengeItemDetailUseCase
 import com.seoulmate.domain.usecase.GetMyChallengeItemListUseCase
+import com.seoulmate.domain.usecase.RefreshTokenUseCase
 import com.seoulmate.domain.usecase.ReqAttractionLikeUseCase
 import com.seoulmate.domain.usecase.ReqAttractionStampUseCase
 import com.seoulmate.domain.usecase.ReqChallengeLikeUseCase
@@ -31,6 +33,14 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+sealed class ChallengeDetailAfterRefreshTokenType {
+    data object ChallengeDetail : ChallengeDetailAfterRefreshTokenType()
+    data object ProgressChallengeStatus: ChallengeDetailAfterRefreshTokenType()
+    data object LikeChallenge: ChallengeDetailAfterRefreshTokenType()
+    data object LikeAttraction: ChallengeDetailAfterRefreshTokenType()
+    data object StampAttraction: ChallengeDetailAfterRefreshTokenType()
+}
+
 @HiltViewModel
 class ChallengeDetailViewModel @Inject constructor(
     private val getChallengeItemDetailUseCase: GetChallengeItemDetailUseCase,
@@ -39,17 +49,23 @@ class ChallengeDetailViewModel @Inject constructor(
     private val reqAttractionStampUseCase: ReqAttractionStampUseCase,
     private val reqAttractionLikeUseCase: ReqAttractionLikeUseCase,
     private val fusedLocationProviderClient: FusedLocationProviderClient,
-    private val getMyChallengeItemListUseCase: GetMyChallengeItemListUseCase
+    private val getMyChallengeItemListUseCase: GetMyChallengeItemListUseCase,
+    private val refreshTokenUseCase: RefreshTokenUseCase,
+    private val preferDataStoreRepository: PreferDataStoreRepository,
 ) : ViewModel() {
 
-    var lastLocation = mutableStateOf<Location?>(null)
     var isShowLoading = mutableStateOf(false)
     var challengeItem = mutableStateOf(DefaultChallengeItemData.item)
     var startedChallenge = mutableStateOf(false)
     var needUserLogin = mutableStateOf(false)
     var isStamped = mutableStateOf(false)
+    var finishedAttractionStamp = mutableStateOf(false)
+    var impossibleStamp = mutableStateOf(false)
     var fineLocationPermissionGranted = mutableStateOf(false)
     var attractionDistanceItemList = mutableStateOf(listOf<Float?>())
+    var needRefreshToken = mutableStateOf<Boolean?>(null)
+    var afterRefreshToken = mutableStateOf<ChallengeDetailAfterRefreshTokenType?>(null)
+    var afterRefreshTokenAttractionId = mutableStateOf<Int?>(null)
 
     @RequiresPermission(
         allOf = [Manifest.permission.ACCESS_FINE_LOCATION,
@@ -79,9 +95,6 @@ class ChallengeDetailViewModel @Inject constructor(
                 if (challengeDetailResponse.code in 200..299) {
                     challengeDetailResponse.response?.let {
                         challengeItem.value = it
-                        Log.d("@@@@@", "myChallenge : ${UserInfo.myLikeChallengeList}")
-                        Log.d("@@@@@", "getMyChallengeId : ${UserInfo.getMyChallengeId()}")
-                        Log.d("@@@@@", "item id  : ${it.id}")
                         startedChallenge.value = UserInfo.getMyChallengeId().contains(it.id)
 
                         ChallengeDetailInfo.id = it.id
@@ -108,7 +121,11 @@ class ChallengeDetailViewModel @Inject constructor(
 
                     }
                 } else if (challengeDetailResponse.code == 403) {
-
+                    // Refresh Token
+                    afterRefreshToken.value = ChallengeDetailAfterRefreshTokenType.ChallengeDetail
+                    needRefreshToken.value = true
+                    isShowLoading.value = false
+                    return@launch
                 } else {
 
                 }
@@ -116,7 +133,6 @@ class ChallengeDetailViewModel @Inject constructor(
 
             if (fineLocationPermissionGranted.value) {
                 fusedLocationProviderClient.lastLocation.addOnSuccessListener { location: Location? ->
-                    lastLocation.value = location
 
                     location?.let {
                         UserInfo.myLocationX = it.longitude
@@ -140,7 +156,6 @@ class ChallengeDetailViewModel @Inject constructor(
             }
 
             isShowLoading.value = false
-
         }
     }
 
@@ -172,7 +187,16 @@ class ChallengeDetailViewModel @Inject constructor(
                     startedChallenge.value = true
 
                 } else if (it.code == 403) {
-
+                    if (UserInfo.isUserLogin()) {
+                        // Refresh Token
+                        afterRefreshToken.value = ChallengeDetailAfterRefreshTokenType.ProgressChallengeStatus
+                        needRefreshToken.value = true
+                    } else {
+                        // Need Login
+                        needUserLogin.value = true
+                    }
+                    isShowLoading.value = false
+                    return@launch
                 }
             }
 
@@ -194,10 +218,6 @@ class ChallengeDetailViewModel @Inject constructor(
                         it.response?.let { response ->
                             UserInfo.myProgressChallengeList = response
                         }
-                    } else if (it.code == 403) {
-
-                    } else {
-
                     }
                 }
             }
@@ -252,6 +272,8 @@ class ChallengeDetailViewModel @Inject constructor(
                 } else if (response.code == 403) {
                     if (UserInfo.isUserLogin()) {
                         // Refresh Token
+                        afterRefreshToken.value = ChallengeDetailAfterRefreshTokenType.LikeChallenge
+                        needRefreshToken.value = true
                     } else {
                         // Need Login
                         needUserLogin.value = true
@@ -286,6 +308,9 @@ class ChallengeDetailViewModel @Inject constructor(
                     } else if (response.code == 403) {
                         if (UserInfo.isUserLogin()) {
                             // Refresh Token
+                            afterRefreshTokenAttractionId.value = attractionId
+                            afterRefreshToken.value = ChallengeDetailAfterRefreshTokenType.LikeAttraction
+                            needRefreshToken.value = true
                         } else {
                             // Need Login
                             needUserLogin.value = true
@@ -295,18 +320,129 @@ class ChallengeDetailViewModel @Inject constructor(
         }
     }
 
+    @RequiresPermission(
+        allOf = [Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION]
+    )
     // Attraction Stamp
-    fun reqAttractionStamp(
-        attractionId: Int,
-    ) {
+    fun reqAttractionStamp() {
         viewModelScope.launch {
-            reqAttractionStampUseCase(
-                id = attractionId,
-            ).collectLatest { isSuccess ->
-                Log.d("@@@@@", "isSuccess : $isSuccess")
+            var isSucceedStamp = false
+            isShowLoading.value = true
+
+            var targetAttractionId: Int? = null
+            // TODO TEST
+            run test@ {
+                ChallengeDetailInfo.attractions.forEach {
+                    if (!it.isStamped) {
+                        targetAttractionId = it.id
+                        return@test
+                    }
+                }
             }
+
+            // Find Possible Stamp Attraction Id
+//            async {
+//                if (fineLocationPermissionGranted.value) {
+//                    fusedLocationProviderClient.lastLocation.addOnSuccessListener { location: Location? ->
+//
+//                        location?.let {
+//                            UserInfo.myLocationX = it.longitude
+//                            UserInfo.myLocationY = it.latitude
+//
+//                            ChallengeDetailInfo.attractions.map { attractionItem ->
+//                                val attractionLocation = Location("").apply {
+//                                    latitude = (attractionItem.locationY ?: "0.0").toDouble()
+//                                    longitude = (attractionItem.locationX ?: "0.0").toDouble()
+//                                }
+//                                if (location.distanceTo(attractionLocation) <= 51) {
+//                                    targetAttractionId = attractionItem.id
+//                                }
+//                            }
+//                        }
+//
+//                    }
+//                }
+//            }.await()
+
+            // Stamp Attraction
+            if (targetAttractionId == null) {
+                impossibleStamp.value = true
+            } else {
+                targetAttractionId?.let { attractionId ->
+                    reqAttractionStampUseCase(
+                        id = attractionId,
+                    ).collectLatest { it ->
+                        if (it.code in 200..299) {
+                            it.response?.let { response ->
+                                response.isProcessed?.let { isProcessed ->
+                                    isSucceedStamp = true
+                                    if (isProcessed) finishedAttractionStamp.value = true
+                                }
+                            }
+                        } else if (it.code == 403) {
+                            isSucceedStamp = false
+                            if (UserInfo.isUserLogin()) {
+                                // Refresh Token
+                                afterRefreshTokenAttractionId.value = attractionId
+                                afterRefreshToken.value = ChallengeDetailAfterRefreshTokenType.StampAttraction
+                                needRefreshToken.value = true
+                            } else {
+                                // Login
+                                needUserLogin.value = true
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Update Last Stamped Attraction Id
+            if (isSucceedStamp) {
+                targetAttractionId?.let {
+                    async {
+                        preferDataStoreRepository.updateLastStampedAttractionId(it)
+                    }.await()
+                }
+            }
+
+            // IF Attraction Stamp Last > Finished Challenge
+            if (challengeItem.value.attractionCount - 1 == challengeItem.value.attractions.count{ it.isStamped } &&
+                isSucceedStamp) {
+
+                // put Challenge Status
+                val deferredChallengeStatus = async {
+                    var response: CommonDto<ChallengeStatusDto?>? = null
+                    reqChallengeStatusUseCase(
+                        id = challengeItem.value.id,
+                        status = MyChallengeType.COMPLETE.type,
+                    ).collectLatest {
+                        response = it
+                    }
+                    return@async response
+                }
+
+                deferredChallengeStatus.await()?.let {
+                    if (it.code in 200..299) {
+                        Log.d("@@@@@", "Challenge Status Complete")
+                    }
+                }
+            }
+
+            isShowLoading.value = false
         }
     }
 
+    fun refreshToken() {
+        viewModelScope.launch {
+            refreshTokenUseCase(UserInfo.refreshToken).collectLatest { response ->
+                response?.let {
+                    UserInfo.refreshToken = it.refreshToken
+                    UserInfo.accessToken = it.accessToken
+
+                    needRefreshToken.value = false
+                }
+            }
+        }
+    }
 
 }

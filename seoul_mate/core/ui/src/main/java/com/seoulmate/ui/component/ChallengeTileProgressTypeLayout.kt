@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -47,6 +48,9 @@ fun ChallengeTileProgressTypeLayout(
     item: MyChallengeItemData,
     onItemClick: (challengeId: Int) -> Unit = {},
 ) {
+    val totalAttractionItemCount = item.attractionCount
+    val stampedAttractionItemCount = item.myStampCount
+
     Surface(
         modifier = modifier
             .background(color = TrueWhite)
@@ -86,7 +90,7 @@ fun ChallengeTileProgressTypeLayout(
                 horizontalAlignment = Alignment.Start
             ) {
                 // Attraction Row
-                if (item.attractionCount > 0) {
+                if (totalAttractionItemCount > 0) {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically,
@@ -94,10 +98,10 @@ fun ChallengeTileProgressTypeLayout(
                         Row(
                             modifier = Modifier.weight(1f)
                         ) {
-                            for (i in 1..item.attractionCount) {
+                            for (index in 0 until totalAttractionItemCount) {
                                 LinearStampIndicator(
                                     modifier = Modifier.weight(1f),
-                                    isCompleted = i <= item.myStampCount,
+                                    isCompleted = index < stampedAttractionItemCount,
                                     height = 5.dp,
                                     horizontalPadding = 2.dp,
                                 )

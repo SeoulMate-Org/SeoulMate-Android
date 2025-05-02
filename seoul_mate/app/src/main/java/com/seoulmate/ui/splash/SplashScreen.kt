@@ -47,12 +47,17 @@ fun SplashScreen(
         } else if(viewModel.needRefreshToken.value == false) {
             viewModel.reqInit()
         }
-
     }
 
     LaunchedEffect(viewModel.finishedFetchUserInfo.value) {
         if (viewModel.finishedFetchUserInfo.value) {
             viewModel.reqHomeChallengeItems()
+        }
+    }
+
+    LaunchedEffect(viewModel.finishedGetLocation.value) {
+        if (viewModel.finishedGetLocation.value) {
+            viewModel.reqInit()
         }
     }
 

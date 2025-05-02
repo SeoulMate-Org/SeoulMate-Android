@@ -12,11 +12,13 @@ import com.seoulmate.data.model.challenge.ChallengeCommentItem
 import com.seoulmate.data.model.challenge.ChallengeLocationItemData
 import com.seoulmate.data.model.challenge.ChallengeRankItemData
 import com.seoulmate.data.model.MyChallengeItemData
+import com.seoulmate.data.model.challenge.ChallengeStampResponseData
 import com.seoulmate.data.model.challenge.ChallengeThemeItemData
 import com.seoulmate.data.model.request.MyLocationReqData
 import com.seoulmate.data.repository.PreferDataStoreRepository
 import com.seoulmate.domain.usecase.GetChallengeListLocationUseCase
 import com.seoulmate.domain.usecase.GetChallengeListRankUseCase
+import com.seoulmate.domain.usecase.GetChallengeListStampUseCase
 import com.seoulmate.domain.usecase.GetChallengeThemeItemListUseCase
 import com.seoulmate.domain.usecase.GetLoginInfoUseCase
 import com.seoulmate.domain.usecase.GetMyChallengeItemListUseCase
@@ -48,6 +50,7 @@ class LoginViewModel @Inject constructor(
     private val getChallengeListLocationUseCase: GetChallengeListLocationUseCase,
     private val getChallengeThemeItemListUseCase: GetChallengeThemeItemListUseCase,
     private val getChallengeListRankUseCase: GetChallengeListRankUseCase,
+    private val getChallengeListStampUseCase: GetChallengeListStampUseCase,
 ) : ViewModel() {
 
     var isShowLoading = mutableStateOf<Boolean?>(null)
@@ -98,10 +101,8 @@ class LoginViewModel @Inject constructor(
             )
             val myChallengeLocationList = getChallengeListLocationUseCase(
                 locationRequest = MyLocationReqData(
-//                    locationX = UserInfo.myLocationX,
-//                    locationY = UserInfo.myLocationY,
-                    locationY = 37.5686076,
-                    locationX = 126.9816627,
+                    locationX = UserInfo.myLocationY,
+                    locationY = UserInfo.myLocationX,
                 ),
                 language = UserInfo.getLanguageCode(),
             )
@@ -219,6 +220,30 @@ class LoginViewModel @Inject constructor(
                 if(it.code in 200..299) {
                     ChallengeInfo.rankList = it.response ?: listOf()
                 } else if (it.code == 403) {
+                    needRefreshToken.value = true
+                    return@launch
+                }
+            }
+
+            // fetch Challenge Stamp Item List
+            val deferredChallengeStampList = async {
+                var returnValue: CommonDto<ChallengeStampResponseData?>? = null
+                getChallengeListStampUseCase(
+                    attractionId = if(UserInfo.lastStampedAttractionId >=0) {
+                        UserInfo.lastStampedAttractionId
+                    } else {
+                        null
+                    },
+                    language = UserInfo.getLanguageCode(),
+                ).collectLatest {
+                    returnValue = it
+                }
+                return@async returnValue
+            }
+            deferredChallengeStampList.await()?.let {
+                if (it.code in 200..299) {
+                    ChallengeInfo.challengeStampData = it.response
+                } else if(it.code == 403) {
                     needRefreshToken.value = true
                     return@launch
                 }

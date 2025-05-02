@@ -135,6 +135,9 @@ fun MissionChallengeItem(
     onItemClick: (challengeId: Int) -> Unit = {},
     startChallengeClick: (challengeId: Int) -> Unit = {},
 ) {
+    val totalAttractionItemCount = item.attractionCount
+    val stampedAttractionItemCount = item.myStampCount
+
     Column(
         modifier = Modifier
             .width(160.dp)
@@ -168,7 +171,7 @@ fun MissionChallengeItem(
                 contentScale = ContentScale.Crop,
             )
             // Attraction Row
-            if (item.attractionCount > 0) {
+            if (totalAttractionItemCount > 0) {
                 Row(
                     modifier = Modifier
                         .padding(horizontal = 14.dp)
@@ -182,10 +185,10 @@ fun MissionChallengeItem(
                         modifier = Modifier.weight(1f),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        for (i in 1..item.attractionCount) {
+                        for (index in 0 until totalAttractionItemCount) {
                             LinearStampIndicator(
                                 modifier = Modifier.weight(1f),
-                                isCompleted = i <= (item.myStampCount ?: 0),
+                                isCompleted = index < stampedAttractionItemCount,
                                 height = 6.dp,
                                 horizontalPadding = 2.dp,
                             )

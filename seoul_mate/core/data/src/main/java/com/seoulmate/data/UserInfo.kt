@@ -16,6 +16,7 @@ object UserInfo {
     var myCommentList = listOf<ChallengeCommentItem>()
     var myLocationX: Double = 0.0
     var myLocationY: Double = 0.0
+    var lastStampedAttractionId: Int = -1
 
     fun isUserLogin(): Boolean = accessToken.isNotEmpty()
 

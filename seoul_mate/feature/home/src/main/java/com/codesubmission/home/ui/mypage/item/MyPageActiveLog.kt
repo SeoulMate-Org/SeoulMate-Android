@@ -34,6 +34,7 @@ import com.seoulmate.ui.theme.White
 fun MyPageActiveLog(
     cntBadge: Int = 0,
     cntFavorite: Int = 0,
+    cntComment: Int = 0,
     onBadgeClick: () -> Unit = {},
 ) {
     Row(
@@ -129,7 +130,7 @@ fun MyPageActiveLog(
             )
             PpsText(
                 modifier = Modifier.wrapContentSize(),
-                text = if (UserInfo.myCommentList.isEmpty()) "-" else UserInfo.myCommentList.size.toString(),
+                text = if (cntComment == 0) "-" else cntComment.toString(),
                 style = TextStyle(
                     fontSize = 16.sp,
                     color = Black,

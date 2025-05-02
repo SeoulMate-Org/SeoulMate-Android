@@ -2,6 +2,7 @@ package com.seoulmate.data.repository
 
 import com.seoulmate.data.dto.CommonDto
 import com.seoulmate.data.dto.attraction.AttractionDetailDto
+import com.seoulmate.data.dto.attraction.AttractionStampDto
 import com.seoulmate.data.dto.challenge.ChallengeCulturalEventDto
 import com.seoulmate.data.dto.challenge.ChallengeItemAllDto
 import com.seoulmate.data.dto.challenge.ChallengeItemDetailDto
@@ -81,10 +82,15 @@ interface ChallengeRepository {
         language: String,
     ): Flow<CommonDto<List<ChallengeCulturalEventDto>?>>
 
+    // fetch challenge seoul master
+    suspend fun reqChallengeSeoulMaster(
+        language: String,
+    ): Flow<CommonDto<List<ChallengeCulturalEventDto>?>>
+
     // fetch attraction stamp
     suspend fun reqAttractionStamp(
         id: Int,
-    ): Flow<Boolean?>
+    ): Flow<CommonDto<AttractionStampDto?>>
 
     // fetch attraction detail
     suspend fun reqAttractionDetail(

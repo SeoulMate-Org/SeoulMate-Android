@@ -36,9 +36,7 @@ class DataStoreRepository @Inject constructor(
     private val notifyIdKey = intPreferencesKey("notifyId")
     private val languageKey = stringPreferencesKey("language")
     private val isFirstEnterKey = booleanPreferencesKey("isFirstEnter")
-    private val accessTokenKey = stringPreferencesKey("accessToken")
-    private val refreshTokenKey = stringPreferencesKey("refreshToken")
-    private val nicknameKey = stringPreferencesKey("nickname")
+    private val lastStampedAttractionId = intPreferencesKey("lastStampedAttractionId")
 
     // 쓰기
     suspend fun setNotifyId(): String {
@@ -64,23 +62,9 @@ class DataStoreRepository @Inject constructor(
         return DataStoreResult.SET_SUCCESS
     }
 
-    suspend fun setAccessToken(accessToken: String): String {
+    suspend fun setLastStampedAttractionId(lastStampedAttractionId: Int): String {
         context.dataStore.edit {
-            it[accessTokenKey] = accessToken
-        }
-        return DataStoreResult.SET_SUCCESS
-    }
-
-    suspend fun setRefreshToken(refreshToken: String): String {
-        context.dataStore.edit {
-            it[refreshTokenKey] = refreshToken
-        }
-        return DataStoreResult.SET_SUCCESS
-    }
-
-    suspend fun setNickname(nickname: String): String {
-        context.dataStore.edit {
-            it[nicknameKey] = nickname
+            it[this.lastStampedAttractionId] = lastStampedAttractionId
         }
         return DataStoreResult.SET_SUCCESS
     }
@@ -123,7 +107,7 @@ class DataStoreRepository @Inject constructor(
         }
     }
 
-    fun getAccessToken(): Flow<String> {
+    fun getLastStampedAttractionId(): Flow<Int> {
         return context.dataStore.data.catch { e ->
             if (e is IOException) {
                 emit(emptyPreferences())
@@ -131,31 +115,8 @@ class DataStoreRepository @Inject constructor(
                 throw e
             }
         }.map {
-            it[accessTokenKey] ?: ""
+            it[lastStampedAttractionId] ?: -1
         }
     }
 
-    fun getRefreshToken(): Flow<String> {
-        return context.dataStore.data.catch { e ->
-            if (e is IOException) {
-                emit(emptyPreferences())
-            } else {
-                throw e
-            }
-        }.map {
-            it[refreshTokenKey] ?: ""
-        }
-    }
-
-    fun getNickName(): Flow<String> {
-        return context.dataStore.data.catch { e ->
-            if (e is IOException) {
-                emit(emptyPreferences())
-            } else {
-                throw e
-            }
-        }.map {
-            it[nicknameKey] ?: ""
-        }
-    }
 }

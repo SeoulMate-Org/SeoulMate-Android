@@ -80,6 +80,7 @@ object ChallengeInfo {
     var challengeThemeList: List<List<ChallengeThemeItemData>> = listOf()
     var rankList: List<ChallengeRankItemData> = listOf()
     var challengeCulturalList: List<ChallengeCulturalEventData> = listOf()
+    var challengeSeoulMasterList: List<ChallengeCulturalEventData> = listOf()
     var challengeStampData: ChallengeStampResponseData? = null
     var challengeLocationData: ChallengeLocationItemData? = null
 

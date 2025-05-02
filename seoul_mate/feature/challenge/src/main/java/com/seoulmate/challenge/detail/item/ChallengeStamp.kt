@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
@@ -39,6 +41,9 @@ import com.seoulmate.ui.theme.SeoulMateTheme
 fun ChallengeStamp(
     attractions: List<AttractionItem> = listOf()
 ) {
+    val totalAttractionItemCount = attractions.size
+    val stampedAttractionItemCount = attractions.count { it.isStamped }
+
     Column(
         modifier = Modifier
             .padding(horizontal = 20.dp)
@@ -75,10 +80,10 @@ fun ChallengeStamp(
                     Row(
                         modifier = Modifier.weight(1f)
                     ) {
-                        attractions.forEachIndexed { index, attractionItem ->
+                        for (index in 0 until totalAttractionItemCount) {
                             LinearStampIndicator(
                                 modifier = Modifier.weight(1f),
-                                isCompleted = attractionItem.isStamped,
+                                isCompleted = index < stampedAttractionItemCount,
                             )
                             if (index > 0) {
                                 Spacer(modifier = Modifier.width(5.dp))
@@ -89,7 +94,7 @@ fun ChallengeStamp(
                     Spacer(modifier = Modifier.width(10.dp))
                     PpsText(
                         modifier = Modifier.wrapContentSize(),
-                        text = "0/1",
+                        text = "${stampedAttractionItemCount}/${totalAttractionItemCount}",
                         style = MaterialTheme.typography.labelSmall.copy(
                             color = CoolGray500,
                         )
@@ -107,9 +112,9 @@ fun ChallengeStamp(
                         .padding(top = 20.dp),
                     horizontalArrangement = Arrangement.SpaceAround
                 ) {
-                    attractions.forEachIndexed { index, attractionItem ->
+                    for (index in 0 until totalAttractionItemCount) {
                         StampIndicator(
-                            isCompleted = attractionItem.isStamped
+                            isCompleted = index < stampedAttractionItemCount,
                         )
                     }
                 }

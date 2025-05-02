@@ -97,15 +97,15 @@ interface ApiService {
         @Query("language") language: String,
     ): Response<List<ChallengeCulturalEventDto>?>
 
+    @GET(NetworkConfig.Service.CHALLENGE_LIST_SEOUL_MASTER)
+    suspend fun reqChallengeListSeoulMaster(
+        @Query("language") language: String,
+    ): Response<List<ChallengeCulturalEventDto>?>
+
     // Attraction
     @POST(NetworkConfig.Service.ATTRACTION_STAMP)
     suspend fun reqAttractionStamp(
         @Query("id") id: Int,
-    ): Response<AttractionStampDto?>
-
-    @POST(NetworkConfig.Service.ATTRACTION_STAMP)
-    suspend fun reqAttractionStampTest(
-        @Body body: AttractionStampReqData
     ): Response<AttractionStampDto?>
 
     @GET(NetworkConfig.Service.ATTRACTION + "/{id}")

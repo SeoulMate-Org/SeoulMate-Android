@@ -94,10 +94,6 @@ class AppState (
         viewModel.updateLanguage(languageCode)
     }
 
-    fun refreshUserToken() {
-        viewModel.refreshUserToken()
-    }
-
     fun expandBottomSheet() {
         coroutineScope.launch {
             bottomSheetScaffoldState.bottomSheetState.expand()
