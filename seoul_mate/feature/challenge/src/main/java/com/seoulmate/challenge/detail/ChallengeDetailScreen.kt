@@ -369,7 +369,8 @@ fun ChallengeDetailScreen(
                     ) {
                         Row(
                             modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically,
                         ) {
                             PpsText(
                                 modifier = Modifier.wrapContentSize(),
@@ -458,7 +459,7 @@ fun ChallengeDetailScreen(
                             shape = RoundedCornerShape(18.dp),
                         )
                         .constrainAs(floating) {
-                            linkTo(top = parent.top, bottom = bottomBar.bottom, bias = 1f)
+                            linkTo(top = parent.top, bottom = bottomBar.top, bias = 1f)
                             linkTo(start = parent.start, end = parent.end)
                         }
                 ) {

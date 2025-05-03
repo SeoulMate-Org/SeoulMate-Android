@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -30,6 +31,7 @@ import com.seoulmate.ui.theme.CoolGray50
 import com.seoulmate.ui.theme.CoolGray600
 import com.seoulmate.ui.theme.CoolGray900
 import com.seoulmate.ui.theme.SeoulMateTheme
+import com.seoulmate.ui.theme.TrueWhite
 import com.seoulmate.ui.theme.White
 
 @Composable
@@ -59,17 +61,21 @@ fun MyPageLoginInfo(
                 modifier = Modifier.weight(1f),
                 text = if (isLogin) nickname
                 else stringResource(R.string.my_page_need_login),
-                style = TextStyle(
-                    fontSize = 22.sp,
-                    color = CoolGray900,
+                style = MaterialTheme.typography.titleLarge.copy(
+                    color = CoolGray900
                 ),
-                fontWeight = FontWeight.SemiBold,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
             IconButton(
                 modifier = Modifier.size(40.dp),
-                onClick = {}
+                onClick = {
+                    if (isLogin) {
+                        onNickNameClick()
+                    } else {
+                        onLoginClick()
+                    }
+                }
             ) {
                 Icon(
                     painter = painterResource(com.seoulmate.ui.R.drawable.ic_arrow_right),
@@ -106,9 +112,8 @@ fun MyPageLoginInfo(
                         .wrapContentSize()
                         .padding(horizontal = 10.dp, vertical = 5.dp,),
                     text = stringResource(R.string.my_page_need_login_info),
-                    style = TextStyle(
-                        fontSize = 12.sp,
-                        color = White ,
+                    style = MaterialTheme.typography.labelLarge.copy(
+                        color = TrueWhite,
                     ),
                 )
             }

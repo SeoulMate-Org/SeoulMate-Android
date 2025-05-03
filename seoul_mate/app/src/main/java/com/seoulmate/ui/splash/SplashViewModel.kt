@@ -11,11 +11,10 @@ import com.seoulmate.data.ChallengeInfo
 import com.seoulmate.data.UserInfo
 import com.seoulmate.data.dto.CommonDto
 import com.seoulmate.data.dto.challenge.MyChallengeType
-import com.seoulmate.data.model.challenge.ChallengeCommentItem
 import com.seoulmate.data.model.challenge.ChallengeLocationItemData
 import com.seoulmate.data.model.challenge.ChallengeRankItemData
 import com.seoulmate.data.model.MyChallengeItemData
-import com.seoulmate.data.model.UserData
+import com.seoulmate.data.model.user.UserData
 import com.seoulmate.data.model.challenge.ChallengeCulturalEventData
 import com.seoulmate.data.model.challenge.ChallengeStampResponseData
 import com.seoulmate.data.model.challenge.ChallengeThemeItemData
@@ -31,6 +30,7 @@ import com.seoulmate.domain.usecase.GetMyChallengeItemListUseCase
 import com.seoulmate.domain.usecase.GetMyCommentListUseCase
 import com.seoulmate.domain.usecase.GetUserInfoUseCase
 import com.seoulmate.domain.usecase.RefreshTokenUseCase
+import com.seoulmate.domain.usecase.UpdateUserInfoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
@@ -48,12 +48,6 @@ data class SplashInitData(
     val lastStampedAttractionId: Int,
 )
 
-data class SplashChallengeInitData(
-    val responseMyChallengeList: CommonDto<List<MyChallengeItemData>>? = null,
-    val responseMyCommentList: CommonDto<List<ChallengeCommentItem>>? = null,
-    val responseMyChallengeLocationItemList: CommonDto<ChallengeLocationItemData>? = null,
-)
-
 @HiltViewModel
 class SplashViewModel @Inject constructor(
     private val preferDataStoreRepository: PreferDataStoreRepository,
@@ -68,6 +62,7 @@ class SplashViewModel @Inject constructor(
     private val getChallengeCulturalEventUseCase: GetChallengeCulturalEventUseCase,
     private val getChallengeSeoulMasterUseCase: GetChallengeSeoulMasterUseCase,
     private val fusedLocationProviderClient: FusedLocationProviderClient,
+    private val updateUserInfoUseCase: UpdateUserInfoUseCase,
 ): ViewModel() {
 
     private val _splashInitDataFlow = MutableSharedFlow<SplashInitData>()
@@ -119,8 +114,8 @@ class SplashViewModel @Inject constructor(
             Manifest.permission.ACCESS_COARSE_LOCATION]
     )
     fun getLocation() {
-        if (grantedLocationPermission.value) {
-            viewModelScope.launch {
+        viewModelScope.launch {
+            if (grantedLocationPermission.value) {
                 async {
                     fusedLocationProviderClient.lastLocation.addOnSuccessListener { location: Location? ->
                         location?. let {
@@ -129,88 +124,114 @@ class SplashViewModel @Inject constructor(
                         }
                     }
                 }.await()
-
-                finishedGetLocation.value = true
             }
+            finishedGetLocation.value = true
         }
+
     }
 
     fun reqInit() {
         viewModelScope.launch {
-            if (UserInfo.isUserLogin()) {
-                val myChallenge = getMyChallengeItemListUseCase(
+            // My Like Challenge
+            val deferredMyLikeChallenge = async {
+                var returnResult: CommonDto<List<MyChallengeItemData>>? = null
+                getMyChallengeItemListUseCase(
                     type = MyChallengeType.LIKE.type,
                     language = UserInfo.getLanguageCode(),
-                )
-                val myCommentList = getMyCommentListUseCase(
+                ).collectLatest {
+                    returnResult = it
+                }
+                return@async returnResult
+            }
+            // My Progress Challenge
+            val deferredMyProgressChallenge = async {
+                var returnResult: CommonDto<List<MyChallengeItemData>>? = null
+                getMyChallengeItemListUseCase(
+                    type = MyChallengeType.PROGRESS.type,
                     language = UserInfo.getLanguageCode(),
-                )
-                val myChallengeLocationList = getChallengeListLocationUseCase(
+                ).collectLatest {
+                    returnResult = it
+                }
+                return@async returnResult
+            }
+            // My Completed Challenge
+            val deferredMyCompleteChallenge = async {
+                var returnResult: CommonDto<List<MyChallengeItemData>>? = null
+                getMyChallengeItemListUseCase(
+                    type = MyChallengeType.COMPLETE.type,
+                    language = UserInfo.getLanguageCode(),
+                ).collectLatest {
+                    returnResult = it
+                }
+                return@async returnResult
+            }
+            // My ChallengeLocation
+            val deferredMyChallengeLocation = async {
+                var returnResult: CommonDto<ChallengeLocationItemData>? = null
+                getChallengeListLocationUseCase(
                     locationRequest = MyLocationReqData(
                         locationX = UserInfo.myLocationY,
                         locationY = UserInfo.myLocationX,
                     ),
                     language = UserInfo.getLanguageCode(),
-                )
+                ).collectLatest {
+                    returnResult = it
+                }
+                return@async returnResult
+            }
 
+            if (UserInfo.isUserLogin()) {
                 if (grantedLocationPermission.value) {
-                    combine(myChallenge, myCommentList, myChallengeLocationList) { myChallengeList, myCommentList, myChallengeLocationList ->
-                        SplashChallengeInitData(myChallengeList, myCommentList, myChallengeLocationList)
-                    }.collectLatest { data ->
-                        data.responseMyChallengeList?.let {
-                            if (it.code in 200..299) {
-                                UserInfo.myLikeChallengeList = it.response ?: listOf()
-                            } else if(it.code == 403) {
-                                needRefreshToken.value = true
-                                return@collectLatest
-                            }
+                    deferredMyLikeChallenge.await()?.let {
+                        if (it.code in 200..299) {
+                            UserInfo.myLikeChallengeList = it.response ?: listOf()
+                        } else if(it.code == 403) {
+                            needRefreshToken.value = true
+                            return@launch
                         }
-                        data.responseMyCommentList?.let {
-                            if (it.code in 200..299) {
-                                UserInfo.myCommentList = it.response ?: listOf()
-                            } else if(it.code == 403) {
-                                needRefreshToken.value = true
-                                return@collectLatest
-                            }
-                        }
-                        data.responseMyChallengeLocationItemList?.let {
-                            if (it.code in 200..299) {
-                                ChallengeInfo.challengeLocationData = it.response
-                            } else if(it.code == 401) {
-                                needRefreshToken.value = true
-                                return@collectLatest
-                            }
-                        }
-                        finishedFetchUserInfo.value = true
                     }
+
+                    deferredMyProgressChallenge.await()?.let {
+                        if (it.code in 200..299) {
+                            UserInfo.myProgressChallengeList = it.response ?: listOf()
+                        } else if(it.code == 403) {
+                            needRefreshToken.value = true
+                            return@launch
+                        }
+                    }
+
+                    deferredMyCompleteChallenge.await()?.let {
+                        if (it.code in 200..299) {
+                            UserInfo.myCompleteChallengeList = it.response ?: listOf()
+                        } else if(it.code == 403) {
+                            needRefreshToken.value = true
+                            return@launch
+                        }
+                    }
+
+                    deferredMyChallengeLocation.await()?.let {
+                        if (it.code in 200..299) {
+                            ChallengeInfo.challengeLocationData = it.response
+                        } else if(it.code == 401) {
+                            needRefreshToken.value = true
+                            return@launch
+                        }
+                    }
+                    finishedFetchUserInfo.value = true
                 } else {
-                    combine(myChallenge, myCommentList) { myChallengeList, myCommentList ->
-                        SplashChallengeInitData(myChallengeList, myCommentList)
-                    }.collectLatest { data ->
-                        data.responseMyChallengeList?.let {
-                            if (it.code in 200..299) {
-                                UserInfo.myLikeChallengeList = it.response ?: listOf()
-                            } else if(it.code == 403) {
-                                needRefreshToken.value = true
-                                return@collectLatest
-                            }
+                    deferredMyChallengeLocation.await()?.let {
+                        if (it.code in 200..299) {
+                            ChallengeInfo.challengeLocationData = it.response
+                        } else if(it.code == 401) {
+                            needRefreshToken.value = true
+                            return@launch
                         }
-                        data.responseMyCommentList?.let {
-                            if (it.code in 200..299) {
-                                UserInfo.myCommentList = it.response ?: listOf()
-                            } else if(it.code == 403) {
-                                needRefreshToken.value = true
-                                return@collectLatest
-                            }
-                        }
-                        finishedFetchUserInfo.value = true
                     }
+                    finishedFetchUserInfo.value = true
                 }
             } else {
                 finishedFetchUserInfo.value = true
             }
-
-
         }
     }
 
@@ -336,6 +357,13 @@ class SplashViewModel @Inject constructor(
                 response?.let {
                     UserInfo.refreshToken = it.refreshToken
                     UserInfo.accessToken = it.accessToken
+
+                    updateUserInfoUseCase(
+                        nickName = UserInfo.nickName,
+                        accessToken = it.accessToken,
+                        refreshToken = it.refreshToken,
+                        loginType = UserInfo.loginType,
+                    )
 
                     needRefreshToken.value = false
                 }

@@ -3,7 +3,6 @@ package com.seoulmate.domain.usecase
 import com.seoulmate.database.dao.UserDao
 import com.seoulmate.database.model.UserEntity
 import javax.inject.Inject
-import kotlin.math.log
 
 class SaveUserInfoUseCase @Inject constructor(
     private val userDao: UserDao,
@@ -15,7 +14,7 @@ class SaveUserInfoUseCase @Inject constructor(
         refreshToken: String,
         loginType: String,
     ) {
-        userDao.upsertUser(
+        userDao.insertUser(
             UserEntity(
                 id = 0,
                 nickName = nickName,

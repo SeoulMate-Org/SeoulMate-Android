@@ -123,4 +123,5 @@ object ChallengeDetailInfo {
     var title =""
     var commentList = listOf<ChallengeCommentItem>()
     var attractions: List<AttractionItem> = listOf()
+    var attractionDistance: List<Float?> = listOf()
 }

@@ -1,4 +1,19 @@
 <resources>
     <string name="app_name">SeoulMate</string>
-    <string name="title_activity_test">TestActivity</string>
+
+    <string name="str_next">다음</string>
+    <string name="str_start">시작하기!</string>
+    
+    <string name="str_onboarding_inext_0_1">마음에 드는 여행 챌린지를 골라요</string>
+    <string name="str_onboarding_inext_0_2">장소를 방문하고 스탬프를 직접 찍어요</string>
+    <string name="str_onboarding_inext_0_3">스탬프를 모아 배지를 획득해요</string>
+
+    <string name="str_onboarding_index_1_title">관광지를 방문하고\n스탬프를 찍어보세요!</string>
+    <string name="str_onboarding_index_1_sub">50m 이내로 가까워지면\n스탬프를 직접 찍을 수 있어요.</string>
+
+    <string name="str_onboarding_index_2_title">한국 감성 가득한 배지,\n다 모아볼까요?</string>
+    <string name="str_onboarding_index_2_sub">하나의 챌린지를 완성하면\n배지를 얻을 수 있어요.</string>
+
+    <string name="str_onboarding_index_3_title">하고 싶은 챌린지를\n‘찜’해 보세요!</string>
+    <string name="str_onboarding_index_3_sub">나만의 챌린지를 기록하고 다시 찾아보세요.</string>
 </resources>

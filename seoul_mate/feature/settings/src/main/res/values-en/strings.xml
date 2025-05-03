@@ -5,13 +5,17 @@
     <string name="language_ko">Korean</string>
     <string name="language_en">English</string>
 
+    <string name="language_change_title">adsdfsafsadf</string>
+    <string name="language_change_sub">aaaaaaabbbbbbbbbbcccccc</string>
+
     <string name="notification_title">Notification</string>
     <string name="app_push_notification_title">aaabbbccccc</string>
 
     <string name="badge_title">My Badge</string>
 
     <string name="nickname_title">Change Nickname</string>
-
+    <string name="nickname_sub">aaabbbccddd</string>
+    <string name="nickname_duplication">sasdfasdfsdf</string>
 
     <string name="badge_item_01">aaaaaaaaa</string>
     <string name="badge_item_02">bbbbbbbbb</string>

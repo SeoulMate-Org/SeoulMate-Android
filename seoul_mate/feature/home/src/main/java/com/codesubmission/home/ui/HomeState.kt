@@ -66,6 +66,7 @@ class HomeState(
     )
 
     fun navigate(route: String) {
+        navController.popBackStack()
         navController.navigate(route)
     }
 
@@ -130,6 +131,14 @@ class HomeState(
         val notificationManager: NotificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.createNotificationChannel(channel)
+    }
+
+    fun getAppVersion(): String? {
+        val packageInfo = navController.context.packageManager.getPackageInfo(
+            navController.context.packageName,
+            0
+        )
+        return packageInfo.versionName
     }
 
 }

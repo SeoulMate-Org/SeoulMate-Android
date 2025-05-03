@@ -15,6 +15,7 @@ import com.seoulmate.data.model.MyChallengeItemData
 import com.seoulmate.data.model.challenge.ChallengeStampResponseData
 import com.seoulmate.data.model.challenge.ChallengeThemeItemData
 import com.seoulmate.data.model.request.MyLocationReqData
+import com.seoulmate.data.model.user.UserInfoData
 import com.seoulmate.data.repository.PreferDataStoreRepository
 import com.seoulmate.domain.usecase.GetChallengeListLocationUseCase
 import com.seoulmate.domain.usecase.GetChallengeListRankUseCase
@@ -23,13 +24,14 @@ import com.seoulmate.domain.usecase.GetChallengeThemeItemListUseCase
 import com.seoulmate.domain.usecase.GetLoginInfoUseCase
 import com.seoulmate.domain.usecase.GetMyChallengeItemListUseCase
 import com.seoulmate.domain.usecase.GetMyCommentListUseCase
+import com.seoulmate.domain.usecase.GetMyPageUserInfoUseCase
 import com.seoulmate.domain.usecase.RefreshTokenUseCase
 import com.seoulmate.domain.usecase.SaveUserInfoUseCase
+import com.seoulmate.domain.usecase.UpdateUserInfoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -44,13 +46,14 @@ class LoginViewModel @Inject constructor(
     private val getLoginInfoUseCase: GetLoginInfoUseCase,
     private val refreshTokenUseCase: RefreshTokenUseCase,
     private val preferDataStoreRepository: PreferDataStoreRepository,
-    private val saveUserInfoUseCase: SaveUserInfoUseCase,
     private val getMyChallengeItemListUseCase: GetMyChallengeItemListUseCase,
     private val getMyCommentListUseCase: GetMyCommentListUseCase,
     private val getChallengeListLocationUseCase: GetChallengeListLocationUseCase,
     private val getChallengeThemeItemListUseCase: GetChallengeThemeItemListUseCase,
     private val getChallengeListRankUseCase: GetChallengeListRankUseCase,
     private val getChallengeListStampUseCase: GetChallengeListStampUseCase,
+    private val getMyPageUserInfoUseCase: GetMyPageUserInfoUseCase,
+    private val saveUserInfoUseCase: SaveUserInfoUseCase,
 ) : ViewModel() {
 
     var isShowLoading = mutableStateOf<Boolean?>(null)
@@ -92,67 +95,104 @@ class LoginViewModel @Inject constructor(
 
     fun getMyData(grantedLocationPermission: Boolean = false) {
         viewModelScope.launch {
-            val myChallengeList = getMyChallengeItemListUseCase(
-                type = MyChallengeType.LIKE.type,
-                language = UserInfo.getLanguageCode(),
-            )
-            val myCommentList = getMyCommentListUseCase(
-                language = UserInfo.getLanguageCode(),
-            )
-            val myChallengeLocationList = getChallengeListLocationUseCase(
-                locationRequest = MyLocationReqData(
-                    locationX = UserInfo.myLocationY,
-                    locationY = UserInfo.myLocationX,
-                ),
-                language = UserInfo.getLanguageCode(),
-            )
-
-            if(grantedLocationPermission) {
-                combine(myChallengeList, myCommentList, myChallengeLocationList) { challengeList, commentList, myChallengeLocationList ->
-                    LoginMyData(challengeList, commentList, myChallengeLocationList)
-                }.collectLatest { data ->
-                    data.responseMyChallengeList?.let {
-                        if (it.code in 200..299) {
-                            UserInfo.myLikeChallengeList = it.response ?: listOf()
-                        } else if(it.code == 403) {
-                            needRefreshToken.value = true
-                            return@collectLatest
-                        }
-                    }
-                    data.responseMyCommentList?.let {
-                        if (it.code in 200..299) {
-                            UserInfo.myCommentList = it.response ?: listOf()
-                        }
-                    }
-                    data.responseChallengeLocationItemList?.let {
-                        if (it.code in 200..299) {
-                            ChallengeInfo.challengeLocationData = it.response
-                        }
-                    }
-
-                    isShowLoading.value = false
-                    finishedFetchMyData.value = true
+            // My Like Challenge
+            val deferredMyLikeChallenge = async {
+                var returnResult: CommonDto<List<MyChallengeItemData>>? = null
+                getMyChallengeItemListUseCase(
+                    type = MyChallengeType.LIKE.type,
+                    language = UserInfo.getLanguageCode(),
+                ).collectLatest {
+                    returnResult = it
                 }
-            } else {
-                combine(myChallengeList, myCommentList) { challengeList, commentList ->
-                    LoginMyData(challengeList, commentList)
-                }.collectLatest { data ->
-                    data.responseMyChallengeList?.let {
-                        if (it.code in 200..299) {
-                            UserInfo.myLikeChallengeList = it.response ?: listOf()
-                        }
-                    }
-                    data.responseMyCommentList?.let {
-                        if (it.code in 200..299) {
-                            UserInfo.myCommentList = it.response ?: listOf()
-                        } 
-                    }
-
-                    isShowLoading.value = false
-                    finishedFetchMyData.value = true
+                return@async returnResult
+            }
+            // My Progress Challenge
+            val deferredMyProgressChallenge = async {
+                var returnResult: CommonDto<List<MyChallengeItemData>>? = null
+                getMyChallengeItemListUseCase(
+                    type = MyChallengeType.PROGRESS.type,
+                    language = UserInfo.getLanguageCode(),
+                ).collectLatest {
+                    returnResult = it
                 }
+                return@async returnResult
+            }
+            // My Completed Challenge
+            val deferredMyCompleteChallenge = async {
+                var returnResult: CommonDto<List<MyChallengeItemData>>? = null
+                getMyChallengeItemListUseCase(
+                    type = MyChallengeType.COMPLETE.type,
+                    language = UserInfo.getLanguageCode(),
+                ).collectLatest {
+                    returnResult = it
+                }
+                return@async returnResult
+            }
+            // My ChallengeLocation
+            val deferredMyChallengeLocation = async {
+                var returnResult: CommonDto<ChallengeLocationItemData>? = null
+                getChallengeListLocationUseCase(
+                    locationRequest = MyLocationReqData(
+                        locationX = UserInfo.myLocationY,
+                        locationY = UserInfo.myLocationX,
+                    ),
+                    language = UserInfo.getLanguageCode(),
+                ).collectLatest {
+                    returnResult = it
+                }
+                return@async returnResult
             }
 
+            if (grantedLocationPermission) {
+                deferredMyLikeChallenge.await()?.let {
+                    if (it.code in 200..299) {
+                        UserInfo.myLikeChallengeList = it.response ?: listOf()
+                    } else if (it.code == 403) {
+                        needRefreshToken.value = true
+                        return@launch
+                    }
+                }
+
+                deferredMyProgressChallenge.await()?.let {
+                    if (it.code in 200..299) {
+                        UserInfo.myProgressChallengeList = it.response ?: listOf()
+                    } else if (it.code == 403) {
+                        needRefreshToken.value = true
+                        return@launch
+                    }
+                }
+
+                deferredMyCompleteChallenge.await()?.let {
+                    if (it.code in 200..299) {
+                        UserInfo.myCompleteChallengeList = it.response ?: listOf()
+                    } else if (it.code == 403) {
+                        needRefreshToken.value = true
+                        return@launch
+                    }
+                }
+
+                deferredMyChallengeLocation.await()?.let {
+                    if (it.code in 200..299) {
+                        ChallengeInfo.challengeLocationData = it.response
+                    } else if (it.code == 401) {
+                        needRefreshToken.value = true
+                        return@launch
+                    }
+                }
+                isShowLoading.value = false
+                finishedFetchMyData.value = true
+            } else {
+                deferredMyChallengeLocation.await()?.let {
+                    if (it.code in 200..299) {
+                        ChallengeInfo.challengeLocationData = it.response
+                    } else if (it.code == 401) {
+                        needRefreshToken.value = true
+                        return@launch
+                    }
+                }
+                isShowLoading.value = false
+                finishedFetchMyData.value = true
+            }
         }
 
     }
@@ -243,9 +283,30 @@ class LoginViewModel @Inject constructor(
             deferredChallengeStampList.await()?.let {
                 if (it.code in 200..299) {
                     ChallengeInfo.challengeStampData = it.response
-                } else if(it.code == 403) {
+                } else if (it.code == 403) {
                     needRefreshToken.value = true
                     return@launch
+                }
+            }
+
+            // fetch MyPage Info
+            val deferredMyPageInfo = async {
+                var returnValue: CommonDto<UserInfoData?>? = null
+                getMyPageUserInfoUseCase().collectLatest {
+                    returnValue = it
+                }
+                return@async returnValue
+            }
+            deferredMyPageInfo.await()?.let {
+                if (it.code in 200..299) {
+                    it.response?.let { myPageResponse ->
+                        UserInfo.myPageInfo = myPageResponse
+                    }
+                } else if (it.code == 403) {
+                    needRefreshToken.value = true
+                    return@launch
+                } else {
+
                 }
             }
 

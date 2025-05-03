@@ -8,6 +8,7 @@ import com.seoulmate.data.dto.challenge.ChallengeItemAllDto
 import com.seoulmate.data.dto.challenge.ChallengeItemDetailDto
 import com.seoulmate.data.dto.challenge.ChallengeItemLikeDto
 import com.seoulmate.data.dto.challenge.ChallengeLocationItemDto
+import com.seoulmate.data.dto.challenge.ChallengeMyBadgeDto
 import com.seoulmate.data.dto.challenge.ChallengeRankItemDto
 import com.seoulmate.data.dto.challenge.ChallengeStampItemDto
 import com.seoulmate.data.dto.challenge.ChallengeStatusDto
@@ -120,5 +121,11 @@ interface ChallengeRepository {
     suspend fun reqMyCommentList(
         language: String,
     ): Flow<CommonDto<List<CommentContentDto>>>
+
+    // fetch challenge my badge
+    suspend fun reqMyBadge(
+        themeId: Int,
+        languageCode: String,
+    ): Flow<CommonDto<List<ChallengeMyBadgeDto>>>
 
 }

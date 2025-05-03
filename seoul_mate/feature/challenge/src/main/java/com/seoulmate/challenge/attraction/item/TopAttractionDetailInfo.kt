@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,6 +26,7 @@ import coil.request.ImageRequest
 import com.seoulmate.data.model.attraction.AttractionDetailData
 import com.seoulmate.ui.component.ChallengeInterestButton
 import com.seoulmate.ui.component.PpsText
+import com.seoulmate.ui.theme.Color2B2B2B
 import com.seoulmate.ui.theme.CoolGray25
 import com.seoulmate.ui.theme.CoolGray300
 import com.seoulmate.ui.theme.CoolGray50
@@ -84,20 +86,18 @@ fun TopAttractionDetailInfo(
             PpsText(
                 modifier = Modifier.wrapContentSize(),
                 text = item.name,
-                style = TextStyle(
-                    fontSize = 13.sp,
-                    color = CoolGray50,
+                style = MaterialTheme.typography.titleSmall.copy(
+                    color = Color2B2B2B,
                 ),
-                maxLines = 1,
+                maxLines = 3,
                 overflow = TextOverflow.Ellipsis,
             )
-            Spacer(modifier = Modifier.height(35.dp))
+            Spacer(modifier = Modifier.height(8.dp))
             // Description
             PpsText(
                 modifier = Modifier.wrapContentSize(),
                 text = item.description,
-                style = TextStyle(
-                    fontSize = 13.sp,
+                style = MaterialTheme.typography.labelLarge.copy(
                     color = CoolGray300,
                 ),
             )

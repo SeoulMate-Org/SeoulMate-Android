@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -48,11 +49,9 @@ fun MyPageServiceInfo(
                 PpsText(
                     modifier = Modifier.weight(1f),
                     text = stringResource(R.string.my_page_service_info),
-                    style = TextStyle(
-                        fontSize = 16.sp,
-                        color = CoolGray900,
-                    ),
-                    fontWeight = FontWeight.SemiBold,
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        color = CoolGray900
+                    )
                 )
                 IconButton(
                     modifier = Modifier.size(40.dp),
@@ -74,11 +73,9 @@ fun MyPageServiceInfo(
                 PpsText(
                     modifier = Modifier.weight(1f),
                     text = stringResource(R.string.my_page_faq),
-                    style = TextStyle(
-                        fontSize = 16.sp,
-                        color = CoolGray900,
-                    ),
-                    fontWeight = FontWeight.SemiBold,
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        color = CoolGray900
+                    )
                 )
                 IconButton(
                     modifier = Modifier.size(40.dp),
@@ -102,7 +99,7 @@ fun MyPageServiceInfo(
                 ),
             verticalArrangement = Arrangement.Center,
         ) {
-            // Service info
+            // Terms of User
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -111,12 +108,10 @@ fun MyPageServiceInfo(
             ) {
                 PpsText(
                     modifier = Modifier.weight(1f),
-                    text = stringResource(R.string.my_page_service_info),
-                    style = TextStyle(
-                        fontSize = 16.sp,
-                        color = CoolGray900,
-                    ),
-                    fontWeight = FontWeight.SemiBold,
+                    text = stringResource(R.string.my_page_terms_of_use),
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        color = CoolGray900
+                    )
                 )
                 IconButton(
                     modifier = Modifier.size(40.dp),
@@ -128,7 +123,7 @@ fun MyPageServiceInfo(
                     )
                 }
             }
-            // FAQ
+            // Terms of Personal Info
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -137,12 +132,34 @@ fun MyPageServiceInfo(
             ) {
                 PpsText(
                     modifier = Modifier.weight(1f),
-                    text = stringResource(R.string.my_page_faq),
-                    style = TextStyle(
-                        fontSize = 16.sp,
-                        color = CoolGray900,
-                    ),
-                    fontWeight = FontWeight.SemiBold,
+                    text = stringResource(R.string.my_page_terms_of_personal_info),
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        color = CoolGray900
+                    )
+                )
+                IconButton(
+                    modifier = Modifier.size(40.dp),
+                    onClick = {}
+                ) {
+                    Icon(
+                        painter = painterResource(com.seoulmate.ui.R.drawable.ic_arrow_right),
+                        contentDescription = "Setting Notification",
+                    )
+                }
+            }
+            // Terms of Location
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp, vertical = 10.dp,),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                PpsText(
+                    modifier = Modifier.weight(1f),
+                    text = stringResource(R.string.my_page_terms_of_location),
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        color = CoolGray900
+                    )
                 )
                 IconButton(
                     modifier = Modifier.size(40.dp),

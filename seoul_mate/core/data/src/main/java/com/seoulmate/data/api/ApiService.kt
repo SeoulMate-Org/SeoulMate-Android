@@ -7,6 +7,7 @@ import com.seoulmate.data.dto.challenge.ChallengeItemAllDto
 import com.seoulmate.data.dto.challenge.ChallengeItemDetailDto
 import com.seoulmate.data.dto.challenge.ChallengeItemLikeDto
 import com.seoulmate.data.dto.challenge.ChallengeLocationItemDto
+import com.seoulmate.data.dto.challenge.ChallengeMyBadgeDto
 import com.seoulmate.data.dto.challenge.ChallengeRankItemDto
 import com.seoulmate.data.dto.challenge.ChallengeStampItemDto
 import com.seoulmate.data.dto.challenge.ChallengeStatusDto
@@ -16,6 +17,7 @@ import com.seoulmate.data.dto.challenge.MyChallengeDto
 import com.seoulmate.data.dto.comment.CommentContentDto
 import com.seoulmate.data.dto.comment.CommentDto
 import com.seoulmate.data.dto.comment.WriteCommentDto
+import com.seoulmate.data.dto.user.UserInfoDto
 import com.seoulmate.data.dto.user.UserNicknameDto
 import com.seoulmate.data.model.request.AttractionStampReqData
 import com.seoulmate.data.model.request.MyLocationReqData
@@ -102,6 +104,12 @@ interface ApiService {
         @Query("language") language: String,
     ): Response<List<ChallengeCulturalEventDto>?>
 
+    @GET(NetworkConfig.Service.CHALLENGE_MY_BADGE)
+    suspend fun reqChallengeMyBadge(
+        @Query("themeId") themeId: Int,
+        @Query("language") language: String,
+    ): Response<List<ChallengeMyBadgeDto>>
+
     // Attraction
     @POST(NetworkConfig.Service.ATTRACTION_STAMP)
     suspend fun reqAttractionStamp(
@@ -141,5 +149,8 @@ interface ApiService {
     suspend fun reqUserNickname(
         @Query("nickname") nickname: String,
     ): Response<UserNicknameDto>
+
+    @GET(NetworkConfig.Service.USER_INFO)
+    suspend fun reqUserInfo(): Response<UserInfoDto>
 
 }

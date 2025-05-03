@@ -42,7 +42,7 @@ class GetChallengeItemDetailUseCase @Inject constructor(
                             isStamped = attractionItem.isStamped,
                             stampCount = attractionItem.stampCount,
                             address = attractionItem.address,
-                            imageUrl = "",
+                            imageUrl = attractionItem.imageUrl ?: "",
                         )
                     )
                 }

@@ -28,7 +28,7 @@ class SplashActivity : ComponentActivity()  {
 
     companion object {
         const val SCREEN_KEY = "SCREEN_KEY"
-        const val LOGIN_SCREEN = "LOGIN_SCREEN"
+        const val FIRST_SCREEN = "FIRST_SCREEN"
     }
 
     var isFirst = mutableStateOf(true)
@@ -146,7 +146,7 @@ class SplashActivity : ComponentActivity()  {
         startActivity(
             Intent(this, MainActivity::class.java)
                 .apply {
-                    putExtra(SCREEN_KEY, LOGIN_SCREEN)
+                    putExtra(SCREEN_KEY, FIRST_SCREEN)
                 }
         )
         finish()

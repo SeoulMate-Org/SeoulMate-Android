@@ -15,8 +15,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -28,8 +30,10 @@ import androidx.compose.ui.unit.sp
 import com.codesubmission.settings.R
 import com.seoulmate.data.UserInfo
 import com.seoulmate.datastore.repository.Language
+import com.seoulmate.ui.component.PpsAlertDialog
 import com.seoulmate.ui.component.PpsButton
 import com.seoulmate.ui.component.PpsText
+import com.seoulmate.ui.component.Screen
 import com.seoulmate.ui.theme.Blue500
 import com.seoulmate.ui.theme.CoolGray400
 import com.seoulmate.ui.theme.CoolGray900
@@ -45,8 +49,11 @@ fun SettingLanguageScreen(
         Language.KOREAN.code,
         Language.ENGLISH.code
     )
+
     val selectedOption
     = remember { mutableStateOf(languageList[0]) }
+
+    var showAlertDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         if (UserInfo.localeLanguage == Language.KOREAN.code) {
@@ -151,9 +158,26 @@ fun SettingLanguageScreen(
                     .fillMaxWidth()
                     .padding(15.dp),
                 stringRes = com.seoulmate.ui.R.string.str_complete,
+                cornerRound = 15.dp,
             ) {
-                onCompleteClick(selectedOption.value)
+                showAlertDialog = true
             }
+        }
+
+        if(showAlertDialog) {
+            PpsAlertDialog(
+                titleRes = R.string.language_change_title,
+                descriptionRes = R.string.language_change_sub,
+                confirmRes = com.seoulmate.ui.R.string.str_confirm,
+                cancelRes = com.seoulmate.ui.R.string.str_cancel,
+                onClickCancel = {
+                    showAlertDialog = false
+                },
+                onClickConfirm = {
+                    onCompleteClick(selectedOption.value)
+                    showAlertDialog = false
+                },
+            )
         }
     }
 }

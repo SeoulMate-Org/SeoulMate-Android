@@ -4,20 +4,17 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.core.os.LocaleListCompat
 import androidx.lifecycle.lifecycleScope
-import com.seoulmate.data.UserInfo
 import com.seoulmate.navigation.MainNavHost
-import com.seoulmate.ui.AppState
-import com.seoulmate.ui.component.Screen
 import com.seoulmate.ui.rememberAppState
+import com.seoulmate.ui.splash.SplashActivity
+import com.seoulmate.ui.splash.SplashActivity.Companion.SCREEN_KEY
 import com.seoulmate.ui.theme.SeoulMateTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -41,7 +38,7 @@ class MainActivity : ComponentActivity() {
                     appState = rememberAppState(
                         context = this,
                         viewModel = viewModel,
-                        startLogin = !intent.getStringExtra("SCREEN_KEY").isNullOrEmpty()
+                        isFirst = !intent.getStringExtra(SCREEN_KEY).isNullOrEmpty()
                     ),
                 )
             }

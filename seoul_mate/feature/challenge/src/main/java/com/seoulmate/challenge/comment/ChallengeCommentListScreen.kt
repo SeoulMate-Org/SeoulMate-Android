@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
@@ -18,8 +19,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
+import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TopAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -41,14 +44,17 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.seoulmate.challenge.R
 import com.seoulmate.data.ChallengeDetailInfo
+import com.seoulmate.data.UserInfo
 import com.seoulmate.ui.component.ChallengeCommentItemLayout
 import com.seoulmate.ui.component.PpsText
 import com.seoulmate.ui.noRippleClickable
 import com.seoulmate.ui.theme.Black
 import com.seoulmate.ui.theme.CoolGray25
+import com.seoulmate.ui.theme.CoolGray300
 import com.seoulmate.ui.theme.CoolGray900
 import com.seoulmate.ui.theme.SeoulMateTheme
 import com.seoulmate.ui.theme.TrueWhite
+import com.seoulmate.ui.theme.White
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -64,6 +70,18 @@ fun ChallengeCommentListScreen(
         viewModel.commentList.value = ChallengeDetailInfo.commentList
     }
 
+    LaunchedEffect(viewModel.completedWrite.value) {
+        if(viewModel.completedWrite.value) {
+            viewModel.completedWrite.value = false
+
+            viewModel.getCommentList(
+                id = ChallengeDetailInfo.id,
+                language = UserInfo.getLanguageCode(),
+            )
+        }
+
+    }
+
     Scaffold (
         topBar = {
             CenterAlignedTopAppBar(
@@ -73,7 +91,7 @@ fun ChallengeCommentListScreen(
                 title = {
                     PpsText(
                         modifier = Modifier.wrapContentSize(),
-                        text = stringResource(R.string.title_comment),
+                        text = stringResource(R.string.comment_list_title),
                         style = MaterialTheme.typography.titleSmall.copy(
                             color = CoolGray900,
                         )
@@ -113,7 +131,8 @@ fun ChallengeCommentListScreen(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(CoolGray25),
+                    .background(White)
+                    .imePadding(),
             ) {
                 // Comment List
                 Box(modifier = Modifier.weight(1f)) {
@@ -128,9 +147,15 @@ fun ChallengeCommentListScreen(
                     } else {
                         LazyColumn {
                             items(viewModel.commentList.value.size) { index ->
-                                ChallengeCommentItemLayout(
-                                    item = viewModel.commentList.value[index],
-                                )
+                                Box(
+                                    modifier = Modifier
+                                        .padding(horizontal = 20.dp, vertical = 11.dp)
+                                ) {
+                                    ChallengeCommentItemLayout(
+                                        item = viewModel.commentList.value[index],
+                                    )
+                                }
+
                             }
                         }
                     }
@@ -168,6 +193,15 @@ fun ChallengeCommentListScreen(
                         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                         keyboardActions = KeyboardActions(
                             onDone = { focusManager.clearFocus() }),
+                        placeholder = {
+                            PpsText(
+                                modifier = Modifier,
+                                text = stringResource(R.string.comment_hint),
+                                style = MaterialTheme.typography.labelLarge.copy(
+                                    color = CoolGray300,
+                                )
+                            )
+                        }
                     )
 
                 }

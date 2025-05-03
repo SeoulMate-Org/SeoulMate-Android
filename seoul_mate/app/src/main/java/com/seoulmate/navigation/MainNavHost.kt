@@ -17,12 +17,12 @@ import com.seoulmate.challenge.detail.ChallengeDetailScreen
 import com.seoulmate.challenge.comment.ChallengeCommentListScreen
 import com.seoulmate.challenge.rank.ChallengeRankListScreen
 import com.seoulmate.challenge.theme.ChallengeThemeListScreen
-import com.seoulmate.data.model.PlaceInfoData
 import com.seoulmate.login.LoginScreen
 import com.seoulmate.places.ui.PlaceInfoDetailScreen
 import com.seoulmate.ui.AppState
 import com.seoulmate.ui.component.Screen
 import com.seoulmate.ui.component.ScreenGraph
+import com.seoulmate.ui.onboarding.OnBoardingScreen
 import com.seoulmate.ui.splash.SplashActivity
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -44,6 +44,15 @@ fun MainNavHost(
                 onSuccessLogin = {
                     appState.navController.popBackStack()
                 }
+            )
+        }
+        composable(route = Screen.OnBoarding.route) {
+            OnBoardingScreen(
+                appState = appState,
+                goLogin =  {
+                    appState.navController.popBackStack()
+                    appState.navigate(Screen.Login)
+                },
             )
         }
         // TODO chan need remove
@@ -84,6 +93,10 @@ fun MainNavHost(
                 bottomSheetScaffoldState = appState.bottomSheetScaffoldState,
                 onBackClick = { appState.navController.popBackStack() },
                 expandBottomSheet = { appState.expandBottomSheet() },
+                onAttractionClick = { attractionId ->
+                    appState.selectedAttractionItemId.intValue = attractionId
+                    appState.navigate(Screen.AttractionDetail)
+                }
             )
         }
         composable(route = Screen.ChallengeCommentList.route) {

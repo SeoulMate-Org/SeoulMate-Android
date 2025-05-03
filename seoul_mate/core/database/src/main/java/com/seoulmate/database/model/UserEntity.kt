@@ -3,7 +3,7 @@ package com.seoulmate.database.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.seoulmate.data.model.UserData
+import com.seoulmate.data.model.user.UserData
 
 @Entity (
     tableName = "userInfo"

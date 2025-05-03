@@ -5,12 +5,17 @@
     <string name="language_ko">한국어</string>
     <string name="language_en">영어</string>
 
+    <string name="language_change_title">언어를 변경할까요?</string>
+    <string name="language_change_sub">앱이 새로고침되며 변경된 언어가 적용되요.</string>
+
     <string name="notification_title">알림</string>
     <string name="app_push_notification_title">앱 푸시 알림 설정</string>
 
     <string name="badge_title">내 배지</string>
 
     <string name="nickname_title">닉네임 변경</string>
+    <string name="nickname_sub">닉네임을 2~15자로 입력해주세요.</string>
+    <string name="nickname_duplication">사용 중인 닉네임입니다.</string>
 
     <string name="badge_item_01">문화 행사 연계</string>
     <string name="badge_item_02">핵심 관광지 정복</string>

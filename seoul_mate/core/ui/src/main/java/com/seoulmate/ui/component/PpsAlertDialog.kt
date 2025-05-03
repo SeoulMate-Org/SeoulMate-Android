@@ -111,6 +111,7 @@ fun PpsAlertDialog(
                             borderColor = CoolGray50,
                             fontColor = Black,
                             onClick = onClickCancel,
+                            cornerRound = 15.dp,
                         )
 
                         Spacer(modifier = Modifier.width(10.dp))
@@ -120,6 +121,7 @@ fun PpsAlertDialog(
                         modifier = Modifier.weight(1f),
                         stringRes = confirmRes,
                         onClick = onClickConfirm,
+                        cornerRound = 15.dp,
                     )
                 }
 

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SeoulMate</string>
+
+    <string name="str_next">Next</string>
+    <string name="str_start">Lets go!</string>
+
+    <string name="str_onboarding_inext_0_1">Pick a travel challenge you like</string>
+    <string name="str_onboarding_inext_0_2">isit and stamp each spot</string>
+    <string name="str_onboarding_inext_0_3">Collect stamps and earn badges</string>
+
+    <string name="str_onboarding_index_1_title">Visit spots,\nstamp your trip!</string>
+    <string name="str_onboarding_index_1_sub">You can stamp it\nwhen you’re within 50m of the spot.</string>
+
+    <string name="str_onboarding_index_2_title">Collect\nKorea-style badges!</string>
+    <string name="str_onboarding_index_2_sub">Complete a challenge to unlock a badge.\n‘JJIM’ means saving your favorite challenge.</string>
+
+    <string name="str_onboarding_index_3_title">‘JJIM’ challenges\nyou want to try!</string>
+    <string name="str_onboarding_index_3_sub">Save and revisit\nyour favorite challenges later.</string>
+</resources>

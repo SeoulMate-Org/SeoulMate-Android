@@ -1,11 +1,13 @@
 package com.seoulmate.challenge.attraction
 
+import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.seoulmate.data.ChallengeDetailInfo
 import com.seoulmate.data.UserInfo
 import com.seoulmate.data.model.attraction.AttractionDetailData
+import com.seoulmate.data.repository.GeocodeRepository
 import com.seoulmate.domain.usecase.GetAttractionDetailUseCase
 import com.seoulmate.domain.usecase.ReqAttractionLikeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,6 +19,7 @@ import javax.inject.Inject
 class AttractionDetailViewModel @Inject constructor(
     private val getAttractionDetailUseCase: GetAttractionDetailUseCase,
     private val reqAttractionLikeUseCase: ReqAttractionLikeUseCase,
+    private val geocodeRepository: GeocodeRepository,
 ): ViewModel() {
 
     var isShowLoading = mutableStateOf(false)
@@ -34,6 +37,7 @@ class AttractionDetailViewModel @Inject constructor(
                 isShowLoading.value = false
                 if (response.code in 200..299) {
                     attractionItem.value = response.response
+//                    test()
                 } else if (response.code == 403) {
                     if (UserInfo.isUserLogin()) {
                         // Need Refresh Token
@@ -43,6 +47,20 @@ class AttractionDetailViewModel @Inject constructor(
                     }
                 }
             }
+        }
+    }
+
+    fun test() {
+        viewModelScope.launch {
+            attractionItem.value?.let {
+                geocodeRepository.getMapStatic(
+                    x = it.locationX,
+                    y = it.locationY
+                ).collectLatest { item ->
+                    Log.d("@@@@@@@", "item")
+                }
+            }
+
         }
     }
 

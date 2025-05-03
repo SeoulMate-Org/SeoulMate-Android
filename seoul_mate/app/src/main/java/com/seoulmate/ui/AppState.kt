@@ -26,7 +26,7 @@ fun rememberAppState(
     navController: NavHostController = rememberNavController(),
     bottomSheetState: BottomSheetScaffoldState = rememberBottomSheetScaffoldState(),
     context: Context,
-    startLogin: Boolean = false,
+    isFirst: Boolean = false,
     viewModel: MainViewModel,
 ): AppState = remember(
     navController,
@@ -37,7 +37,7 @@ fun rememberAppState(
         coroutineScope = coroutineScope,
         context = context,
         viewModel = viewModel,
-        startLogin = startLogin,
+        isFirst = isFirst,
         bottomSheetScaffoldState = bottomSheetState,
     )
 }
@@ -50,7 +50,7 @@ class AppState (
     private val context: Context,
     private val viewModel: MainViewModel,
     val bottomSheetScaffoldState: BottomSheetScaffoldState,
-    startLogin: Boolean = false,
+    isFirst: Boolean = false,
 ) {
     private val previousDestination = mutableStateOf<NavDestination?>(null)
     val selectedChallengeItemId = mutableIntStateOf(0)
@@ -59,7 +59,7 @@ class AppState (
     private var isShowServiceLoading = viewModel.isShowLoading.value
     private var userData = mutableStateOf(viewModel.userData.value)
 
-    private var firstShowLogin = mutableStateOf(startLogin)
+    private var firstShowLogin = mutableStateOf(isFirst)
 
     val currentDestination: NavDestination?
         @Composable get() {
@@ -86,7 +86,7 @@ class AppState (
     fun firstShowLogin() {
         if (firstShowLogin.value) {
             firstShowLogin.value = false
-            navController.navigate(Screen.Login.route)
+            navController.navigate(Screen.OnBoarding.route)
         }
     }
 

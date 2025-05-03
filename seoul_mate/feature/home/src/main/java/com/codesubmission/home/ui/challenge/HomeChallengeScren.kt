@@ -13,6 +13,7 @@ import com.codesubmission.home.ui.HomeState
 import com.codesubmission.home.ui.challenge.tabpage.CompleteChallengeTabScreen
 import com.codesubmission.home.ui.challenge.tabpage.InProgressChallengeTabScreen
 import com.codesubmission.home.ui.challenge.tabpage.InterestChallengeTabScreen
+import com.seoulmate.data.UserInfo
 import com.seoulmate.data.dto.challenge.MyChallengeType
 import com.seoulmate.data.model.challenge.ChallengeItemData
 import com.seoulmate.ui.theme.TrueWhite
@@ -93,18 +94,18 @@ fun HomeChallengeScreen(
             ) { index ->
                 when(tabList[index]) {
                     ChallengeTabItem.Interest -> InterestChallengeTabScreen(
-                        itemList = viewModel.myLikeChallengeList.value,
+                        itemList = UserInfo.myLikeChallengeList,
                         onItemClick = onChallengeItemClick,
                         onItemLikeClick = { challengeId ->
                             viewModel.reqChallengeLike(challengeId)
                         },
                     )
                     ChallengeTabItem.InProgress -> InProgressChallengeTabScreen(
-                        itemList = viewModel.myProgressChallengeList.value,
+                        itemList = UserInfo.myProgressChallengeList,
                         onItemClick = onChallengeItemClick,
                     )
                     ChallengeTabItem.Complete -> CompleteChallengeTabScreen(
-                        itemList = viewModel.myCompleteChallengeList.value,
+                        itemList = UserInfo.myCompleteChallengeList,
                         onItemClick = onChallengeItemClick,
                         onItemLikeClick = { challengeId ->
                             viewModel.reqChallengeLike(challengeId)

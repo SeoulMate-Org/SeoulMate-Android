@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,6 +23,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.codesubmission.home.R
+import com.seoulmate.data.UserInfo
 import com.seoulmate.ui.component.PpsText
 import com.seoulmate.ui.noRippleClickable
 import com.seoulmate.ui.theme.Blue500
@@ -57,18 +59,15 @@ fun MyPagePermission(
             PpsText(
                 modifier = Modifier.weight(1f),
                 text = stringResource(R.string.my_page_language),
-                style = TextStyle(
-                    fontSize = 16.sp,
-                    color = CoolGray900,
-                ),
-                fontWeight = FontWeight.SemiBold,
+                style = MaterialTheme.typography.bodyMedium.copy(
+                    color = CoolGray900
+                )
             )
             PpsText(
                 modifier = Modifier.wrapContentWidth(),
-                text = "한국어",
-                style = TextStyle(
-                    fontSize = 12.sp,
-                    color = Blue500,
+                text = if(UserInfo.getLanguageCode() == "KOR") "한국어" else "English",
+                style = MaterialTheme.typography.labelLarge.copy(
+                    color = Blue500
                 ),
             )
         }
@@ -85,11 +84,9 @@ fun MyPagePermission(
             PpsText(
                 modifier = Modifier.weight(1f),
                 text = stringResource(R.string.my_page_notification),
-                style = TextStyle(
-                    fontSize = 16.sp,
-                    color = CoolGray900,
-                ),
-                fontWeight = FontWeight.SemiBold,
+                style = MaterialTheme.typography.bodyMedium.copy(
+                    color = CoolGray900
+                )
             )
             IconButton(
                 modifier = Modifier.size(40.dp),
@@ -112,20 +109,16 @@ fun MyPagePermission(
                 PpsText(
                     modifier = Modifier.wrapContentWidth(),
                     text = stringResource(R.string.my_page_location),
-                    style = TextStyle(
-                        fontSize = 16.sp,
-                        color = CoolGray900,
-                    ),
-                    fontWeight = FontWeight.SemiBold,
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        color = CoolGray900
+                    )
                 )
                 PpsText(
                     modifier = Modifier.padding(horizontal = 10.dp),
                     text = stringResource(R.string.my_page_select),
-                    style = TextStyle(
-                        fontSize = 12.sp,
+                    style = MaterialTheme.typography.labelLarge.copy(
                         color = CoolGray400,
-                    ),
-                    fontWeight = FontWeight.SemiBold,
+                    )
                 )
             }
             IconButton(

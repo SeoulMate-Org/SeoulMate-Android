@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -20,11 +21,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.seoulmate.data.model.challenge.ChallengeCommentItem
 import com.seoulmate.ui.R
+import com.seoulmate.ui.noRippleClickable
+import com.seoulmate.ui.theme.ColorBlueComment
 import com.seoulmate.ui.theme.CoolGray25
 import com.seoulmate.ui.theme.CoolGray300
 import com.seoulmate.ui.theme.CoolGray700
 import com.seoulmate.ui.theme.CoolGray900
 import com.seoulmate.ui.theme.SeoulMateTheme
+import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.Locale
+import java.util.TimeZone
 
 @Composable
 fun ChallengeCommentItemLayout(
@@ -42,8 +50,9 @@ fun ChallengeCommentItemLayout(
         ) {
             Icon(
                 modifier = Modifier.size(20.dp),
-                painter = painterResource(R.drawable.ic_bottom_nav_fill_favorite),
+                painter = painterResource(R.drawable.ic_comment),
                 contentDescription = "User Icon",
+                tint = ColorBlueComment,
             )
             PpsText(
                 modifier = Modifier
@@ -55,6 +64,14 @@ fun ChallengeCommentItemLayout(
                 ),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
+            )
+            Icon(
+                modifier = Modifier
+                    .size(16.dp)
+                    .noRippleClickable {  },
+                painter = painterResource(R.drawable.ic_more),
+                contentDescription = "More Icon",
+                tint = CoolGray300,
             )
         }
         // Comment Content
@@ -70,7 +87,7 @@ fun ChallengeCommentItemLayout(
         PpsText(
             modifier = Modifier.wrapContentSize()
                 .padding(top = 3.dp),
-            text = item.createdAt,
+            text = dateFormatString(item.createdAt),
             style = MaterialTheme.typography.labelLarge.copy(
                 color = CoolGray300,
             ),
@@ -78,6 +95,33 @@ fun ChallengeCommentItemLayout(
             overflow = TextOverflow.Ellipsis,
         )
     }
+}
+
+fun convertToCustomFormat(input: String): String {
+    val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS")
+    val outputFormatter = DateTimeFormatter.ofPattern("yyyyMMdd HH:mm")
+
+    val dateTime = LocalDateTime.parse(input, inputFormatter)
+    return dateTime.format(outputFormatter)
+}
+
+/** 날짜 형식변경 - ["yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"] -> ["yyyy-MM-dd HH:mm"] */
+fun dateFormatString(date: String): String{
+    try {
+        val oldFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS")   // 받은 데이터 형식
+        //oldFormat.timeZone = TimeZone.getTimeZone("UTC")
+        oldFormat.timeZone = TimeZone.getTimeZone("Asia/Seoul")
+        val oldDate = oldFormat.parse(date)
+
+        val newFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.KOREAN) // 바꿀 데이터 형식
+        newFormat.timeZone = TimeZone.getTimeZone("Asia/Seoul")                 //ex) "2016-11-01T15:25"
+
+        return newFormat.format(oldDate)
+    } catch (e: Exception) {
+
+    }
+
+    return ""
 }
 
 @Preview

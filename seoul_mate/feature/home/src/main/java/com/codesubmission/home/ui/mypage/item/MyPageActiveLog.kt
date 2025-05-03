@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -61,16 +62,14 @@ fun MyPageActiveLog(
             PpsText(
                 modifier = Modifier.wrapContentSize(),
                 text = stringResource(R.string.my_page_badge),
-                style = TextStyle(
-                    fontSize = 13.sp,
+                style = MaterialTheme.typography.labelSmall.copy(
                     color = CoolGray400,
                 ),
             )
             PpsText(
                 modifier = Modifier.wrapContentSize(),
                 text = if (cntBadge == 0) "-" else cntBadge.toString(),
-                style = TextStyle(
-                    fontSize = 16.sp,
+                style = MaterialTheme.typography.bodyMedium.copy(
                     color = Black,
                 ),
             )
@@ -92,16 +91,14 @@ fun MyPageActiveLog(
             PpsText(
                 modifier = Modifier.wrapContentSize(),
                 text = stringResource(R.string.my_page_favorite),
-                style = TextStyle(
-                    fontSize = 13.sp,
+                style = MaterialTheme.typography.labelSmall.copy(
                     color = CoolGray400,
                 ),
             )
             PpsText(
                 modifier = Modifier.wrapContentSize(),
                 text = if (cntFavorite == 0) "-" else cntFavorite.toString(),
-                style = TextStyle(
-                    fontSize = 16.sp,
+                style = MaterialTheme.typography.bodyMedium.copy(
                     color = Black,
                 ),
             )
@@ -123,16 +120,14 @@ fun MyPageActiveLog(
             PpsText(
                 modifier = Modifier.wrapContentSize(),
                 text = stringResource(R.string.my_page_reply),
-                style = TextStyle(
-                    fontSize = 13.sp,
+                style = MaterialTheme.typography.labelSmall.copy(
                     color = CoolGray400,
                 ),
             )
             PpsText(
                 modifier = Modifier.wrapContentSize(),
                 text = if (cntComment == 0) "-" else cntComment.toString(),
-                style = TextStyle(
-                    fontSize = 16.sp,
+                style = MaterialTheme.typography.bodyMedium.copy(
                     color = Black,
                 ),
             )

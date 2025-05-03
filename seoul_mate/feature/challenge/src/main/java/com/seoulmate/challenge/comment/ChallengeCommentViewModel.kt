@@ -21,6 +21,8 @@ class ChallengeCommentViewModel @Inject constructor(
 ): ViewModel(){
     var commentList = mutableStateOf<List<ChallengeCommentItem>>(listOf())
 
+    var completedWrite = mutableStateOf(false)
+
     fun writeComment(
         id: Int,
         comment: String,
@@ -31,7 +33,7 @@ class ChallengeCommentViewModel @Inject constructor(
             ).collectLatest { suspend ->
                 Log.d("@@@@@", "writeComment : $suspend")
 
-                getCommentList(id, UserInfo.getLanguageCode())
+                completedWrite.value = true
             }
         }
     }

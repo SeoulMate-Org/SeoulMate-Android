@@ -1,6 +1,6 @@
 package com.seoulmate.domain.usecase
 
-import com.seoulmate.data.model.UserData
+import com.seoulmate.data.model.user.UserData
 import com.seoulmate.database.dao.UserDao
 import com.seoulmate.database.model.asExternalModel
 import kotlinx.coroutines.flow.Flow

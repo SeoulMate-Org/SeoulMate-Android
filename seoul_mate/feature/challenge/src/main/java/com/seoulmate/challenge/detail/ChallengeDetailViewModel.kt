@@ -31,6 +31,11 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.Locale
+import java.util.TimeZone
 import javax.inject.Inject
 
 sealed class ChallengeDetailAfterRefreshTokenType {
@@ -96,6 +101,11 @@ class ChallengeDetailViewModel @Inject constructor(
                     challengeDetailResponse.response?.let {
                         challengeItem.value = it
                         startedChallenge.value = UserInfo.getMyChallengeId().contains(it.id)
+//                        UserInfo.getMyChallengeId().forEach { id ->
+//                            if (id == it.id) {
+//                                startedChallenge.value = true
+//                            }
+//                        }
 
                         ChallengeDetailInfo.id = it.id
                         ChallengeDetailInfo.title = it.title
@@ -147,8 +157,8 @@ class ChallengeDetailViewModel @Inject constructor(
                                     longitude = (attractionItem.locationX ?: "0.0").toDouble()
                                 })
                             }
-
                         }
+                        ChallengeDetailInfo.attractionDistance = attractionDistanceItemList.value
                     }
 
                 }
@@ -444,5 +454,9 @@ class ChallengeDetailViewModel @Inject constructor(
             }
         }
     }
+
+
+
+
 
 }

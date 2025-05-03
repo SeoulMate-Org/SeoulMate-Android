@@ -60,3 +60,6 @@ val SplashGradientEnd = Color(0xFF649DFF)
 
 val MainTopGradientStart = Color(0xFF0B80FF)
 val MainMissingChallengeGradientStart = Color(0xFF47ABF1)
+
+val ColorOnBoarding = Color(0xFFE4E5EB)
+val ColorBlueComment = Color(0xFF779BFF)

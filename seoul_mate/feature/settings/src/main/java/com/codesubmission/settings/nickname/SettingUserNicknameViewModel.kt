@@ -4,9 +4,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.seoulmate.data.UserInfo
+import com.seoulmate.data.dto.CommonDto
+import com.seoulmate.data.dto.user.UserNicknameDto
 import com.seoulmate.data.repository.UserRepository
 import com.seoulmate.domain.usecase.RefreshTokenUseCase
+import com.seoulmate.domain.usecase.UpdateUserInfoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -15,6 +19,7 @@ import javax.inject.Inject
 class SettingUserNicknameViewModel @Inject constructor(
     private val userRepository: UserRepository,
     private val refreshTokenUseCase: RefreshTokenUseCase,
+    private val updateUserInfoUseCase: UpdateUserInfoUseCase,
 ): ViewModel() {
 
     var isCompleted = mutableStateOf(false)
@@ -25,11 +30,20 @@ class SettingUserNicknameViewModel @Inject constructor(
         strNickname: String,
     ) {
         viewModelScope.launch {
-            userRepository.reqUserNickname(strNickname).collectLatest { response ->
+            var nicknameCompleted = false
+            val deferredNickname = async {
+                var response: CommonDto<UserNicknameDto>? = null
+                userRepository.reqUserNickname(strNickname).collectLatest {
+                    response = it
+                }
+                return@async response
+            }
+
+            deferredNickname.await()?.let { response ->
                 if (response.code in 200..299) {
                     response.response?.let {
                         UserInfo.nickName = it.nickname
-                        isCompleted.value = true
+                        nicknameCompleted = true
                     }
                 } else if (response.code == 400) {
                     // Nickname Duplication
@@ -37,7 +51,19 @@ class SettingUserNicknameViewModel @Inject constructor(
                 } else if (response.code == 403) {
                     // Refresh Token
                     needRefreshToken.value = true
+                } else {
+
                 }
+            }
+
+            if (nicknameCompleted) {
+                updateUserInfoUseCase(
+                    nickName = UserInfo.nickName,
+                    accessToken = UserInfo.accessToken,
+                    refreshToken = UserInfo.refreshToken,
+                    loginType = UserInfo.loginType,
+                )
+                isCompleted.value = true
             }
 
         }

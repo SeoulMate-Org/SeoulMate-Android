@@ -9,6 +9,7 @@ import com.seoulmate.data.dto.challenge.ChallengeItemAllDto
 import com.seoulmate.data.dto.challenge.ChallengeItemDetailDto
 import com.seoulmate.data.dto.challenge.ChallengeItemLikeDto
 import com.seoulmate.data.dto.challenge.ChallengeLocationItemDto
+import com.seoulmate.data.dto.challenge.ChallengeMyBadgeDto
 import com.seoulmate.data.dto.challenge.ChallengeRankItemDto
 import com.seoulmate.data.dto.challenge.ChallengeStampItemDto
 import com.seoulmate.data.dto.challenge.ChallengeStatusDto
@@ -310,6 +311,23 @@ class ChallengeRepositoryImpl @Inject constructor(
                 code = response.code(),
                 message = response.message(),
                 response = response.body()
+            )
+        )
+    }
+
+    override suspend fun reqMyBadge(
+        themeId: Int,
+        languageCode: String
+    ): Flow<CommonDto<List<ChallengeMyBadgeDto>>> = flow {
+        val response = apiService.reqChallengeMyBadge(
+            themeId = themeId,
+            language = languageCode,
+        )
+        emit(
+            CommonDto(
+                code = response.code(),
+                message = response.message(),
+                response = response.body(),
             )
         )
     }

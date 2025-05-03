@@ -16,12 +16,14 @@ import com.seoulmate.data.model.challenge.ChallengeCulturalEventData
 import com.seoulmate.data.model.challenge.ChallengeRankItemData
 import com.seoulmate.data.model.challenge.ChallengeStampResponseData
 import com.seoulmate.data.model.challenge.ChallengeThemeItemData
+import com.seoulmate.domain.usecase.DeleteUserInfoUserCase
 import com.seoulmate.domain.usecase.GetChallengeCulturalEventUseCase
 import com.seoulmate.domain.usecase.GetChallengeListRankUseCase
 import com.seoulmate.domain.usecase.GetChallengeListStampUseCase
 import com.seoulmate.domain.usecase.GetChallengeSeoulMasterUseCase
 import com.seoulmate.domain.usecase.GetChallengeThemeItemListUseCase
 import com.seoulmate.domain.usecase.GetMyChallengeItemListUseCase
+import com.seoulmate.domain.usecase.GetMyPageUserInfoUseCase
 import com.seoulmate.domain.usecase.RefreshTokenUseCase
 import com.seoulmate.domain.usecase.ReqChallengeLikeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -51,6 +53,8 @@ class HomeViewModel @Inject constructor(
     private val getChallengeSeoulMasterUseCase: GetChallengeSeoulMasterUseCase,
     private val getChallengeListStampUseCase: GetChallengeListStampUseCase,
     private val refreshTokenUseCase: RefreshTokenUseCase,
+    private val getMyPageUserInfoUseCase: GetMyPageUserInfoUseCase,
+    private val deleteUserInfoUserCase: DeleteUserInfoUserCase
 ) : ViewModel() {
 
     var challengeRankList = mutableStateOf(ChallengeInfo.rankList)
@@ -299,6 +303,22 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    fun reqMyPageUserInfo() {
+        viewModelScope.launch {
+            getMyPageUserInfoUseCase().collectLatest {
+                if (it.code in 200..299) {
+                    it.response?.let { myPageResponse ->
+                        UserInfo.myPageInfo = myPageResponse
+                    }
+                } else if (it.code == 403) {
+                    if(UserInfo.isUserLogin()) {
+                        needRefreshToken.value = true
+                    }
+                }
+            }
+        }
+    }
+
     fun refreshToken() {
         viewModelScope.launch {
             refreshTokenUseCase(UserInfo.refreshToken).collectLatest { response ->
@@ -309,6 +329,13 @@ class HomeViewModel @Inject constructor(
                     needRefreshToken.value = false
                 }
             }
+        }
+    }
+
+    fun reqLogout() {
+        viewModelScope.launch {
+            UserInfo.logOut()
+            deleteUserInfoUserCase()
         }
     }
 }

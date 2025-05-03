@@ -28,4 +28,6 @@
     <string name="distance_from_me">나로부터 %skm</string>
 
     <string name="quit_challenge">챌린지 그만두기</string>
+
+    <string name="str_copy">복사</string>
 </resources>
