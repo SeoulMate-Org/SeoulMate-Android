@@ -219,19 +219,19 @@ fun RequestLoginScreen(
                     end.linkTo(parent.end)
                 }
         ) {
-            Image(
-                modifier = Modifier.noRippleClickable {
-                    launcher.launch(listOf("email", "public_profile"))
-                },
-                painter = painterResource(
-                    if (UserInfo.localeLanguage == "ko") {
-                        R.drawable.img_facebook_login
-                    } else {
-                        R.drawable.img_facebook_login_eng
-                    }
-                ),
-                contentDescription = "Facebook Login"
-            )
+//            Image(
+//                modifier = Modifier.noRippleClickable {
+//                    launcher.launch(listOf("email", "public_profile"))
+//                },
+//                painter = painterResource(
+//                    if (UserInfo.localeLanguage == "ko") {
+//                        R.drawable.img_facebook_login
+//                    } else {
+//                        R.drawable.img_facebook_login_eng
+//                    }
+//                ),
+//                contentDescription = "Facebook Login"
+//            )
             Image(
                 modifier = Modifier.padding(top = 10.dp)
                     .noRippleClickable {

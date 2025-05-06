@@ -9,19 +9,17 @@ class UpdateUserInfoUseCase @Inject constructor(
 ) {
 
     suspend operator fun invoke(
+        userId: Int,
         nickName: String,
         accessToken: String,
         refreshToken: String,
         loginType: String,
     ) {
         userDao.updateUser(
-            UserEntity(
-                id = 0,
-                nickName = nickName,
-                accessToken = accessToken,
-                refreshToken = refreshToken,
-                loginType = loginType,
-            )
+            userId = userId,
+            nickName = nickName,
+            accessToken = accessToken,
+            refreshToken = refreshToken,
         )
     }
 }

@@ -19,7 +19,7 @@
 
     <string name="str_login">로그인</string>
     <string name="str_need_login">로그인이 필요합니다</string>
-    <string name="str_need_login_description">해당 기능은 로그인 후 이용하실 수 있습니다.</string>
+    <string name="str_need_login_description">해당 기능은 로그인 후 이용할 수 있어요</string>
 
     <string name="str_major_location">주요 동네</string>
 
@@ -29,5 +29,9 @@
 
     <string name="quit_challenge">챌린지 그만두기</string>
 
+    <string name="str_stamp_title">스탬프를 찍었어요!</string>
+
     <string name="str_copy">복사</string>
+    <string name="str_modify">수정</string>
+    <string name="str_delete">삭제</string>
 </resources>

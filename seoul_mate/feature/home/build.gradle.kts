@@ -48,6 +48,7 @@ dependencies {
     implementation(libs.naver.map.sdk)
     implementation(libs.android.gms.location)
     implementation(libs.androidx.work.runtime.ktx)
+    implementation(project(":feature:challenge"))
 
     androidTestImplementation(platform(libs.compose.bom))
     androidTestImplementation(libs.androidx.compose.ui.test)

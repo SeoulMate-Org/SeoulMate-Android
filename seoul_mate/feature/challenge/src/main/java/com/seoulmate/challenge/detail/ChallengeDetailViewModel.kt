@@ -72,6 +72,9 @@ class ChallengeDetailViewModel @Inject constructor(
     var afterRefreshToken = mutableStateOf<ChallengeDetailAfterRefreshTokenType?>(null)
     var afterRefreshTokenAttractionId = mutableStateOf<Int?>(null)
 
+    var targetAttractionId = mutableStateOf<Int?>(null)
+
+
     @RequiresPermission(
         allOf = [Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.ACCESS_COARSE_LOCATION]
@@ -117,6 +120,7 @@ class ChallengeDetailViewModel @Inject constructor(
                                 comment = commentItem.comment,
                                 createdAt = commentItem.createdAt,
                                 modifiedAt = commentItem.modifiedAt,
+                                isMine = commentItem.isMine,
                             )
                         }
 
@@ -339,47 +343,47 @@ class ChallengeDetailViewModel @Inject constructor(
         viewModelScope.launch {
             var isSucceedStamp = false
             isShowLoading.value = true
+            targetAttractionId.value = null
 
-            var targetAttractionId: Int? = null
             // TODO TEST
-            run test@ {
-                ChallengeDetailInfo.attractions.forEach {
-                    if (!it.isStamped) {
-                        targetAttractionId = it.id
-                        return@test
-                    }
-                }
-            }
-
-            // Find Possible Stamp Attraction Id
-//            async {
-//                if (fineLocationPermissionGranted.value) {
-//                    fusedLocationProviderClient.lastLocation.addOnSuccessListener { location: Location? ->
-//
-//                        location?.let {
-//                            UserInfo.myLocationX = it.longitude
-//                            UserInfo.myLocationY = it.latitude
-//
-//                            ChallengeDetailInfo.attractions.map { attractionItem ->
-//                                val attractionLocation = Location("").apply {
-//                                    latitude = (attractionItem.locationY ?: "0.0").toDouble()
-//                                    longitude = (attractionItem.locationX ?: "0.0").toDouble()
-//                                }
-//                                if (location.distanceTo(attractionLocation) <= 51) {
-//                                    targetAttractionId = attractionItem.id
-//                                }
-//                            }
-//                        }
-//
+//            run test@ {
+//                ChallengeDetailInfo.attractions.forEach {
+//                    if (!it.isStamped) {
+//                        targetAttractionId.value = it.id
+//                        return@test
 //                    }
 //                }
-//            }.await()
+//            }
+
+            // Find Possible Stamp Attraction Id
+            async {
+                if (fineLocationPermissionGranted.value) {
+                    fusedLocationProviderClient.lastLocation.addOnSuccessListener { location: Location? ->
+
+                        location?.let {
+                            UserInfo.myLocationX = it.longitude
+                            UserInfo.myLocationY = it.latitude
+
+                            ChallengeDetailInfo.attractions.map { attractionItem ->
+                                val attractionLocation = Location("").apply {
+                                    latitude = (attractionItem.locationY ?: "0.0").toDouble()
+                                    longitude = (attractionItem.locationX ?: "0.0").toDouble()
+                                }
+                                if (location.distanceTo(attractionLocation) <= 51) {
+                                    targetAttractionId.value = attractionItem.id
+                                }
+                            }
+                        }
+
+                    }
+                }
+            }.await()
 
             // Stamp Attraction
-            if (targetAttractionId == null) {
+            if (targetAttractionId.value == null) {
                 impossibleStamp.value = true
             } else {
-                targetAttractionId?.let { attractionId ->
+                targetAttractionId.value?.let { attractionId ->
                     reqAttractionStampUseCase(
                         id = attractionId,
                     ).collectLatest { it ->
@@ -387,11 +391,13 @@ class ChallengeDetailViewModel @Inject constructor(
                             it.response?.let { response ->
                                 response.isProcessed?.let { isProcessed ->
                                     isSucceedStamp = true
+                                    ChallengeDetailInfo.completedStampThemeId = challengeItem.value.challengeThemeId
                                     if (isProcessed) finishedAttractionStamp.value = true
                                 }
                             }
                         } else if (it.code == 403) {
                             isSucceedStamp = false
+                            targetAttractionId.value = null
                             if (UserInfo.isUserLogin()) {
                                 // Refresh Token
                                 afterRefreshTokenAttractionId.value = attractionId
@@ -408,7 +414,7 @@ class ChallengeDetailViewModel @Inject constructor(
 
             // Update Last Stamped Attraction Id
             if (isSucceedStamp) {
-                targetAttractionId?.let {
+                targetAttractionId.value?.let {
                     async {
                         preferDataStoreRepository.updateLastStampedAttractionId(it)
                     }.await()

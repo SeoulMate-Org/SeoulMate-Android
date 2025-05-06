@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.seoulmate.data.ChallengeDetailInfo
+import com.seoulmate.data.UserInfo
 import com.seoulmate.data.model.challenge.AttractionItem
 import com.seoulmate.ui.R
 import com.seoulmate.ui.component.ChallengeInterestButton
@@ -186,7 +187,7 @@ fun SelectedAttractionLayout(
             Spacer(modifier = Modifier.width(15.dp))
             // Interest Icon
             ChallengeInterestButton(
-                isInterest = item.isLiked,
+                isInterest = if (UserInfo.isUserLogin()) item.isLiked else false,
                 size = 40.dp
             ) {
                 onItemLikeClick(item.id)
@@ -275,7 +276,7 @@ fun AttractionItemLayout(
         Spacer(modifier = Modifier.width(15.dp))
         // Interest Icon
         ChallengeInterestButton(
-            isInterest = item.isLiked,
+            isInterest = if (UserInfo.isUserLogin()) item.isLiked else false,
             size = 40.dp
         ) {
             onItemLikeClick(item.id)

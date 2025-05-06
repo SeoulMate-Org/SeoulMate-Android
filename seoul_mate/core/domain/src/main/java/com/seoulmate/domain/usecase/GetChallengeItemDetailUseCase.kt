@@ -59,6 +59,7 @@ class GetChallengeItemDetailUseCase @Inject constructor(
                     likedCount = response.likedCount,
                     progressCount = response.progressCount,
                     attractionCount = response.attractionCount,
+                    challengeThemeId = response.challengeThemeId,
                     commentCount = response.commentCount,
                     comments = response.comments.map {
                             commentItem ->

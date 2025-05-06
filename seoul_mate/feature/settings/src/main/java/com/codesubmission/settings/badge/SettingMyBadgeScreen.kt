@@ -1,10 +1,12 @@
 package com.codesubmission.settings.badge
 
+import android.widget.ScrollView
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -37,10 +39,12 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.codesubmission.settings.R
+import com.seoulmate.data.model.challenge.ChallengeMyBadgeData
 import com.seoulmate.ui.component.PpsText
 import com.seoulmate.ui.theme.Blue500
 import com.seoulmate.ui.theme.CoolGray25
 import com.seoulmate.ui.theme.CoolGray300
+import com.seoulmate.ui.theme.CoolGray500
 import com.seoulmate.ui.theme.CoolGray900
 import com.seoulmate.ui.theme.TrueWhite
 
@@ -51,7 +55,6 @@ fun SettingMyBadgeScreen(
 ) {
     val viewModel = hiltViewModel<SettingMyBadgeViewModel>()
 
-    // TODO Need Item Data
     val selectedIconList = listOf(
         com.seoulmate.ui.R.drawable.ic_theme_01,
         com.seoulmate.ui.R.drawable.ic_theme_02,
@@ -100,6 +103,7 @@ fun SettingMyBadgeScreen(
     }
 
     LaunchedEffect(Unit) {
+        viewModel.reqMyBadge()
     }
 
     Scaffold(
@@ -143,23 +147,64 @@ fun SettingMyBadgeScreen(
                 .background(color = CoolGray25),
         ) {
             //
-            Row(
-                modifier = Modifier
-                    .padding(20.dp)
-                    .background(shape = RoundedCornerShape(16.dp), color = TrueWhite)
-            ) {
+//            Box (
+//                modifier = Modifier
+//                    .height(80.dp)
+//                    .fillMaxWidth()
+//                    .padding(20.dp)
+//            ) {
+//                Row(
+//                    modifier = Modifier
+//                        .padding(15.dp)
+//                        .background(shape = RoundedCornerShape(16.dp), color = TrueWhite)
+//                ) {
+//                    Column(
+//                        modifier = Modifier.weight(1f),
+//                        verticalArrangement = Arrangement.Center,
+//                    ) {
+//                        PpsText(
+//                            modifier = Modifier,
+//                            text = stringResource(R.string.badge_info_title),
+//                            style = MaterialTheme.typography.labelLarge.copy(
+//                                color = CoolGray500,
+//                            ),
+//                            maxLines = 1,
+//                            overflow = TextOverflow.Ellipsis,
+//                        )
+//                        PpsText(
+//                            modifier = Modifier,
+//                            text = stringResource(R.string.badge_info_sub_title),
+//                            style = MaterialTheme.typography.bodyMedium.copy(
+//                                color = CoolGray900,
+//                            ),
+//                            maxLines = 1,
+//                            overflow = TextOverflow.Ellipsis,
+//                        )
+//                    }
+//
+//                    Image(
+//                        modifier = Modifier.size(59.dp),
+//                        painter = painterResource(id = com.seoulmate.ui.R.drawable.img_badge_title),
+//                        contentDescription = "Badge Title",
+//                        contentScale = ContentScale.Fit,
+//                    )
+//                }
+//            }
 
-            }
             //
             LazyVerticalGrid(
                 modifier = Modifier
-                    .padding(horizontal = 15.dp),
+                    .padding(horizontal = 15.dp)
+                    .weight(1f),
                 columns = GridCells.Adaptive(minSize = 105.dp),
             ) {
                 items(
                     count = badgeItemList.size
                 ) { index ->
-                    BadgeItem(badgeItemList[index])
+                    BadgeItem(
+                        badgeItemList[index],
+                        viewModel.badgeList.value[index],
+                    )
                 }
             }
         }
@@ -169,7 +214,10 @@ fun SettingMyBadgeScreen(
 @Composable
 private fun BadgeItem(
     item: BadgeData,
+    countItem: ChallengeMyBadgeData?,
 ) {
+    val totalCnt = if (countItem == null) 99 else countItem.themeCount
+    val completeCnt = if (countItem == null) 0 else countItem.completeCount
     Column(
         modifier = Modifier
             .padding(horizontal = 5.dp, vertical = 6.dp)
@@ -180,7 +228,7 @@ private fun BadgeItem(
     ) {
         Image(
             modifier = Modifier.size(74.dp),
-            painter = painterResource(if (item.badgeCnt > 0) item.selectedIcon else item.defaultIcon),
+            painter = painterResource(if (totalCnt == completeCnt) item.selectedIcon else item.defaultIcon),
             contentDescription = "Badge Icon",
             contentScale = ContentScale.Fit,
         )
@@ -198,14 +246,14 @@ private fun BadgeItem(
         Row {
             PpsText(
                 modifier = Modifier,
-                text = item.badgeCnt.toString(),
+                text = completeCnt.toString(),
                 style = MaterialTheme.typography.bodyMedium.copy(
-                    color = if (item.badgeCnt > 0) Blue500 else CoolGray300,
+                    color = if (totalCnt == completeCnt) Blue500 else CoolGray300,
                 ),
             )
             PpsText(
                 modifier = Modifier,
-                text = " / 99",
+                text = " / $totalCnt",
                 style = MaterialTheme.typography.labelLarge.copy(
                     color = CoolGray300,
                 ),
@@ -219,5 +267,4 @@ data class BadgeData(
     @DrawableRes val selectedIcon: Int,
     @DrawableRes val defaultIcon: Int,
     @StringRes val title: Int,
-    val badgeCnt: Int = 0,
 )

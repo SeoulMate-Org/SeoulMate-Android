@@ -8,6 +8,7 @@ import com.seoulmate.data.dto.CommonDto
 import com.seoulmate.data.dto.user.UserNicknameDto
 import com.seoulmate.data.repository.UserRepository
 import com.seoulmate.domain.usecase.RefreshTokenUseCase
+import com.seoulmate.domain.usecase.SaveUserInfoUseCase
 import com.seoulmate.domain.usecase.UpdateUserInfoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
@@ -20,6 +21,7 @@ class SettingUserNicknameViewModel @Inject constructor(
     private val userRepository: UserRepository,
     private val refreshTokenUseCase: RefreshTokenUseCase,
     private val updateUserInfoUseCase: UpdateUserInfoUseCase,
+    private val saveUserInfoUseCase: SaveUserInfoUseCase,
 ): ViewModel() {
 
     var isCompleted = mutableStateOf(false)
@@ -43,6 +45,7 @@ class SettingUserNicknameViewModel @Inject constructor(
                 if (response.code in 200..299) {
                     response.response?.let {
                         UserInfo.nickName = it.nickname
+
                         nicknameCompleted = true
                     }
                 } else if (response.code == 400) {
@@ -58,6 +61,7 @@ class SettingUserNicknameViewModel @Inject constructor(
 
             if (nicknameCompleted) {
                 updateUserInfoUseCase(
+                    userId = UserInfo.id,
                     nickName = UserInfo.nickName,
                     accessToken = UserInfo.accessToken,
                     refreshToken = UserInfo.refreshToken,

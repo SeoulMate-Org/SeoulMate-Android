@@ -98,6 +98,13 @@ fun HomeMainScreen(
         }
     }
 
+    LaunchedEffect(viewModel.succeedChallengeProgress.value) {
+        if(viewModel.succeedChallengeProgress.value) {
+            viewModel.succeedChallengeProgress.value = false
+            viewModel.reqHomeChallengeItems()
+        }
+    }
+
     LaunchedEffect(viewModel.needRefreshToken.value) {
         if (viewModel.needRefreshToken.value == true) {
             viewModel.refreshToken()
@@ -235,11 +242,12 @@ fun HomeMainScreen(
                 if (ChallengeInfo.challengeStampData != null) {
                     item {
                         MissingChallenge(
+                            dataCode = ChallengeInfo.challengeStampData!!.dataCode,
                             onItemClick = { challengeId ->
                                 onChallengeItemClick(challengeId)
                             },
                             startChallengeClick = { challengeId ->
-
+                                viewModel.reqProgressChallengeStatus(challengeId)
                             }
                         )
                     }

@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.codesubmission.home.HomeViewModel
 import com.codesubmission.home.R
+import com.codesubmission.home.ui.HomeState
 import com.codesubmission.home.ui.mypage.item.MyPageActiveLog
 import com.codesubmission.home.ui.mypage.item.MyPageLoginInfo
 import com.codesubmission.home.ui.mypage.item.MyPagePermission
@@ -56,6 +57,8 @@ fun HomeMyPageScreen(
     onLoginClick: () -> Unit = {},
     onChangeScreen: (Screen) -> Unit = {},
     onNickNameClick: () -> Unit = {},
+    showWebUrl: (url: String) -> Unit = {},
+    goSetting: () -> Unit = {},
 ) {
 
     LaunchedEffect(Unit) {
@@ -107,8 +110,12 @@ fun HomeMyPageScreen(
                             onChangeScreen(Screen.SettingLanguage)
                         },
                         onNotificationClick = {
-                            onChangeScreen(Screen.SettingNotification)
+//                            onChangeScreen(Screen.SettingNotification)
+                            goSetting()
                         },
+                        onLocationClick = {
+                            goSetting()
+                        }
                     )
                 }
             }
@@ -117,7 +124,9 @@ fun HomeMyPageScreen(
                 Box(modifier = Modifier
                     .padding(top = 16.dp),
                 ) {
-                    MyPageServiceInfo()
+                    MyPageServiceInfo(
+                        showWebUrl = showWebUrl
+                    )
                 }
             }
             // Version Info
@@ -135,7 +144,7 @@ fun HomeMyPageScreen(
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(40.dp)
+                            .height(60.dp)
                             .padding(horizontal = 20.dp, vertical = 10.dp,),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
@@ -172,6 +181,7 @@ fun HomeMyPageScreen(
                         // Logout
                         Row(
                             modifier = Modifier
+                                .height(60.dp)
                                 .fillMaxWidth()
                                 .padding(horizontal = 20.dp, vertical = 10.dp,)
                                 .noRippleClickable {
@@ -180,27 +190,27 @@ fun HomeMyPageScreen(
                             verticalAlignment = Alignment.CenterVertically,
                         ) {
                             PpsText(
-                                modifier = Modifier.weight(1f).height(40.dp),
+                                modifier = Modifier.weight(1f),
                                 text = stringResource(R.string.my_page_logout),
                                 style = MaterialTheme.typography.bodyMedium.copy(
                                     color = CoolGray900,
                                 )
                             )
                         }
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 20.dp, vertical = 10.dp,),
-                            verticalAlignment = Alignment.CenterVertically,
-                        ) {
-                            PpsText(
-                                modifier = Modifier.weight(1f).height(40.dp),
-                                text = stringResource(R.string.my_page_sing_out),
-                                style = MaterialTheme.typography.bodyMedium.copy(
-                                    color = CoolGray900,
-                                )
-                            )
-                        }
+//                        Row(
+//                            modifier = Modifier
+//                                .fillMaxWidth()
+//                                .padding(horizontal = 20.dp, vertical = 10.dp,),
+//                            verticalAlignment = Alignment.CenterVertically,
+//                        ) {
+//                            PpsText(
+//                                modifier = Modifier.weight(1f).height(40.dp),
+//                                text = stringResource(R.string.my_page_sing_out),
+//                                style = MaterialTheme.typography.bodyMedium.copy(
+//                                    color = CoolGray900,
+//                                )
+//                            )
+//                        }
                     }
                 }
             }

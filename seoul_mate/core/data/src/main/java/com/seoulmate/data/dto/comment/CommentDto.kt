@@ -34,3 +34,8 @@ data class CommentContentDto(
     @Json(name = "createdAt") val createdAt: String,
 )
 
+@JsonClass(generateAdapter = true)
+data class DeleteCommentDto(
+    @Json(name = "id") val id: Int?,
+)
+

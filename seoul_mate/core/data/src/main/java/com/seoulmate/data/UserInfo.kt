@@ -6,6 +6,7 @@ import com.seoulmate.data.model.MyChallengeItemData
 import com.seoulmate.data.model.user.UserInfoData
 
 object UserInfo {
+    var id : Int = 0
     var nickName: String = ""
     var accessToken: String = ""
     var refreshToken: String = ""

@@ -1,8 +1,12 @@
 package com.codesubmission.home.navigation
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import android.provider.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.core.net.toUri
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.codesubmission.home.HomeViewModel
@@ -65,6 +69,18 @@ fun HomeNavHost(
                 },
                 showSnackBar = { snackType, snackText ->
                     appState.showSnackBar(snackType, snackText)
+                },
+                showWebUrl = { url ->
+                    context.startActivity(
+                        Intent(Intent.ACTION_VIEW, android.net.Uri.parse(url))
+                    )
+                },
+                goSetting = {
+                    val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                        flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                        data = Uri.parse("package:${context.packageName}")
+                    }
+                    context.startActivity(intent)
                 }
             )
         }

@@ -1,29 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="language_title">Language</string>
-    <string name="setting_select_language">aabbccc</string>
+    <string name="setting_select_language">Choose your language.</string>
     <string name="language_ko">Korean</string>
     <string name="language_en">English</string>
 
-    <string name="language_change_title">adsdfsafsadf</string>
-    <string name="language_change_sub">aaaaaaabbbbbbbbbbcccccc</string>
+    <string name="language_change_title">Change language?</string>
+    <string name="language_change_sub">The app will refresh and apply the new language.</string>
 
     <string name="notification_title">Notification</string>
     <string name="app_push_notification_title">aaabbbccccc</string>
 
-    <string name="badge_title">My Badge</string>
+    <string name="badge_title">My Badges</string>
+    <string name="badge_info_title">More badges = closer to completion!</string>
+    <string name="badge_info_sub_title">Ready to conquer all of Seoul?</string>
 
     <string name="nickname_title">Change Nickname</string>
-    <string name="nickname_sub">aaabbbccddd</string>
-    <string name="nickname_duplication">sasdfasdfsdf</string>
+    <string name="nickname_sub">Enter 2–15 characters for your nickname.</string>
+    <string name="nickname_duplication">That nickname is already in use.</string>
 
-    <string name="badge_item_01">aaaaaaaaa</string>
-    <string name="badge_item_02">bbbbbbbbb</string>
-    <string name="badge_item_03">ccccc &amp; ccc</string>
-    <string name="badge_item_04">ddddddd</string>
-    <string name="badge_item_05">vvvv &amp; vvvv</string>
-    <string name="badge_item_06">eeeee &amp; eeeeee</string>
-    <string name="badge_item_07">qqqqq &amp; qqqq</string>
-    <string name="badge_item_08">wwwww &amp; wwww</string>
-    <string name="badge_item_09">ttttttttt</string>
+    <string name="badge_item_01">Cultural Events</string>
+    <string name="badge_item_02">Must-See Spots</string>
+    <string name="badge_item_03">Photo Spot</string>
+    <string name="badge_item_04">Walking Tours</string>
+    <string name="badge_item_05">Night Views &amp; Vibes</string>
+    <string name="badge_item_06">Foodie &amp; Hidden Gems</string>
+    <string name="badge_item_07">Exhibitions &amp; Art</string>
+    <string name="badge_item_08">History &amp; Heritage</string>
+    <string name="badge_item_09">Local Exploration</string>
 </resources>

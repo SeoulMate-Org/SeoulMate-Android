@@ -1,0 +1,37 @@
+<resources>
+    <string name="top_app_bar_untitled">TopAppBar</string>
+
+    <string name="bottom_nav_challenge_title">My Challenge</string>
+    <string name="bottom_nav_my_title">MY</string>
+
+    <string name="top_map_tag_trashcan">쓰레기통</string>
+    <string name="top_map_tag_wifi">와이파이</string>
+    <string name="top_map_tag_toilet">화장실</string>
+
+    <string name="str_now_pop">지금 Pop!</string>
+
+    <string name="str_more">More</string>
+    <string name="str_favorite">JJIM</string>
+
+    <string name="str_confirm">확인</string>
+    <string name="str_cancel">Cancel</string>
+    <string name="str_complete">Completed</string>
+
+    <string name="str_login">Log in</string>
+    <string name="str_need_login">Log in required</string>
+    <string name="str_need_login_description">You need to log in to use this feature.</string>
+
+    <string name="str_major_location">Hot spots</string>
+
+    <string name="home_challenge_ranking_join_count">%d people joined!</string>
+
+    <string name="distance_from_me">%skm Away</string>
+
+    <string name="quit_challenge">Leave Challenge</string>
+
+    <string name="str_stamp_title">Stamp complete!</string>
+
+    <string name="str_copy">Copy</string>
+    <string name="str_modify">Edit</string>
+    <string name="str_delete">Delete</string>
+</resources>

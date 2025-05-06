@@ -1,5 +1,6 @@
 package com.seoulmate.challenge.comment
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -30,6 +31,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalFocusManager
@@ -38,6 +40,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -45,7 +48,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.seoulmate.challenge.R
 import com.seoulmate.data.ChallengeDetailInfo
 import com.seoulmate.data.UserInfo
+import com.seoulmate.data.model.challenge.ChallengeCommentItem
 import com.seoulmate.ui.component.ChallengeCommentItemLayout
+import com.seoulmate.ui.component.PpsCommentAlertDialog
 import com.seoulmate.ui.component.PpsText
 import com.seoulmate.ui.noRippleClickable
 import com.seoulmate.ui.theme.Black
@@ -63,8 +68,12 @@ fun ChallengeCommentListScreen(
 ) {
     val focusManager = LocalFocusManager.current
     var textFieldState by remember { mutableStateOf("") }
+    var isShowDialog by remember { mutableStateOf(false) }
+    var selectedCommentItem by remember { mutableStateOf<ChallengeCommentItem?>(null) }
     
     val viewModel = hiltViewModel<ChallengeCommentViewModel>()
+
+    val backPressedState by remember { mutableStateOf(true) }
 
     LaunchedEffect(Unit) {
         viewModel.commentList.value = ChallengeDetailInfo.commentList
@@ -78,8 +87,19 @@ fun ChallengeCommentListScreen(
                 id = ChallengeDetailInfo.id,
                 language = UserInfo.getLanguageCode(),
             )
+            textFieldState = ""
+            focusManager.clearFocus()
+            selectedCommentItem = null
         }
 
+    }
+
+    BackHandler(enabled = backPressedState) {
+        if(selectedCommentItem == null) {
+            onBackClick()
+        } else {
+            selectedCommentItem = null
+        }
     }
 
     Scaffold (
@@ -91,7 +111,10 @@ fun ChallengeCommentListScreen(
                 title = {
                     PpsText(
                         modifier = Modifier.wrapContentSize(),
-                        text = stringResource(R.string.comment_list_title),
+                        text = stringResource(
+                            if (selectedCommentItem == null) R.string.comment_list_title
+                            else R.string.comment_list_modify_title
+                        ),
                         style = MaterialTheme.typography.titleSmall.copy(
                             color = CoolGray900,
                         )
@@ -99,7 +122,13 @@ fun ChallengeCommentListScreen(
                 },
                 navigationIcon = {
                     IconButton(
-                        onClick = onBackClick
+                        onClick = {
+                            if(selectedCommentItem == null) {
+                                onBackClick()
+                            } else {
+                                selectedCommentItem = null
+                            }
+                        }
                     ) {
                         Icon(
                             modifier = Modifier.size(25.dp),
@@ -138,12 +167,14 @@ fun ChallengeCommentListScreen(
                 Box(modifier = Modifier.weight(1f)) {
                     if (viewModel.commentList.value.isEmpty()) {
                         PpsText(
-                            modifier = Modifier.fillMaxWidth(),
+                            modifier = Modifier.fillMaxWidth().padding(top = 36.dp),
                             text = stringResource(R.string.comment_list_empty),
                             style = MaterialTheme.typography.bodySmall.copy(
                                 color = CoolGray900,
                             ),
+                            textAlign = TextAlign.Center,
                         )
+
                     } else {
                         LazyColumn {
                             items(viewModel.commentList.value.size) { index ->
@@ -153,6 +184,10 @@ fun ChallengeCommentListScreen(
                                 ) {
                                     ChallengeCommentItemLayout(
                                         item = viewModel.commentList.value[index],
+                                        onClickMore = { item ->
+                                            selectedCommentItem = item
+                                            isShowDialog = true
+                                        }
                                     )
                                 }
 
@@ -171,10 +206,18 @@ fun ChallengeCommentListScreen(
                             IconButton(
                                 enabled = textFieldState.trim().isNotEmpty(),
                                 onClick = {
-                                    viewModel.writeComment(
-                                        id = ChallengeDetailInfo.id,
-                                        comment = textFieldState,
-                                    )
+                                    if (selectedCommentItem == null) {
+                                        viewModel.writeComment(
+                                            id = ChallengeDetailInfo.id,
+                                            comment = textFieldState,
+                                        )
+                                    } else {
+                                        viewModel.modifyComment(
+                                            commentId = selectedCommentItem!!.id,
+                                            comment = textFieldState,
+                                        )
+                                    }
+
                                 }
                             ) {
                                 val imgRes = if(textFieldState.trim().isNotBlank()) {
@@ -204,6 +247,26 @@ fun ChallengeCommentListScreen(
                         }
                     )
 
+                }
+            }
+
+            if (isShowDialog) {
+                selectedCommentItem?.let {
+                    PpsCommentAlertDialog(
+                        onClickCancel = {
+                            isShowDialog = false
+                            selectedCommentItem = null
+                            textFieldState = ""
+                        },
+                        onClickDelete = {
+                            viewModel.deleteComment(it.id)
+                            isShowDialog = false
+                        },
+                        onClickModify = {
+                            textFieldState = it.comment
+                            isShowDialog = false
+                        }
+                    )
                 }
             }
         }

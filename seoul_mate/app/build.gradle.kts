@@ -11,12 +11,20 @@ val properties = Properties()
 properties.load(project.rootProject.file("local.properties").inputStream())
 
 android {
+    signingConfigs {
+        create("release") {
+            keyAlias = "PPSeoul_Key"
+            storeFile = file("/Users/chankyuhwang/Desktop/chan/seoul_mate/key/pps_key")
+            storePassword = "pps@123!!"
+            keyPassword = "pps@123!!"
+        }
+    }
     namespace = "com.seoulmate"
 
     defaultConfig {
         applicationId = "com.seoulmate"
-        versionCode = 1
-        versionName = "1.0.0.2"
+        versionCode = 5
+        versionName = "1.0.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -41,6 +49,8 @@ android {
 
             resValue("string", "FACEBOOK_APP_ID", properties.getProperty("FACEBOOK_APP_ID"))
             resValue("string", "FACEBOOK_CLIENT_TOKEN", properties.getProperty("FACEBOOK_CLIENT_TOKEN"))
+
+            signingConfig = signingConfigs.getByName("release")
         }
 
         getByName("debug") {
@@ -56,19 +66,19 @@ android {
     }
 
     // Specifies one flavor dimension.
-    flavorDimensions += "version"
-    productFlavors {
-        create("dev") {
-            dimension = "version"
-            applicationIdSuffix = ".dev"
-            versionNameSuffix = "-dev"
-        }
-        create("live") {
-            dimension = "version"
-            applicationIdSuffix = ".live"
-            versionNameSuffix = "-live"
-        }
-    }
+//    flavorDimensions += "version"
+//    productFlavors {
+//        create("dev") {
+//            dimension = "version"
+//            applicationIdSuffix = ".dev"
+//            versionNameSuffix = "-dev"
+//        }
+//        create("live") {
+//            dimension = "version"
+//            applicationIdSuffix = ".live"
+//            versionNameSuffix = "-live"
+//        }
+//    }
 }
 
 dependencies {

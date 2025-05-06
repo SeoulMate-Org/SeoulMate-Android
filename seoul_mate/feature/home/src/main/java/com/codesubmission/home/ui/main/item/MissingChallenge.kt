@@ -55,6 +55,7 @@ import com.seoulmate.ui.theme.White
 
 @Composable
 fun MissingChallenge(
+    dataCode: String = "MISSED",
     onItemClick: (challengeId: Int) -> Unit = {},
     startChallengeClick: (challengeId: Int) -> Unit = {},
 ) {
@@ -74,8 +75,14 @@ fun MissingChallenge(
         ) {
             Column {
                 PpsText(
-                    modifier = Modifier.padding(start = 20.dp, bottom = 16.dp),
-                    text = stringResource(R.string.missing_challenge_title),
+                    modifier = Modifier.padding(start = 20.dp),
+                    text = stringResource(
+                        if (dataCode == "MISSED") {
+                            R.string.missing_challenge_title
+                        } else {
+                            R.string.possible_challenge_title
+                        }
+                    ),
                     style = MaterialTheme.typography.titleMedium.copy(
                         color = White,
                     ),
@@ -84,7 +91,13 @@ fun MissingChallenge(
                 )
                 PpsText(
                     modifier = Modifier.padding(start = 20.dp, bottom = 16.dp, top = 4.dp),
-                    text = stringResource(R.string.missing_challenge_sub_title),
+                    text = stringResource(
+                        if (dataCode == "MISSED") {
+                            R.string.missing_challenge_sub_title
+                        } else {
+                            R.string.possible_challenge_sub_title
+                        }
+                    ),
                     style = MaterialTheme.typography.labelLarge.copy(
                         color = CoolGray25,
                     ),

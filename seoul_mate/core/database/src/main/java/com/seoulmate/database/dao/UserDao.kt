@@ -16,10 +16,14 @@ interface UserDao {
     )
     fun getUser(): Flow<UserEntity?>
 
-    @Update
-    suspend fun updateUser(user: UserEntity)
+//    @Update
+//    suspend fun updateUser(user: UserEntity)
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+
+    @Query("UPDATE userInfo SET id =:userId, nickName =:nickName, accessToken=:accessToken, refreshToken=:refreshToken WHERE id =:userId ")
+    suspend fun updateUser(userId: Int, nickName: String, accessToken: String, refreshToken: String)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertUser(user: UserEntity)
 
     @Query("DELETE FROM userInfo")

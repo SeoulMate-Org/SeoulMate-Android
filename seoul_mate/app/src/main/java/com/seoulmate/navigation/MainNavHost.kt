@@ -15,6 +15,7 @@ import com.codesubmission.settings.notification.SettingNotificationScreen
 import com.seoulmate.challenge.attraction.AttractionDetailScreen
 import com.seoulmate.challenge.detail.ChallengeDetailScreen
 import com.seoulmate.challenge.comment.ChallengeCommentListScreen
+import com.seoulmate.challenge.complete.ChallengeStampCompleteScreen
 import com.seoulmate.challenge.rank.ChallengeRankListScreen
 import com.seoulmate.challenge.theme.ChallengeThemeListScreen
 import com.seoulmate.login.LoginScreen
@@ -49,7 +50,7 @@ fun MainNavHost(
         composable(route = Screen.OnBoarding.route) {
             OnBoardingScreen(
                 appState = appState,
-                goLogin =  {
+                goLogin = {
                     appState.navController.popBackStack()
                     appState.navigate(Screen.Login)
                 },
@@ -109,6 +110,11 @@ fun MainNavHost(
                 onBackClick = { appState.navController.popBackStack() },
             )
         }
+        composable(route = Screen.ChallengeStampComplete.route) {
+            ChallengeStampCompleteScreen(
+                onBackClick = { appState.navController.popBackStack() },
+            )
+        }
         composable(route = Screen.ChallengeDetail.route) {
             ChallengeDetailScreen(
                 context = appState.getContext,
@@ -126,6 +132,9 @@ fun MainNavHost(
         composable(route = Screen.ChallengeThemeList.route) {
             ChallengeThemeListScreen(
                 coroutineScope = appState.coroutineScope,
+                onChangeScreen = { screen ->
+                    appState.navigate(screen)
+                },
                 onBackClick = { appState.navController.popBackStack() },
             )
         }
@@ -160,6 +169,11 @@ fun MainNavHost(
             AttractionDetailScreen(
                 attractionId = appState.selectedAttractionItemId.intValue,
                 onBackClick = { appState.navController.popBackStack() },
+                onUrlClick = { url ->
+                    appState.getContext.startActivity(
+                        Intent(Intent.ACTION_VIEW, android.net.Uri.parse(url))
+                    )
+                },
                 onChangeScreen = { screen ->
                     appState.navigate(screen)
                 },

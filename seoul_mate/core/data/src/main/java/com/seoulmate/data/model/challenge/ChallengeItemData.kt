@@ -17,6 +17,7 @@ data class ChallengeItemData(
     val attractionCount: Int = 0,
     val commentCount: Int = 0,
     val comments: List<ChallengeCommentItem> = listOf(),
+    val challengeThemeId: Int = 0,
 )
 
 data class AttractionItem(

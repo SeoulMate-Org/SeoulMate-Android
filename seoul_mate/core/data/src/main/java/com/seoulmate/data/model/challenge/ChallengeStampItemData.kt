@@ -1,7 +1,7 @@
 package com.seoulmate.data.model.challenge
 
 data class ChallengeStampResponseData(
-    val dataCode: String,
+    val dataCode: String,       // MISSED
     val itemList: List<ChallengeStampItemData>
 )
 

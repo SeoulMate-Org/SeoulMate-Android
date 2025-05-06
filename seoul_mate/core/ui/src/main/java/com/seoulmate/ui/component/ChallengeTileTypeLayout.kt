@@ -29,6 +29,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.seoulmate.data.UserInfo
 import com.seoulmate.data.model.MyChallengeItemData
 import com.seoulmate.data.model.challenge.ChallengeItemData
 import com.seoulmate.ui.theme.CoolGray100
@@ -169,7 +170,7 @@ fun ChallengeTileTypeLayout(
             }
             // Interest Button
             ChallengeInterestButton(
-                isInterest = item.isLiked,
+                isInterest = if (UserInfo.isUserLogin()) item.isLiked ?: false else false,
                 size = 32.dp
             ) {
                 onItemLikeClick(item.id)

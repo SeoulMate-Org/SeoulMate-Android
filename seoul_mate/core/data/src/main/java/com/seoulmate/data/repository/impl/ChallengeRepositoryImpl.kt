@@ -18,8 +18,10 @@ import com.seoulmate.data.dto.challenge.ChallengeThemeItemDto
 import com.seoulmate.data.dto.challenge.MyChallengeDto
 import com.seoulmate.data.dto.comment.CommentContentDto
 import com.seoulmate.data.dto.comment.CommentDto
+import com.seoulmate.data.dto.comment.DeleteCommentDto
 import com.seoulmate.data.dto.comment.WriteCommentDto
 import com.seoulmate.data.model.request.AttractionStampReqData
+import com.seoulmate.data.model.request.ModifyCommentReqData
 import com.seoulmate.data.model.request.MyLocationReqData
 import com.seoulmate.data.model.request.WriteCommentReqData
 import com.seoulmate.data.model.request.toJson
@@ -283,13 +285,47 @@ class ChallengeRepositoryImpl @Inject constructor(
         )
     }
 
+    override suspend fun modifyComment(
+        commentId: Int,
+        comment: String,
+        languageCode: String
+    ): Flow<CommonDto<WriteCommentDto?>> = flow {
+        val response = apiService.modifyComment(
+            ModifyCommentReqData(
+                commentId = commentId,
+                comment = comment,
+                languageCode = languageCode,
+            )
+        )
+        emit(
+            CommonDto(
+                code = response.code(),
+                message = response.message(),
+                response = response.body(),
+            )
+        )
+    }
+
+    override suspend fun deleteComment(commentId: Int): Flow<CommonDto<DeleteCommentDto?>> = flow {
+        val response = apiService.deleteComment(
+            id = commentId,
+        )
+        emit(
+            CommonDto(
+                code = response.code(),
+                message = response.message(),
+                response = response.body(),
+            )
+        )
+    }
+
     override suspend fun reqCommentList(
         id: Int,
-        languageCode: String
-    ): Flow<CommonDto<CommentDto>> = flow {
+        language: String
+    ): Flow<CommonDto<List<CommentContentDto>>> = flow {
         val response = apiService.reqCommentList(
             id = id,
-            languageCode = languageCode,
+            language = language,
         )
         emit(
             CommonDto(

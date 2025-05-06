@@ -1,5 +1,6 @@
 package com.codesubmission.home.ui.mypage.item
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
@@ -35,6 +37,7 @@ import com.seoulmate.ui.theme.White
 fun MyPagePermission(
     onLanguageClick: () -> Unit = {},
     onNotificationClick: () -> Unit = {},
+    onLocationClick: () -> Unit = {},
 ) {
     Column (
         modifier = Modifier
@@ -102,7 +105,10 @@ fun MyPagePermission(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 20.dp, vertical = 10.dp),
+                .padding(horizontal = 20.dp, vertical = 10.dp)
+                .noRippleClickable {
+                    onLocationClick()
+                },
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Row(modifier = Modifier.weight(1f)) {
@@ -121,15 +127,11 @@ fun MyPagePermission(
                     )
                 )
             }
-            IconButton(
-                modifier = Modifier.size(40.dp),
-                onClick = {}
-            ) {
-                Icon(
-                    painter = painterResource(com.seoulmate.ui.R.drawable.ic_arrow_right),
-                    contentDescription = "Setting Notification",
-                )
-            }
+            Image(
+                modifier = Modifier.width(46.dp).height(28.dp),
+                painter = painterResource(com.seoulmate.ui.R.drawable.ic_switch),
+                contentDescription = "Setting Notification",
+            )
         }
     }
 }

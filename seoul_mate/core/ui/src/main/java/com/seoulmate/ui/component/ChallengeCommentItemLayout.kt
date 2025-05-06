@@ -38,6 +38,7 @@ import java.util.TimeZone
 fun ChallengeCommentItemLayout(
     modifier: Modifier = Modifier.fillMaxWidth(),
     item: ChallengeCommentItem,
+    onClickMore: (item: ChallengeCommentItem) -> Unit = {},
 ) {
     Column(
         modifier = modifier,
@@ -65,14 +66,19 @@ fun ChallengeCommentItemLayout(
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
-            Icon(
-                modifier = Modifier
-                    .size(16.dp)
-                    .noRippleClickable {  },
-                painter = painterResource(R.drawable.ic_more),
-                contentDescription = "More Icon",
-                tint = CoolGray300,
-            )
+            if(item.isMine) {
+                Icon(
+                    modifier = Modifier
+                        .size(16.dp)
+                        .noRippleClickable {
+                            onClickMore(item)
+                        },
+                    painter = painterResource(R.drawable.ic_more),
+                    contentDescription = "More Icon",
+                    tint = CoolGray300,
+                )
+            }
+
         }
         // Comment Content
         PpsText(

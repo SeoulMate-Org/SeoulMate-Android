@@ -21,13 +21,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.codesubmission.home.R
+import com.codesubmission.home.ui.HomeState
+import com.seoulmate.data.UserInfo
 import com.seoulmate.ui.component.PpsText
+import com.seoulmate.ui.noRippleClickable
 import com.seoulmate.ui.theme.CoolGray900
 import com.seoulmate.ui.theme.White
 
 @Composable
 fun MyPageServiceInfo(
-
+    showWebUrl: (url: String) -> Unit = {},
 ) {
     Column {
         Column (
@@ -71,7 +74,15 @@ fun MyPageServiceInfo(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 PpsText(
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier.weight(1f)
+                        .noRippleClickable {
+                            val url = if (UserInfo.getLanguageCode() == "KOR") {
+                                "https://early-palladium-c40.notion.site/1e3bde6bd69580c89725e7b2399baadb?pvs=4"
+                            } else {
+                                "https://early-palladium-c40.notion.site/Seoul-Tourism-FAQ-1e3bde6bd6958018b538c35bf630ca0b?pvs=4"
+                            }
+                            showWebUrl(url)
+                        },
                     text = stringResource(R.string.my_page_faq),
                     style = MaterialTheme.typography.bodyMedium.copy(
                         color = CoolGray900
@@ -79,7 +90,14 @@ fun MyPageServiceInfo(
                 )
                 IconButton(
                     modifier = Modifier.size(40.dp),
-                    onClick = {}
+                    onClick = {
+                        val url = if (UserInfo.getLanguageCode() == "KOR") {
+                            "https://early-palladium-c40.notion.site/1e3bde6bd69580c89725e7b2399baadb?pvs=4"
+                        } else {
+                            "https://early-palladium-c40.notion.site/Seoul-Tourism-FAQ-1e3bde6bd6958018b538c35bf630ca0b?pvs=4"
+                        }
+                        showWebUrl(url)
+                    }
                 ) {
                     Icon(
                         painter = painterResource(com.seoulmate.ui.R.drawable.ic_arrow_right),
@@ -107,7 +125,15 @@ fun MyPageServiceInfo(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 PpsText(
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier.weight(1f)
+                        .noRippleClickable {
+                            val url = if (UserInfo.getLanguageCode() == "KOR") {
+                                "https://early-palladium-c40.notion.site/1e3bde6bd6958065a15fc07db4fb67d1"
+                            } else {
+                                "https://early-palladium-c40.notion.site/Terms-and-Conditions-of-Service-1e3bde6bd695809c8437f8d794829836?pvs=4"
+                            }
+                            showWebUrl(url)
+                        },
                     text = stringResource(R.string.my_page_terms_of_use),
                     style = MaterialTheme.typography.bodyMedium.copy(
                         color = CoolGray900
@@ -115,7 +141,14 @@ fun MyPageServiceInfo(
                 )
                 IconButton(
                     modifier = Modifier.size(40.dp),
-                    onClick = {}
+                    onClick = {
+                        val url = if (UserInfo.getLanguageCode() == "KOR") {
+                            "https://early-palladium-c40.notion.site/1e3bde6bd6958065a15fc07db4fb67d1"
+                        } else {
+                            "https://early-palladium-c40.notion.site/Terms-and-Conditions-of-Service-1e3bde6bd695809c8437f8d794829836?pvs=4"
+                        }
+                        showWebUrl(url)
+                    }
                 ) {
                     Icon(
                         painter = painterResource(com.seoulmate.ui.R.drawable.ic_arrow_right),
@@ -131,7 +164,15 @@ fun MyPageServiceInfo(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 PpsText(
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier.weight(1f)
+                        .noRippleClickable {
+                            val url = if (UserInfo.getLanguageCode() == "KOR") {
+                                "https://early-palladium-c40.notion.site/1e3bde6bd69580acbecdd6e595e1f7b8?pvs=4"
+                            } else {
+                                "https://early-palladium-c40.notion.site/Privacy-Policy-1e3bde6bd69580bcb074c603910d8c55?pvs=4"
+                            }
+                            showWebUrl(url)
+                        },
                     text = stringResource(R.string.my_page_terms_of_personal_info),
                     style = MaterialTheme.typography.bodyMedium.copy(
                         color = CoolGray900
@@ -139,7 +180,14 @@ fun MyPageServiceInfo(
                 )
                 IconButton(
                     modifier = Modifier.size(40.dp),
-                    onClick = {}
+                    onClick = {
+                        val url = if (UserInfo.getLanguageCode() == "KOR") {
+                            "https://early-palladium-c40.notion.site/1e3bde6bd69580acbecdd6e595e1f7b8?pvs=4"
+                        } else {
+                            "https://early-palladium-c40.notion.site/Privacy-Policy-1e3bde6bd69580bcb074c603910d8c55?pvs=4"
+                        }
+                        showWebUrl(url)
+                    }
                 ) {
                     Icon(
                         painter = painterResource(com.seoulmate.ui.R.drawable.ic_arrow_right),
@@ -155,7 +203,15 @@ fun MyPageServiceInfo(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 PpsText(
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier.weight(1f)
+                        .noRippleClickable {
+                            val url = if (UserInfo.getLanguageCode() == "KOR") {
+                                "https://early-palladium-c40.notion.site/1e3bde6bd6958076ac0ac01e78dda837?pvs=4"
+                            } else {
+                                "https://early-palladium-c40.notion.site/Location-Information-Processing-Policy-1e3bde6bd69580609698fd3b570eb124?pvs=4"
+                            }
+                            showWebUrl(url)
+                        },
                     text = stringResource(R.string.my_page_terms_of_location),
                     style = MaterialTheme.typography.bodyMedium.copy(
                         color = CoolGray900
@@ -163,7 +219,14 @@ fun MyPageServiceInfo(
                 )
                 IconButton(
                     modifier = Modifier.size(40.dp),
-                    onClick = {}
+                    onClick = {
+                        val url = if (UserInfo.getLanguageCode() == "KOR") {
+                            "https://early-palladium-c40.notion.site/1e3bde6bd6958076ac0ac01e78dda837?pvs=4"
+                        } else {
+                            "https://early-palladium-c40.notion.site/Location-Information-Processing-Policy-1e3bde6bd69580609698fd3b570eb124?pvs=4"
+                        }
+                        showWebUrl(url)
+                    }
                 ) {
                     Icon(
                         painter = painterResource(com.seoulmate.ui.R.drawable.ic_arrow_right),

@@ -60,10 +60,13 @@ import com.seoulmate.challenge.detail.item.TopChallengeDetailInfo
 import com.seoulmate.data.ChallengeDetailInfo
 import com.seoulmate.data.UserInfo
 import com.seoulmate.data.dto.challenge.MyChallengeType
+import com.seoulmate.data.model.challenge.ChallengeCommentItem
 import com.seoulmate.ui.component.ChallengeCommentItemLayout
 import com.seoulmate.ui.component.CustomToast
 import com.seoulmate.ui.component.PpsAlertDialog
+import com.seoulmate.ui.component.PpsCommentAlertDialog
 import com.seoulmate.ui.component.PpsLoading
+import com.seoulmate.ui.component.PpsStampDialog
 import com.seoulmate.ui.component.PpsText
 import com.seoulmate.ui.component.Screen
 import com.seoulmate.ui.theme.Blue400
@@ -89,6 +92,7 @@ fun ChallengeDetailScreen(
         listOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
     var showLoginAlertDialog by remember { mutableStateOf(false) }
     var dropDownExpanded by remember { mutableStateOf(false) }
+    var isShowStampDialog by remember { mutableStateOf(false) }
 
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult()
@@ -147,6 +151,7 @@ fun ChallengeDetailScreen(
                 id = challengeId,
                 language = UserInfo.getLanguageCode()
             )
+            isShowStampDialog = true
         }
     }
 
@@ -412,7 +417,10 @@ fun ChallengeDetailScreen(
                         }
 
                         ChallengeCommentItemLayout(
-                            item = ChallengeDetailInfo.commentList[index]
+                            item = ChallengeDetailInfo.commentList[index],
+                            onClickMore = {
+                                onChangeScreen(Screen.ChallengeCommentList)
+                            }
                         )
                     }
                 }
@@ -438,7 +446,7 @@ fun ChallengeDetailScreen(
 
                 // Bottom Spacer
                 item {
-                    Spacer(modifier = Modifier.height(55.dp))
+                    Spacer(modifier = Modifier.height(100.dp))
                 }
 
             }
@@ -540,6 +548,24 @@ fun ChallengeDetailScreen(
                             end.linkTo(parent.end)
                         },
                 )
+            }
+
+            if (isShowStampDialog) {
+                var location = ""
+                run locationLoop@ {
+                    ChallengeDetailInfo.attractions.forEach {
+                        if (it.id == viewModel.targetAttractionId.value) {
+                            location = it.name ?: ""
+                            return@locationLoop
+                        }
+                    }
+                }
+                PpsStampDialog(
+                    strLocation = location
+                ) {
+                    onChangeScreen(Screen.ChallengeStampComplete)
+                    isShowStampDialog = false
+                }
             }
 
             if (viewModel.impossibleStamp.value) {

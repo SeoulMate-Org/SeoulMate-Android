@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.seoulmate.data.UserInfo
 import com.seoulmate.data.model.challenge.AttractionItem
 import com.seoulmate.ui.component.ChallengeInterestButton
 import com.seoulmate.ui.component.PpsText
@@ -198,7 +199,7 @@ fun AttractionItemTile(
             }
             // Interest Button
             ChallengeInterestButton(
-                isInterest = item.isLiked,
+                isInterest = if (UserInfo.isUserLogin()) item.isLiked else false,
                 size = 32.dp
             ) {
                 onItemLikeClick(item)

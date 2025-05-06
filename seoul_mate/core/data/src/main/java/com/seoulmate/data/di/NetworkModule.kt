@@ -75,7 +75,7 @@ object NetworkModule {
                 .build()
         } else {
             OkHttpClient.Builder()
-                .connectionSpecs(listOf(ConnectionSpec.COMPATIBLE_TLS)) // https 관련 보안 옵션
+//                .connectionSpecs(listOf(ConnectionSpec.COMPATIBLE_TLS)) // https 관련 보안 옵션
 //                .cookieJar(JavaNetCookieJar(CookieManager()))       // 쿠키 매니저 연결
                 .connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS)  // 쓰기 타임아웃 시간 설정
                 .writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS)      // 읽기 타임아웃 시간 설정
@@ -137,7 +137,7 @@ object NetworkModule {
                 .build()
         } else {
             OkHttpClient.Builder()
-                .connectionSpecs(listOf(ConnectionSpec.COMPATIBLE_TLS)) // https 관련 보안 옵션
+//                .connectionSpecs(listOf(ConnectionSpec.COMPATIBLE_TLS)) // https 관련 보안 옵션
 //                .cookieJar(JavaNetCookieJar(CookieManager()))       // 쿠키 매니저 연결
                 .connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS)  // 쓰기 타임아웃 시간 설정
                 .writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS)      // 읽기 타임아웃 시간 설정
@@ -192,7 +192,7 @@ object NetworkModule {
                 .build()
         } else {
             OkHttpClient.Builder()
-                .connectionSpecs(listOf(ConnectionSpec.COMPATIBLE_TLS)) // https 관련 보안 옵션
+//                .connectionSpecs(listOf(ConnectionSpec.COMPATIBLE_TLS)) // https 관련 보안 옵션
 //                .cookieJar(JavaNetCookieJar(CookieManager()))       // 쿠키 매니저 연결
                 .connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS)  // 쓰기 타임아웃 시간 설정
                 .writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS)      // 읽기 타임아웃 시간 설정
@@ -202,8 +202,8 @@ object NetworkModule {
                     chain.proceed(
                         chain.request()
                             .newBuilder()
-                            .header("x-ncp-apigw-api-key-id", "")
-                            .header("x-ncp-apigw-api-key", "")
+                            .header("x-ncp-apigw-api-key-id", "p0wwpabrrh")
+                            .header("x-ncp-apigw-api-key", "A9zLQrFNIAM5YfOOmbAXxIghxJyTIOZangMZzlP8")
                             .header("Accept", "application/json")
                             .build()
                     )

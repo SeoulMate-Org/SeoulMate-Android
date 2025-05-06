@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.seoulmate.data.UserInfo
 import com.seoulmate.data.model.challenge.ChallengeRankItemData
 import com.seoulmate.ui.R
 import com.seoulmate.ui.noRippleClickable
@@ -123,7 +124,7 @@ fun ChallengeRankingTileTypeLayout(
             Spacer(modifier = Modifier.width(15.dp))
             // Interest Icon
             ChallengeInterestButton(
-                isInterest = item.isLiked ?: false,
+                isInterest = if (UserInfo.isUserLogin()) item.isLiked ?: false else false,
                 size = 32.dp
             ) {
                 onItemLikeClick(item)

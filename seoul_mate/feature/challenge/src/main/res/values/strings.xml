@@ -3,7 +3,9 @@
     <string name="comment_empty">댓글은 하나의 스탬프를 찍어야 쓸 수 있어요!</string>
 
     <string name="comment_list_title">댓글</string>
-    <string name="comment_hint">댓글을 입력해주세요.</string>
+    <string name="comment_hint">댓글을 입력해 주세요.</string>
+
+    <string name="comment_list_modify_title">댓글 수정</string>
 
     <string name="tap_stamp_after_login">로그인하고 스탬프 찍기</string>
     <string name="show_in_map">지도로 보기</string>
@@ -11,16 +13,24 @@
     <string name="tap_stamp">스탬프 찍기</string>
 
     <string name="stamp_title">스탬프</string>
-    <string name="stamp_info">지금까지 찍은 스탬프를 확인해보세요</string>
+    <string name="stamp_info">지금까지 찍은 스탬프를 확인해 보세요</string>
 
     <string name="stamp_mission_location_title">스탬프 미션 장소</string>
     <string name="stamp_mission_location_info">아래 장소를 방문하면 스탬프가 찍혀요</string>
 
-    <string name="stamp_floating">남은 장소 방문하고 뱃지 받기!</string>
+    <string name="stamp_floating">남은 장소 방문하고 배지 받기!</string>
 
     <string name="title_theme">테마별 챌린지</string>
+
+    <string name="theme_login_title">회원가입하고\n챌린지에 참여해보세요</string>
+    <string name="theme_login_sub_title">서울을 여행하며 스탬프와 뱃지를 모아보세요.</string>
+
+    <string name="theme_last_item">🤩 더 많은 챌린지를 준비 중이에요!</string>
 
     <string name="title_rank">챌린지 랭킹</string>
 
     <string name="comment_list_empty">스탬프를 찍고 첫 댓글을 남겨주세요!</string>
+
+    <string name="complete_stamp_title">축하해요!</string>
+    <string name="complete_stamp_sub_title">%s를 완료 했어요!</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.seoulmate.data.repository
 
+import com.google.android.gms.common.internal.service.Common
 import com.seoulmate.data.dto.CommonDto
 import com.seoulmate.data.dto.attraction.AttractionDetailDto
 import com.seoulmate.data.dto.attraction.AttractionStampDto
@@ -17,6 +18,7 @@ import com.seoulmate.data.dto.challenge.ChallengeThemeItemDto
 import com.seoulmate.data.dto.challenge.MyChallengeDto
 import com.seoulmate.data.dto.comment.CommentContentDto
 import com.seoulmate.data.dto.comment.CommentDto
+import com.seoulmate.data.dto.comment.DeleteCommentDto
 import com.seoulmate.data.dto.comment.WriteCommentDto
 import com.seoulmate.data.model.request.MyLocationReqData
 import kotlinx.coroutines.flow.Flow
@@ -111,11 +113,23 @@ interface ChallengeRepository {
         languageCode: String,
     ): Flow<CommonDto<WriteCommentDto?>>
 
+    // modify comments
+    suspend fun modifyComment(
+        commentId: Int,
+        comment: String,
+        languageCode: String,
+    ): Flow<CommonDto<WriteCommentDto?>>
+
+    // delete comments
+    suspend fun deleteComment(
+        commentId: Int,
+    ): Flow<CommonDto<DeleteCommentDto?>>
+
     // fetch comments list
     suspend fun reqCommentList(
         id: Int,
-        languageCode: String,
-    ): Flow<CommonDto<CommentDto>>
+        language: String,
+    ): Flow<CommonDto<List<CommentContentDto>>>
 
     // fetch my comments list
     suspend fun reqMyCommentList(

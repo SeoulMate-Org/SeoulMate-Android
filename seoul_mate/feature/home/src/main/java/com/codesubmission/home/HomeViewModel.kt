@@ -11,7 +11,9 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.seoulmate.data.ChallengeInfo
 import com.seoulmate.data.UserInfo
 import com.seoulmate.data.dto.CommonDto
+import com.seoulmate.data.dto.challenge.ChallengeStatusDto
 import com.seoulmate.data.dto.challenge.MyChallengeType
+import com.seoulmate.data.model.MyChallengeItemData
 import com.seoulmate.data.model.challenge.ChallengeCulturalEventData
 import com.seoulmate.data.model.challenge.ChallengeRankItemData
 import com.seoulmate.data.model.challenge.ChallengeStampResponseData
@@ -26,6 +28,7 @@ import com.seoulmate.domain.usecase.GetMyChallengeItemListUseCase
 import com.seoulmate.domain.usecase.GetMyPageUserInfoUseCase
 import com.seoulmate.domain.usecase.RefreshTokenUseCase
 import com.seoulmate.domain.usecase.ReqChallengeLikeUseCase
+import com.seoulmate.domain.usecase.ReqChallengeStatusUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
@@ -54,7 +57,8 @@ class HomeViewModel @Inject constructor(
     private val getChallengeListStampUseCase: GetChallengeListStampUseCase,
     private val refreshTokenUseCase: RefreshTokenUseCase,
     private val getMyPageUserInfoUseCase: GetMyPageUserInfoUseCase,
-    private val deleteUserInfoUserCase: DeleteUserInfoUserCase
+    private val deleteUserInfoUserCase: DeleteUserInfoUserCase,
+    private val reqChallengeStatusUseCase: ReqChallengeStatusUseCase,
 ) : ViewModel() {
 
     var challengeRankList = mutableStateOf(ChallengeInfo.rankList)
@@ -65,6 +69,7 @@ class HomeViewModel @Inject constructor(
     var needRefreshToken = mutableStateOf<Boolean?>(null)
     var afterRefreshToken = mutableStateOf<HomeAfterRefreshTokenType?>(null)
     var afterRefreshTokenChallengeId = mutableStateOf<Int?>(null)
+    var succeedChallengeProgress = mutableStateOf(false)
 
     var myLikeChallengeList = mutableStateOf(UserInfo.myLikeChallengeList)
     var myProgressChallengeList = mutableStateOf(UserInfo.myProgressChallengeList)
@@ -299,6 +304,42 @@ class HomeViewModel @Inject constructor(
             }
 
             isRefreshing.value = false
+
+        }
+    }
+
+    // Challenge Status PROGRESS
+    fun reqProgressChallengeStatus(
+        challengeId: Int,
+        challengeType: MyChallengeType = MyChallengeType.PROGRESS,
+    ) {
+        viewModelScope.launch {
+            // put Challenge Status
+            val deferredChallengeStatus = async {
+                var response: CommonDto<ChallengeStatusDto?>? = null
+                reqChallengeStatusUseCase(
+                    id = challengeId,
+                    status = challengeType.type,
+                ).collectLatest {
+                    response = it
+                }
+                return@async response
+            }
+
+            deferredChallengeStatus.await()?.let {
+                if (it.code in 200..299) {
+                    succeedChallengeProgress.value = true
+                } else if (it.code == 403) {
+                    if (UserInfo.isUserLogin()) {
+                        // Refresh Token
+                        needRefreshToken.value = true
+                    } else {
+                        // Need Login
+                        needUserLogin.value = true
+                    }
+                    return@launch
+                }
+            }
 
         }
     }

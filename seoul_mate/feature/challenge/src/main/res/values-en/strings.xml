@@ -1,0 +1,36 @@
+<resources>
+    <string name="title_comment">Comment {%d}</string>
+    <string name="comment_empty">You need at least one stamp to comment!</string>
+
+    <string name="comment_list_title">Comment</string>
+    <string name="comment_hint">Enter your comment</string>
+
+    <string name="comment_list_modify_title">댓글 수정</string>
+
+    <string name="tap_stamp_after_login">Log in and stamp</string>
+    <string name="show_in_map">View on Map</string>
+    <string name="start_challenge">Start Challenge</string>
+    <string name="tap_stamp">stamp</string>
+
+    <string name="stamp_title">Stamp</string>
+    <string name="stamp_info">Check the stamps you’ve collected so far</string>
+
+    <string name="stamp_mission_location_title">Stamp Mission Spots</string>
+    <string name="stamp_mission_location_info">Visit the spots below to get a stamp</string>
+
+    <string name="stamp_floating">Visit the rest and earn your badge!</string>
+
+    <string name="title_theme">Themed Challenges</string>
+
+    <string name="theme_login_title">Sign Up Now!\nJoin Challenges</string>
+    <string name="theme_login_sub_title">Collect stamps and badges as you travel around Seoul.</string>
+
+    <string name="theme_last_item">🤩 More challenges coming soon</string>
+
+    <string name="title_rank">Challenge Ranking</string>
+
+    <string name="comment_list_empty">Collect a stamp and leave a comment!</string>
+
+    <string name="complete_stamp_title">Congrats!</string>
+    <string name="complete_stamp_sub_title">%s completed!</string>
+</resources>

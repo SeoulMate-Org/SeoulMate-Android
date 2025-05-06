@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.seoulmate.data.UserInfo
 import com.seoulmate.data.model.challenge.ChallengeItemData
 import com.seoulmate.data.model.challenge.ChallengeLocationData
 import com.seoulmate.data.model.challenge.ChallengeLocationItemData
@@ -105,7 +106,7 @@ fun ChallengeSquareImageTypeLayout(
                     end.linkTo(parent.end, margin = 10.dp)
                     bottom.linkTo(parent.bottom, margin = 10.dp)
                 },
-                isInterest = item.isLiked ?: false,
+                isInterest = if (UserInfo.isUserLogin()) item.isLiked else false,
             )
             // NowPOP
             if (item.distance > 0) {

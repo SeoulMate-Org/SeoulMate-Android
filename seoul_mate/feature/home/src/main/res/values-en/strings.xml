@@ -1,0 +1,69 @@
+<resources>
+    <string name="nav_suggest_lable">테마 추천</string>
+    <string name="nav_map_lable">map</string>
+    <string name="nav_favorite_lable">좋아요</string>
+
+    <string name="nav_home_label">HOME</string>
+    <string name="nav_challenge_label">My Challenge</string>
+    <string name="nav_my_page_label">MY</string>
+
+    <string name="challenge_count">Total: {%d}</string>
+
+    <string name="tab_complete_challenge">Completed</string>
+    <string name="tab_in_progress_challenge">On it</string>
+    <string name="tab_interest_challenge">JJIM</string>
+
+    <string name="empty_interest_challenge">You haven’t JJIM any challenges yet!</string>
+    <string name="empty_progress_challenge">You haven’t started any challenges yet!</string>
+    <string name="empty_complete_challenge">You haven’t completed any challenges yet!!</string>
+    <string name="empty_challenge_info">Explore and add more challenges</string>
+    <string name="empty_complete_challenge_sub">Try completing an easy one first</string>
+
+    <string name="find_challenge">Browse Challenges</string>
+
+    <string name="home_top_title">⛳️ Join Now!\nAvailable Challenges</string>
+
+    <string name="home_my_location_sign_up_content_title">Sign Up Now!\nJoin Nearby Challenges</string>
+    <string name="home_my_location_sign_up_content_sub_title">Easy to start with nearby spots</string>
+
+    <string name="home_my_location_permission_content_title">Allow Location Access\nto Discover Nearby Challenges</string>
+    <string name="home_my_location_permission_content_sub_title">Allow \nlocation access</string>
+
+    <string name="home_my_location_possible_stamp_title">🏅Don’t miss nearby challenges!</string>
+    <string name="home_my_location_possible_stamp_sub">You can collect stamps right nearby</string>
+
+    <string name="home_challenge_category_title">🎡 Choose by theme</string>
+
+    <string name="missing_challenge_title">🏃‍Challenges you might’ve missed</string>
+    <string name="missing_challenge_sub_title">Want to keep going with your current challenge?</string>
+
+    <string name="possible_challenge_title">🏃 Great challenges to start with</string>
+    <string name="possible_challenge_sub_title">Start with a light challenge?</string>
+
+    <string name="home_challenge_ranking_title">🏅 Challenge Ranking</string>
+    <string name="home_challenge_ranking_sub_title">See where each challenge ranks</string>
+
+
+    <string name="my_page_need_login">Log in required</string>
+    <string name="my_page_need_login_info">JJIM challenges and collect badges!</string>
+    <string name="my_page_badge">Badge</string>
+    <string name="my_page_favorite">JJIM Spots</string>
+    <string name="my_page_reply">My Comments</string>
+
+    <string name="my_page_language">Language</string>
+    <string name="my_page_notification">Notifications</string>
+    <string name="my_page_location">Set Location Access</string>
+    <string name="my_page_select">(choice)</string>
+    <string name="my_page_service_info">About the Service</string>
+    <string name="my_page_faq">FAQ</string>
+    <string name="my_page_terms_of_use">Terms of Service</string>
+    <string name="my_page_terms_of_personal_info">Privacy Policy</string>
+    <string name="my_page_terms_of_location">Location Agreement</string>
+    <string name="my_page_version_info">Version Info</string>
+    <string name="my_page_logout">Log out</string>
+    <string name="my_page_sing_out">Delete Account</string>
+
+    <string name="start_challenge">Start</string>
+
+    <string name="exit_app">Pressing it again will close the app.</string>
+</resources>

@@ -16,16 +16,19 @@ import com.seoulmate.data.dto.challenge.ChallengeThemeItemDto
 import com.seoulmate.data.dto.challenge.MyChallengeDto
 import com.seoulmate.data.dto.comment.CommentContentDto
 import com.seoulmate.data.dto.comment.CommentDto
+import com.seoulmate.data.dto.comment.DeleteCommentDto
 import com.seoulmate.data.dto.comment.WriteCommentDto
 import com.seoulmate.data.dto.user.UserInfoDto
 import com.seoulmate.data.dto.user.UserNicknameDto
 import com.seoulmate.data.model.request.AttractionStampReqData
+import com.seoulmate.data.model.request.ModifyCommentReqData
 import com.seoulmate.data.model.request.MyLocationReqData
 import com.seoulmate.data.model.request.WriteCommentReqData
 import com.seoulmate.data.utils.NetworkConfig
 import org.json.JSONObject
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
@@ -133,11 +136,21 @@ interface ApiService {
         @Body body: WriteCommentReqData,
     ): Response<WriteCommentDto>
 
+    @PUT(NetworkConfig.Service.COMMENT)
+    suspend fun modifyComment(
+        @Body body: ModifyCommentReqData,
+    ): Response<WriteCommentDto>
+
     @GET(NetworkConfig.Service.COMMENT + "/{id}")
     suspend fun reqCommentList(
         @Path("id") id: Int,
-        @Query("languageCode") languageCode: String,
-    ): Response<CommentDto>
+        @Query("language") language: String,
+    ): Response<List<CommentContentDto>>
+
+    @DELETE(NetworkConfig.Service.COMMENT + "/{id}")
+    suspend fun deleteComment(
+        @Path("id") id: Int,
+    ): Response<DeleteCommentDto>
 
     @GET(NetworkConfig.Service.COMMENT_MY)
     suspend fun reqMyCommentList(

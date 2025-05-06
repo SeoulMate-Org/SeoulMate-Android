@@ -35,12 +35,6 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-data class LoginMyData(
-    val responseMyChallengeList: CommonDto<List<MyChallengeItemData>>? = null,
-    val responseMyCommentList: CommonDto<List<ChallengeCommentItem>>? = null,
-    val responseChallengeLocationItemList: CommonDto<ChallengeLocationItemData>? = null,
-)
-
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val getLoginInfoUseCase: GetLoginInfoUseCase,

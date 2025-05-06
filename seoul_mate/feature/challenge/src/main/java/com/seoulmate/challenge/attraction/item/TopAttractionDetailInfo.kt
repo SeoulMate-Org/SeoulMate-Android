@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.seoulmate.data.UserInfo
 import com.seoulmate.data.model.attraction.AttractionDetailData
 import com.seoulmate.ui.component.ChallengeInterestButton
 import com.seoulmate.ui.component.PpsText
@@ -71,7 +72,7 @@ fun TopAttractionDetailInfo(
                     bottom.linkTo(img.bottom, 20.dp)
                     end.linkTo(img.end, 20.dp)
                 },
-                isInterest = item.isLiked,
+                isInterest = if (UserInfo.isUserLogin()) item.isLiked else false,
                 size = 32.dp
             ) {
                 onItemLikeClick(item)

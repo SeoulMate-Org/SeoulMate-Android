@@ -27,6 +27,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import com.codesubmission.home.navigation.HomeBottomNav
@@ -223,7 +224,7 @@ fun BackOnPressed() {
             (context as Activity).finish()
         } else {
             backPressedState = true
-            Toast.makeText(context, "한 번 더 누르시면 앱이 종료됩니다.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, context.getString(com.codesubmission.home.R.string.exit_app), Toast.LENGTH_SHORT).show()
         }
         backPressedTime = System.currentTimeMillis()
     }

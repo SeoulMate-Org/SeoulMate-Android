@@ -85,7 +85,7 @@ class SplashViewModel @Inject constructor(
 
             combine(languageFlow, isFirstEnterFlow, userDataFlow, lastLocationRequest) { language, isFirstEnter, userData, lastLocationRequest ->
                 SplashInitData(language, userData, isFirstEnter, lastLocationRequest)
-            }.collectLatest { splashInitData ->
+            }.collect { splashInitData ->
                 _splashInitDataFlow.emit(splashInitData)
 
                 if(splashInitData.language.isNotEmpty()) {
@@ -98,6 +98,7 @@ class SplashViewModel @Inject constructor(
 
                 splashInitData.userData?.let {
                     with(UserInfo) {
+                        id = it.id
                         nickName = it.nickName
                         accessToken = it.accessToken
                         refreshToken = it.refreshToken
@@ -132,55 +133,54 @@ class SplashViewModel @Inject constructor(
 
     fun reqInit() {
         viewModelScope.launch {
-            // My Like Challenge
-            val deferredMyLikeChallenge = async {
-                var returnResult: CommonDto<List<MyChallengeItemData>>? = null
-                getMyChallengeItemListUseCase(
-                    type = MyChallengeType.LIKE.type,
-                    language = UserInfo.getLanguageCode(),
-                ).collectLatest {
-                    returnResult = it
-                }
-                return@async returnResult
-            }
-            // My Progress Challenge
-            val deferredMyProgressChallenge = async {
-                var returnResult: CommonDto<List<MyChallengeItemData>>? = null
-                getMyChallengeItemListUseCase(
-                    type = MyChallengeType.PROGRESS.type,
-                    language = UserInfo.getLanguageCode(),
-                ).collectLatest {
-                    returnResult = it
-                }
-                return@async returnResult
-            }
-            // My Completed Challenge
-            val deferredMyCompleteChallenge = async {
-                var returnResult: CommonDto<List<MyChallengeItemData>>? = null
-                getMyChallengeItemListUseCase(
-                    type = MyChallengeType.COMPLETE.type,
-                    language = UserInfo.getLanguageCode(),
-                ).collectLatest {
-                    returnResult = it
-                }
-                return@async returnResult
-            }
-            // My ChallengeLocation
-            val deferredMyChallengeLocation = async {
-                var returnResult: CommonDto<ChallengeLocationItemData>? = null
-                getChallengeListLocationUseCase(
-                    locationRequest = MyLocationReqData(
-                        locationX = UserInfo.myLocationY,
-                        locationY = UserInfo.myLocationX,
-                    ),
-                    language = UserInfo.getLanguageCode(),
-                ).collectLatest {
-                    returnResult = it
-                }
-                return@async returnResult
-            }
-
             if (UserInfo.isUserLogin()) {
+                // My Like Challenge
+                val deferredMyLikeChallenge = async {
+                    var returnResult: CommonDto<List<MyChallengeItemData>>? = null
+                    getMyChallengeItemListUseCase(
+                        type = MyChallengeType.LIKE.type,
+                        language = UserInfo.getLanguageCode(),
+                    ).collectLatest {
+                        returnResult = it
+                    }
+                    return@async returnResult
+                }
+                // My Progress Challenge
+                val deferredMyProgressChallenge = async {
+                    var returnResult: CommonDto<List<MyChallengeItemData>>? = null
+                    getMyChallengeItemListUseCase(
+                        type = MyChallengeType.PROGRESS.type,
+                        language = UserInfo.getLanguageCode(),
+                    ).collectLatest {
+                        returnResult = it
+                    }
+                    return@async returnResult
+                }
+                // My Completed Challenge
+                val deferredMyCompleteChallenge = async {
+                    var returnResult: CommonDto<List<MyChallengeItemData>>? = null
+                    getMyChallengeItemListUseCase(
+                        type = MyChallengeType.COMPLETE.type,
+                        language = UserInfo.getLanguageCode(),
+                    ).collectLatest {
+                        returnResult = it
+                    }
+                    return@async returnResult
+                }
+                // My ChallengeLocation
+                val deferredMyChallengeLocation = async {
+                    var returnResult: CommonDto<ChallengeLocationItemData>? = null
+                    getChallengeListLocationUseCase(
+                        locationRequest = MyLocationReqData(
+                            locationX = UserInfo.myLocationY,
+                            locationY = UserInfo.myLocationX,
+                        ),
+                        language = UserInfo.getLanguageCode(),
+                    ).collectLatest {
+                        returnResult = it
+                    }
+                    return@async returnResult
+                }
                 if (grantedLocationPermission.value) {
                     deferredMyLikeChallenge.await()?.let {
                         if (it.code in 200..299) {
@@ -359,6 +359,7 @@ class SplashViewModel @Inject constructor(
                     UserInfo.accessToken = it.accessToken
 
                     updateUserInfoUseCase(
+                        userId = UserInfo.id,
                         nickName = UserInfo.nickName,
                         accessToken = it.accessToken,
                         refreshToken = it.refreshToken,

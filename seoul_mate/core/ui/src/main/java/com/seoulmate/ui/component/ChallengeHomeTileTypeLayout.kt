@@ -29,6 +29,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.seoulmate.data.UserInfo
 import com.seoulmate.data.model.challenge.ChallengeThemeItemData
 import com.seoulmate.ui.R
 import com.seoulmate.ui.noRippleClickable
@@ -175,7 +176,7 @@ fun ChallengeHomeTileTypeLayout(
         Spacer(modifier = Modifier.width(8.dp))
         // Interest Icon
         ChallengeInterestButton(
-            isInterest = item.isLiked ?: false,
+            isInterest = if (UserInfo.isUserLogin()) item.isLiked else false,
             size = 32.dp
         ) {
             onChallengeLikeClick(item.id)

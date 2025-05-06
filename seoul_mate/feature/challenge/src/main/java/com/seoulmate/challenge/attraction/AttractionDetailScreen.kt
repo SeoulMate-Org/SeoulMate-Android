@@ -1,7 +1,9 @@
 package com.seoulmate.challenge.attraction
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -14,7 +16,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -34,15 +35,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.seoulmate.challenge.R
+import com.naver.maps.geometry.LatLng
+import com.naver.maps.map.CameraPosition
+import com.naver.maps.map.compose.CameraPositionState
+import com.naver.maps.map.compose.ExperimentalNaverMapApi
+import com.naver.maps.map.compose.Marker
+import com.naver.maps.map.compose.MarkerState
+import com.naver.maps.map.compose.NaverMap
+import com.naver.maps.map.compose.rememberCameraPositionState
 import com.seoulmate.challenge.attraction.item.TopAttractionDetailInfo
 import com.seoulmate.data.ChallengeDetailInfo
 import com.seoulmate.data.UserInfo
@@ -57,18 +61,28 @@ import com.seoulmate.ui.theme.Blue500
 import com.seoulmate.ui.theme.CoolGray25
 import com.seoulmate.ui.theme.CoolGray400
 import com.seoulmate.ui.theme.CoolGray900
+import com.seoulmate.ui.theme.Red
 import com.seoulmate.ui.theme.TrueWhite
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalNaverMapApi::class)
 @Composable
 fun AttractionDetailScreen(
     attractionId: Int,
     onBackClick: () -> Unit = {},
+    onUrlClick: (url: String) -> Unit = {},
     onChangeScreen: (Screen) -> Unit = {},
 ) {
     val viewModel = hiltViewModel<AttractionDetailViewModel>()
     var showLoginAlertDialog by remember { mutableStateOf(false) }
     var distance by remember { mutableStateOf<Float?>(null) }
+    val seoul = LatLng(37.532600, 127.024612)
+
+    var cameraPositionState: CameraPositionState = rememberCameraPositionState {
+        position = CameraPosition(
+            seoul,
+            14.0
+        )
+    }
 
     LaunchedEffect(Unit) {
         viewModel.getAttractionDetailInfo(attractionId)
@@ -154,6 +168,9 @@ fun AttractionDetailScreen(
                     item {
                         TopAttractionDetailInfo(
                             item = it,
+                            onItemLikeClick = { item ->
+                                viewModel.reqAttractionLike(item.id)
+                            }
                         )
                     }
                     item {
@@ -232,8 +249,12 @@ fun AttractionDetailScreen(
                             }
                             Spacer(modifier = Modifier.height(8.dp))
                             // Homepage Url
-                            if (it.homepageUrl.isNotEmpty()) {
+                            if (it.homepageUrl.length > 1) {
                                 Row(
+                                    modifier = Modifier
+                                        .noRippleClickable {
+                                            onUrlClick(it.homepageUrl)
+                                        },
                                     verticalAlignment = Alignment.CenterVertically,
                                 ) {
                                     Icon(
@@ -248,7 +269,7 @@ fun AttractionDetailScreen(
                                             .weight(1f)
                                             .padding(vertical = 5.dp)
                                             .noRippleClickable {
-
+                                                onUrlClick(it.homepageUrl)
                                             },
                                         text = it.homepageUrl,
                                         style = MaterialTheme.typography.bodySmall.copy(
@@ -260,35 +281,38 @@ fun AttractionDetailScreen(
                                 Spacer(modifier = Modifier.height(8.dp))
                             }
                             // Phone
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                            ) {
-                                Icon(
-                                    modifier = Modifier.size(16.dp),
-                                    painter = painterResource(id = com.seoulmate.ui.R.drawable.ic_phone),
-                                    contentDescription = "Location Icon",
-                                    tint = CoolGray400,
-                                )
-                                Spacer(modifier = Modifier.width(16.dp))
-                                PpsText(
-                                    modifier = Modifier
-                                        .weight(1f)
-                                        .padding(vertical = 5.dp),
-                                    text = it.tel,
-                                    style = MaterialTheme.typography.bodySmall.copy(
-                                        color = CoolGray900,
+                            if (it.tel.length > 1) {
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                ) {
+                                    Icon(
+                                        modifier = Modifier.size(16.dp),
+                                        painter = painterResource(id = com.seoulmate.ui.R.drawable.ic_phone),
+                                        contentDescription = "Location Icon",
+                                        tint = CoolGray400,
                                     )
-                                )
-                                PpsText(
-                                    modifier = Modifier.height(32.dp).wrapContentWidth()
-                                        .noRippleClickable {  },
-                                    text = stringResource(com.seoulmate.ui.R.string.str_copy),
-                                    style = MaterialTheme.typography.labelLarge.copy(
-                                        color = Blue500,
+                                    Spacer(modifier = Modifier.width(16.dp))
+                                    PpsText(
+                                        modifier = Modifier
+                                            .weight(1f)
+                                            .padding(vertical = 5.dp),
+                                        text = it.tel,
+                                        style = MaterialTheme.typography.bodySmall.copy(
+                                            color = CoolGray900,
+                                        )
                                     )
-                                )
+                                    PpsText(
+                                        modifier = Modifier.height(32.dp).wrapContentWidth()
+                                            .noRippleClickable {  },
+                                        text = stringResource(com.seoulmate.ui.R.string.str_copy),
+                                        style = MaterialTheme.typography.labelLarge.copy(
+                                            color = Blue500,
+                                        )
+                                    )
+                                }
+                                Spacer(modifier = Modifier.height(8.dp))
                             }
-                            Spacer(modifier = Modifier.height(8.dp))
+
                             // Subway
                             Row(
                                 verticalAlignment = Alignment.CenterVertically,
@@ -309,6 +333,36 @@ fun AttractionDetailScreen(
                                         color = CoolGray900,
                                     )
                                 )
+                            }
+
+                            //
+                            Spacer(modifier = Modifier.height(24.dp))
+                            cameraPositionState.position = CameraPosition(
+                                LatLng((it.locationY).toDouble(), (it.locationX).toDouble()),
+                                16.0
+                            )
+                            Box(
+                                Modifier
+                                    .fillMaxSize()
+                            ) {
+                                NaverMap(
+                                    modifier = Modifier
+                                        .width(340.dp)
+                                        .height(250.dp),
+                                    cameraPositionState = cameraPositionState,
+                                    onMapClick = { point, LatLng ->
+                                        Log.d("@@@@" , "point: $point, LatLng: $LatLng")
+                                    },
+                                    onLocationChange = { location ->
+                                        Log.d("@@@@", "location: $location")
+                                    }
+                                ) {
+                                    Marker(
+                                        state = MarkerState(position = LatLng((it.locationY).toDouble(), (it.locationX).toDouble())),
+                                        captionText = it.name,
+                                        iconTintColor = Red,
+                                    )
+                                }
                             }
                         }
                     }

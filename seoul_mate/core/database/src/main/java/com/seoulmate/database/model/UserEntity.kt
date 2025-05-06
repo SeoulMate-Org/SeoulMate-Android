@@ -9,19 +9,20 @@ import com.seoulmate.data.model.user.UserData
     tableName = "userInfo"
 )
 data class UserEntity(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,
-    @ColumnInfo(defaultValue = "")
+    @PrimaryKey
+    val id: Int,
+    @ColumnInfo(defaultValue = "", name = "nickName")
     val nickName: String,
-    @ColumnInfo(defaultValue = "")
+    @ColumnInfo(defaultValue = "", name = "loginType")
     val loginType: String,
-    @ColumnInfo(defaultValue = "")
+    @ColumnInfo(defaultValue = "", name = "accessToken")
     val accessToken: String,
-    @ColumnInfo(defaultValue = "")
+    @ColumnInfo(defaultValue = "", name = "refreshToken")
     val refreshToken: String,
 )
 
 fun UserEntity.asExternalModel() = UserData(
+    id = id,
     nickName = nickName,
     accessToken = accessToken,
     refreshToken = refreshToken,
