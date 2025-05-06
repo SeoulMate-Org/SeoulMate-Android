@@ -11,14 +11,7 @@ val properties = Properties()
 properties.load(project.rootProject.file("local.properties").inputStream())
 
 android {
-    signingConfigs {
-        create("release") {
-            keyAlias = "PPSeoul_Key"
-            storeFile = file("/Users/chankyuhwang/Desktop/chan/seoul_mate/key/pps_key")
-            storePassword = "pps@123!!"
-            keyPassword = "pps@123!!"
-        }
-    }
+    
     namespace = "com.seoulmate"
 
     defaultConfig {
