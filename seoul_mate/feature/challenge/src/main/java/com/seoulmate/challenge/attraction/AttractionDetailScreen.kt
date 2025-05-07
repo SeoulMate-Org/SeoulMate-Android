@@ -71,6 +71,7 @@ fun AttractionDetailScreen(
     onBackClick: () -> Unit = {},
     onUrlClick: (url: String) -> Unit = {},
     onChangeScreen: (Screen) -> Unit = {},
+    onCopyClick: (label: String, strCopy: String) -> Unit = { _, _ -> },
 ) {
     val viewModel = hiltViewModel<AttractionDetailViewModel>()
     var showLoginAlertDialog by remember { mutableStateOf(false) }
@@ -240,7 +241,13 @@ fun AttractionDetailScreen(
                                 }
                                 PpsText(
                                     modifier = Modifier.height(32.dp).wrapContentWidth()
-                                        .noRippleClickable {  },
+                                        .noRippleClickable {
+                                            onCopyClick(
+                                                "copy address",
+                                                it.address
+                                            )
+                                            // TODO chan show Toast
+                                        },
                                     text = stringResource(com.seoulmate.ui.R.string.str_copy),
                                     style = MaterialTheme.typography.labelLarge.copy(
                                         color = Blue500,
@@ -303,7 +310,13 @@ fun AttractionDetailScreen(
                                     )
                                     PpsText(
                                         modifier = Modifier.height(32.dp).wrapContentWidth()
-                                            .noRippleClickable {  },
+                                            .noRippleClickable {
+                                                onCopyClick(
+                                                    "copy tel",
+                                                    it.tel,
+                                                )
+                                                // TODO chan show Toast
+                                            },
                                         text = stringResource(com.seoulmate.ui.R.string.str_copy),
                                         style = MaterialTheme.typography.labelLarge.copy(
                                             color = Blue500,

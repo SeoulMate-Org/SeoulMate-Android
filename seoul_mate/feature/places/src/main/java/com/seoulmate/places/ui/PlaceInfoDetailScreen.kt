@@ -49,6 +49,7 @@ fun PlaceInfoDetailScreen(
     onBackClick: () -> Unit,
     expandBottomSheet: () -> Unit = {},
     onAttractionClick: (attractionId: Int) -> Unit = {},
+    onCopyClick: (label: String, strCopy: String) -> Unit = { _, _ -> },
 ) {
     val viewModel = hiltViewModel<PlaceInfoDetailViewModel>()
     val markerList = ChallengeDetailInfo.attractions.map {
@@ -134,9 +135,7 @@ fun PlaceInfoDetailScreen(
                 onDetailClick = { item ->
                     onAttractionClick(item.id)
                 },
-                onCopyClick = { str ->
-
-                },
+                onCopyClick = onCopyClick,
                 onItemLikeClick = { attractionId ->
 
                 }

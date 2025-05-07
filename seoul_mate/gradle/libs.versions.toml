@@ -57,6 +57,7 @@ workRuntimeKtxVersion = "2.9.0"
 gmsPlugin = "4.4.2"
 roomCommonJvm = "2.7.0"
 playServicesLocation = "21.3.0"
+googlePlayReview = "2.0.2"
 
 [bundles]
 androidx-compose-ui-test = ["androidx-compose-ui-test", "androidx-compose-ui-testManifest"]
@@ -145,7 +146,7 @@ naver-map-sdk = { group = "com.naver.maps", name = "map-sdk", version.ref = "nav
 facebook-login = { group = "com.facebook.android", name = "facebook-login", version.ref = "facebookLogin" }
 
 android-gms-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "googleGmsLocation" }
-
+android-play-review-ktx = { group = "com.google.android.play", name = "review-ktx", version.ref = "googlePlayReview" }
 
 # Dependencies of the included build-logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }

@@ -60,6 +60,7 @@ fun HomeNavHost(
         composable(route = Screen.HomeMyPage.route) {
             HomeMyPageScreen(
                 viewModel = viewModel,
+                context = context,
                 version = appState.getAppVersion() ?: "",
                 onLoginClick = {
                     onScreenChange(Screen.Login)

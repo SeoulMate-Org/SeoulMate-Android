@@ -60,7 +60,7 @@ fun AttractionListBottomSheet(
     selectedPlace: Int? = null,
     onItemClick: (index: Int) -> Unit = {},
     onItemLikeClick: (attractionId: Int) -> Unit = {},
-    onCopyClick: (str: String) -> Unit = {},
+    onCopyClick: (label: String, strCopy: String) -> Unit = {_, _ -> },
     onDetailClick: (item: AttractionItem) -> Unit = {},
 ) {
 
@@ -86,7 +86,8 @@ fun AttractionListBottomSheet(
                     item = itemList[selectedPlace],
                     distance = ChallengeDetailInfo.attractionDistance[selectedPlace],
                     onCopyClick = {
-                        onCopyClick(itemList[selectedPlace].address ?: "")
+                        onCopyClick("copy address", itemList[selectedPlace].address ?: "")
+                        // TODO chan show Toast
                     },
                     onDetailClick = {
                         onDetailClick(itemList[selectedPlace])

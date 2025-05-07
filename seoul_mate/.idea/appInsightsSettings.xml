@@ -8,8 +8,8 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="com.seoulmate.dev" />
-                  <option name="mobileSdkAppId" value="1:222259160589:android:3c0a7671ab7021b6725744" />
+                  <option name="appId" value="com.seoulmate" />
+                  <option name="mobileSdkAppId" value="1:222259160589:android:4260b66b7d013710725744" />
                   <option name="projectId" value="seoulmate-519c9" />
                   <option name="projectNumber" value="222259160589" />
                 </ConnectionSetting>

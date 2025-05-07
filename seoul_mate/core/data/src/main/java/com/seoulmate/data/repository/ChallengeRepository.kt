@@ -101,6 +101,11 @@ interface ChallengeRepository {
         language: String,
     ): Flow<CommonDto<AttractionDetailDto>>
 
+    // fetch attraction my
+    suspend fun reqAttractionMy(
+        language: String,
+    ): Flow<CommonDto<List<AttractionDetailDto>>>
+
     // put attraction like
     suspend fun reqAttractionLike(
         id: Int,

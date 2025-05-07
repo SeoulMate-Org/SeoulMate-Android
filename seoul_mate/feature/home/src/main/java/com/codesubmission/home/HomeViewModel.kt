@@ -13,12 +13,12 @@ import com.seoulmate.data.UserInfo
 import com.seoulmate.data.dto.CommonDto
 import com.seoulmate.data.dto.challenge.ChallengeStatusDto
 import com.seoulmate.data.dto.challenge.MyChallengeType
-import com.seoulmate.data.model.MyChallengeItemData
 import com.seoulmate.data.model.challenge.ChallengeCulturalEventData
 import com.seoulmate.data.model.challenge.ChallengeRankItemData
 import com.seoulmate.data.model.challenge.ChallengeStampResponseData
 import com.seoulmate.data.model.challenge.ChallengeThemeItemData
-import com.seoulmate.domain.usecase.DeleteUserInfoUserCase
+import com.seoulmate.data.model.user.UserInfoData
+import com.seoulmate.domain.usecase.DeleteUserInfoUseCase
 import com.seoulmate.domain.usecase.GetChallengeCulturalEventUseCase
 import com.seoulmate.domain.usecase.GetChallengeListRankUseCase
 import com.seoulmate.domain.usecase.GetChallengeListStampUseCase
@@ -57,7 +57,7 @@ class HomeViewModel @Inject constructor(
     private val getChallengeListStampUseCase: GetChallengeListStampUseCase,
     private val refreshTokenUseCase: RefreshTokenUseCase,
     private val getMyPageUserInfoUseCase: GetMyPageUserInfoUseCase,
-    private val deleteUserInfoUserCase: DeleteUserInfoUserCase,
+    private val deleteUserInfoUseCase: DeleteUserInfoUseCase,
     private val reqChallengeStatusUseCase: ReqChallengeStatusUseCase,
 ) : ViewModel() {
 
@@ -70,6 +70,8 @@ class HomeViewModel @Inject constructor(
     var afterRefreshToken = mutableStateOf<HomeAfterRefreshTokenType?>(null)
     var afterRefreshTokenChallengeId = mutableStateOf<Int?>(null)
     var succeedChallengeProgress = mutableStateOf(false)
+
+    var myPageInfo = mutableStateOf<UserInfoData?>(null)
 
     var myLikeChallengeList = mutableStateOf(UserInfo.myLikeChallengeList)
     var myProgressChallengeList = mutableStateOf(UserInfo.myProgressChallengeList)
@@ -349,6 +351,7 @@ class HomeViewModel @Inject constructor(
             getMyPageUserInfoUseCase().collectLatest {
                 if (it.code in 200..299) {
                     it.response?.let { myPageResponse ->
+                        myPageInfo.value = myPageResponse
                         UserInfo.myPageInfo = myPageResponse
                     }
                 } else if (it.code == 403) {
@@ -376,7 +379,7 @@ class HomeViewModel @Inject constructor(
     fun reqLogout() {
         viewModelScope.launch {
             UserInfo.logOut()
-            deleteUserInfoUserCase()
+            deleteUserInfoUseCase()
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.seoulmate.navigation
 
 import android.app.Activity
+import android.content.ClipData
 import android.content.Intent
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
@@ -10,8 +11,11 @@ import com.codesubmission.home.HomeScreen
 import com.codesubmission.settings.language.SettingLanguageScreen
 import com.codesubmission.interest.navigation.interestScreen
 import com.codesubmission.settings.badge.SettingMyBadgeScreen
+import com.codesubmission.settings.myattraction.MyAttractionScreen
+import com.codesubmission.settings.mycomment.MyCommentScreen
 import com.codesubmission.settings.nickname.SettingUserNicknameScreen
 import com.codesubmission.settings.notification.SettingNotificationScreen
+import com.codesubmission.settings.withdraw.WithdrawScreen
 import com.seoulmate.challenge.attraction.AttractionDetailScreen
 import com.seoulmate.challenge.detail.ChallengeDetailScreen
 import com.seoulmate.challenge.comment.ChallengeCommentListScreen
@@ -97,6 +101,12 @@ fun MainNavHost(
                 onAttractionClick = { attractionId ->
                     appState.selectedAttractionItemId.intValue = attractionId
                     appState.navigate(Screen.AttractionDetail)
+                },
+                onCopyClick = { label, copyStr ->
+                    appState.putClipData(
+                        label = label,
+                        strCopy = copyStr,
+                    )
                 }
             )
         }
@@ -177,6 +187,37 @@ fun MainNavHost(
                 onChangeScreen = { screen ->
                     appState.navigate(screen)
                 },
+                onCopyClick = { label, copyStr ->
+                    appState.putClipData(
+                        label = label,
+                        strCopy = copyStr,
+                    )
+                },
+            )
+        }
+        composable(route = Screen.MyAttraction.route) {
+            MyAttractionScreen(
+                onBackClick = { appState.navController.popBackStack() },
+                onAttractionItemClick = { attractionId ->
+                    appState.selectedAttractionItemId.intValue = attractionId
+                    appState.navigate(Screen.AttractionDetail)
+                }
+            )
+        }
+        composable(route = Screen.MyComment.route) {
+            MyCommentScreen(
+                onBackClick = { appState.navController.popBackStack() },
+            )
+        }
+        composable(route = Screen.Withdraw.route) {
+            WithdrawScreen(
+                onBackClick = { appState.navController.popBackStack() },
+                completedWithdraw = {
+                    appState.getContext.startActivity(
+                        Intent(appState.getContext, SplashActivity::class.java)
+                    )
+                    (appState.getContext as Activity).finish()
+                }
             )
         }
     }

@@ -27,7 +27,6 @@ import com.seoulmate.domain.usecase.GetChallengeListStampUseCase
 import com.seoulmate.domain.usecase.GetChallengeSeoulMasterUseCase
 import com.seoulmate.domain.usecase.GetChallengeThemeItemListUseCase
 import com.seoulmate.domain.usecase.GetMyChallengeItemListUseCase
-import com.seoulmate.domain.usecase.GetMyCommentListUseCase
 import com.seoulmate.domain.usecase.GetUserInfoUseCase
 import com.seoulmate.domain.usecase.RefreshTokenUseCase
 import com.seoulmate.domain.usecase.UpdateUserInfoUseCase
@@ -54,7 +53,6 @@ class SplashViewModel @Inject constructor(
     private val getUserInfoUseCase: GetUserInfoUseCase,
     private val refreshTokenUseCase: RefreshTokenUseCase,
     private val getMyChallengeItemListUseCase: GetMyChallengeItemListUseCase,
-    private val getMyCommentListUseCase: GetMyCommentListUseCase,
     private val getChallengeListLocationUseCase: GetChallengeListLocationUseCase,
     private val getChallengeListStampUseCase: GetChallengeListStampUseCase,
     private val getChallengeThemeItemListUseCase: GetChallengeThemeItemListUseCase,

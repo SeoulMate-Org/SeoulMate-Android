@@ -249,6 +249,21 @@ class ChallengeRepositoryImpl @Inject constructor(
         )
     }
 
+    override suspend fun reqAttractionMy(
+        language: String
+    ): Flow<CommonDto<List<AttractionDetailDto>>> = flow {
+        val response = apiService.reqAttractionMy(
+            language = language,
+        )
+        emit(
+            CommonDto(
+                code = response.code(),
+                message = response.message(),
+                response = response.body(),
+            )
+        )
+    }
+
     override suspend fun reqAttractionLike(
         id: Int
     ): Flow<CommonDto<ChallengeItemLikeDto>> = flow {

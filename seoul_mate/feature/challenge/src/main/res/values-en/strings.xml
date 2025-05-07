@@ -30,6 +30,7 @@
     <string name="title_rank">Challenge Ranking</string>
 
     <string name="comment_list_empty">Collect a stamp and leave a comment!</string>
+    <string name="stamp_impossible">장소 근처에서만 스템프를 찍을 수 있어요</string>
 
     <string name="complete_stamp_title">Congrats!</string>
     <string name="complete_stamp_sub_title">%s completed!</string>

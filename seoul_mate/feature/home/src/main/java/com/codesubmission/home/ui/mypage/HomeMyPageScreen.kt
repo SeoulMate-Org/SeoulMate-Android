@@ -1,5 +1,6 @@
 package com.codesubmission.home.ui.mypage
 
+import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -38,6 +39,8 @@ import com.codesubmission.home.ui.mypage.item.MyPageActiveLog
 import com.codesubmission.home.ui.mypage.item.MyPageLoginInfo
 import com.codesubmission.home.ui.mypage.item.MyPagePermission
 import com.codesubmission.home.ui.mypage.item.MyPageServiceInfo
+import com.google.android.play.core.review.ReviewManagerFactory
+import com.google.android.play.core.review.testing.FakeReviewManager
 import com.seoulmate.data.UserInfo
 import com.seoulmate.ui.component.PpsText
 import com.seoulmate.ui.component.Screen
@@ -52,6 +55,7 @@ import com.seoulmate.ui.theme.White
 @Composable
 fun HomeMyPageScreen(
     viewModel: HomeViewModel,
+    context: Context,
     version: String,
     showSnackBar: (SnackBarType, String) -> Unit,
     onLoginClick: () -> Unit = {},
@@ -60,6 +64,8 @@ fun HomeMyPageScreen(
     showWebUrl: (url: String) -> Unit = {},
     goSetting: () -> Unit = {},
 ) {
+//    val reviewManager = ReviewManagerFactory.create(context)
+    val reviewManager = FakeReviewManager(context)
 
     LaunchedEffect(Unit) {
         viewModel.reqMyPageUserInfo()
@@ -91,11 +97,17 @@ fun HomeMyPageScreen(
                     .padding(top = 40.dp),
                 ) {
                     MyPageActiveLog(
-                        cntFavorite = UserInfo.myPageInfo?.likeCount ?: 0,
-                        cntComment = UserInfo.myPageInfo?.commentCount ?: 0,
-                        cntBadge = UserInfo.myPageInfo?.badgeCount ?: 0,
+                        cntFavorite = viewModel.myPageInfo.value?.likeCount ?: 0,
+                        cntComment = viewModel.myPageInfo.value?.commentCount ?: 0,
+                        cntBadge = viewModel.myPageInfo.value?.badgeCount ?: 0,
                         onBadgeClick = {
                             onChangeScreen(Screen.SettingMyBadge)
+                        },
+                        onFavoriteClick = {
+                            onChangeScreen(Screen.MyAttraction)
+                        },
+                        onCommentClick = {
+                            onChangeScreen(Screen.MyComment)
                         }
                     )
                 }
@@ -145,7 +157,10 @@ fun HomeMyPageScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(60.dp)
-                            .padding(horizontal = 20.dp, vertical = 10.dp,),
+                            .padding(horizontal = 20.dp, vertical = 10.dp,)
+                            .noRippleClickable {
+                                reviewManager.requestReviewFlow()
+                            },
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         PpsText(
@@ -197,20 +212,23 @@ fun HomeMyPageScreen(
                                 )
                             )
                         }
-//                        Row(
-//                            modifier = Modifier
-//                                .fillMaxWidth()
-//                                .padding(horizontal = 20.dp, vertical = 10.dp,),
-//                            verticalAlignment = Alignment.CenterVertically,
-//                        ) {
-//                            PpsText(
-//                                modifier = Modifier.weight(1f).height(40.dp),
-//                                text = stringResource(R.string.my_page_sing_out),
-//                                style = MaterialTheme.typography.bodyMedium.copy(
-//                                    color = CoolGray900,
-//                                )
-//                            )
-//                        }
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 20.dp, vertical = 10.dp,)
+                                .noRippleClickable {
+                                    onChangeScreen(Screen.Withdraw)
+                                },
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            PpsText(
+                                modifier = Modifier.weight(1f).height(40.dp),
+                                text = stringResource(com.seoulmate.ui.R.string.withdraw_title),
+                                style = MaterialTheme.typography.bodyMedium.copy(
+                                    color = CoolGray900,
+                                )
+                            )
+                        }
                     }
                 }
             }

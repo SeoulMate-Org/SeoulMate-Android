@@ -30,11 +30,13 @@ object NetworkConfig {
         const val ATTRACTION = "attraction"
         const val ATTRACTION_STAMP = "attraction/stamp"
         const val ATTRACTION_LIKE = "attraction/like"
+        const val ATTRACTION_MY = "attraction/my"
         // Comment
         const val COMMENT = "comment"
         const val COMMENT_MY = "comment/my"
         // User
         const val USER_NICKNAME = "user/nickname"
         const val USER_INFO = "user/info"
+        const val USER = "user"
     }
 }

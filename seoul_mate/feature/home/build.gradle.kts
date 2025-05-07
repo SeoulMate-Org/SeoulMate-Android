@@ -42,6 +42,7 @@ dependencies {
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.kotlinx.coroutines.play)
+    implementation(libs.android.play.review.ktx)
     // 네이버 지도 SDK
     implementation(libs.naver.map.compose)
     implementation(libs.naver.map.location)

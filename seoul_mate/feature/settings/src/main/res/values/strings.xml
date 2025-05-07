@@ -19,6 +19,26 @@
     <string name="nickname_sub">닉네임을 2~15자로 입력해 주세요.</string>
     <string name="nickname_duplication">사용 중인 닉네임입니다.</string>
 
+    <string name="my_attraction_title">찜한 장소</string>
+    <string name="my_attraction_empty_title">아직 찜한 장소가 없어요</string>
+    <string name="my_attraction_empty_sub_title">여러 챌린지를 찾아보고 추가하세요</string>
+
+    <string name="attraction_count">전체 {%d}개</string>
+
+    <string name="my_comment_title">내 댓글</string>
+    <string name="my_comment_empty_title">아직 작성한 댓글이 없어요!</string>
+    <string name="my_comment_empty_sub_title">챌린지에 참여하고 댓글을 달아보세요.</string>
+    <string name="my_comment_find_challenge">챌린지 찾아보기</string>
+
+    <string name="str_withdraw">탈퇴</string>
+
+    <string name="withdraw_info_title">저희 서비스를 아껴주셔서 진심으로 감사합니다.</string>
+    <string name="withdraw_info_sub_title">고객님이 느끼신 점을 공유해주시면, 앞으로 더 나은 서비스를 제공할 수 있도록 노력하겠습니다.</string>
+    <string name="withdraw_consideration_title">유의사항</string>
+
+    <string name="withdraw_dialog_title">탈퇴를 진행할까요?</string>
+    <string name="withdraw_dialog_sub_title">탈퇴시 모든 챌린지 기록, 뱃지 계정정보는 즉시 삭제되며 복구가 불가능 합니다.</string>
+
     <string name="badge_item_01">문화 행사 연계</string>
     <string name="badge_item_02">핵심 관광지 정복</string>
     <string name="badge_item_03">인생샷 &amp; 인증샷</string>

@@ -18,6 +18,7 @@ import com.seoulmate.data.dto.comment.CommentContentDto
 import com.seoulmate.data.dto.comment.CommentDto
 import com.seoulmate.data.dto.comment.DeleteCommentDto
 import com.seoulmate.data.dto.comment.WriteCommentDto
+import com.seoulmate.data.dto.user.DeleteUserDto
 import com.seoulmate.data.dto.user.UserInfoDto
 import com.seoulmate.data.dto.user.UserNicknameDto
 import com.seoulmate.data.model.request.AttractionStampReqData
@@ -130,6 +131,11 @@ interface ApiService {
         @Query("id") id: Int,
     ): Response<ChallengeItemLikeDto?>
 
+    @GET(NetworkConfig.Service.ATTRACTION_MY)
+    suspend fun reqAttractionMy(
+        @Query("language") language: String,
+    ): Response<List<AttractionDetailDto>>
+
     // Comment
     @POST(NetworkConfig.Service.COMMENT)
     suspend fun writeComment(
@@ -165,5 +171,10 @@ interface ApiService {
 
     @GET(NetworkConfig.Service.USER_INFO)
     suspend fun reqUserInfo(): Response<UserInfoDto>
+
+    @DELETE(NetworkConfig.Service.USER)
+    suspend fun deleteUser(
+        @Query("userId") userId: Int
+    ): Response<DeleteUserDto>
 
 }

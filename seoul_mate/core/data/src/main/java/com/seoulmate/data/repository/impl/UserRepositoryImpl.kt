@@ -2,6 +2,7 @@ package com.seoulmate.data.repository.impl
 
 import com.seoulmate.data.api.ApiService
 import com.seoulmate.data.dto.CommonDto
+import com.seoulmate.data.dto.user.DeleteUserDto
 import com.seoulmate.data.dto.user.UserInfoDto
 import com.seoulmate.data.dto.user.UserNicknameDto
 import com.seoulmate.data.repository.UserRepository
@@ -30,6 +31,19 @@ class UserRepositoryImpl @Inject constructor(
 
     override suspend fun reqUserInfo(): Flow<CommonDto<UserInfoDto?>> = flow {
         val response = apiService.reqUserInfo()
+        emit(
+            CommonDto(
+                code = response.code(),
+                message = response.message(),
+                response = response.body(),
+            )
+        )
+    }
+
+    override suspend fun deleteUser(userId: Int): Flow<CommonDto<DeleteUserDto?>> = flow {
+        val response = apiService.deleteUser(
+            userId = userId,
+        )
         emit(
             CommonDto(
                 code = response.code(),

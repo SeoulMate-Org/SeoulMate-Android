@@ -37,6 +37,8 @@ fun MyPageActiveLog(
     cntFavorite: Int = 0,
     cntComment: Int = 0,
     onBadgeClick: () -> Unit = {},
+    onFavoriteClick: () -> Unit = {},
+    onCommentClick: () -> Unit = {},
 ) {
     Row(
         modifier = Modifier
@@ -84,7 +86,10 @@ fun MyPageActiveLog(
         Column(
             modifier = Modifier
                 .weight(1f)
-                .padding(8.dp),
+                .padding(8.dp)
+                .noRippleClickable {
+                    onFavoriteClick()
+                },
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -113,7 +118,10 @@ fun MyPageActiveLog(
         Column(
             modifier = Modifier
                 .weight(1f)
-                .padding(8.dp),
+                .padding(8.dp)
+                .noRippleClickable {
+                    onCommentClick()
+                },
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {

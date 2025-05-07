@@ -1,5 +1,7 @@
 package com.seoulmate.ui
 
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import androidx.compose.material3.BottomSheetScaffoldState
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -100,4 +102,12 @@ class AppState (
         }
     }
 
+    fun putClipData(
+        label: String,
+        strCopy: String,
+    ) {
+        val clipBoardManager = getContext.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        val clipData = ClipData.newPlainText(label, strCopy)
+        clipBoardManager.setPrimaryClip(clipData)
+    }
 }

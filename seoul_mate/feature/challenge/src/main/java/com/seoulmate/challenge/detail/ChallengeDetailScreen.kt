@@ -568,9 +568,10 @@ fun ChallengeDetailScreen(
                 }
             }
 
+            // TODO chan
             if (viewModel.impossibleStamp.value) {
                 val customToast = CustomToast(LocalContext.current)
-                customToast.makeText(message = "스탬프 불가능", resourceIcon = com.seoulmate.ui.R.drawable.ic_placeholder)
+                customToast.makeText(message = stringResource(R.string.stamp_impossible), resourceIcon = com.seoulmate.ui.R.drawable.ic_placeholder)
                 viewModel.impossibleStamp.value = false
             }
         }

@@ -34,4 +34,6 @@
     <string name="str_copy">Copy</string>
     <string name="str_modify">Edit</string>
     <string name="str_delete">Delete</string>
+
+    <string name="withdraw_title">Delete Account</string>
 </resources>

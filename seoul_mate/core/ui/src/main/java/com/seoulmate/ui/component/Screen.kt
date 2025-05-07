@@ -28,6 +28,7 @@ sealed class Screen(val route: String) {
     data object Login: Screen("login")
     data object Signin: Screen("signin")
     data object Signup: Screen("signup")
+    data object Withdraw: Screen("withdraw")
 
     data object ChallengeCommentList: Screen("challengeReplyList")
     data object ChallengeDetail: Screen("challengeDetail")
@@ -36,6 +37,8 @@ sealed class Screen(val route: String) {
     data object ChallengeStampComplete: Screen("challengeStampComplete")
 
     data object AttractionDetail: Screen("attractionDetail")
+    data object MyAttraction: Screen("myAttraction")
+    data object MyComment: Screen("myComment")
 
     data object SettingLanguage: Screen("settingLanguage")
     data object SettingNotification: Screen("settingNotification")
