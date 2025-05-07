@@ -13,6 +13,7 @@ fun InProgressChallengeTabScreen(
     modifier: Modifier = Modifier.fillMaxSize(),
     itemList: List<MyChallengeItemData>,
     onItemClick: (challengeId: Int) -> Unit = {},
+    goMainHome: () -> Unit = {},
 ) {
     Surface(
         modifier = modifier
@@ -21,6 +22,7 @@ fun InProgressChallengeTabScreen(
             // Empty Challenge List Item
             EmptyChallenge(
                 titleRes = R.string.empty_progress_challenge,
+                goMaiHome = goMainHome,
             )
         } else {
             // Challenge List

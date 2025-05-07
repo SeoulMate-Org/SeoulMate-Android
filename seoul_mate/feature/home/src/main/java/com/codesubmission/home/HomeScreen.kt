@@ -21,6 +21,7 @@ import androidx.compose.material3.adaptive.WindowAdaptiveInfo
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -55,12 +56,14 @@ import com.seoulmate.ui.theme.SeoulMateTheme
 @Composable
 fun HomeScreen(
     context: Context,
+    goMainHome: MutableState<Boolean>,
     onPlaceInfoClick: () -> Unit,
     windowAdaptiveInfo: WindowAdaptiveInfo = currentWindowAdaptiveInfo(),
     onChangeScreen: (screen: Screen) -> Unit = {_ -> },
     onChallengeItemClick: (challengeId: Int) -> Unit = {},
     onThemeMorClick: () -> Unit = {},
     firstShowLogin: () -> Unit = {},
+    finishedLogout: () -> Unit = {},
 ) {
 
     val homeState = rememberHomeState()
@@ -172,6 +175,8 @@ fun HomeScreen(
                     onScreenChange = onChangeScreen,
                     onChallengeItemClick = onChallengeItemClick,
                     onThemeMoreClick = onThemeMorClick,
+                    finishedLogout = finishedLogout,
+                    goMainHome = goMainHome,
                 )
                 HomeBottomNav(
                     onHomeClick = {

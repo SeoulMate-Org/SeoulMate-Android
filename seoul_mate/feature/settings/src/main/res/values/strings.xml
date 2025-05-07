@@ -20,8 +20,8 @@
     <string name="nickname_duplication">사용 중인 닉네임입니다.</string>
 
     <string name="my_attraction_title">찜한 장소</string>
-    <string name="my_attraction_empty_title">아직 찜한 장소가 없어요</string>
-    <string name="my_attraction_empty_sub_title">여러 챌린지를 찾아보고 추가하세요</string>
+    <string name="my_attraction_empty_title">아직 찜한 장소가 없어요!</string>
+    <string name="my_attraction_empty_sub_title">여러 챌린지를 찾아보고 추가해 봐요</string>
 
     <string name="attraction_count">전체 {%d}개</string>
 
@@ -34,10 +34,21 @@
 
     <string name="withdraw_info_title">저희 서비스를 아껴주셔서 진심으로 감사합니다.</string>
     <string name="withdraw_info_sub_title">고객님이 느끼신 점을 공유해주시면, 앞으로 더 나은 서비스를 제공할 수 있도록 노력하겠습니다.</string>
+
     <string name="withdraw_consideration_title">유의사항</string>
+    <string name="withdraw_consideration_1">내 배지, 나의 챌린지, 나의 스탬프는 삭제되면 복구되지 않습니다.</string>
+    <string name="withdraw_consideration_2">좋아요한 챌린지 또는 장소, 달성한 스탬프 수는 서비스 품질을 위해 집계 정보로 활용될 수 있습니다.</string>
+    <string name="withdraw_consideration_3">재가입 시 신규 가입으로 진행되어 기존 정보는 연동되지 않습니다.</string>
+
+    <string name="withdraw_reason_title">탈퇴사유</string>
+    <string name="withdraw_reason_1">여행 계획이 끝났어요</string>
+    <string name="withdraw_reason_2">콘텐츠가 부족했어요</string>
+    <string name="withdraw_reason_3">UI/UX가 불편했어요</string>
+    <string name="withdraw_reason_4">알림이 너무 많았어요</string>
+    <string name="withdraw_reason_5">기타</string>
 
     <string name="withdraw_dialog_title">탈퇴를 진행할까요?</string>
-    <string name="withdraw_dialog_sub_title">탈퇴시 모든 챌린지 기록, 뱃지 계정정보는 즉시 삭제되며 복구가 불가능 합니다.</string>
+    <string name="withdraw_dialog_sub_title">탈퇴 시 모든 챌린지 기록, 배지, 계정 정보는 즉시 삭제되며 복구가 불가능합니다.</string>
 
     <string name="badge_item_01">문화 행사 연계</string>
     <string name="badge_item_02">핵심 관광지 정복</string>

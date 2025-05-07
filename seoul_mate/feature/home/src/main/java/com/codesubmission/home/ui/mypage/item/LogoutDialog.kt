@@ -1,6 +1,5 @@
-package com.seoulmate.ui.component
+package com.codesubmission.home.ui.mypage.item
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,39 +13,29 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.seoulmate.ui.R
+import com.seoulmate.ui.component.PpsButton
+import com.seoulmate.ui.component.PpsText
 import com.seoulmate.ui.theme.Black
 import com.seoulmate.ui.theme.CoolGray25
 import com.seoulmate.ui.theme.CoolGray50
 import com.seoulmate.ui.theme.CoolGray600
 import com.seoulmate.ui.theme.CoolGray900
-import com.seoulmate.ui.theme.SeoulMateTheme
 import com.seoulmate.ui.theme.TrueWhite
 
-/**
- * Common AlertDialog
- */
 @Composable
-fun PpsAlertDialog(
-    containerWidth: Dp = 320.dp,
-    @StringRes titleRes: Int,
-    @StringRes descriptionRes: Int,
-    @StringRes confirmRes: Int = R.string.str_confirm,
-    @StringRes cancelRes: Int? = null,
+fun LogoutDialog(
     onClickCancel: () -> Unit,
-    onClickConfirm: () -> Unit,
+    onClickLogout: () -> Unit,
     dismissOnBackPress: Boolean = true,
     dismissOnClickOutside: Boolean = true,
 ) {
@@ -80,7 +69,7 @@ fun PpsAlertDialog(
                 // Title
                 PpsText(
                     modifier = Modifier.fillMaxWidth(),
-                    text = stringResource(titleRes),
+                    text = stringResource(com.codesubmission.home.R.string.logout_title),
                     style = TextStyle(
                         fontSize = 20.sp,
                         color = CoolGray900,
@@ -92,7 +81,7 @@ fun PpsAlertDialog(
                 // Description
                 PpsText(
                     modifier = Modifier.wrapContentSize(),
-                    text = stringResource(descriptionRes),
+                    text = stringResource(com.codesubmission.home.R.string.logout_sub_title),
                     style = TextStyle(
                         fontSize = 16.sp,
                         color = CoolGray600,
@@ -103,43 +92,25 @@ fun PpsAlertDialog(
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                 ) {
-                    if (cancelRes != null) {
-                        PpsButton(
-                            modifier = Modifier.weight(1f).height(51.dp),
-                            stringRes = cancelRes,
-                            color = CoolGray50,
-                            borderColor = CoolGray50,
-                            fontColor = Black,
-                            onClick = onClickCancel,
-                            cornerRound = 15.dp,
-                        )
-                        Spacer(modifier = Modifier.width(10.dp))
-                    }
-
                     PpsButton(
                         modifier = Modifier.weight(1f).height(51.dp),
-                        stringRes = confirmRes,
-                        onClick = onClickConfirm,
+                        stringRes = R.string.str_cancel,
+                        color = CoolGray50,
+                        borderColor = CoolGray50,
+                        fontColor = Black,
+                        onClick = onClickCancel,
+                        cornerRound = 15.dp,
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    PpsButton(
+                        modifier = Modifier.weight(1f).height(51.dp),
+                        stringRes = com.codesubmission.home.R.string.my_page_logout,
+                        onClick = onClickLogout,
                         cornerRound = 15.dp,
                     )
                 }
 
             }
         }
-    }
-}
-
-@Preview
-@Composable
-private fun PreviewPpsAlertDialog() {
-    SeoulMateTheme {
-        PpsAlertDialog(
-            titleRes = R.string.str_need_login,
-            descriptionRes = R.string.str_need_login_description,
-            confirmRes = R.string.str_login,
-            cancelRes = R.string.str_cancel,
-            onClickCancel = {},
-            onClickConfirm = {},
-        )
     }
 }

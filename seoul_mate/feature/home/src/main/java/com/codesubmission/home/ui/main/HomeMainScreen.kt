@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.provider.Settings
+import android.util.DisplayMetrics
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -45,6 +46,7 @@ import com.codesubmission.home.ui.main.item.ChallengeRanking
 import com.codesubmission.home.ui.main.item.HorizontalCarousel
 import com.codesubmission.home.ui.main.item.MissingChallenge
 import com.codesubmission.home.ui.main.item.MyLocationChallenge
+import com.seoulmate.data.ChallengeDetailInfo
 import com.seoulmate.data.ChallengeInfo
 import com.seoulmate.data.UserInfo
 import com.seoulmate.data.model.challenge.ChallengeItemData
@@ -102,6 +104,8 @@ fun HomeMainScreen(
         if(viewModel.succeedChallengeProgress.value) {
             viewModel.succeedChallengeProgress.value = false
             viewModel.reqHomeChallengeItems()
+
+            onChallengeItemClick(ChallengeDetailInfo.id)
         }
     }
 
@@ -186,6 +190,8 @@ fun HomeMainScreen(
                             } else {
                                 ChallengeInfo.challengeCulturalList
                             },
+                            screenWidth =
+                            (context.resources.displayMetrics.widthPixels / ((context.resources.displayMetrics.densityDpi) / DisplayMetrics.DENSITY_DEFAULT)).dp,
                             onChallengeItemClick = onChallengeItemClick,
                             onChallengeLikeClick = { challengeId ->
                                 viewModel.reqChallengeLike(challengeId)

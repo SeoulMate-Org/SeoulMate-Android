@@ -40,6 +40,7 @@ fun EmptyChallenge(
     @StringRes titleRes: Int = R.string.empty_interest_challenge,
     @StringRes infoRes: Int = R.string.empty_challenge_info,
     isShowButton: Boolean = true,
+    goMaiHome: () -> Unit = {},
 ) {
     Column(
         modifier = modifier,
@@ -77,9 +78,7 @@ fun EmptyChallenge(
             PpsButton(
                 modifier = Modifier.height(38.dp).wrapContentWidth(),
                 stringRes = R.string.find_challenge,
-                onClick = {
-                    // TODO chan Find Challenge
-                }
+                onClick = goMaiHome
             )
         }
     }

@@ -117,7 +117,7 @@ internal val SeoulMateTypography = Typography(
     // BodyS
     bodySmall = TextStyle(
         fontFamily = PretendardFont,
-        fontWeight = FontWeight.SemiBold,
+        fontWeight = FontWeight.Medium,
         fontSize = 14.sp,
         lineHeight = 21.sp,
         letterSpacing = 0.4.sp,

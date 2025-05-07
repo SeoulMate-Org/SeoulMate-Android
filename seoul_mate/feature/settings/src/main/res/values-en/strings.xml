@@ -19,25 +19,36 @@
     <string name="nickname_sub">Enter 2–15 characters for your nickname.</string>
     <string name="nickname_duplication">That nickname is already in use.</string>
 
-    <string name="my_attraction_title">찜한 장소</string>
-    <string name="my_attraction_empty_title">아직 찜한 장소가 없어요</string>
-    <string name="my_attraction_empty_sub_title">여러 챌린지를 찾아보고 추가하세요</string>
+    <string name="my_attraction_title">JJIM Spots</string>
+    <string name="my_attraction_empty_title">You haven’t JJIM any spots yet!</string>
+    <string name="my_attraction_empty_sub_title">Browse and add more challenges.</string>
 
     <string name="attraction_count">Total: {%d}</string>
 
-    <string name="my_comment_title">내 댓글</string>
-    <string name="my_comment_empty_title">아직 작성한 댓글이 없어요!</string>
-    <string name="my_comment_empty_sub_title">챌린지에 참여하고 댓글을 달아보세요.</string>
-    <string name="my_comment_find_challenge">챌린지 찾아보기</string>
+    <string name="my_comment_title">My Comments</string>
+    <string name="my_comment_empty_title">No comments yet!</string>
+    <string name="my_comment_empty_sub_title">Join a challenge and leave a comment!</string>
+    <string name="my_comment_find_challenge">Browse Challenges</string>
 
-    <string name="str_withdraw">탈퇴</string>
+    <string name="str_withdraw">Delete Account</string>
 
-    <string name="withdraw_info_title">저희 서비스를 아껴주셔서 진심으로 감사합니다.</string>
-    <string name="withdraw_info_sub_title">고객님이 느끼신 점을 공유해주시면, 앞으로 더 나은 서비스를 제공할 수 있도록 노력하겠습니다.</string>
-    <string name="withdraw_consideration_title">유의사항</string>
+    <string name="withdraw_info_title">Thank you so much for using our service.</string>
+    <string name="withdraw_info_sub_title">Share your thoughts so we can improve.</string>
 
-    <string name="withdraw_dialog_title">탈퇴를 진행할까요?</string>
-    <string name="withdraw_dialog_sub_title">탈퇴시 모든 챌린지 기록, 뱃지 계정정보는 즉시 삭제되며 복구가 불가능 합니다.</string>
+    <string name="withdraw_consideration_title">Note</string>
+    <string name="withdraw_consideration_1">My badge, my challenge, my stamp will not recover when deleted.</string>
+    <string name="withdraw_consideration_2">Good challenge or spot and the number of stamps achieved can be used as aggregate information for quality of service.</string>
+    <string name="withdraw_consideration_3">If you re-register, it will proceed to a new subscription, so existing information will not be linked.</string>
+
+    <string name="withdraw_reason_title">Reason for Leaving</string>
+    <string name="withdraw_reason_1">My trip is over</string>
+    <string name="withdraw_reason_2">Not enough content</string>
+    <string name="withdraw_reason_3">Poor UI/UX</string>
+    <string name="withdraw_reason_4">Too many notifications</string>
+    <string name="withdraw_reason_5">Other</string>
+
+    <string name="withdraw_dialog_title">Proceed with account deletion?</string>
+    <string name="withdraw_dialog_sub_title">All records, badges and account info will be deleted permanently.</string>
 
     <string name="badge_item_01">Cultural Events</string>
     <string name="badge_item_02">Must-See Spots</string>

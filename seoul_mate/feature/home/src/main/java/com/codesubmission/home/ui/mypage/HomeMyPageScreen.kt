@@ -22,19 +22,24 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.codesubmission.home.HomeViewModel
 import com.codesubmission.home.R
 import com.codesubmission.home.ui.HomeState
+import com.codesubmission.home.ui.mypage.item.LogoutDialog
 import com.codesubmission.home.ui.mypage.item.MyPageActiveLog
 import com.codesubmission.home.ui.mypage.item.MyPageLoginInfo
 import com.codesubmission.home.ui.mypage.item.MyPagePermission
@@ -55,10 +60,13 @@ import com.seoulmate.ui.theme.White
 @Composable
 fun HomeMyPageScreen(
     viewModel: HomeViewModel,
+    homeState: HomeState,
     context: Context,
     version: String,
+    goMainHome: MutableState<Boolean>,
     showSnackBar: (SnackBarType, String) -> Unit,
     onLoginClick: () -> Unit = {},
+    finishedLogout: () -> Unit = {},
     onChangeScreen: (Screen) -> Unit = {},
     onNickNameClick: () -> Unit = {},
     showWebUrl: (url: String) -> Unit = {},
@@ -66,9 +74,24 @@ fun HomeMyPageScreen(
 ) {
 //    val reviewManager = ReviewManagerFactory.create(context)
     val reviewManager = FakeReviewManager(context)
+    var showLogoutDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         viewModel.reqMyPageUserInfo()
+    }
+
+    LaunchedEffect(viewModel.finishedLogout.value) {
+        if (viewModel.finishedLogout.value) {
+            viewModel.finishedLogout.value = false
+            finishedLogout()
+        }
+    }
+
+    LaunchedEffect(goMainHome.value) {
+        if (goMainHome.value) {
+            goMainHome.value = false
+            homeState.navigate(Screen.HomeMain.route)
+        }
     }
 
     Surface(
@@ -101,13 +124,25 @@ fun HomeMyPageScreen(
                         cntComment = viewModel.myPageInfo.value?.commentCount ?: 0,
                         cntBadge = viewModel.myPageInfo.value?.badgeCount ?: 0,
                         onBadgeClick = {
-                            onChangeScreen(Screen.SettingMyBadge)
+                            if (UserInfo.isUserLogin()) {
+                                onChangeScreen(Screen.SettingMyBadge)
+                            } else {
+                                showLogoutDialog = true
+                            }
                         },
                         onFavoriteClick = {
-                            onChangeScreen(Screen.MyAttraction)
+                            if (UserInfo.isUserLogin()) {
+                                onChangeScreen(Screen.MyAttraction)
+                            } else {
+                                showLogoutDialog = true
+                            }
                         },
                         onCommentClick = {
-                            onChangeScreen(Screen.MyComment)
+                            if (UserInfo.isUserLogin()) {
+                                onChangeScreen(Screen.MyComment)
+                            } else {
+                                showLogoutDialog = true
+                            }
                         }
                     )
                 }
@@ -172,10 +207,11 @@ fun HomeMyPageScreen(
                         )
                         PpsText(
                             modifier = Modifier.weight(1f),
-                            text = version,
+                            text = "v$version",
                             style = MaterialTheme.typography.labelLarge.copy(
                                 color = CoolGray600,
                             ),
+                            textAlign = TextAlign.End
                         )
                     }
                 }
@@ -200,7 +236,7 @@ fun HomeMyPageScreen(
                                 .fillMaxWidth()
                                 .padding(horizontal = 20.dp, vertical = 10.dp,)
                                 .noRippleClickable {
-                                    viewModel.reqLogout()
+                                    showLogoutDialog = true
                                 },
                             verticalAlignment = Alignment.CenterVertically,
                         ) {
@@ -232,6 +268,17 @@ fun HomeMyPageScreen(
                     }
                 }
             }
+        }
+
+        if(showLogoutDialog) {
+            LogoutDialog(
+                onClickCancel = {
+                    showLogoutDialog = false
+                },
+                onClickLogout = {
+                    viewModel.reqLogout()
+                },
+            )
         }
     }
 }

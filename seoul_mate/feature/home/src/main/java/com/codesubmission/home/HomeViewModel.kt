@@ -8,6 +8,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.location.FusedLocationProviderClient
+import com.seoulmate.data.ChallengeDetailInfo
 import com.seoulmate.data.ChallengeInfo
 import com.seoulmate.data.UserInfo
 import com.seoulmate.data.dto.CommonDto
@@ -70,6 +71,8 @@ class HomeViewModel @Inject constructor(
     var afterRefreshToken = mutableStateOf<HomeAfterRefreshTokenType?>(null)
     var afterRefreshTokenChallengeId = mutableStateOf<Int?>(null)
     var succeedChallengeProgress = mutableStateOf(false)
+
+    var finishedLogout = mutableStateOf(false)
 
     var myPageInfo = mutableStateOf<UserInfoData?>(null)
 
@@ -330,6 +333,7 @@ class HomeViewModel @Inject constructor(
 
             deferredChallengeStatus.await()?.let {
                 if (it.code in 200..299) {
+                    ChallengeDetailInfo.id = challengeId
                     succeedChallengeProgress.value = true
                 } else if (it.code == 403) {
                     if (UserInfo.isUserLogin()) {
@@ -379,7 +383,24 @@ class HomeViewModel @Inject constructor(
     fun reqLogout() {
         viewModelScope.launch {
             UserInfo.logOut()
+
+            with(ChallengeInfo) {
+                challengeStampData = null
+                challengeLocationData = null
+                challengeSeoulMasterList = listOf()
+                challengeCulturalList = listOf()
+            }
+
+            with(ChallengeDetailInfo) {
+                title = ""
+                commentList = listOf()
+                attractions = listOf()
+                attractionDistance = listOf()
+                completedStampThemeId = null
+            }
+
             deleteUserInfoUseCase()
+            finishedLogout.value = true
         }
     }
 }

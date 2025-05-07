@@ -181,8 +181,8 @@ object NetworkModule {
                     chain.proceed(
                         chain.request()
                             .newBuilder()
-                            .header("x-ncp-apigw-api-key-id", "p0wwpabrrh")
-                            .header("x-ncp-apigw-api-key", "A9zLQrFNIAM5YfOOmbAXxIghxJyTIOZangMZzlP8")
+                            .header("x-ncp-apigw-api-key-id", "")
+                            .header("x-ncp-apigw-api-key", "")
                             .header("Accept", "application/json")
                             .build()
                     )
@@ -202,8 +202,8 @@ object NetworkModule {
                     chain.proceed(
                         chain.request()
                             .newBuilder()
-                            .header("x-ncp-apigw-api-key-id", "p0wwpabrrh")
-                            .header("x-ncp-apigw-api-key", "A9zLQrFNIAM5YfOOmbAXxIghxJyTIOZangMZzlP8")
+                            .header("x-ncp-apigw-api-key-id", "")
+                            .header("x-ncp-apigw-api-key", "")
                             .header("Accept", "application/json")
                             .build()
                     )

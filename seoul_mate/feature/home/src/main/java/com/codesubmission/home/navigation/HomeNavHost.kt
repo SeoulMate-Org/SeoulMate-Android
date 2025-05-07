@@ -1,10 +1,12 @@
 package com.codesubmission.home.navigation
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.core.net.toUri
 import androidx.navigation.compose.NavHost
@@ -22,9 +24,11 @@ fun HomeNavHost(
     modifier: Modifier,
     context: Context,
     viewModel: HomeViewModel,
+    goMainHome: MutableState<Boolean>,
     onScreenChange: (screen: Screen) -> Unit = { _ -> },
     onChallengeItemClick: (challengeId: Int) -> Unit = {},
     onThemeMoreClick: () -> Unit = {},
+    finishedLogout: () -> Unit = {},
 ) {
     NavHost(
         navController = appState.navController,
@@ -54,13 +58,18 @@ fun HomeNavHost(
             HomeChallengeScreen(
                 homeState = appState,
                 viewModel = viewModel,
-                onChallengeItemClick = onChallengeItemClick
+                onChallengeItemClick = onChallengeItemClick,
+                onChangeScreen = { screen ->
+                    appState.navigate(screen.route)
+                },
             )
         }
         composable(route = Screen.HomeMyPage.route) {
             HomeMyPageScreen(
                 viewModel = viewModel,
                 context = context,
+                homeState = appState,
+                goMainHome = goMainHome,
                 version = appState.getAppVersion() ?: "",
                 onLoginClick = {
                     onScreenChange(Screen.Login)
@@ -82,7 +91,8 @@ fun HomeNavHost(
                         data = Uri.parse("package:${context.packageName}")
                     }
                     context.startActivity(intent)
-                }
+                },
+                finishedLogout = finishedLogout,
             )
         }
     }

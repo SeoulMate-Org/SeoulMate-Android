@@ -16,6 +16,7 @@ import com.codesubmission.home.ui.challenge.tabpage.InterestChallengeTabScreen
 import com.seoulmate.data.UserInfo
 import com.seoulmate.data.dto.challenge.MyChallengeType
 import com.seoulmate.data.model.challenge.ChallengeItemData
+import com.seoulmate.ui.component.Screen
 import com.seoulmate.ui.theme.TrueWhite
 import kotlinx.coroutines.launch
 
@@ -24,6 +25,7 @@ fun HomeChallengeScreen(
     homeState: HomeState,
     viewModel: HomeViewModel,
     onChallengeItemClick: (challengeId: Int) -> Unit = {},
+    onChangeScreen: (screen: Screen) -> Unit = { _ -> },
 ) {
     val tabList = listOf(
         ChallengeTabItem.Interest,
@@ -99,10 +101,16 @@ fun HomeChallengeScreen(
                         onItemLikeClick = { challengeId ->
                             viewModel.reqChallengeLike(challengeId)
                         },
+                        goMainHome = {
+                            onChangeScreen(Screen.HomeMain)
+                        }
                     )
                     ChallengeTabItem.InProgress -> InProgressChallengeTabScreen(
                         itemList = UserInfo.myProgressChallengeList,
                         onItemClick = onChallengeItemClick,
+                        goMainHome = {
+                            onChangeScreen(Screen.HomeMain)
+                        }
                     )
                     ChallengeTabItem.Complete -> CompleteChallengeTabScreen(
                         itemList = UserInfo.myCompleteChallengeList,

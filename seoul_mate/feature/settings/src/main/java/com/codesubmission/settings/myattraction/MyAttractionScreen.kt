@@ -3,6 +3,7 @@ package com.codesubmission.settings.myattraction
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -102,6 +103,7 @@ fun MyAttractionScreen(
 
             LazyColumn(
                 modifier = Modifier
+                    .fillMaxSize()
                     .constrainAs(list) {
                         top.linkTo(parent.top)
                         bottom.linkTo(parent.bottom)

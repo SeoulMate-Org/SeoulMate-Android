@@ -5,7 +5,7 @@
     <string name="comment_list_title">Comment</string>
     <string name="comment_hint">Enter your comment</string>
 
-    <string name="comment_list_modify_title">댓글 수정</string>
+    <string name="comment_list_modify_title">Edit comment</string>
 
     <string name="tap_stamp_after_login">Log in and stamp</string>
     <string name="show_in_map">View on Map</string>
@@ -30,7 +30,7 @@
     <string name="title_rank">Challenge Ranking</string>
 
     <string name="comment_list_empty">Collect a stamp and leave a comment!</string>
-    <string name="stamp_impossible">장소 근처에서만 스템프를 찍을 수 있어요</string>
+    <string name="stamp_impossible">You can only collect stamps near the location.</string>
 
     <string name="complete_stamp_title">Congrats!</string>
     <string name="complete_stamp_sub_title">%s completed!</string>

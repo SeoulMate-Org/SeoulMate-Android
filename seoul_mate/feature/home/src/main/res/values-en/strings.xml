@@ -62,6 +62,9 @@
     <string name="my_page_version_info">Version Info</string>
     <string name="my_page_logout">Log out</string>
 
+    <string name="logout_title">Would you like to Log out?</string>
+    <string name="logout_sub_title">You’ll be logged out of the app.</string>
+
     <string name="start_challenge">Start</string>
 
     <string name="exit_app">Pressing it again will close the app.</string>

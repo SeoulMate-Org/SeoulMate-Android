@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.seoulmate.data.model.challenge.ChallengeCulturalEventData
 import com.seoulmate.data.model.challenge.ChallengeItemData
@@ -26,11 +27,10 @@ fun HorizontalCarousel(
         .background(color = Color.Transparent)
         .height(280.dp),
     itemList: List<ChallengeCulturalEventData>,
+    screenWidth: Dp,
     onChallengeItemClick: (challengeId: Int) -> Unit = {},
     onChallengeLikeClick: (challengeId: Int) -> Unit = {},
 ) {
-    val contentPadding = 40.dp
-    val pageSpacing = 10.dp
     val pagerState = rememberPagerState(
         pageCount = { itemList.size }
     )
@@ -39,8 +39,8 @@ fun HorizontalCarousel(
         modifier = modifier,
         state = pagerState,
         key = { itemList[it].id },
-        contentPadding = PaddingValues(horizontal = contentPadding),
-        pageSpacing = pageSpacing,
+        contentPadding = PaddingValues(horizontal = screenWidth * 0.2f),
+        pageSpacing = screenWidth * 0.1f,
     ) { pageIndex ->
         val pageItem = itemList[pageIndex]
         Row(

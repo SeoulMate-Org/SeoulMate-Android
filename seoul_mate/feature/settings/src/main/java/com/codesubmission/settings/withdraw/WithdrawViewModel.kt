@@ -3,6 +3,8 @@ package com.codesubmission.settings.withdraw
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.seoulmate.data.ChallengeDetailInfo
+import com.seoulmate.data.ChallengeInfo
 import com.seoulmate.data.UserInfo
 import com.seoulmate.domain.usecase.DeleteUserInfoUseCase
 import com.seoulmate.domain.usecase.DeleteUserUseCase
@@ -48,6 +50,22 @@ class WithdrawViewModel @Inject constructor(
     fun removeUserInfo() {
         viewModelScope.launch {
             UserInfo.logOut()
+
+            with(ChallengeInfo) {
+                challengeStampData = null
+                challengeLocationData = null
+                challengeSeoulMasterList = listOf()
+                challengeCulturalList = listOf()
+            }
+
+            with(ChallengeDetailInfo) {
+                title = ""
+                commentList = listOf()
+                attractions = listOf()
+                attractionDistance = listOf()
+                completedStampThemeId = null
+            }
+            
             deleteUserInfoUseCase()
             succeedClearUserInfo.value = true
             isShowLoading.value = false

@@ -65,7 +65,6 @@ fun ChallengeHomeTileTypeLayout(
         horizontalArrangement = Arrangement.Start,
     ) {
         // Image Challenge Item
-        // TODO chan placeholder
         AsyncImage(
             modifier = Modifier
                 .size(76.dp)

@@ -123,10 +123,9 @@ fun WithdrawScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .constrainAs(body) {
-                        top.linkTo(parent.top)
-                        bottom.linkTo(bottomButton.top)
                         start.linkTo(parent.start)
                         end.linkTo(parent.end)
+                        linkTo(top = parent.top, bottom = bottomButton.top, bias = 0f)
                     }
             ) {
                 // Top Info
@@ -134,6 +133,7 @@ fun WithdrawScreen(
                     Column(
                         modifier = Modifier
                             .padding(horizontal = 20.dp)
+                            .padding(top = 36.dp)
                     ) {
                         PpsText(
                             modifier = Modifier,
@@ -144,10 +144,11 @@ fun WithdrawScreen(
                             maxLines = 2,
                             overflow = TextOverflow.Ellipsis,
                         )
+                        Spacer(modifier = Modifier.height(8.dp))
                         PpsText(
                             modifier = Modifier,
                             text = stringResource(R.string.withdraw_info_sub_title),
-                            style = MaterialTheme.typography.titleSmall.copy(
+                            style = MaterialTheme.typography.bodySmall.copy(
                                 color = CoolGray600,
                             ),
                             maxLines = 2,
@@ -156,7 +157,7 @@ fun WithdrawScreen(
                         HorizontalDivider(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(top = 20.dp),
+                                .padding(top = 24.dp),
                             thickness = 1.dp,
                             color = CoolGray50,
                         )
@@ -164,18 +165,21 @@ fun WithdrawScreen(
                 }
                 // Consideration Info
                 item {
+                    Spacer(modifier = Modifier.height(36.dp))
                     WithdrawConsiderationInfoLayout()
-                    Spacer(modifier = Modifier.height(20.dp))
                 }
                 // Reason
                 item {
+                    Spacer(modifier = Modifier.height(20.dp))
                     WithdrawReasonLayout()
+                    Spacer(modifier = Modifier.height(30.dp))
                 }
             }
             // Bottom Withdraw Button
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
                     .constrainAs(bottomButton) {
                         bottom.linkTo(parent.bottom, margin = 10.dp)
                         start.linkTo(parent.start)
@@ -183,22 +187,22 @@ fun WithdrawScreen(
                     }
             ) {
                 PpsButton(
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier.weight(1f).height(51.dp),
                     stringRes = com.seoulmate.ui.R.string.str_cancel,
                     color = CoolGray50,
                     borderColor = CoolGray50,
                     fontColor = Black,
                     onClick = onBackClick,
-                    cornerRound = 15.dp,
+                    cornerRound = 11.dp,
                 )
                 Spacer(modifier = Modifier.width(10.dp))
                 PpsButton(
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier.weight(1f).height(51.dp),
                     stringRes = com.seoulmate.ui.R.string.withdraw_title,
                     onClick = {
                         showWithdrawDialog = true
                     },
-                    cornerRound = 15.dp,
+                    cornerRound = 11.dp,
                 )
 
             }

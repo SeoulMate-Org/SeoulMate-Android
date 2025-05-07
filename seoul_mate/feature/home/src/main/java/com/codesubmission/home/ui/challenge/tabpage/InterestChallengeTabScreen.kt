@@ -15,13 +15,16 @@ fun InterestChallengeTabScreen(
     itemList: List<MyChallengeItemData>,
     onItemClick: (challengeId: Int) -> Unit = {},
     onItemLikeClick: (challengeId: Int) -> Unit = {},
+    goMainHome: () -> Unit = {},
 ) {
     Surface(
         modifier = modifier
     ) {
         if (itemList.isEmpty()) {
             // Empty Challenge List Item
-            EmptyChallenge()
+            EmptyChallenge(
+                goMaiHome = goMainHome,
+            )
         } else {
             // Challenge List
             ChallengeItemList(

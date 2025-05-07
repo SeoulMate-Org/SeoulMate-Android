@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.seoulmate.data.UserInfo
 import com.seoulmate.data.model.challenge.ChallengeCommentItem
+import com.seoulmate.domain.usecase.DeleteCommentUseCase
 import com.seoulmate.domain.usecase.GetMyCommentListUseCase
 import com.seoulmate.domain.usecase.RefreshTokenUseCase
 import com.seoulmate.domain.usecase.UpdateUserInfoUseCase
@@ -16,6 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MyCommentViewModel @Inject constructor(
     private val getMyCommentListUseCase: GetMyCommentListUseCase,
+    private val deleteCommentUseCase: DeleteCommentUseCase,
     private val refreshTokenUseCase: RefreshTokenUseCase,
     private val updateUserInfoUseCase: UpdateUserInfoUseCase,
 ): ViewModel() {
@@ -24,6 +26,7 @@ class MyCommentViewModel @Inject constructor(
     var needRefreshToken = mutableStateOf<Boolean?>(null)
 
     var myCommentList = mutableStateOf<List<ChallengeCommentItem>>(listOf())
+    var completedDelete = mutableStateOf(false)
 
     fun reqMyCommentList() {
         viewModelScope.launch {
@@ -42,6 +45,18 @@ class MyCommentViewModel @Inject constructor(
             isShowLoading.value = false
         }
 
+    }
+
+    fun deleteComment(
+        commentId: Int,
+    ) {
+        viewModelScope.launch {
+            deleteCommentUseCase(
+                commentId
+            ).collectLatest {
+                completedDelete.value = true
+            }
+        }
     }
 
     fun refreshToken() {

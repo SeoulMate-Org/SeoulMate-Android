@@ -57,6 +57,9 @@ class AppState (
     private val previousDestination = mutableStateOf<NavDestination?>(null)
     val selectedChallengeItemId = mutableIntStateOf(0)
     val selectedAttractionItemId = mutableIntStateOf(0)
+
+    var goMainHome = mutableStateOf(false)
+
     private var isShowLoading = mutableStateOf(false)
     private var isShowServiceLoading = viewModel.isShowLoading.value
     private var userData = mutableStateOf(viewModel.userData.value)

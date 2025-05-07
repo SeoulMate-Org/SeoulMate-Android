@@ -75,6 +75,7 @@ fun MainNavHost(
         composable(route = Screen.Home.route) {
             HomeScreen(
                 context = appState.getContext,
+                goMainHome = appState.goMainHome,
                 onPlaceInfoClick = {
                     appState.navigate(Screen.PlaceInfoDetail)
                 },
@@ -90,6 +91,12 @@ fun MainNavHost(
                 },
                 onThemeMorClick = {
                     appState.navigate(Screen.ChallengeThemeList)
+                },
+                finishedLogout = {
+                    appState.getContext.startActivity(
+                        Intent(appState.getContext, SplashActivity::class.java)
+                    )
+                    (appState.getContext as Activity).finish()
                 }
             )
         }
@@ -206,6 +213,10 @@ fun MainNavHost(
         }
         composable(route = Screen.MyComment.route) {
             MyCommentScreen(
+                onChallengeMoreClick = {
+                    appState.navController.popBackStack()
+                    appState.goMainHome.value = true
+                },
                 onBackClick = { appState.navController.popBackStack() },
             )
         }

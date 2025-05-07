@@ -208,40 +208,40 @@ fun ChallengeDetailScreen(
                     }
                 },
                 actions = {
-                    if (viewModel.startedChallenge.value) {
-                        IconButton(
-                            modifier = Modifier.padding(start = 10.dp),
-                            onClick = {
-                                dropDownExpanded = true
-                            }
-                        ) {
-                            Icon(
-                                modifier = Modifier.size(24.dp),
-                                painter = painterResource(id = com.seoulmate.ui.R.drawable.ic_more),
-                                contentDescription = "Search Icon",
-                                tint = CoolGray900,
-                            )
-                        }
-                        DropdownMenu(
-                            expanded = dropDownExpanded,
-                            onDismissRequest = { dropDownExpanded = false }
-                        ) {
-                            DropdownMenuItem(
-                                text = {
-                                    PpsText(
-                                        modifier = Modifier,
-                                        text = stringResource(com.seoulmate.ui.R.string.quit_challenge),
-                                        style = MaterialTheme.typography.labelLarge.copy(
-                                            color = CoolGray900,
-                                        )
-                                    )
-                                },
-                                onClick = {
-                                    dropDownExpanded = false
-                                }
-                            )
-                        }
-                    }
+//                    if (viewModel.startedChallenge.value) {
+//                        IconButton(
+//                            modifier = Modifier.padding(start = 10.dp),
+//                            onClick = {
+//                                dropDownExpanded = true
+//                            }
+//                        ) {
+//                            Icon(
+//                                modifier = Modifier.size(24.dp),
+//                                painter = painterResource(id = com.seoulmate.ui.R.drawable.ic_more),
+//                                contentDescription = "Search Icon",
+//                                tint = CoolGray900,
+//                            )
+//                        }
+//                        DropdownMenu(
+//                            expanded = dropDownExpanded,
+//                            onDismissRequest = { dropDownExpanded = false }
+//                        ) {
+//                            DropdownMenuItem(
+//                                text = {
+//                                    PpsText(
+//                                        modifier = Modifier,
+//                                        text = stringResource(com.seoulmate.ui.R.string.quit_challenge),
+//                                        style = MaterialTheme.typography.labelLarge.copy(
+//                                            color = CoolGray900,
+//                                        )
+//                                    )
+//                                },
+//                                onClick = {
+//                                    dropDownExpanded = false
+//                                }
+//                            )
+//                        }
+//                    }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = TrueWhite,
@@ -568,10 +568,9 @@ fun ChallengeDetailScreen(
                 }
             }
 
-            // TODO chan
             if (viewModel.impossibleStamp.value) {
                 val customToast = CustomToast(LocalContext.current)
-                customToast.makeText(message = stringResource(R.string.stamp_impossible), resourceIcon = com.seoulmate.ui.R.drawable.ic_placeholder)
+                customToast.makeText(message = stringResource(R.string.stamp_impossible), resourceIcon = com.seoulmate.ui.R.drawable.ic_error)
                 viewModel.impossibleStamp.value = false
             }
         }
