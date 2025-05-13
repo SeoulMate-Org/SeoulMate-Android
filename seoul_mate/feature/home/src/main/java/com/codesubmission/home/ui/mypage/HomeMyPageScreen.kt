@@ -47,6 +47,7 @@ import com.codesubmission.home.ui.mypage.item.MyPageServiceInfo
 import com.google.android.play.core.review.ReviewManagerFactory
 import com.google.android.play.core.review.testing.FakeReviewManager
 import com.seoulmate.data.UserInfo
+import com.seoulmate.ui.component.PpsAlertDialog
 import com.seoulmate.ui.component.PpsText
 import com.seoulmate.ui.component.Screen
 import com.seoulmate.ui.component.SnackBarType
@@ -75,6 +76,7 @@ fun HomeMyPageScreen(
 //    val reviewManager = ReviewManagerFactory.create(context)
     val reviewManager = FakeReviewManager(context)
     var showLogoutDialog by remember { mutableStateOf(false) }
+    var showLoginAlertDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         viewModel.reqMyPageUserInfo()
@@ -127,21 +129,21 @@ fun HomeMyPageScreen(
                             if (UserInfo.isUserLogin()) {
                                 onChangeScreen(Screen.SettingMyBadge)
                             } else {
-                                showLogoutDialog = true
+                                showLoginAlertDialog = true
                             }
                         },
                         onFavoriteClick = {
                             if (UserInfo.isUserLogin()) {
                                 onChangeScreen(Screen.MyAttraction)
                             } else {
-                                showLogoutDialog = true
+                                showLoginAlertDialog = true
                             }
                         },
                         onCommentClick = {
                             if (UserInfo.isUserLogin()) {
                                 onChangeScreen(Screen.MyComment)
                             } else {
-                                showLogoutDialog = true
+                                showLoginAlertDialog = true
                             }
                         }
                     )
@@ -277,6 +279,22 @@ fun HomeMyPageScreen(
                 },
                 onClickLogout = {
                     viewModel.reqLogout()
+                },
+            )
+        }
+
+        if(showLoginAlertDialog) {
+            PpsAlertDialog(
+                titleRes = com.seoulmate.ui.R.string.str_need_login,
+                descriptionRes = com.seoulmate.ui.R.string.str_need_login_description,
+                confirmRes = com.seoulmate.ui.R.string.str_login,
+                cancelRes = com.seoulmate.ui.R.string.str_cancel,
+                onClickCancel = {
+                    showLoginAlertDialog = false
+                },
+                onClickConfirm = {
+                    onChangeScreen(Screen.Login)
+                    showLoginAlertDialog = false
                 },
             )
         }

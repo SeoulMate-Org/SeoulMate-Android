@@ -29,6 +29,8 @@ class GetMyPageUserInfoUseCase @Inject constructor(
                         likeCount = response.likeCount ?: 0,
                         badgeCount = response.badgeCount ?: 0,
                         commentCount = response.commentCount ?: 0,
+                        code = response.code,
+                        message = response.message,
                     )
                 }
                 CommonDto(

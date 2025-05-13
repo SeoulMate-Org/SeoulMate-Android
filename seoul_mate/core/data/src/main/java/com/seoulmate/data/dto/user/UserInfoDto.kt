@@ -12,4 +12,6 @@ data class UserInfoDto(
     @Json(name = "likedCount") val likeCount: Int?,
     @Json(name = "badgeCount") val badgeCount: Int?,
     @Json(name = "commentCount") val commentCount: Int?,
+    @Json(name = "code") val code: String?,
+    @Json(name = "message") val message: String?,
 )

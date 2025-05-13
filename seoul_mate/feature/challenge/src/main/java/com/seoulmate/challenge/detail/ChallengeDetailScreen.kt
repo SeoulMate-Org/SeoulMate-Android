@@ -254,9 +254,9 @@ fun ChallengeDetailScreen(
     ) { padding ->
         ConstraintLayout(
             modifier = Modifier
+                .background(color = TrueWhite)
                 .padding(padding)
                 .fillMaxSize()
-                .background(color = TrueWhite)
         ) {
             val (body, floating, loading, bottomBar, login) = createRefs()
 

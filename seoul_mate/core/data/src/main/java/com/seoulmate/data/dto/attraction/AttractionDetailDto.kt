@@ -17,8 +17,8 @@ data class AttractionDetailDto(
     @Json(name = "tel")  val tel: String?,
     @Json(name = "subway")  val subway: String?,
     @Json(name = "imageUrl")  val imageUrl: String?,
-    @Json(name = "likes")  val likes: Int,
-    @Json(name = "isLiked")  val isLiked: Boolean,
+    @Json(name = "likes")  val likes: Int?,
+    @Json(name = "isLiked")  val isLiked: Boolean?,
     @Json(name = "stampCount")  val stampCount: Int,
 )
 

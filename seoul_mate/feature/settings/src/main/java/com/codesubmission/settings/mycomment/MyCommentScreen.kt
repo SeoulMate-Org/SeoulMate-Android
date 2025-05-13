@@ -102,8 +102,8 @@ fun MyCommentScreen(
 
         ConstraintLayout(
             modifier = Modifier.fillMaxSize()
-                .padding(padding)
                 .background(color = TrueWhite)
+                .padding(padding)
         ) {
             val (loading, list) = createRefs()
 

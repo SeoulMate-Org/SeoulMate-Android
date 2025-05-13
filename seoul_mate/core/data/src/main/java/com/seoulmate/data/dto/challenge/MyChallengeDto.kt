@@ -20,7 +20,6 @@ data class MyChallengeDto(
     @Json(name = "challengeThemeName") val challengeThemeName: String,
     @Json(name = "distance") val distance: String?,
     @Json(name = "displayRank") val displayRank: String?,
-
 )
 
 sealed class MyChallengeType(val type: String) {

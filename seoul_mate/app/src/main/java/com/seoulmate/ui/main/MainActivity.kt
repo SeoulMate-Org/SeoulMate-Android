@@ -4,16 +4,18 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
+import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.ui.graphics.Color
 import androidx.core.os.LocaleListCompat
 import androidx.lifecycle.lifecycleScope
+import com.seoulmate.R
 import com.seoulmate.navigation.MainNavHost
 import com.seoulmate.ui.rememberAppState
-import com.seoulmate.ui.splash.SplashActivity
 import com.seoulmate.ui.splash.SplashActivity.Companion.SCREEN_KEY
 import com.seoulmate.ui.theme.SeoulMateTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,7 +31,16 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        enableEdgeToEdge()
+        enableEdgeToEdge(
+            statusBarStyle = SystemBarStyle.light(
+                scrim = resources.getColor(R.color.transparent),
+                darkScrim = resources.getColor(R.color.transparent),
+            ),
+            navigationBarStyle = SystemBarStyle.light(
+                scrim = resources.getColor(R.color.transparent),
+                darkScrim = resources.getColor(R.color.transparent),
+            ),
+        )
 
         setContent {
             SeoulMateTheme {

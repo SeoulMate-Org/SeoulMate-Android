@@ -26,6 +26,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -140,13 +141,18 @@ fun SettingMyBadgeScreen(
         }
     ) { padding ->
 
-        Column(
+        Surface(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(padding)
-                .background(color = CoolGray25),
+                .background(color = TrueWhite)
+                .padding(padding),
         ) {
-            //
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(color = CoolGray25),
+            ) {
+                //
 //            Box (
 //                modifier = Modifier
 //                    .height(80.dp)
@@ -191,23 +197,25 @@ fun SettingMyBadgeScreen(
 //                }
 //            }
 
-            //
-            LazyVerticalGrid(
-                modifier = Modifier
-                    .padding(horizontal = 15.dp)
-                    .weight(1f),
-                columns = GridCells.Adaptive(minSize = 105.dp),
-            ) {
-                items(
-                    count = badgeItemList.size
-                ) { index ->
-                    BadgeItem(
-                        badgeItemList[index],
-                        viewModel.badgeList.value[index],
-                    )
+                //
+                LazyVerticalGrid(
+                    modifier = Modifier
+                        .padding(horizontal = 15.dp)
+                        .weight(1f),
+                    columns = GridCells.Adaptive(minSize = 105.dp),
+                ) {
+                    items(
+                        count = badgeItemList.size
+                    ) { index ->
+                        BadgeItem(
+                            badgeItemList[index],
+                            viewModel.badgeList.value[index],
+                        )
+                    }
                 }
             }
         }
+
     }
 }
 

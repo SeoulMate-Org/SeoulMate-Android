@@ -8,4 +8,6 @@ data class UserInfoData(
     val likeCount: Int,
     val badgeCount: Int,
     val commentCount: Int,
+    val code: String? = null,
+    val message: String? = null,
 )

@@ -29,6 +29,8 @@ class GetChallengeListLocationUseCase @Inject constructor(
                 var returnResponse: ChallengeLocationItemData? = null
                 it.response?.let { response ->
                     returnResponse = ChallengeLocationItemData(
+                        code = response.code,
+                        message = response.message,
                         jongGak = response.jongGak ?: false,
                         challenges = response.challenges.map {
                             ChallengeLocationData(

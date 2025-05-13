@@ -7,6 +7,8 @@ import com.squareup.moshi.JsonClass
 data class ChallengeLocationItemDto(
     @Json(name = "challenges") val challenges: List<ChallengeLocationListItem> = listOf(),
     @Json(name = "jongGak") val jongGak: Boolean?,
+    @Json(name = "code") val code: String? = null,
+    @Json(name = "message") val message: String? = null,
 )
 
 @JsonClass(generateAdapter = true)

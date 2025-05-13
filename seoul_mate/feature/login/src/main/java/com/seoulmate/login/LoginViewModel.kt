@@ -168,7 +168,7 @@ class LoginViewModel @Inject constructor(
                 deferredMyChallengeLocation.await()?.let {
                     if (it.code in 200..299) {
                         ChallengeInfo.challengeLocationData = it.response
-                    } else if (it.code == 401) {
+                    } else if (it.code == 403) {
                         needRefreshToken.value = true
                         return@launch
                     }
@@ -179,7 +179,7 @@ class LoginViewModel @Inject constructor(
                 deferredMyChallengeLocation.await()?.let {
                     if (it.code in 200..299) {
                         ChallengeInfo.challengeLocationData = it.response
-                    } else if (it.code == 401) {
+                    } else if (it.code == 403) {
                         needRefreshToken.value = true
                         return@launch
                     }

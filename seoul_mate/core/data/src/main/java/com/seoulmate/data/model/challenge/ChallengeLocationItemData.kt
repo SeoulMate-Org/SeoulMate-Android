@@ -3,6 +3,8 @@ package com.seoulmate.data.model.challenge
 data class ChallengeLocationItemData(
     val challenges: List<ChallengeLocationData> = listOf(),
     val jongGak: Boolean = false,
+    val code: String? = null,
+    val message: String? = null,
 )
 
 data class ChallengeLocationData(

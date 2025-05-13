@@ -37,8 +37,8 @@ class GetAttractionDetailUseCase @Inject constructor(
                         tel = it.tel ?: "",
                         subway = it.subway ?: "",
                         imageUrl = it.imageUrl ?: "",
-                        likes = it.likes,
-                        isLiked = it.isLiked,
+                        likes = it.likes ?: 0,
+                        isLiked = it.isLiked?: false,
                         stampCount = it.stampCount,
                     )
                 }

@@ -183,34 +183,25 @@ class SplashViewModel @Inject constructor(
                     deferredMyLikeChallenge.await()?.let {
                         if (it.code in 200..299) {
                             UserInfo.myLikeChallengeList = it.response ?: listOf()
-                        } else if(it.code == 403) {
-                            needRefreshToken.value = true
-                            return@launch
                         }
                     }
 
                     deferredMyProgressChallenge.await()?.let {
                         if (it.code in 200..299) {
                             UserInfo.myProgressChallengeList = it.response ?: listOf()
-                        } else if(it.code == 403) {
-                            needRefreshToken.value = true
-                            return@launch
                         }
                     }
 
                     deferredMyCompleteChallenge.await()?.let {
                         if (it.code in 200..299) {
                             UserInfo.myCompleteChallengeList = it.response ?: listOf()
-                        } else if(it.code == 403) {
-                            needRefreshToken.value = true
-                            return@launch
                         }
                     }
 
                     deferredMyChallengeLocation.await()?.let {
                         if (it.code in 200..299) {
                             ChallengeInfo.challengeLocationData = it.response
-                        } else if(it.code == 401) {
+                        } else if(it.code == 403) {
                             needRefreshToken.value = true
                             return@launch
                         }
@@ -220,7 +211,7 @@ class SplashViewModel @Inject constructor(
                     deferredMyChallengeLocation.await()?.let {
                         if (it.code in 200..299) {
                             ChallengeInfo.challengeLocationData = it.response
-                        } else if(it.code == 401) {
+                        } else if(it.code == 403) {
                             needRefreshToken.value = true
                             return@launch
                         }

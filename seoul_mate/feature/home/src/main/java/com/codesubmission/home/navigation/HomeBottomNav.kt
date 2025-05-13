@@ -71,8 +71,7 @@ fun HomeBottomNav(
         ) {
             bottomNavItem.forEach { item ->
                 IconButton(
-                    modifier = Modifier
-                        .width(77.dp)
+                    modifier = Modifier.weight(1f)
                         .height(42.dp),
                     onClick = when(item.route) {
                         BottomNavItem.Home.route -> onHomeClick

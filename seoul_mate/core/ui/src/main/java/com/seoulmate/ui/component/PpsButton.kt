@@ -41,10 +41,8 @@ fun PpsButton(
     onClick: () -> Unit = {},
 ) {
     Button(
-        modifier = modifier
-            .clip(
-                shape = RoundedCornerShape(cornerRound),
-            ),
+        modifier = modifier,
+        shape = RoundedCornerShape(cornerRound),
         colors = ButtonColors(
             containerColor = color,
             contentColor = color.copy(alpha = 0.5f),

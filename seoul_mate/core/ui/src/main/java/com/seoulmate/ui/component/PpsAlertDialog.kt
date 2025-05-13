@@ -23,6 +23,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.max
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
@@ -96,9 +97,11 @@ fun PpsAlertDialog(
                     style = TextStyle(
                         fontSize = 16.sp,
                         color = CoolGray600,
-                    )
+                    ),
+                    maxLines = 3,
+                    overflow = TextOverflow.Ellipsis,
                 )
-                Spacer(modifier = Modifier.height(10.dp))
+                Spacer(modifier = Modifier.height(16.dp))
                 // Button Row
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -113,7 +116,7 @@ fun PpsAlertDialog(
                             onClick = onClickCancel,
                             cornerRound = 15.dp,
                         )
-                        Spacer(modifier = Modifier.width(10.dp))
+                        Spacer(modifier = Modifier.width(8.dp))
                     }
 
                     PpsButton(
