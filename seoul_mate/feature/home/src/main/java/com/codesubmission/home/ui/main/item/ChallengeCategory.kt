@@ -45,6 +45,7 @@ import com.seoulmate.ui.component.RoundedTag
 import com.seoulmate.ui.theme.CoolGray400
 import com.seoulmate.ui.theme.CoolGray700
 import com.seoulmate.ui.theme.CoolGray75
+import com.seoulmate.ui.theme.CoolGray900
 import kotlinx.coroutines.launch
 
 @Composable
@@ -80,7 +81,9 @@ fun ChallengeCategory(
             PpsText(
                 modifier = Modifier.weight(1f),
                 text = stringResource(R.string.home_challenge_category_title),
-                style = MaterialTheme.typography.titleMedium,
+                style = MaterialTheme.typography.titleMedium.copy(
+                    color = CoolGray900,
+                ),
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1,
             )
@@ -97,8 +100,7 @@ fun ChallengeCategory(
                 PpsText(
                     modifier = Modifier.wrapContentWidth(),
                     text = stringResource(com.seoulmate.ui.R.string.str_more),
-                    style = TextStyle(
-                        fontSize = 13.sp,
+                    style = MaterialTheme.typography.labelLarge.copy(
                         color = CoolGray400,
                     )
                 )
@@ -129,7 +131,7 @@ fun ChallengeCategory(
         HorizontalPager(
             state = pagerState,
             modifier = Modifier
-                .padding(top = 20.dp)
+                .padding(top = 15.dp)
                 .padding(horizontal = 20.dp)
         ) { index ->
             ChallengeCategoryPagerItem(
@@ -160,12 +162,16 @@ private fun ChallengeCategoryPagerItem(
     ) {
         if (themeItemList[pagerIndex].size > 3) {
             for (i in 0..2) {
-                ChallengeHomeTileTypeLayout(
-                    modifier = Modifier,
-                    item = themeItemList[pagerIndex][i],
-                    onChallengeLikeClick = onChallengeLikeClick,
-                    onChallengeItemClick = onChallengeItemClick,
-                )
+                Box(
+                    modifier = Modifier.padding(vertical = 6.dp)
+                ) {
+                    ChallengeHomeTileTypeLayout(
+                        modifier = Modifier,
+                        item = themeItemList[pagerIndex][i],
+                        onChallengeLikeClick = onChallengeLikeClick,
+                        onChallengeItemClick = onChallengeItemClick,
+                    )
+                }
             }
         }
 

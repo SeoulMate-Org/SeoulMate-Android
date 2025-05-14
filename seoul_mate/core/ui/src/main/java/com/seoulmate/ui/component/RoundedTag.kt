@@ -6,6 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -41,7 +42,7 @@ fun RoundedTag(
 ) {
     Box(
         modifier = Modifier
-            .height(30.dp)
+            .wrapContentHeight()
             .wrapContentWidth()
             .clip(RoundedCornerShape(12.dp))
             .border(

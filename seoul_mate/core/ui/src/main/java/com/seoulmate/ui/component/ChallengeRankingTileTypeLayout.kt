@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -26,6 +28,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.min
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
@@ -52,6 +55,7 @@ fun ChallengeRankingTileTypeLayout(
 ) {
     Card(
         modifier = modifier
+            .heightIn(min = 80.dp)
             .noRippleClickable {
                 onItemClick(item)
             },
@@ -107,6 +111,7 @@ fun ChallengeRankingTileTypeLayout(
                     text = item.name,
                     style = MaterialTheme.typography.bodyMedium.copy(
                         color = Color2B2B2B,
+                        lineHeight = 17.sp,
                     ),
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,

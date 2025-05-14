@@ -30,6 +30,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
@@ -192,7 +193,8 @@ fun MissionChallengeItem(
                             bottom.linkTo(parent.bottom)
                             start.linkTo(parent.start)
                             end.linkTo(parent.end)
-                        }
+                        },
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Row(
                         modifier = Modifier.weight(1f),
@@ -222,7 +224,7 @@ fun MissionChallengeItem(
         PpsButton(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(32.dp),
+                .wrapContentHeight(),
             borderColor = Blue200,
             stringRes = R.string.start_challenge,
             color = TrueWhite,
@@ -237,7 +239,8 @@ fun MissionChallengeItem(
             modifier = Modifier,
             text = item.name,
             style = MaterialTheme.typography.bodyMedium.copy(
-                color = Color2B2B2B
+                color = Color2B2B2B,
+                lineHeight = 17.sp,
             ),
             maxLines = 2,
             overflow = TextOverflow.Ellipsis,
