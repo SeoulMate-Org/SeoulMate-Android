@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -155,14 +156,15 @@ fun SettingUserNicknameScreen(
             ) {
                 Row(
                     modifier = Modifier
-                        .height(48.dp)
+                        .heightIn(min = 48.dp)
                         .clip(shape = RoundedCornerShape(10.dp))
                         .background(color = CoolGray25)
                         .border(
                             width = 1.dp,
                             color = changeType.color,
                             shape = RoundedCornerShape(10.dp),
-                        )
+                        ),
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     TextField(
                         modifier = Modifier

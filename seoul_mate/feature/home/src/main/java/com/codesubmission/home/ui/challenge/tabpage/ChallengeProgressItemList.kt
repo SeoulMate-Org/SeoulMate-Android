@@ -22,10 +22,11 @@ import com.seoulmate.ui.component.PpsText
 import com.seoulmate.ui.theme.CoolGray25
 import com.seoulmate.ui.theme.CoolGray300
 import com.seoulmate.ui.theme.TrueWhite
+import com.seoulmate.ui.theme.White
 
 @Composable
 fun ChallengeProgressItemList(
-    modifier: Modifier = Modifier.background(color = TrueWhite),
+    modifier: Modifier = Modifier.background(color = White),
     itemList: List<MyChallengeItemData>,
     onItemClick: (challengeId: Int) -> Unit = {},
 ) {

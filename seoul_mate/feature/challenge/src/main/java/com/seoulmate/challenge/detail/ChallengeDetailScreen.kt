@@ -47,6 +47,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.core.content.ContextCompat
@@ -428,8 +429,10 @@ fun ChallengeDetailScreen(
                     if (!viewModel.isStamped.value) {
                         Column(
                             modifier = Modifier
-                                .height(53.dp)
-                                .fillMaxWidth(),
+                                .wrapContentWidth()
+                                .fillMaxWidth()
+                                .padding(horizontal = 20.dp)
+                                .padding(top = 16.dp),
                             verticalArrangement = Arrangement.Center,
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
@@ -438,7 +441,9 @@ fun ChallengeDetailScreen(
                                 text = stringResource(R.string.comment_empty),
                                 style = MaterialTheme.typography.bodyMedium.copy(
                                     color = CoolGray900,
-                                )
+                                ),
+                                maxLines = 2,
+                                overflow = TextOverflow.Ellipsis,
                             )
                         }
                     }

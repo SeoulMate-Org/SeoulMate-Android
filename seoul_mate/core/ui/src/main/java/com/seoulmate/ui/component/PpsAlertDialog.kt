@@ -72,10 +72,7 @@ fun PpsAlertDialog(
         ) {
             Column(
                 modifier = Modifier
-                    .padding(
-                        horizontal = 20.dp,
-                        vertical = 15.dp,
-                    ),
+                    .padding(20.dp),
                 verticalArrangement = Arrangement.Center,
             ) {
                 // Title

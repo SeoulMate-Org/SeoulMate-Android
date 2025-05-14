@@ -60,10 +60,7 @@ fun LogoutDialog(
         ) {
             Column(
                 modifier = Modifier
-                    .padding(
-                        horizontal = 20.dp,
-                        vertical = 15.dp,
-                    ),
+                    .padding(20.dp),
                 verticalArrangement = Arrangement.Center,
             ) {
                 // Title
@@ -87,7 +84,7 @@ fun LogoutDialog(
                         color = CoolGray600,
                     )
                 )
-                Spacer(modifier = Modifier.height(10.dp))
+                Spacer(modifier = Modifier.height(16.dp))
                 // Button Row
                 Row(
                     modifier = Modifier.fillMaxWidth(),

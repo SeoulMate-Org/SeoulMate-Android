@@ -30,13 +30,14 @@ import com.seoulmate.ui.theme.CoolGray400
 import com.seoulmate.ui.theme.CoolGray900
 import com.seoulmate.ui.theme.SeoulMateTheme
 import com.seoulmate.ui.theme.TrueWhite
+import com.seoulmate.ui.theme.White
 
 // Empty Challenge
 @Composable
 fun EmptyChallenge(
     modifier: Modifier = Modifier
         .fillMaxSize()
-        .background(color = TrueWhite),
+        .background(color = White),
     @StringRes titleRes: Int = R.string.empty_interest_challenge,
     @StringRes infoRes: Int = R.string.empty_challenge_info,
     isShowButton: Boolean = true,

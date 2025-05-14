@@ -120,7 +120,7 @@ fun ChallengeRankingTileTypeLayout(
                 PpsText(
                     modifier = Modifier.padding(top = 3.dp),
                     text = stringResource(R.string.home_challenge_ranking_join_count, item.progressCount),
-                    style = MaterialTheme.typography.labelLarge.copy(
+                    style = MaterialTheme.typography.labelMedium.copy(
                         color = CoolGray300,
                     ),
                 )

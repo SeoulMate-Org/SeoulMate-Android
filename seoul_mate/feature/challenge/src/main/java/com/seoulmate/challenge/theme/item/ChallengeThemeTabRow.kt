@@ -1,5 +1,7 @@
 package com.seoulmate.challenge.theme.item
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -38,14 +40,17 @@ fun ChallengeThemeTabRow(
         modifier = modifier,
         selectedTabIndex = currentSelectedTabIndex,
         indicator = { tabPositions ->
-            TabRowDefaults.SecondaryIndicator(
-                modifier = Modifier.tabIndicatorOffset(
-                    tabPositions[currentSelectedTabIndex]
-                ),
-                height = 2.dp,
-                color = Blue500,
-            )
+            if (tabPositions.isNotEmpty()) {
+                val tabPosition = tabPositions[currentSelectedTabIndex]
+                Box(
+                    Modifier
+                        .tabIndicatorOffset(tabPosition)
+                        .height(2.dp)
+                        .background(Blue500)
+                )
+            }
         },
+        divider = {},
         containerColor = TrueWhite,
         contentColor = TrueWhite,
     ) {

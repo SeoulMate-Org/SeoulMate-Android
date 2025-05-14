@@ -39,8 +39,8 @@ fun HorizontalCarousel(
         modifier = modifier,
         state = pagerState,
         key = { itemList[it].id },
-        contentPadding = PaddingValues(horizontal = screenWidth * 0.2f),
-        pageSpacing = screenWidth * 0.1f,
+        contentPadding = PaddingValues(horizontal = screenWidth * 0.1f),
+        pageSpacing = screenWidth * 0.05f,
     ) { pageIndex ->
         val pageItem = itemList[pageIndex]
         Row(

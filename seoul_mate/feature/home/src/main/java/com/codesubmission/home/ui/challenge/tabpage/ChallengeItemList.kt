@@ -25,11 +25,12 @@ import com.seoulmate.ui.component.PpsText
 import com.seoulmate.ui.theme.CoolGray25
 import com.seoulmate.ui.theme.CoolGray300
 import com.seoulmate.ui.theme.TrueWhite
+import com.seoulmate.ui.theme.White
 
 // Challenge Item Tile
 @Composable
 fun ChallengeItemList(
-    modifier: Modifier = Modifier.background(color = TrueWhite),
+    modifier: Modifier = Modifier.background(color = White),
     itemList: List<MyChallengeItemData>,
     onItemClick: (challengeId: Int) -> Unit = {},
     onItemLikeClick: (challengeId: Int) -> Unit = {},
@@ -51,6 +52,7 @@ fun ChallengeItemList(
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
+            Spacer(modifier = Modifier.height(5.dp))
         }
         itemsIndexed(
             items = itemList,
@@ -63,6 +65,7 @@ fun ChallengeItemList(
                         .padding(horizontal = 20.dp)
                         .padding(top = 5.dp)
                         .background(color = CoolGray25),
+                    thickness = 1.dp,
                 )
             }
 

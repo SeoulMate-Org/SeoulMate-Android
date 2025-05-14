@@ -73,7 +73,7 @@ fun ChallengeCategory(
         // Title + More Button
         Row(
             modifier = Modifier
-                .padding(horizontal = 20.dp)
+                .padding(start = 20.dp)
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
         ) {

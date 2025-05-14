@@ -27,6 +27,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -73,6 +74,24 @@ fun ChallengeThemeListScreen(
 
     val viewModel = hiltViewModel<ChallengeThemeListViewModel>()
 
+    LaunchedEffect(viewModel.needUserLogin.value) {
+        if (viewModel.needUserLogin.value) {
+            showLoginAlertDialog = true
+            viewModel.needUserLogin.value = false
+        }
+    }
+
+    LaunchedEffect(viewModel.needUserLogin.value) {
+        if (viewModel.needUserLogin.value) {
+            viewModel.refreshToken()
+        } else if(viewModel.needRefreshToken.value == false) {
+            viewModel.needRefreshToken.value = null
+            viewModel.selectedChallengeId.value?.let {
+                viewModel.reqChallengeLike(it)
+            }
+        }
+    }
+
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -110,8 +129,8 @@ fun ChallengeThemeListScreen(
     ) { padding ->
         Column(
             modifier = Modifier
-                .padding(padding)
-                .background(color = TrueWhite),
+                .background(color = TrueWhite)
+                .padding(padding),
         ) {
             ChallengeThemeTabRow(
                 coroutineScope = coroutineScope,
@@ -121,16 +140,9 @@ fun ChallengeThemeListScreen(
             Column(
                 modifier = Modifier.padding(horizontal = 20.dp)
             ) {
-                if (!UserInfo.isUserLogin()) {
-                    Spacer(modifier = Modifier.height(24.dp))
-                    ThemeLoginTile {
-                        onChangeScreen(Screen.Login)
-                    }
-                }
-
                 // Challenge Tab Contents
-                Spacer(modifier = Modifier.height(24.dp))
                 HorizontalPager(
+                    modifier = Modifier.weight(1f),
                     state = pagerState,
                     userScrollEnabled = false,
                 ) { pageIndex ->
@@ -139,29 +151,47 @@ fun ChallengeThemeListScreen(
                             count = ChallengeInfo.challengeThemeList[pageIndex].size,
                             key = { index -> ChallengeInfo.challengeThemeList[pageIndex][index].id }
                         ) { index ->
-                            ChallengeHomeTileTypeLayout(
-                                modifier = Modifier.fillMaxWidth(),
-                                item = ChallengeInfo.challengeThemeList[pageIndex][index],
-                                onChallengeLikeClick = { challengeId ->
-                                    viewModel.reqChallengeLike(challengeId)
+                            if (index == 0) {
+                                if (!UserInfo.isUserLogin()) {
+                                    Spacer(modifier = Modifier.height(24.dp))
+                                    ThemeLoginTile {
+                                        onChangeScreen(Screen.Login)
+                                    }
                                 }
-                            )
+                                Spacer(modifier = Modifier.height(18.dp))
+                            }
+                            Box(
+                                modifier = Modifier.padding(vertical = 10.dp)
+                            ) {
+                                ChallengeHomeTileTypeLayout(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    item = ChallengeInfo.challengeThemeList[pageIndex][index],
+                                    onChallengeLikeClick = { challengeId ->
+                                        viewModel.reqChallengeLike(challengeId)
+                                    }
+                                )
+                            }
+                            if (index == ChallengeInfo.challengeThemeList[pageIndex].size - 1) {
+                                // More Title
+                                Box(
+                                    modifier = Modifier.fillMaxWidth().wrapContentHeight()
+                                        .padding(vertical = 16.dp),
+                                ) {
+                                    PpsText(
+                                        modifier = Modifier.align(Alignment.Center),
+                                        text = stringResource(R.string.theme_last_item),
+                                        style = MaterialTheme.typography.bodyMedium.copy(
+                                            color = CoolGray600
+                                        ),
+                                        maxLines = 2,
+                                        overflow = TextOverflow.Ellipsis,
+                                    )
+                                }
+                            }
                         }
                     }
                 }
-                // More Title
-                Spacer(modifier = Modifier.height(16.dp))
-                Box(
-                    modifier = Modifier.fillMaxWidth().wrapContentHeight(),
-                ) {
-                    PpsText(
-                        modifier = Modifier.align(Alignment.Center),
-                        text = stringResource(R.string.theme_last_item),
-                        style = MaterialTheme.typography.bodyMedium.copy(
-                            color = CoolGray600
-                        )
-                    )
-                }
+
             }
 
         }
@@ -199,6 +229,7 @@ fun ThemeLoginTile(
             },
     ) {
         Row(
+            modifier = Modifier.padding(vertical = 13.dp).wrapContentHeight(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center,
         ) {
@@ -219,7 +250,7 @@ fun ThemeLoginTile(
                 PpsText(
                     modifier = Modifier,
                     text = stringResource(R.string.theme_login_sub_title),
-                    style = MaterialTheme.typography.labelLarge.copy(
+                    style = MaterialTheme.typography.labelSmall.copy(
                         color = White,
                     ),
                     maxLines = 1,

@@ -46,6 +46,7 @@ fun ChallengeTabRow(
                 color = Blue500,
             )
         },
+        divider = {},
         containerColor = TrueWhite,
         contentColor = TrueWhite,
     ) {

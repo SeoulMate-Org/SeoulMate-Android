@@ -39,6 +39,7 @@ import com.seoulmate.ui.theme.CoolGray50
 import com.seoulmate.ui.theme.CoolGray600
 import com.seoulmate.ui.theme.CoolGray900
 import com.seoulmate.ui.theme.TrueWhite
+import com.seoulmate.ui.theme.White
 
 @Composable
 fun ChallengeTileTypeLayout(
@@ -52,14 +53,12 @@ fun ChallengeTileTypeLayout(
 ) {
     Surface(
         modifier = modifier
-            .background(color = TrueWhite)
             .clickable {
                 onItemClick(item.id)
             },
     ) {
         Row(
-            modifier = Modifier
-                .background(color = TrueWhite),
+            modifier = Modifier.background(color = White),
             horizontalArrangement = Arrangement.Start,
             verticalAlignment = Alignment.CenterVertically
         ) {

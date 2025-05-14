@@ -48,7 +48,7 @@ fun ChallengeRanking(
             PpsText(
                 modifier = Modifier.weight(1f),
                 text = stringResource(R.string.home_challenge_ranking_sub_title),
-                style = MaterialTheme.typography.labelLarge.copy(
+                style = MaterialTheme.typography.labelMedium.copy(
                     color = CoolGray600,
                 ),
                 overflow = TextOverflow.Ellipsis,

@@ -27,6 +27,7 @@ import com.seoulmate.domain.usecase.ReqAttractionLikeUseCase
 import com.seoulmate.domain.usecase.ReqAttractionStampUseCase
 import com.seoulmate.domain.usecase.ReqChallengeLikeUseCase
 import com.seoulmate.domain.usecase.ReqChallengeStatusUseCase
+import com.seoulmate.domain.usecase.UpdateUserInfoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.collectLatest
@@ -57,6 +58,7 @@ class ChallengeDetailViewModel @Inject constructor(
     private val getMyChallengeItemListUseCase: GetMyChallengeItemListUseCase,
     private val refreshTokenUseCase: RefreshTokenUseCase,
     private val preferDataStoreRepository: PreferDataStoreRepository,
+    private val updateUserInfoUseCase: UpdateUserInfoUseCase,
 ) : ViewModel() {
 
     var isShowLoading = mutableStateOf(false)
@@ -454,6 +456,14 @@ class ChallengeDetailViewModel @Inject constructor(
                 response?.let {
                     UserInfo.refreshToken = it.refreshToken
                     UserInfo.accessToken = it.accessToken
+
+                    updateUserInfoUseCase(
+                        userId = UserInfo.id,
+                        nickName = UserInfo.nickName,
+                        accessToken = it.accessToken,
+                        refreshToken = it.refreshToken,
+                        loginType = UserInfo.loginType,
+                    )
 
                     needRefreshToken.value = false
                 }

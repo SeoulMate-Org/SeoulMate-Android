@@ -1,11 +1,13 @@
 package com.codesubmission.home.ui.challenge
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.codesubmission.home.HomeAfterRefreshTokenType
 import com.codesubmission.home.HomeViewModel
@@ -18,6 +20,7 @@ import com.seoulmate.data.dto.challenge.MyChallengeType
 import com.seoulmate.data.model.challenge.ChallengeItemData
 import com.seoulmate.ui.component.Screen
 import com.seoulmate.ui.theme.TrueWhite
+import com.seoulmate.ui.theme.White
 import kotlinx.coroutines.launch
 
 @Composable
@@ -91,6 +94,7 @@ fun HomeChallengeScreen(
             )
             // Challenge Tab Contents
             HorizontalPager(
+                modifier = Modifier.background(color = White),
                 state = pagerState,
                 userScrollEnabled = false,
             ) { index ->

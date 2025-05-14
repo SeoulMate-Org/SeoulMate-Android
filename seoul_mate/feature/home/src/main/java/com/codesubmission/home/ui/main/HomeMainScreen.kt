@@ -273,6 +273,8 @@ fun HomeMainScreen(
 //                        },
                         )
 
+                        Spacer(modifier = Modifier.height(16.dp))
+
                         for(index in 0..4) {
                             Box(modifier = Modifier
                                 .padding(vertical = 5.dp, horizontal = 20.dp),

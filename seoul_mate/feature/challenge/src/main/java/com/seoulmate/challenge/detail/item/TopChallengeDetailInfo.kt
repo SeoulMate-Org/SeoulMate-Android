@@ -22,6 +22,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.seoulmate.data.model.challenge.ChallengeItemData
@@ -60,7 +61,8 @@ fun TopChallengeDetailInfo(
                 modifier = Modifier.wrapContentSize(),
                 text = item.name,
                 style = MaterialTheme.typography.labelLarge.copy(
-                    color = Color2B2B2B
+                    color = Color2B2B2B,
+                    lineHeight = 14.sp,
                 ),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
@@ -71,6 +73,7 @@ fun TopChallengeDetailInfo(
                 text = item.title,
                 style = MaterialTheme.typography.titleSmall.copy(
                     color = Color2B2B2B,
+                    lineHeight = 19.sp,
                 ),
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,

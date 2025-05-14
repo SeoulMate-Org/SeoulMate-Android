@@ -53,14 +53,13 @@ fun ChallengeTileProgressTypeLayout(
 
     Surface(
         modifier = modifier
-            .background(color = TrueWhite)
             .clickable {
                 onItemClick(item.id)
             },
     ) {
         Row(
             modifier = Modifier
-                .background(color = TrueWhite),
+                .background(color = White),
             horizontalArrangement = Arrangement.Start,
             verticalAlignment = Alignment.CenterVertically
         ) {

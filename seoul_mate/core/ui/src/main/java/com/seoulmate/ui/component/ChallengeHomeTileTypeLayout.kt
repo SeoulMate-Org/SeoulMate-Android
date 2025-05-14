@@ -50,12 +50,6 @@ fun ChallengeHomeTileTypeLayout(
     onChallengeLikeClick: (challengeId: Int) -> Unit = {},
     onChallengeItemClick: (challengeId: Int) -> Unit = {},
 ) {
-    var isInterest = remember { mutableStateOf(false) }
-
-
-    LaunchedEffect(Unit) {
-        isInterest.value = item.isLiked ?: false
-    }
 
     Row(
         modifier = modifier
