@@ -308,15 +308,10 @@ class SplashViewModel @Inject constructor(
             }
 
             if (UserInfo.isUserLogin()) {
-                // fetch Challenge Stamp Item List
+                // fetch Missing Challenge Item List
                 val deferredChallengeStampList = async {
                     var returnValue: CommonDto<ChallengeStampResponseData?>? = null
-                    getChallengeListStampUseCase(
-                        attractionId = if(UserInfo.lastStampedAttractionId >=0) {
-                            UserInfo.lastStampedAttractionId
-                        } else {
-                            null
-                        },
+                    getChallengeListStampUseCase(null,
                         language = UserInfo.getLanguageCode(),
                     ).collectLatest {
                         returnValue = it
@@ -329,6 +324,26 @@ class SplashViewModel @Inject constructor(
                     } else if(it.code == 403) {
                         needRefreshToken.value = true
                         return@launch
+                    }
+                }
+                // fetch Similar Challenge Item List
+                if(UserInfo.lastStampedAttractionId >= 0) {
+                    val deferredSimilarChallengeList = async {
+                        var returnValue: CommonDto<ChallengeStampResponseData?>? = null
+                        getChallengeListStampUseCase(UserInfo.lastStampedAttractionId,
+                            language = UserInfo.getLanguageCode(),
+                        ).collectLatest {
+                            returnValue = it
+                        }
+                        return@async returnValue
+                    }
+                    deferredSimilarChallengeList.await()?.let {
+                        if (it.code in 200..299) {
+                            ChallengeInfo.challengeSimilarData = it.response
+                        } else if(it.code == 403) {
+                            needRefreshToken.value = true
+                            return@launch
+                        }
                     }
                 }
             }

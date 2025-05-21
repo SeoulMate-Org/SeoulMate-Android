@@ -82,8 +82,16 @@ object ChallengeInfo {
     var challengeCulturalList: List<ChallengeCulturalEventData> = listOf()
     var challengeSeoulMasterList: List<ChallengeCulturalEventData> = listOf()
     var challengeStampData: ChallengeStampResponseData? = null
+    var challengeSimilarData: ChallengeStampResponseData? = null
     var challengeLocationData: ChallengeLocationItemData? = null
 
+    fun getChallengeSimilarList(): List<ChallengeStampItemData> {
+        if (challengeSimilarData == null) {
+            return listOf()
+        } else {
+            return challengeSimilarData!!.itemList
+        }
+    }
 
     fun getChallengeStampList(): List<ChallengeStampItemData> {
         if (challengeStampData == null) {

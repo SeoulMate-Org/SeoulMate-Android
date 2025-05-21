@@ -136,6 +136,28 @@ class LoginViewModel @Inject constructor(
                 }
                 return@async returnResult
             }
+            // fetch Missing Challenge Stamp Item List
+            val deferredChallengeStampList = async {
+                var returnValue: CommonDto<ChallengeStampResponseData?>? = null
+                getChallengeListStampUseCase(
+                    attractionId = null,
+                    language = UserInfo.getLanguageCode(),
+                ).collectLatest {
+                    returnValue = it
+                }
+                return@async returnValue
+            }
+            // fetch Similar Challenge Item List
+            val deferredSimilarChallengeList = async {
+                var returnValue: CommonDto<ChallengeStampResponseData?>? = null
+                getChallengeListStampUseCase(
+                    attractionId = UserInfo.lastStampedAttractionId,
+                    language = UserInfo.getLanguageCode(),
+                ).collectLatest {
+                    returnValue = it
+                }
+                return@async returnValue
+            }
 
             if (grantedLocationPermission) {
                 deferredMyLikeChallenge.await()?.let {
@@ -173,6 +195,27 @@ class LoginViewModel @Inject constructor(
                         return@launch
                     }
                 }
+
+                deferredChallengeStampList.await()?.let {
+                    if (it.code in 200..299) {
+                        ChallengeInfo.challengeStampData = it.response
+                    } else if (it.code == 403) {
+                        needRefreshToken.value = true
+                        return@launch
+                    }
+                }
+
+                if(UserInfo.lastStampedAttractionId >= 0) {
+                    deferredSimilarChallengeList.await()?.let {
+                        if (it.code in 200..299) {
+                            ChallengeInfo.challengeSimilarData = it.response
+                        } else if (it.code == 403) {
+                            needRefreshToken.value = true
+                            return@launch
+                        }
+                    }
+                }
+
                 isShowLoading.value = false
                 finishedFetchMyData.value = true
             } else {
@@ -214,6 +257,10 @@ class LoginViewModel @Inject constructor(
     fun reqHomeChallengeItems() {
         viewModelScope.launch {
 
+            preferDataStoreRepository.loadLastStampedAttractionId().collect() {
+                UserInfo.lastStampedAttractionId = it
+            }
+
             // fetch Challenge Theme Item List
             val deferredList = mutableListOf<Deferred<CommonDto<List<ChallengeThemeItemData>>?>>()
             for(i in 1..9) {
@@ -253,30 +300,6 @@ class LoginViewModel @Inject constructor(
             deferredRankList.await()?.let {
                 if(it.code in 200..299) {
                     ChallengeInfo.rankList = it.response ?: listOf()
-                } else if (it.code == 403) {
-                    needRefreshToken.value = true
-                    return@launch
-                }
-            }
-
-            // fetch Challenge Stamp Item List
-            val deferredChallengeStampList = async {
-                var returnValue: CommonDto<ChallengeStampResponseData?>? = null
-                getChallengeListStampUseCase(
-                    attractionId = if(UserInfo.lastStampedAttractionId >=0) {
-                        UserInfo.lastStampedAttractionId
-                    } else {
-                        null
-                    },
-                    language = UserInfo.getLanguageCode(),
-                ).collectLatest {
-                    returnValue = it
-                }
-                return@async returnValue
-            }
-            deferredChallengeStampList.await()?.let {
-                if (it.code in 200..299) {
-                    ChallengeInfo.challengeStampData = it.response
                 } else if (it.code == 403) {
                     needRefreshToken.value = true
                     return@launch

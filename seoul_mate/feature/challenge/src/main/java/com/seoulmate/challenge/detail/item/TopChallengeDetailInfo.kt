@@ -129,8 +129,6 @@ fun TopChallengeDetailInfo(
                 style = MaterialTheme.typography.labelLarge.copy(
                     color = CoolGray300,
                 ),
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis,
             )
         }
     }

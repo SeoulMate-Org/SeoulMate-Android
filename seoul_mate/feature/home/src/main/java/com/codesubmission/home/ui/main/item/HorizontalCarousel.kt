@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
@@ -25,7 +26,7 @@ fun HorizontalCarousel(
     modifier: Modifier = Modifier
         .fillMaxWidth()
         .background(color = Color.Transparent)
-        .height(280.dp),
+        .wrapContentHeight(),
     itemList: List<ChallengeCulturalEventData>,
     screenWidth: Dp,
     onChallengeItemClick: (challengeId: Int) -> Unit = {},

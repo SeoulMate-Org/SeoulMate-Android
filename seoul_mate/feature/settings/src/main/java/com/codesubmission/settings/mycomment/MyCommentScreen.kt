@@ -9,10 +9,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -36,6 +38,7 @@ import com.codesubmission.settings.mycomment.item.MyCommentItemLayout
 import com.seoulmate.ui.component.ChallengeCommentItemLayout
 import com.seoulmate.ui.component.PpsLoading
 import com.seoulmate.ui.component.PpsText
+import com.seoulmate.ui.theme.CoolGray25
 import com.seoulmate.ui.theme.CoolGray900
 import com.seoulmate.ui.theme.TrueWhite
 
@@ -121,10 +124,18 @@ fun MyCommentScreen(
             ) {
                 if (viewModel.myCommentList.value.isNotEmpty()) {
                     // My Comment List
-
-                    items(
+                    itemsIndexed(
                         items = viewModel.myCommentList.value
-                    ) { item ->
+                    ) { index, item ->
+                        if (index > 0) {
+                            HorizontalDivider(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(top = 10.dp)
+                                    .background(color = CoolGray25),
+                            )
+                        }
+
                         MyCommentItemLayout(
                             item = item,
                             onDeleteClick = { item ->
@@ -132,7 +143,6 @@ fun MyCommentScreen(
                             }
                         )
                     }
-
                 } else {
                     // My Comment list Empty
                     item {

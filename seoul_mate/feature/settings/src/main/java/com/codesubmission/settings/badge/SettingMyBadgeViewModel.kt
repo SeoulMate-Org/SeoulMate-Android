@@ -23,6 +23,8 @@ class SettingMyBadgeViewModel @Inject constructor(
     private val getMyBadgeUseCase: GetMyBadgeUseCase,
 ) : ViewModel() {
 
+    var isShowLoading = mutableStateOf(false)
+
     var badgeList = mutableStateOf(
         mutableListOf<ChallengeMyBadgeData?>(
             null,null,null,
@@ -33,6 +35,8 @@ class SettingMyBadgeViewModel @Inject constructor(
 
     fun reqMyBadge() {
         viewModelScope.launch {
+            isShowLoading.value = true
+
             val returnList = mutableListOf<ChallengeMyBadgeData?>()
             if (UserInfo.isUserLogin()) {
                 val deferredList = ChallengeInfo.themeList.map {
@@ -62,7 +66,7 @@ class SettingMyBadgeViewModel @Inject constructor(
 
             }
 
-
+            isShowLoading.value = false
         }
     }
 

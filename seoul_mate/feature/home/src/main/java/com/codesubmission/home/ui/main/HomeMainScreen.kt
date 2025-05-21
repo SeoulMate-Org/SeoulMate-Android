@@ -46,6 +46,7 @@ import com.codesubmission.home.ui.main.item.ChallengeRanking
 import com.codesubmission.home.ui.main.item.HorizontalCarousel
 import com.codesubmission.home.ui.main.item.MissingChallenge
 import com.codesubmission.home.ui.main.item.MyLocationChallenge
+import com.codesubmission.home.ui.main.item.SimilarChallenge
 import com.seoulmate.data.ChallengeDetailInfo
 import com.seoulmate.data.ChallengeInfo
 import com.seoulmate.data.UserInfo
@@ -57,6 +58,7 @@ import com.seoulmate.ui.theme.CoolGray25
 import com.seoulmate.ui.theme.MainTopGradientStart
 import com.seoulmate.ui.theme.TrueWhite
 import com.seoulmate.ui.theme.White
+import kotlin.random.Random
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -89,6 +91,9 @@ fun HomeMainScreen(
                 it
             ) == PackageManager.PERMISSION_GRANTED
         }
+
+        val random = Random.nextInt(0, 2)
+        isShowSeoulMasterList.value = random == 0
 
         viewModel.startTimer()
     }
@@ -244,11 +249,11 @@ fun HomeMainScreen(
                         )
                     }
                 }
-                // Missing Challenge
-                if (ChallengeInfo.challengeStampData != null) {
+
+                ChallengeInfo.challengeStampData?.let {
+                    // Missing Challenge
                     item {
                         MissingChallenge(
-                            dataCode = ChallengeInfo.challengeStampData!!.dataCode,
                             onItemClick = { challengeId ->
                                 onChallengeItemClick(challengeId)
                             },
@@ -256,6 +261,16 @@ fun HomeMainScreen(
                                 viewModel.reqProgressChallengeStatus(challengeId)
                             }
                         )
+                    }
+                    // Similar Challenge
+                    ChallengeInfo.challengeSimilarData?.let {
+                        item {
+                            SimilarChallenge(
+                                onItemClick = { challengeId ->
+
+                                }
+                            )
+                        }
                     }
                 }
                 // Challenge Ranking

@@ -140,7 +140,7 @@ fun MyAttractionScreen(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(horizontal = 20.dp)
-                                    .padding(top = 5.dp)
+                                    .padding(top = 10.dp)
                                     .background(color = CoolGray25),
                             )
                         }
