@@ -82,13 +82,13 @@ fun HomeNavHost(
                 },
                 showWebUrl = { url ->
                     context.startActivity(
-                        Intent(Intent.ACTION_VIEW, android.net.Uri.parse(url))
+                        Intent(Intent.ACTION_VIEW, url.toUri())
                     )
                 },
                 goSetting = {
                     val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
                         flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                        data = Uri.parse("package:${context.packageName}")
+                        data = "package:${context.packageName}".toUri()
                     }
                     context.startActivity(intent)
                 },

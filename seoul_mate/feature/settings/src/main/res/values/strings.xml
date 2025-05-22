@@ -23,7 +23,7 @@
     <string name="my_attraction_empty_title">아직 찜한 장소가 없어요!</string>
     <string name="my_attraction_empty_sub_title">여러 챌린지를 찾아보고 추가해 봐요</string>
 
-    <string name="attraction_count">전체 {%d}개</string>
+    <string name="attraction_count">전체 %d개</string>
 
     <string name="my_comment_title">내 댓글</string>
     <string name="my_comment_empty_title">아직 작성한 댓글이 없어요!</string>

@@ -7,7 +7,7 @@
     <string name="nav_challenge_label">My Challenge</string>
     <string name="nav_my_page_label">MY</string>
 
-    <string name="challenge_count">Total: {%d}</string>
+    <string name="challenge_count">Total: %d</string>
 
     <string name="tab_complete_challenge">Completed</string>
     <string name="tab_in_progress_challenge">On it</string>

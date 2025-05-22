@@ -169,6 +169,7 @@ fun MainNavHost(
         }
         composable(route = Screen.SettingNotification.route) {
             SettingNotificationScreen(
+                context = appState.getContext,
                 onBackClick = { appState.navController.popBackStack() },
             )
         }

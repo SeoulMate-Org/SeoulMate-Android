@@ -3,5 +3,5 @@
     <string name="str_skip">둘러보기</string>
 
     <string name="str_welcome">🎉 환영해요 🎉</string>
-    <string name="str_welcome_sub">{%s}님의 서울 여행을 응원해요!</string>
+    <string name="str_welcome_sub">%s님의 서울 여행을 응원해요!</string>
 </resources>

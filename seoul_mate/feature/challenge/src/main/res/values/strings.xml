@@ -1,5 +1,5 @@
 <resources>
-    <string name="title_comment">댓글 {%d}</string>
+    <string name="title_comment">댓글 %d</string>
     <string name="comment_empty">댓글은 하나의 스탬프를 찍어야 쓸 수 있어요!</string>
 
     <string name="comment_list_title">댓글</string>

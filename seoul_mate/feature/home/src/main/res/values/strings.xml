@@ -7,7 +7,7 @@
     <string name="nav_challenge_label">나의 챌린지</string>
     <string name="nav_my_page_label">MY</string>
 
-    <string name="challenge_count">전체 {%d}개</string>
+    <string name="challenge_count">전체 %d개</string>
 
     <string name="tab_complete_challenge">완료</string>
     <string name="tab_in_progress_challenge">진행 중</string>

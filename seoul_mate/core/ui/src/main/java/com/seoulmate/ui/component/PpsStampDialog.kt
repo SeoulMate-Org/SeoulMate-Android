@@ -68,7 +68,7 @@ fun PpsStampDialog(
                 Spacer(modifier = Modifier.height(4.dp))
                 PpsText(
                     modifier = Modifier,
-                    text = "{ $strLocation }",
+                    text =  strLocation,
                     style = MaterialTheme.typography.bodyMedium.copy(
                         color = CoolGray200
                     ),

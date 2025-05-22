@@ -23,7 +23,7 @@
     <string name="my_attraction_empty_title">You haven’t JJIM any spots yet!</string>
     <string name="my_attraction_empty_sub_title">Browse and add more challenges.</string>
 
-    <string name="attraction_count">Total: {%d}</string>
+    <string name="attraction_count">Total: %d</string>
 
     <string name="my_comment_title">My Comments</string>
     <string name="my_comment_empty_title">No comments yet!</string>

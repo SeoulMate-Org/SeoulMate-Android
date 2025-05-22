@@ -1,5 +1,5 @@
 <resources>
-    <string name="title_comment">Comment {%d}</string>
+    <string name="title_comment">Comment %d</string>
     <string name="comment_empty">You need at least one stamp to comment!</string>
 
     <string name="comment_list_title">Comment</string>

@@ -2,5 +2,5 @@
 <resources>
     <string name="str_skip">Skip</string>
     <string name="str_welcome">🎉 Welcome 🎉</string>
-    <string name="str_welcome_sub">{%s} support your trip to Seoul!</string>
+    <string name="str_welcome_sub">%s support your trip to Seoul!</string>
 </resources>
