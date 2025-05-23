@@ -15,6 +15,7 @@ import com.seoulmate.data.dto.challenge.ChallengeStampItemDto
 import com.seoulmate.data.dto.challenge.ChallengeStatusDto
 import com.seoulmate.data.dto.challenge.ChallengeThemeDto
 import com.seoulmate.data.dto.challenge.ChallengeThemeItemDto
+import com.seoulmate.data.dto.challenge.DeleteChallengeDto
 import com.seoulmate.data.dto.challenge.MyChallengeDto
 import com.seoulmate.data.dto.comment.CommentContentDto
 import com.seoulmate.data.dto.comment.CommentDto
@@ -51,6 +52,11 @@ interface ChallengeRepository {
         id: Int,
         status: String, // Available values : PROGRESS, COMPLETE
     ): Flow<CommonDto<ChallengeStatusDto?>>
+
+    // delete challenge status
+    suspend fun deleteChallengeStatus(
+        id: Int,
+    ): Flow<CommonDto<DeleteChallengeDto?>>
 
     // put Challenge Like
     suspend fun reqChallengeLike(

@@ -19,6 +19,7 @@ import com.seoulmate.data.model.challenge.DefaultChallengeItemData
 import com.seoulmate.data.model.MyChallengeItemData
 import com.seoulmate.data.model.challenge.ChallengeItemData
 import com.seoulmate.data.repository.PreferDataStoreRepository
+import com.seoulmate.domain.usecase.DeleteChallengeStatusUseCase
 import com.seoulmate.domain.usecase.GetChallengeItemDetailUseCase
 import com.seoulmate.domain.usecase.GetMyChallengeItemListUseCase
 import com.seoulmate.domain.usecase.RefreshTokenUseCase
@@ -53,11 +54,13 @@ class ChallengeDetailViewModel @Inject constructor(
     private val refreshTokenUseCase: RefreshTokenUseCase,
     private val preferDataStoreRepository: PreferDataStoreRepository,
     private val updateUserInfoUseCase: UpdateUserInfoUseCase,
+    private val deleteChallengeStatusUseCase: DeleteChallengeStatusUseCase,
 ) : ViewModel() {
 
     var isShowLoading = mutableStateOf(false)
     var challengeItem = mutableStateOf(DefaultChallengeItemData.item)
-    var startedChallenge = mutableStateOf(false)
+    var startedChallengeStatus = mutableStateOf(false)
+    var finishedLeaveChallenge = mutableStateOf(false)
     var needUserLogin = mutableStateOf(false)
     var isStamped = mutableStateOf(false)
     var finishedAttractionStamp = mutableStateOf(false)
@@ -99,7 +102,7 @@ class ChallengeDetailViewModel @Inject constructor(
                 if (challengeDetailResponse.code in 200..299) {
                     challengeDetailResponse.response?.let {
                         challengeItem.value = it
-                        startedChallenge.value = UserInfo.getMyChallengeId().contains(it.id)
+                        startedChallengeStatus.value = UserInfo.getMyChallengeId().contains(it.id)
 //                        UserInfo.getMyChallengeId().forEach { id ->
 //                            if (id == it.id) {
 //                                startedChallenge.value = true
@@ -194,7 +197,7 @@ class ChallengeDetailViewModel @Inject constructor(
 
             deferredChallengeStatus.await()?.let {
                 if (it.code in 200..299) {
-                    startedChallenge.value = true
+                    startedChallengeStatus.value = true
 
                 } else if (it.code == 403) {
                     if (UserInfo.isUserLogin()) {
@@ -210,7 +213,7 @@ class ChallengeDetailViewModel @Inject constructor(
                 }
             }
 
-            if (startedChallenge.value) {
+            if (startedChallengeStatus.value) {
                 // fetch My Challenge List
                 val deferredMyChallengeList = async {
                     var returnResponse: CommonDto<List<MyChallengeItemData>>? = null
@@ -234,6 +237,26 @@ class ChallengeDetailViewModel @Inject constructor(
 
             isShowLoading.value = false
 
+        }
+    }
+
+    // Challenge Status DELETE
+    fun leaveChallenge(
+        id: Int,
+    ) {
+        viewModelScope.launch {
+            isShowLoading.value = true
+
+            deleteChallengeStatusUseCase(
+                id = id,
+            ).collectLatest {
+                isShowLoading.value = false
+
+                if (it.code in 200..299) {
+                    startedChallengeStatus.value = false
+                    finishedLeaveChallenge.value = true
+                }
+            }
         }
     }
 

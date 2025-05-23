@@ -31,6 +31,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MenuItemColors
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -43,7 +44,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -60,16 +61,15 @@ import com.seoulmate.challenge.detail.item.ChallengeStamp
 import com.seoulmate.challenge.detail.item.TopChallengeDetailInfo
 import com.seoulmate.data.ChallengeDetailInfo
 import com.seoulmate.data.UserInfo
-import com.seoulmate.data.dto.challenge.MyChallengeType
-import com.seoulmate.data.model.challenge.ChallengeCommentItem
 import com.seoulmate.ui.component.ChallengeCommentItemLayout
 import com.seoulmate.ui.component.CustomToast
 import com.seoulmate.ui.component.PpsAlertDialog
-import com.seoulmate.ui.component.PpsCommentAlertDialog
 import com.seoulmate.ui.component.PpsLoading
 import com.seoulmate.ui.component.PpsStampDialog
 import com.seoulmate.ui.component.PpsText
 import com.seoulmate.ui.component.Screen
+import com.seoulmate.ui.noRippleClickable
+import com.seoulmate.ui.theme.Black
 import com.seoulmate.ui.theme.Blue400
 import com.seoulmate.ui.theme.Blue500
 import com.seoulmate.ui.theme.ColorEDF4FF
@@ -131,7 +131,6 @@ fun ChallengeDetailScreen(
             language = UserInfo.getLanguageCode()
         )
 
-
     }
 
     LaunchedEffect(viewModel.needUserLogin.value) {
@@ -153,6 +152,13 @@ fun ChallengeDetailScreen(
                 language = UserInfo.getLanguageCode()
             )
             isShowStampDialog = true
+        }
+    }
+
+    LaunchedEffect(viewModel.finishedLeaveChallenge.value) {
+        // Finished delete challenge status
+        if (viewModel.finishedLeaveChallenge.value) {
+            viewModel.finishedLeaveChallenge.value = false
         }
     }
 
@@ -209,40 +215,47 @@ fun ChallengeDetailScreen(
                     }
                 },
                 actions = {
-//                    if (viewModel.startedChallenge.value) {
-//                        IconButton(
-//                            modifier = Modifier.padding(start = 10.dp),
-//                            onClick = {
-//                                dropDownExpanded = true
-//                            }
-//                        ) {
-//                            Icon(
-//                                modifier = Modifier.size(24.dp),
-//                                painter = painterResource(id = com.seoulmate.ui.R.drawable.ic_more),
-//                                contentDescription = "Search Icon",
-//                                tint = CoolGray900,
-//                            )
-//                        }
-//                        DropdownMenu(
-//                            expanded = dropDownExpanded,
-//                            onDismissRequest = { dropDownExpanded = false }
-//                        ) {
-//                            DropdownMenuItem(
-//                                text = {
-//                                    PpsText(
-//                                        modifier = Modifier,
-//                                        text = stringResource(com.seoulmate.ui.R.string.quit_challenge),
-//                                        style = MaterialTheme.typography.labelLarge.copy(
-//                                            color = CoolGray900,
-//                                        )
-//                                    )
-//                                },
-//                                onClick = {
-//                                    dropDownExpanded = false
-//                                }
-//                            )
-//                        }
-//                    }
+                    if (viewModel.startedChallengeStatus.value) {
+                        IconButton(
+                            modifier = Modifier.padding(start = 10.dp),
+                            onClick = {
+                                dropDownExpanded = true
+                            }
+                        ) {
+                            Icon(
+                                modifier = Modifier.size(24.dp),
+                                painter = painterResource(id = com.seoulmate.ui.R.drawable.ic_more),
+                                contentDescription = "Search Icon",
+                                tint = CoolGray900,
+                            )
+                        }
+                        DropdownMenu(
+                            expanded = dropDownExpanded,
+                            shape = RoundedCornerShape(11.dp),
+                            containerColor = TrueWhite,
+                            onDismissRequest = { dropDownExpanded = false }
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .wrapContentSize()
+                                    .noRippleClickable {
+                                        // leave challenge status
+                                        dropDownExpanded = false
+                                        viewModel.leaveChallenge(challengeId)
+                                    }
+                                    .padding(13.dp)
+                            ) {
+                                PpsText(
+                                    modifier = Modifier,
+                                    text = stringResource(com.seoulmate.ui.R.string.quit_challenge),
+                                    style = MaterialTheme.typography.labelLarge.copy(
+                                        color = CoolGray900,
+                                    )
+                                )
+                            }
+
+                        }
+                    }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = TrueWhite,
@@ -457,7 +470,7 @@ fun ChallengeDetailScreen(
             }
 
             // Bottom Floating UI
-            if (viewModel.startedChallenge.value) {
+            if (viewModel.startedChallengeStatus.value) {
                 Box(
                     modifier = Modifier
                         .padding(bottom = 10.dp)
@@ -498,7 +511,7 @@ fun ChallengeDetailScreen(
                     },
                 isLogin = UserInfo.isUserLogin(),
                 isFavorite = viewModel.challengeItem.value.isInterest,
-                startedChallenge = viewModel.startedChallenge.value,
+                startedChallenge = viewModel.startedChallengeStatus.value,
                 onChangeScreen = onChangeScreen,
                 onMapClick = {
                     checkLocationPermission {

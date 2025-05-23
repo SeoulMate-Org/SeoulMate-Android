@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -51,15 +52,18 @@ import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
+import com.seoulmate.ui.component.PpsAlertDialog
 import com.seoulmate.ui.component.PpsButton
 import com.seoulmate.ui.component.PpsSwitch
 import com.seoulmate.ui.component.PpsText
+import com.seoulmate.ui.component.Screen
 import com.seoulmate.ui.noRippleClickable
 import com.seoulmate.ui.theme.Blue100
 import com.seoulmate.ui.theme.Blue300
 import com.seoulmate.ui.theme.Blue500
 import com.seoulmate.ui.theme.CoolGray50
 import com.seoulmate.ui.theme.CoolGray600
+import com.seoulmate.ui.theme.CoolGray75
 import com.seoulmate.ui.theme.CoolGray900
 import com.seoulmate.ui.theme.TrueWhite
 import com.seoulmate.ui.theme.White
@@ -76,17 +80,27 @@ fun SettingNotificationScreen(
         } else {
             null
         }
+    val backgroundLocationPermissionState: PermissionState? =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            rememberPermissionState(permission = Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+        } else {
+            null
+        }
+
+    val fineLocationPermissionState = rememberMultiplePermissionsState(
+        permissions = listOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+    )
 
     var isShowNotificationPermission by remember { mutableStateOf(false) }
-
     var possibleReceiveLocationNotification by remember { mutableStateOf(false) }
+    var isShowLocationPermissionAlert by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         notificationPermissionState?.let {
             isShowNotificationPermission = !it.status.isGranted
         }
 
-        possibleReceiveLocationNotification= false
+        possibleReceiveLocationNotification = false
     }
 
     LaunchedEffect(notificationPermissionState?.status?.isGranted) {
@@ -162,7 +176,24 @@ fun SettingNotificationScreen(
                         SettingLocationNotificationLayout(
                             isChecked = possibleReceiveLocationNotification,
                             onCheckedChange = {
-                                possibleReceiveLocationNotification = it
+                                // click Location Notification Switch
+                                if (it) {
+                                    // on
+                                    if (!fineLocationPermissionState.allPermissionsGranted) {
+                                        // need Location Permission
+                                        isShowLocationPermissionAlert = true
+                                    } else if (backgroundLocationPermissionState?.status?.isGranted == false) {
+                                        // need Background Location Permission
+                                        isShowLocationPermissionAlert = true
+                                    } else {
+                                        possibleReceiveLocationNotification = it
+                                    }
+
+                                } else {
+                                    // off
+                                    possibleReceiveLocationNotification = it
+
+                                }
                             },
                         )
                     }
@@ -182,6 +213,27 @@ fun SettingNotificationScreen(
                 ) {
 
                 }
+            }
+
+            if(isShowLocationPermissionAlert) {
+                PpsAlertDialog(
+                    titleRes = com.seoulmate.ui.R.string.str_login,
+                    descriptionRes = com.seoulmate.ui.R.string.str_need_login_description,
+                    confirmRes = com.seoulmate.ui.R.string.str_login,
+                    cancelRes = com.seoulmate.ui.R.string.str_cancel,
+                    onClickCancel = {
+                        isShowLocationPermissionAlert = false
+                    },
+                    onClickConfirm = {
+                        isShowLocationPermissionAlert = false
+
+                        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                            data = "package:${context.packageName}".toUri()
+                        }
+                        context.startActivity(intent)
+                    },
+                )
             }
         }
     }
@@ -249,7 +301,10 @@ fun SettingLocationNotificationLayout(
             overflow = TextOverflow.Ellipsis,
         )
         PpsSwitch(
+            modifier = Modifier.width(48.dp).height(28.dp),
             isChecked = isChecked,
+            offColor = CoolGray75,
+            onColor = Blue500,
             onToggle = { onCheckedChange(!isChecked) },
         )
     }

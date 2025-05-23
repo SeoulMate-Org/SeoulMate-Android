@@ -15,6 +15,7 @@ import com.seoulmate.data.dto.challenge.ChallengeStampItemDto
 import com.seoulmate.data.dto.challenge.ChallengeStatusDto
 import com.seoulmate.data.dto.challenge.ChallengeThemeDto
 import com.seoulmate.data.dto.challenge.ChallengeThemeItemDto
+import com.seoulmate.data.dto.challenge.DeleteChallengeDto
 import com.seoulmate.data.dto.challenge.MyChallengeDto
 import com.seoulmate.data.dto.comment.CommentContentDto
 import com.seoulmate.data.dto.comment.CommentDto
@@ -93,6 +94,21 @@ class ChallengeRepositoryImpl @Inject constructor(
         val response = apiService.reqChallengeStatus(
             id = id,
             status = status,
+        )
+        emit(
+            CommonDto(
+                code = response.code(),
+                message = response.message(),
+                response = response.body(),
+            )
+        )
+    }
+
+    override suspend fun deleteChallengeStatus(
+        id: Int
+    ): Flow<CommonDto<DeleteChallengeDto?>> = flow {
+        val response = apiService.deleteChallengeStatus(
+            id = id,
         )
         emit(
             CommonDto(
