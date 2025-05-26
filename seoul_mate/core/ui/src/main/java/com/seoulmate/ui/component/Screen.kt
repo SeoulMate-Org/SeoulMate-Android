@@ -25,6 +25,7 @@ sealed class Screen(val route: String) {
     data object MapDefault: Screen("mapDefault")
 
     data object OnBoarding: Screen("onBoarding")
+    data object MyPageOnBoarding: Screen("myPageOnBoarding")
     data object Login: Screen("login")
     data object Signin: Screen("signin")
     data object Signup: Screen("signup")

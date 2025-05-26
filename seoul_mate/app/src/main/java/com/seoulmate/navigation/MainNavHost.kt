@@ -54,10 +54,23 @@ fun MainNavHost(
         composable(route = Screen.OnBoarding.route) {
             OnBoardingScreen(
                 appState = appState,
+                isFirstMode = true,
                 goLogin = {
                     appState.navController.popBackStack()
                     appState.navigate(Screen.Login)
                 },
+                onFinishClick = { appState.navController.popBackStack() }
+            )
+        }
+        composable(route = Screen.MyPageOnBoarding.route) {
+            OnBoardingScreen(
+                appState = appState,
+                isFirstMode = false,
+                goLogin = {
+                    appState.navController.popBackStack()
+                    appState.navigate(Screen.Login)
+                },
+                onFinishClick = { appState.navController.popBackStack() }
             )
         }
         // TODO chan need remove

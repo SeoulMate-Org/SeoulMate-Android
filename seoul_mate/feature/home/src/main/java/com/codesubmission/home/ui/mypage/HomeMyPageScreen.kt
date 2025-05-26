@@ -149,8 +149,8 @@ fun HomeMyPageScreen(
                             onChangeScreen(Screen.SettingLanguage)
                         },
                         onNotificationClick = {
-                            onChangeScreen(Screen.SettingNotification)
-//                            goSetting()
+//                            onChangeScreen(Screen.SettingNotification)
+                            goSetting()
                         },
                         onLocationClick = {
                             goSetting()
@@ -164,7 +164,10 @@ fun HomeMyPageScreen(
                     .padding(top = 16.dp),
                 ) {
                     MyPageServiceInfo(
-                        showWebUrl = showWebUrl
+                        showWebUrl = showWebUrl,
+                        showOnBoarding = {
+                            onChangeScreen(Screen.MyPageOnBoarding)
+                        },
                     )
                 }
             }

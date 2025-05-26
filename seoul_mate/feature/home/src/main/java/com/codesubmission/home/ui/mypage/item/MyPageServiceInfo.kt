@@ -31,6 +31,7 @@ import com.seoulmate.ui.theme.White
 @Composable
 fun MyPageServiceInfo(
     showWebUrl: (url: String) -> Unit = {},
+    showOnBoarding: () -> Unit = {},
 ) {
     Column {
         Column (
@@ -46,7 +47,10 @@ fun MyPageServiceInfo(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 20.dp, vertical = 10.dp,),
+                    .padding(horizontal = 20.dp, vertical = 10.dp,)
+                    .noRippleClickable {
+                        showOnBoarding()
+                    },
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 PpsText(

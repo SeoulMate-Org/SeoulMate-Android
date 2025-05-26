@@ -49,7 +49,9 @@ import kotlinx.coroutines.launch
 @Composable
 fun OnBoardingScreen(
     appState: AppState,
+    isFirstMode: Boolean = true,
     goLogin: () ->Unit = {},
+    onFinishClick: () -> Unit = {},
 ) {
     val pagerState = rememberPagerState(
         pageCount = { 4 },
@@ -131,7 +133,11 @@ fun OnBoardingScreen(
                         cornerRound = 12.dp
                     ) {
                         if (pagerState.currentPage == 3) {
-                            goLogin()
+                            if (isFirstMode) {
+                                goLogin()
+                            } else {
+                                onFinishClick()
+                            }
                         } else {
                             appState.coroutineScope.launch {
                                 pagerState.animateScrollToPage(pagerState.currentPage + 1)
